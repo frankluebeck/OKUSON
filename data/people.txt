@@ -1,5 +1,5 @@
 # people.txt - Registration information
-# Format:  id:last name:first name:semester:studies:passwd:wishes
+# Format:  id:name:fname:semester:stud:passwd:email:wishes:pdata1:...:pdata9
 214199:Neunhöffer:Max:28:Mathematik-Promotion:XÕ2l8htoNh4Kc:::::::::::
 213653:Noeske:Felix:13:Mathematik-Promotion:ZìFMO2MUxUmTU:::::::::::
 214199:Neunhöffer:Max:28:Mathematik-Promotion:XÕ2l8htoNh4Kc::214199 123456:::::::::
