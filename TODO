@@ -8,8 +8,6 @@ Interessante Ergebnisse des Browser-Checks:
 begleitmail
 
 Für Release:
-  Klausur-Ergebnisausgabe (plus Zusatzstring)
-  Template fuer Fall ohne MC
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
   Mechanismus für Bilder in TeX
@@ -18,6 +16,9 @@ Für Release:
   Statistik ueber Uebungsblaetter    --> Hilfsskript?
   Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
   Tests siehe unten
+  Dokumentation von automatischem Grading
+  Dokumentation von automatischem ExamGrading
+  
 
 Handbuch:
  

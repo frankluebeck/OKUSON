@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: AsciiData.py,v 1.2 2003/10/15 00:05:12 neunhoef Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -272,6 +272,7 @@ as described above.
                         tos[i] = NewNode(t)
                         sub = tos[i]
                     elif TypeOfNode(sub,reporterror=reporterror) != t:
+                        print "sub=",sub,"t=",t
                         msg = 'Error: Tree already incorrect!\nLine:'+l+ \
                               'Tree:'+str(sub)
                         reporterror(msg)
@@ -280,6 +281,7 @@ as described above.
                     try:
                         sub = getattr(tos,f)
                         if TypeOfNode(sub,reporterror = reporterror) != t:
+                            print "2sub=",sub,"t=",t
                             msg = 'Error: Tree already incorrect!\nLine:'+l+ \
                                   'Tree:'+str(sub)
                             reporterror(msg)

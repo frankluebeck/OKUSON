@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.9 2003/10/09 11:38:36 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.10 2003/10/15 00:05:12 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -153,7 +153,7 @@ examregdesc = AsciiData.FileDescription(Config.conf['ExamRegistrationFile'],
 examdesc = AsciiData.FileDescription(Config.conf['ExamFile'],people,
   ( "ENTER", 0, "KEY",          Person,
     "STORE", 0, "id",           "STRING",
-    "ENTER", 0, "exams",        "VEC",
+    "ENTER", 0, "exams",        "VECT",
     "ENTER", 1, "KEY",          Exam,
     "STORE", 2, "totalscore",   "INT",
     "STORE", 3, "maxscore",     "INT",

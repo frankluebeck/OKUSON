@@ -168,6 +168,38 @@ def Grade(p,sl,mcscore,homescore,exams):
 </GradingActive>
 
 
+<!-- The following is a Python function that can automatically decide
+     about the grading of an exam of certain participant. This function is
+     considered in two cases: (1) During the display of results for a
+     participant and (2) During export of results. See also the next
+     option about how to activate/deactivate this feature. -->
+<ExamGradingFunction>
+def Grade(p,examnr):
+    '''This function decides about the grade of person p in exam number
+       examnr. This will only be called if the participant actually
+       took part in the exam. This means that p.exams[examnr] is an
+       object of type exam with non-negative totalscore entry. The function
+       returns a tuple of length 2, the first being a message for the
+       results page, the second a number for the grade.'''
+    if p.exams[examnr].totalscore >= 25:
+        return ('Sie haben in der Klausur vor Weihnachten '+
+                str(p.exams[examnr].totalscore)+' Punkte bekommen und damit'
+                ' bestanden.',1)
+    else:
+        return ('Sie haben in der Klausur vor Weihnachten '+
+                str(p.exams[examnr].totalscore)+' Punkte bekommen und damit'
+                ' nicht bestanden.',0)
+</ExamGradingFunction>
+
+<!-- The following entry decides, whether the automatic decision about
+     exam grades is active or not. Only if the numerical value of the
+     following entry is non-zero the exam grading is performed via
+     the function in ExamGradingFunction. -->
+<ExamGradingActive>
+0
+</ExamGradingActive>
+
+
 <!-- ==================================================================== 
                           Installation section
      ==================================================================== -->

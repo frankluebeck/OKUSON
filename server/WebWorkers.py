@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.46 2003/10/14 15:36:07 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.47 2003/10/15 00:05:12 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -550,6 +550,41 @@ one Person object as data.'''
                 if self.p.homework.has_key(name):
                     totalscore += self.p.homework[name].totalscore
         out.write(str(totalscore))
+    def handle_ExamGrades(self,node,out):
+        if Config.conf['ExamGradingActive'] == 0 or \
+           Config.conf['ExamGradingFunction'] == None: return
+        for i in range(len(self.p.exams)):
+            if self.p.exams[i] != None and self.p.exams[i].totalscore >= 0:
+                try:
+                    (msg,grade) = Config.conf['ExamGradingFunction'](self.p,i)
+                    out.write('<p>\n'+msg+'</p>\n')
+                except:
+                    etype, value, tb = sys.exc_info()
+                    lines = traceback.format_exception(etype,value,tb)
+                    Utils.Error('Call of ExamGradingFunction raised an '
+                            'exception, ID: '+self.p.id+', message:\n'+
+                            string.join(lines))
+    def handle_ExamGrade(self,node,out):
+        if Config.conf['ExamGradingActive'] == 0 or \
+           Config.conf['ExamGradingFunction'] == None: return
+        if node[1] == None or not(node[1].has_key('nr')):
+            return
+        nr = node[1]['nr'].encode('ISO-8859-1','replace')
+        try:
+            nr = int(nr)
+        except:
+            Utils.Error('nr attribute value is no number: '+nr+' - assuming 0.')
+            nr = 0
+        if nr < 0 or nr >= len(self.p.exams): return
+        try:
+            (msg,grade) = Config.conf('ExamGradingFunction')(self.p,i)
+            out.write('<p>\n'+msg+'</p>\n')
+        except:
+            etype, value, tb = sys.exc_info()
+            lines = traceback.format_exception(etype,value,tb)
+            Utils.Error('Call of ExamGradingFunction raised an '
+                    'exception, ID: '+self.p.id+', message:\n'+
+                    string.join(lines))
     def handle_Grade(self,node,out):
         if Config.conf['GradingActive'] == 0 or \
            Config.conf['GradingFunction'] == None: return
@@ -1638,9 +1673,23 @@ def ExportResults(req,onlyhead):
             exams = []
             for i in range(len(p.exams)):
                 if p.exams[i] == None or p.exams[i].totalscore < 0:
-                    exams.append('-')
+                    exams.append('-;0')
                 else:
-                    exams.append(str(p.exams[i].totalscore))
+                    if Config.conf['ExamGradingActive'] == 0 or \
+                       Config.conf['ExamGradingFunction'] == None:
+                        (msg,grade) = ('',0)
+                    else:
+                        try:
+                            (msg,grade) = Config.conf['ExamGradingFunction'] \
+                                       (p,i)
+                        except:
+                            etype, value, tb = sys.exc_info()
+                            lines = traceback.format_exception(etype,value,tb)
+                            Utils.Error('Call of ExamGradingFunction raised '
+                               'an exception, ID: '+p.id+', message:\n'+
+                               string.join(lines))
+                            (msg,grade) = ('',0)
+                    exams.append(str(p.exams[i].totalscore)+';'+str(grade))
             if Config.conf['GradingActive'] and \
                Config.conf['GradingFunction'] != None:
                 try:

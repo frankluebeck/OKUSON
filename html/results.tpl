@@ -43,6 +43,11 @@ ja von den korrigierten Zetteln.):</p>
 
     <p>Sie haben im Moment insgesamt <Totalscore /> Punkte.</p>
 
+    <ExamGrades />
+    <!-- Alternatively, one could use: 
+    <ExamGrade nr="0" /> 
+         for only exam number 0 -->
+
     <Grade />
 
     <GeneralMessages />
@@ -64,5 +69,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.6 2003/10/08 09:29:30 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.7 2003/10/15 00:05:12 neunhoef Exp $ -->
 

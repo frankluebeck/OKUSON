@@ -41,6 +41,8 @@ Parameters = {
   "GuestIdRegExp":            ["STRING",0],
   "GradingFunction":          ["STRING",0],
   "GradingActive":            ["INT",0],
+  "ExamGradingFunction":      ["STRING",0],
+  "ExamGradingActive":        ["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -288,12 +290,28 @@ into a usable form. Some values are changed into other data types.'''
         except:
             etype, value, tb = sys.exc_info()
             lines = traceback.format_exception(etype,value,tb)
-            Utils.Error('Cannot parse ScheinDecisionFunction.\n'+
+            Utils.Error('Cannot parse GradingFunction.\n'+
                         string.join(lines))
             conf['GradingFunction'] = None
     else:
         conf['GradingFunction'] = None
     if not(conf.has_key('GradingActive')):
         conf['GradingActive'] = 0
+    # Now parse the ExamGradingFunction if applicable:
+    if conf.has_key('ExamGradingFunction'):
+        d = {}
+        try:
+            exec conf['ExamGradingFunction']+'\n' in d
+            conf['ExamGradingFunction'] = d['Grade']
+        except:
+            etype, value, tb = sys.exc_info()
+            lines = traceback.format_exception(etype,value,tb)
+            Utils.Error('Cannot parse ExamGradingFunction.\n'+
+                        string.join(lines))
+            conf['ExamGradingFunction'] = None
+    else:
+        conf['ExamGradingFunction'] = None
+    if not(conf.has_key('ExamGradingActive')):
+        conf['ExamGradingActive'] = 0
 
 
