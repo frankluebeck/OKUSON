@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.47 2003/10/15 00:05:12 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.48 2003/10/15 15:34:43 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -916,7 +916,8 @@ def QuerySheet(req,onlyhead):
             Utils.Error('Cannot pdflatex sheet input (id='+id+\
                         ', sheet='+sheetname+').')
             return Delegate('/errors/pdfproblem.html', req, onlyhead)
-        return ({'Content-type': 'application/pdf', 'Expires': 'now'}, pdf)
+        return ({'Content-type': 'application/pdf', 'Expires': 'now',
+                 'Content-Disposition': 'attachment; filename="sheet_%s.pdf"' % sheet[2].name}, pdf)
     else:
         return Delegate('/errors/invalidformat.html', req, onlyhead)
 
