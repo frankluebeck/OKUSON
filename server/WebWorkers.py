@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.4 2003/09/26 21:35:05 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.5 2003/09/30 15:39:37 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal
 
@@ -366,7 +366,7 @@ one Person object as data.'''
         if not(self.p.stud in Config.conf['PossibleStudies']):
             out.write(self.p.stud)
         out.write('" />')
-    def handle_Semester(self,node,out):
+    def handle_Sem(self,node,out):
         out.write(str(self.p.sem))
     def handle_SemesterField(self,node,out):
         out.write('<input size="2" maxlength="2" name="sem" value="'+
