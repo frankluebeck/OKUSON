@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.57 2003/10/22 22:37:04 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.58 2003/10/24 20:35:08 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1123,14 +1123,14 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                   out.write('<tr><td class="trenner">'+k+'</td>'
                             '<td class="trenner">'+p.lname+', '+p.fname+'</td>'
                             '<td class="trenner">'
-                            '<input size="6" maxlength="3"'
+                            '<input size="6" maxlength="6"'
                             ' name="P'+k+'" value="'+default+'" /></td>\n'
                             '    <td class="trenner"><input size="30" '
                             'maxlength="60" name="S'+k+
                             '" value="'+default2+'" /></td></tr>\n')
                 else:
                   out.write('<tr><td>'+k+'</td><td>'+p.lname+', '+p.fname+
-                            '</td><td><input size="6" maxlength="3"'
+                            '</td><td><input size="6" maxlength="6"'
                             ' name="P'+k+'" value="'+default+'" /></td>\n'
                             '   <td><input size="30" maxlength="60" name="S'+k+
                             '" value="'+default2+'" /></td></tr>\n')
@@ -1159,13 +1159,13 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
                 default2 = ''
             if counter % 5 == 0:
                 out.write('<tr><td class="trenner">'+na+'</td>'
-                          '<td class="trenner"><input size="6" maxlength="3"'
+                          '<td class="trenner"><input size="6" maxlength="6"'
                           ' name="S'+na+'" value="'+default+'" /></td>\n'
                           '    <td class="trenner"><input size="30" '
                           'maxlength="60" name="T'+na+
                           '" value="'+default2+'" /></td></tr>\n')
             else:
-                out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
+                out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="6"'
                           ' name="S'+na+'" value="'+default+'" /></td>\n'
                           '    <td><input size="30" maxlength="60" name="T'+na+
                           '" value="'+default2+'" /></td></tr>\n')
@@ -1279,7 +1279,7 @@ def SubmitHomeworkSheet(req,onlyhead):
                 score = req.query.get('P'+k,[''])[0]
                 scores = req.query.get('S'+k,[''])[0]
                 try:
-                    totalscore = int(score)
+                    totalscore = float(score)
                 except:
                     totalscore = 0
                 if p.homework.has_key(s.name) or score != '':

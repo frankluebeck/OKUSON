@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.2 2003/10/15 00:05:12 neunhoef Exp $'
+CVS = '$Id: AsciiData.py,v 1.3 2003/10/24 20:35:08 luebeck Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -78,7 +78,7 @@ substrings is returned.
 #   followed by a fixed number of arguments as described below.
 # * During the execution of a SLP the tree in memory is extended with
 #   the information from the input line.
-# * Fields in the input line (seperated by the delimiter) are numbered
+# * Fields in the input line (separated by the delimiter) are numbered
 #   beginning with 0
 # * During the execution of a SLP a "current" location as well as the
 #   path from the root to it are kept.
@@ -88,11 +88,11 @@ substrings is returned.
 # The commands:
 # "STORE" - Followed by 3 arguments: n, f, t
 #         n is a number of a field in the input line, f is a string or 
-#         integer and t is either "STRING "or "INT".
+#         integer or float and t is either "STRING "or "INT" or "FLOAT".
 #         This command is used to store a value in the tree.
 #         It stores the value in field number n in the entry named f of the
 #         current location in the tree. The value is stored as a string
-#         or as an integer, depending on t.
+#         or as an integer or float, depending on t.
 #         If there is a vector at the current location then f must be 
 #         an integer or "NEXT", otherwise a string. If f is "NEXT" then
 #         the value is appended to the vector at the current position.
@@ -116,13 +116,13 @@ substrings is returned.
 #         this class without arguments.
 # "FILL"  - Followed by 3 arguments: n, f, t
 #         n is a number of a field in the input line, f is a string or
-#         integer and t is either "STRING "or "INT".
+#         integer or float and t is either "STRING" or "INT" or "FLOAT".
 #         This command is used to store the rest of an input line into
 #         a vector in the tree.
 #         It stores the values in the fields from number n up to the end
 #         of the input line into a vector stored under the entry named f
 #         if the current location in the tree. The values are stored as 
-#         strings or as a integers, depending on t.
+#         strings or integers or floats, depending on t.
 #         If there is a vector at the current location then f must be an
 #         integer, otherwise a string.
 # "LEAVE" - Not followed by any argument.
@@ -223,6 +223,14 @@ as described above.
                               ' (assuming 0)\nLine:'+l
                         reporterror(msg)
                         v = 0
+                elif t == "FLOAT":
+                    try:
+                        v = float(ll[n])
+                    except:
+                        msg = 'Warning: Not a float: '+ll[n]+ \
+                              ' (assuming 0.0)\nLine:'+l
+                        reporterror(msg)
+                        v = 0.0
                 else:
                     v = ll[n]
                 # Store it, depending on node type:
@@ -321,6 +329,14 @@ as described above.
                                   ' (assuming 0)\nLine:'+l
                             reporterror(msg)
                             v.append(0)
+                    elif t == "FLOAT":
+                        try:
+                            v.append(float(ll[n]))
+                        except:
+                            msg = 'Warning: Not a float: '+ll[n]+ \
+                                  ' (appending 0.0)\nLine:'+l
+                            reporterror(msg)
+                            v.append(0.0)
                     else:
                         v.append(ll[n])
                     n += 1
