@@ -9,13 +9,13 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.14 2003/10/27 11:51:47 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.15 2003/11/07 16:25:41 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
 
 import Config,Data
-from fmTools import Utils,LatexImage,SimpleRand,AsciiData
+from fmTools import Utils,LatexImage,SimpleRand,AsciiData,XMLRewrite
 
 # the data structure of sheets and exercises is described in the following 
 # class definitions:
@@ -739,11 +739,13 @@ def OurDtdOpener(d):
 
 
 # Create an XML parser, we switch on location information.
+XMLRewrite.pyRXPLock.acquire()
 Parser = pyRXPU.Parser(fourth = pyRXPU.recordLocation,
                        ReturnDefaultedAttributes = 0,
                        MergePCData = 1,
                        Validate = 1,
                        eoCB = OurDtdOpener)
+XMLRewrite.pyRXPLock.release()
 
 
 # A little comment on error processing:
@@ -903,11 +905,13 @@ def ReadExercisesFile(fname, prefix=''):
   except Utils.UtilsError:
       Utils.Error('Cannot read exercises file '+fname+'.')
       return
+  XMLRewrite.pyRXPLock.acquire()
   try:
       tree = Parser.parse(s, srcName=fname)
   except pyRXPU.error, e:
       Utils.Error("XML parser error:\n\n"+str(e))
       return
+  XMLRewrite.pyRXPLock.release()
 
   # Now we can be sure that the "tree" contains data of a valid exercises
   # document.
@@ -1111,11 +1115,13 @@ def ReadSheetsFile(fname):
   except UtilsError:
       Utils.Error('Cannot read sheets file '+fname+'.')
       return
+  XMLRewrite.pyRXPLock.acquire()
   try:
       tree = Parser.parse(s, srcName=fname)
   except pyRXPU.error, e:
       Utils.Error("XML parser error:\n\n"+str(e))
       return
+  XMLRewrite.pyRXPLock.release()
 
   # Now we can be sure that the "tree" contains data of a valid sheets
   # document.

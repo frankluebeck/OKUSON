@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.6 2003/11/03 21:46:08 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.7 2003/11/07 16:25:41 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -324,12 +324,14 @@ otherwise self.query is {}. self.path is the path.'''
                     res = (res[0], '')
             #Utils.Error('Validating '+str(self.path), prefix='Check: ')
             t = None
+            XMLRewrite.pyRXPLock.acquire()
             try:
                 t = XMLRewrite.ValidatingParser(res[1])
             except pyRXPU.error, e:
                 res = [res[0], res[1]]
                 NoValidFunction(self, res, e)
                 res = (res[0], res[1])
+            XMLRewrite.pyRXPLock.release()
             if not t:
                 Utils.Error('NO SUCCESS on '+str(self.path), 
                              prefix='Validation: ')
@@ -418,11 +420,11 @@ otherwise self.query is {}. self.path is the path.'''
         Utils.Error(msg,"Log:")
 
 class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
-    def get_request(self):
-        """Get the request and client address from the socket.  """
-        s = self.socket.accept()
-        s[0].settimeout(30)
-        return s
+    #def get_request(self):
+    #    """Get the request and client address from the socket.  """
+    #    s = self.socket.accept()
+    #    s[0].settimeout(30)
+    #    return s
 
     raus = 0
     restartcommand = ''

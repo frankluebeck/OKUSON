@@ -86,7 +86,7 @@ else:
 
 # The following is needed for error reporting purposes:
 
-from fmTools import Utils, SimpleTemplate
+from fmTools import Utils, SimpleTemplate, XMLRewrite
 import pyRXPU
 
 
@@ -112,6 +112,8 @@ def ReadConfig():
         cf = Utils.StringFile(configfile)
     except:
         FailMiserably()
+
+    XMLRewrite.pyRXPLock.acquire()
     p = pyRXPU.Parser(fourth = pyRXPU.recordLocation,
                       ReturnDefaultedAttributes = 0,
                       MergePCData = 1,
@@ -122,6 +124,7 @@ def ReadConfig():
     except pyRXPU.error, e:
         Utils.Error("XML parser error:\n\n"+str(e))
         FailMiserably()
+    XMLRewrite.pyRXPLock.release()
 
     # Now run through the tree:
     # We know by the DTD that there is exactly one "Config" element.

@@ -10,10 +10,14 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: XMLRewrite.py,v 1.2 2003/11/07 16:25:41 luebeck Exp $'
 
-import os, types, glob, pyRXPU, cStringIO
+import os, types, glob, pyRXPU, cStringIO, threading
 import Utils
+
+# We create a pyRXP Lock, because there are global variables in that
+# C-module which cannot be shared by threads.
+pyRXPLock = threading.Lock()
 
 
 # Here is a dictionary of .dtd and .ent file names as keys and a
@@ -89,18 +93,26 @@ RewriteParserFlags = {
 # Create a parser for rewriting with above flags, see the pyRXP documentation 
 # for an  explanation of the format of the output of this parser 
 # (we append the a section from that doc at the end of this file)
-Parser = pyRXPU.Parser()
-for k in RewriteParserFlags.keys():
-  setattr(Parser, k, RewriteParserFlags[k])
+def NewParser():
+  pyRXPLock.acquire()
+  res = pyRXPU.Parser()
+  for k in RewriteParserFlags.keys():
+    setattr(res, k, RewriteParserFlags[k])
+  pyRXPLock.release()
+  return res
+
+Parser = NewParser()
 
 # call parser with file name
 def ParseFile(fname, reporterror = Utils.Error):
   s = Utils.StringFile(fname, reporterror=reporterror)
+  pyRXPLock.acquire()
   try:
       t = Parser(s, srcName = fname)
   except pyRXPU.error, e:
       reporterror("XML parser error:\n\n"+str(e))
       raise
+  pyRXPLock.release()
   return t
 
 # And another list for use for validation with fully resolved of entities
@@ -150,15 +162,22 @@ ValidatingParserFlags = {
 # Create a validating parser with above flags, see the pyRXP documentation 
 # for an explanation of the format of the output of this parser 
 # (we append the a section from that doc at the end of this file)
-ValidatingParser = pyRXPU.Parser(eoCB = eoCBfun)
-for k in ValidatingParserFlags.keys():
-  setattr(ValidatingParser, k, ValidatingParserFlags[k])
+def NewValidatingParser():
+  pyRXPLock.acquire()
+  res = pyRXPU.Parser(eoCB = eoCBfun)
+  for k in ValidatingParserFlags.keys():
+    setattr(res, k, ValidatingParserFlags[k])
+  pyRXPLock.release()
+  return res
+  
+ValidatingParser = NewValidatingParser()
 
 # call parser with file name
 def ValidateXMLFile(fname, reporterror = Utils.Error):
   global lastpe
   s = Utils.StringFile(fname, reporterror=reporterror)
   t = None
+  pyRXPLock.acquire()
   try:
       t = ValidatingParser(s, srcName = fname)
   except pyRXPU.error, e:
@@ -168,6 +187,7 @@ def ValidateXMLFile(fname, reporterror = Utils.Error):
                Utils.Error(l, prefix = '')
       Utils.Error('No success! Correct shown error and try again.', prefix='')
       return None
+  pyRXPLock.release()
   return t
 
 

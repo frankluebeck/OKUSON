@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.62 2003/11/05 12:46:59 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.63 2003/11/07 16:25:41 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -204,6 +204,21 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         out.write('<option selected="selected">Standard</option>\n')
         for r in Config.conf['Resolutions']:
             out.write('<option>'+str(r)+'</option>\n')    
+    def handle_AvailableIds(self,node,out):
+        if currentcookie == None:
+            out.write('<input size="8" maxlength="6" name="msgid" value="" '
+                      '/>\n')
+        else:
+            out.write('<select name="msgid">\n')
+            l = Utils.SortNumerAlpha(Data.people.keys())
+            for k in l:
+               if not(Config.conf['GuestIdRegExp'].match(k)):
+                   p = Data.people[k]
+                   out.write('<option value="'+k+'">'+k+' - '+p.fname+' '
+                             +p.lname+'</option>\n')
+            out.write('</select>\n')
+            
+
 
 EH_Generic = EH_Generic_class()
 
