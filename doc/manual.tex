@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.33 2003/10/15 00:05:12 neunhoef Exp $
+% $Id: manual.tex,v 1.34 2003/10/15 10:29:03 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1737,6 +1737,7 @@ in the server easily with private scripts.
 
 
 \subsection{Export participants of exam} 
+\label{sec:expexamreg}
 
 This export facility is to get
 information about the registration situation for exams. Therefore the
@@ -2094,9 +2095,100 @@ Nevertheless, there is functionality for the administrational aspect of
 exams, this is explained in this chapter: Registration for exams, 
 importing exam results in the {\OKUSON} server, displaying the results.
 
-\section{}
-\section{}
-\section{}
+{\OKUSON} handles some information about exams for each participant. 
+Exams are numbered from $0$ to a certain limit, which is $23$ at the 
+moment. The information stored is basically the fact, whether a certain 
+person wants to take part in the exam, and if so, the result in the form
+of one non-negative integer score as the final result and an additional
+string, which can be anything, for example intermediate results. The
+{\OKUSON} system will only store this string and will not further process
+it, except the user supplies functions to do so (see below).
+
+The result of exams can enter the automatic grading decision at the end
+of the course (see \ref{ch:autograde}).
+
+
+\section{Registration for Exams}
+
+There is already a web page prepared to organize the registration of 
+participants for exercises. It is stored in the template 
+``\texttt{examregistration.tpl}'' in the root directory of the
+web pages (usually ``\texttt{html}'' in the {\OKUSON} home directory).
+
+In the default setting this page is not linked from anywhere else, such that
+participants will not visit this site accidentally. Note however, that
+one can reach this page by typing in the correct URL right from the beginning
+of the course. Therefore the form for submission of the registration is
+commented out, such that it does not appear on the page. Of course, a
+participant knowing the details can submit registrations ``by hand'' anyway.
+
+To activate the registration, one has to do the following: 
+\begin{itemize}
+\item ``Comment in'' the form in \texttt{examregistration.tpl}.
+\item Edit the attribute value for ``\texttt{nr}'' in the input field
+in the line marked ``\texttt{***please edit***}'' to the exam number, for
+which you want registration.
+\item Delete the string ``\texttt{***please edit***}'' in the same line.
+\item Edit the text around this to your needs.
+\item Activate the menu entry ``Klausuranmeldung'' in the main menu in the
+file \texttt{index.tpl}.
+\item Restart the server.
+\end{itemize}
+
+From the moment you do the last step, participants can register (and 
+deregister) for the exam in question.
+
+The collected information is stored in the file \texttt{examregistrations.txt}
+in the \texttt{data} directory. However, you do not need to know its format,
+because there is export functionality for these registration information via
+the administrator menu (see section \ref{sec:expexamreg}).
+
+Please note again that even if you take the registration page from the
+web pages, people knowing the details can still submit registrations and
+deregistrations ``by hand''.
+
+\section{Importing Exam Results into the Server}
+
+The results of exams are put directly into the data file \texttt{exams.txt}
+in the \texttt{data} directory. See section \ref{sec:exams.txt} for the
+file format. This file will never be written by the {\OKUSON} server. 
+Therefore it is save to append data while the server is running. After 
+a restart, everything is available within the {\OKUSON} system.
+
+Note that without further intervention, no result is displayed publicly.
+However, in the export option for results (see \ref{sec:expresults}) the
+data appears.
+
+\section{Displaying Results of Exams automatically}
+
+To display the exam results on the usual result pages, there are two
+special configuration options. The basic idea is, that the administrator of
+the {\OKUSON} server supplies a function that produces the output that
+should appear on the web page. 
+
+This works as follows: There is a configuration option 
+\texttt{ExamGradingActive}. The automatic exam grading is active if 
+and only if the value of this integer is non-zero. For this case, there
+is the configuration option \texttt{ExamGradingFunction}, which contains a
+Python function with the name ``\texttt{Grade}'' that is called with
+two arguments, the first being an object of type \texttt{Person} (see
+chapter \ref{ch:intdata}), containing all the personal data of one
+participant, including information about exams (in the \texttt{exams}
+entry). The second argument is the number of the exam in question.
+This function is called when the result page for a participant is
+generated for all exams that participant took part in.
+
+The \texttt{Grade} function has read access to the personal and exam data
+and has to return a pair. The first entry of this pair has to be a string,
+which is put in a ``\texttt{<p> </p>}'' environment on the web page. The
+second entry is a grade, which is later exported in the result export.
+This grade has to be a number (int or float) and is converted into a 
+string during export.
+
+Note that of course you can refrain from using this feature altogether,
+produce the output for the results display externally with your own tools
+and import this into standard private messages in the file \texttt{message.txt}
+(compare sections \ref{sendmess} and \ref{sec:messages.txt}). 
 
 %\chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{Customization Examples}
