@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.29 2003/10/10 18:38:42 neunhoef Exp $
+% $Id: manual.tex,v 1.30 2003/10/13 15:21:26 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1395,6 +1395,19 @@ which are specified in the configuration file, see the element
 \texttt{PossibleStudies} in the config file and the sample registration 
 web pages.
 
+There are further elements which can be used with the customization data
+components in case these should  take only a fixed set of values:
+
+\texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />} and 
+\texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />}
+
+These produce an HTML input field of type  radio button or check box,
+respectively, which has the \texttt{checked} attribute set if the currently
+stored value of \texttt{persondata1} is \texttt{myvalue} (and similar for
+\texttt{persondata2}, \ldots). Note that {\OKUSON} stores only one value for
+each component name. Instead of a component with multiple choices use
+several components which can be switched on and off independently.
+
 \subsection{Special Elements for Sheet Specific Data}\label{ssec:sheetelements}
 
 There are some special elements used with the sheets in HTML format.
@@ -1573,8 +1586,9 @@ to listen to another port.
 Note that there is an extra configuration option 
 \texttt{AdministrationAccessList} to limit the IP range of machines, from
 where the administration pages can be accessed (see 
-\ref{AdministrationAccessList}). The default setting is to allow administrator
-access only from the local machine.
+the comment in the \texttt{Config.xml} sample file). 
+The default setting is to allow administrator
+access only from the local machine (\texttt{localhost}).
 
 In addition you have to authenticate yourself to the {\OKUSON} server
 for every administrator operation. You can do this by entering the 

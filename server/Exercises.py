@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.10 2003/10/09 12:02:30 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.11 2003/10/13 15:21:26 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -626,6 +626,29 @@ of the sheet with seed "seed" and returns the result as a string.
         f.write('\\end{longtable}\n')
 
         # Return the code as string
+        res = f.getvalue()
+        f.close()
+        return res
+    
+    def LatexSheetNoTable(self):
+        '''Creates a latex input of exercises and extra texts. Only
+        works for sheets without interactive exercises (which are shown
+        as "???". This is to avoid the - in this case - unnecessary table 
+        around the exercise texts.
+'''
+        f = cStringIO.StringIO()
+        
+        # walk through the list:
+        for i in range(len(self.list)):
+            o = self.list[i]
+            if isinstance(o,TeXText):
+                if self.exnr[i]:   # a conventional exercise
+                    f.write(('\n\n\\textbf{(%d)}\hspace{5mm}%s\n\n') \
+                      % (self.exnr[i],string.strip(o.text)))
+                else:           # a TEXT
+                    f.write(string.strip(o.text))
+            elif isinstance(o,Exercise):
+                f.write('\n\n???\n\n')
         res = f.getvalue()
         f.close()
         return res

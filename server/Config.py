@@ -58,6 +58,7 @@ Parameters = {
   "GroupInfoFile":            ["PATH",0],
   "PathToDTDs":               ["PATH",1],
   "PDFTemplate":              ["STRING",1],
+  "PDFTemplateNoTable":       ["STRING",0],
 
   "WidthOfSheetsHTML":        ["FLOAT",1],
   "WidthOfExerciseTextsHTML": ["FLOAT",1],
@@ -274,6 +275,10 @@ into a usable form. Some values are changed into other data types.'''
         conf['ExtraLaTeXHeader'] = ''
     # Preparse the PDFTemplate:
     conf['PDFTemplate'] = SimpleTemplate.ParseString(conf['PDFTemplate'])
+    # Same for NoTable variant:
+    if not conf.has_key('PDFTemplateNoTable'):
+         conf['PDFTemplateNoTable'] = ''
+    conf['PDFTemplateNoTable'] = SimpleTemplate.ParseString(conf['PDFTemplateNoTable'])
     # Now parse the GradingFunction if applicable:
     if conf.has_key('GradingFunction'):
         d = {}

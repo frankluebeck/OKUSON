@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.40 2003/10/12 11:56:36 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.41 2003/10/13 15:21:26 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -442,7 +442,30 @@ one Person object as data.'''
         out.write(self.p.persondata8)
     def handle_PersonData9(self, node, out):
         out.write(self.p.persondata9)
-
+    def handle_PersonDataRadioButton(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+            known = str(getattr(self.p, name))
+        except:
+            return
+        res = ['<input type="radio" name="', name, '" value="', val, '" '] 
+        if val == known:
+            res.append('checked="checked" ')
+        res.append('/>')
+        out.write(string.join(res, ''));
+    def handle_PersonDataCheckBox(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+            known = str(getattr(self.p, name))
+        except:
+            return
+        res = ['<input type="checkbox" name="', name, '" value="', val, '" '] 
+        if val == known:
+            res.append('checked="checked" ')
+        res.append('/>')
+        out.write(string.join(res, ''));
     def handle_PossibleStudies(self,node,out):
         found = 0
         for i in range(len(Config.conf['PossibleStudies'])):
@@ -755,7 +778,7 @@ def QuerySheet(req,onlyhead):
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
     format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF"
-
+    pdftable = req.query.get('pdftable',['yes'])[0] # Can also be "no"
     sheetname = req.query.get('sheet',[''])[0].strip()  # the name of a sheet
     # Search for this name among sheet names:
     l = Exercises.SheetList()
@@ -822,11 +845,21 @@ def QuerySheet(req,onlyhead):
             values['OpenFrom'] = ''
         values['CurrentTime'] = LocalTimeString()
 
-        # finally the actual exercises as longtable environment
-        values['ExercisesTable'] = sheet[2].LatexSheetTable(SeedFromId(id))
-        latexinput = SimpleTemplate.FillTemplate(Config.conf['PDFTemplate'], 
-                                                 values)
-        pdf = LatexImage.LatexToPDF(latexinput)
+        # finally the actual exercises as longtable environment or text
+        if pdftable == 'no':
+            if hasattr(sheet[2], 'cachedPDF'):
+                pdf = sheet[2].cachedPDF
+            else:
+                values['ExercisesNoTable'] = sheet[2].LatexSheetNoTable()
+                latexinput = SimpleTemplate.FillTemplate(
+                               Config.conf['PDFTemplateNoTable'], values)
+                pdf = LatexImage.LatexToPDF(latexinput)
+                sheet[2].cachedPDF = pdf
+        else: 
+            values['ExercisesTable'] = sheet[2].LatexSheetTable(SeedFromId(id))
+            latexinput = SimpleTemplate.FillTemplate(
+                               Config.conf['PDFTemplate'], values)
+            pdf = LatexImage.LatexToPDF(latexinput)
 
         if not pdf:
             Utils.Error('Cannot pdflatex sheet input (id='+id+\
