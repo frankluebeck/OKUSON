@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.110 2004/10/07 02:21:57 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.111 2004/10/11 14:19:52 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -340,6 +340,7 @@ def CleanWeb(st):
     st = st.replace('<','&lt;')
     st = st.replace('>','&gt;')
     st = st.replace('&','&amp;')
+    return st
 
 def Delegate(path,req,onlyhead,handler = None,addheader = []):
     '''This delegates to another path.'''
