@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.91 2004/03/08 14:07:15 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.92 2004/03/08 15:14:19 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1140,6 +1140,8 @@ def QuerySheet(req,onlyhead):
         iamadmin = Authenticate(p,req,onlyhead)
         if iamadmin < 0:
             return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+    else:
+        iamadmin = 0
 
     format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF"
     sheetname = req.query.get('sheet',[''])[0].strip()  # the name of a sheet
