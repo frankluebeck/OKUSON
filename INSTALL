@@ -1,9 +1,11 @@
-$Id: INSTALL,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
+$Id: INSTALL,v 1.2 2003/10/05 21:16:03 neunhoef Exp $
 
                    Installation instructions for OKUSON
                   ======================================
 
                     by Frank Lübeck and Max Neunhöffer
+
+(for full instructions see the manual in the doc subdirectory.) 
 
  * Make sure you have Python version 2.2 or later installed.
  * Download okuson.tar.gz from:

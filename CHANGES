@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.10 2003/10/05 14:54:29 neunhoef Exp $
+##  $Id: CHANGES,v 1.11 2003/10/05 21:16:03 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -23,6 +23,9 @@ Otherwise:
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
+Attention: You have to put the configuration option "DocumentRoot" from the
+           new Config.xml.sample into your Config.xml file!
+
 * removed bug with double use of <Semester/>.
 * introduced the 'openfrom' attribute for sheets, including admin
   access to not yet open sheets.
@@ -42,6 +45,8 @@ Changes from 1.0-pre2  to  1.0-pre3
 * added helper scripts to facilitate distribution in a semi-automatic way
 * document this process in the manual under "Managing Participants"
 * distribution into exercise classes should now be ready for usage
+* added configuration option 'DocumentRoot', this changes "Config.xml"!
+* added a few sanity checks at startup 
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

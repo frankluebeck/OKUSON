@@ -145,16 +145,24 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 <Range>137.226.152.0/255.255.255.128</Range>
 </AdministrationAccessList>
 
+<!-- The following contains the path to the document root of the web server.
+     All template files for web pages as well as subdirectories "images",
+     "messages", and "errors" must be present in this directory. The path
+     is either absolute or relative to the OKUSON home directory: -->
+<DocumentRoot>
+html
+</DocumentRoot>
+
 <!-- The following contains a list of directories where exercises are
      collected from. Enclose each path in <Dir> </Dir>. Relative paths
-     are relative to the QXZY home directory. -->
+     are relative to the OKUSON home directory. -->
 <ExerciseDirectories>
 <Dir> exercises </Dir>
 </ExerciseDirectories>
 
 <!-- The following contains a list of directories where sheets are
      collected from. Enclose each path in <Dir> </Dir>. Relative paths
-     are relative to the QXZY home directory. -->
+     are relative to the OKUSON home directory. -->
 <SheetDirectories>
 <Dir> sheets </Dir>
 </SheetDirectories>

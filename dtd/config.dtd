@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+<!-- $Id: config.dtd,v 1.2 2003/10/05 21:16:03 neunhoef Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -34,6 +34,7 @@
 
 <!ELEMENT AccessList (Range)*>
 <!ELEMENT AdministrationAccessList (Range)*>
+<!ELEMENT DocumentRoot (#PCDATA)>
 <!ELEMENT ExerciseDirectories (Dir)*>
 <!ELEMENT SheetDirectories (Dir)*>
 <!ELEMENT GeneralMessageFile (#PCDATA)>

@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: start,v 1.4 2003/10/04 23:03:08 luebeck Exp $
+#   $Id: start,v 1.5 2003/10/05 21:16:03 neunhoef Exp $
 '''Start the OKUSON server and show logfile line until service is started.'''
 
 import sys,os,time
@@ -11,13 +11,40 @@ import sys,os,time
 homedir = os.path.abspath(sys.path[0])
 os.environ["OKUSONHOME"] = homedir
 
+# We perform a few sanity checks and give appropriate messages:
+logdir = os.path.join(homedir,'log')
+if not(os.path.exists(logdir)):
+    try:
+        os.mkdir(logdir)
+    except:
+        print "Error: "+logdir+' directory cannot be created.'
+        print 'Aborting.'
+        sys.exit(0)
+if not(os.path.isdir(logdir)):
+    print 'Error: '+logdir+' must be a directory.'
+    print 'Aborting.'
+    sys.exit(0)
+logfile = os.path.join(homedir,'log/server.log')
+if not(os.path.exists(logfile)) or not(os.path.isfile(logfile)):
+    try:
+        file(logfile,"w").close()
+    except:
+        print 'Error: '+logfile+' must be writable.'
+        print 'Aborting.'
+        sys.exit(0)
+
 pid = os.fork()
 if pid == 0:
     time.sleep(0.1)   # Let the parent get hold of the log file
     server = os.path.join(homedir,"server/Server.py")
     os.execl(server,server)
 
-f = file("log/server.log","r")
+try:
+    f = file(logfile,"r")
+except:
+    print "Cannot find log file log/server.log."
+    sys.exit(0)
+
 f.seek(0,2)     # seek to end of file
 p = f.tell()
 

@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.5 2003/10/01 16:12:44 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.6 2003/10/05 21:16:03 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -975,13 +975,13 @@ def ReadSheetsFile(fname):
                try:
                    MakeSheet(a)
                except:   # may fail, error is already reported
-                   traceback.print_exc()
+                   #traceback.print_exc()
                    Utils.Error("Exception raised.")
   elif tree[0] == 'SHEET':
       try:
           MakeSheet(tree)
       except:   # may fail, error is already reported
-          traceback.print_exc()
+          #traceback.print_exc()
           Utils.Error("Exception raised.")
 
 # Read all *.bla files in a directory. 
@@ -998,6 +998,6 @@ def ReadSheetsDirectory(dirname):
 # progress is shown by one dot
 def CreateAllImages(showdots = 1):
   for a in AllTexts:
-      a.MakeImages(os.path.join(Config.home,"html","images"),
+      a.MakeImages(os.path.join(Config.conf['DocumentRoot'],"images"),
                    Config.conf['Resolutions'])
 

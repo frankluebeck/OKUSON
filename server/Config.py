@@ -41,6 +41,7 @@ Parameters = {
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
+  "DocumentRoot":             ["PATH",1],
   "ExerciseDirectories":      ["PATHLIST",1],
   "SheetDirectories":         ["PATHLIST",1],
   "GeneralMessageFile":       ["PATH",1],

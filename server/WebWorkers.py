@@ -5,13 +5,14 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.10 2003/10/05 14:03:35 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.11 2003/10/05 21:16:03 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
 import Config,Data,Exercises
 
-from Tools import BuiltinWebServer, XMLRewrite, Utils, AsciiData, SimpleTemplate, LatexImage
+from Tools import BuiltinWebServer, XMLRewrite, Utils, AsciiData
+from Tools import SimpleTemplate, LatexImage
 
 def LocalTimeString(t = time.time()):
   return time.strftime("%c", time.localtime(t))
@@ -19,7 +20,7 @@ def LocalTimeString(t = time.time()):
 LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # First we set our document root:
-DocRoot = BuiltinWebServer.DocRoot = os.path.join(Config.home,'html')
+DocRoot = BuiltinWebServer.DocRoot = Config.conf['DocumentRoot']
 ElHandlers = XMLRewrite.ElementHandlers_tpl
 # We store an xml header with DOCTYPE for XTML 1.0 Strict into the
 # class variable "begin" such that this is the global default header:

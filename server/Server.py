@@ -17,7 +17,6 @@ except:
   pass
 
 # Fetch the "Utils" and switch error reporting to log file:
-
 from Tools import Utils
 Utils.ErrorLogFileName = os.path.join(Config.home,'log/server.log')
 Utils.currentError = Utils.ErrorToLogfile
@@ -30,7 +29,22 @@ Utils.Error(time.asctime(time.localtime())+
 Config.ReadConfig()
 Config.PostProcessing()    # some postprocessing of configuration data
 
-
+# We perform a few sanity checks and give appropriate messages:
+if not(os.path.isdir(Config.conf['DocumentRoot'])):
+    Utils.Error('Cannot find DocumentRoot directory: '+
+                Config.conf['DocumentRoot']);
+    Utils.Error('Aborting.',prefix='')
+    sys.exit(0)
+if not(os.path.isdir(os.path.join(Config.conf['DocumentRoot'],'images'))):
+    Utils.Error('DocumentRoot directory does not contain an "images" '
+                'subdirectory.')
+    Utils.Error('Aborting.',prefix='')
+    sys.exit(0)
+if not(os.path.isdir(os.path.join(Config.home,'tmp'))):
+    Utils.Error('Cannot find "tmp" subdirectory in OKUSON home directory.')
+    Utils.Error('Aborting.',prefix='')
+    sys.exit(0)
+    
 # Now we put some configuration data into the necessary places of our
 # generic library routines:
 
@@ -58,7 +72,7 @@ for d in Config.conf['SheetDirectories']:
 
 # Now create all images for web service:
 for r in Config.conf['Resolutions']:
-    name = os.path.join(Config.home,"html","images",str(r)+"dpi")
+    name = os.path.join(Config.conf['DocumentRoot'],"images",str(r)+"dpi")
     if not(os.path.isdir(name)):
         try:
             os.mkdir(name)
