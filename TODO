@@ -18,6 +18,7 @@ Für Release:
   Statistik ueber Uebungsblaetter    --> Hilfsskript?
   Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
   Tests siehe unten
+  Klausur-Ergebnisausgabe (plus Zusatzstring)
 
 Handbuch:
 
@@ -61,5 +62,5 @@ Ideen:
 
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
-
+  Funktion zur Berechnung einer Note fuer eine Klausur
 

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.33 2003/10/10 00:18:50 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.34 2003/10/10 12:54:36 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1534,10 +1534,12 @@ def ExportExamParticipants(req,onlyhead):
         # Exclude guest IDs:
         if not(Config.conf['GuestIdRegExp'].match(k)):
             p = Data.people[k]
+            ts = LocalTimeString(p.exams[examnr].timestamp)
+            ts.replace(':','.')
             if len(p.exams) > examnr and p.exams[examnr] != None and \
                p.exams[examnr].registration == 1:
                 out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                          LocalTimeString(p.exams[examnr].timestamp)+'\n')
+                          ts+'\n')
     st = out.getvalue()
     out.close()
     head = {'Content-type':'text/okuson',
@@ -1607,7 +1609,7 @@ def ExportResults(req,onlyhead):
                        str(mcscore+homescore)+':'+Protect(msg)+':'+
                        str(grade)+':'+exams )
             for nr,na,s in sl:
-                if s.counts and s.IsClosed():   # sheet already closed
+                if s.IsClosed():   # sheet already closed
                     out.write(':'+s.name+';')
                     if p.mcresults.has_key(na):
                         out.write(str(p.mcresults[na].score))

@@ -132,7 +132,7 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 <!-- The following regular expression is used to check, whether an id is
      a guest id. Guest IDs have the following properties: They are excluded
      during export functions. One can authenticate with any password. -->
-<GuestIdRegExp>^100000$</GuestIdRegExp>
+<GuestIdRegExp>^9999[0-9][0-9]$</GuestIdRegExp>
 
 
 <!-- The following is a Python function that can automatically decide

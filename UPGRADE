@@ -10,11 +10,13 @@ To upgrade to 1.0-pre3 you have to do the following:
 
 3) ./upgrade
 
+   ATTENTION: Read this section BEFORE doing this!
+
    This will install new versions of the web pages and add a new data file.
    Also the files data/homework.txt and data/examregistrations.txt are
-   overwritten, because their format has changed. Due to severe restrictions
-   in the functionality of version 1.0-pre2 these files will be empty
-   anyway in your installation.
+   overwritten, because their format has changed. These files will be empty
+   anyway in your installation, because they were not yet used in
+   version 1.0-pre2.
 
    The following files for the web pages have been changed and therefore
    have to be overwritten with the new version:
