@@ -4,5 +4,4 @@
 213653:Noeske:Felix:13:Mathematik-Promotion:ZìFMO2MUxUmTU:::::::::::
 214199:Neunhöffer:Max:28:Mathematik-Promotion:XÕ2l8htoNh4Kc::214199 123456:::::::::
 500000:Lübeck:Frank:1:Mathematik-Diplom:Rw/sY.YIaxmtU::214199, 214200, fsdf fsdjl:::::::::
-500001:Nach:Vor:3:Physik-Diplom:tdPAp4KKIVgNs:::::::::::
 500001:Nach:Vor:1:Physik-Diplom:tdPAp4KKIVgNs:::::::::::

@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.9 2003/10/05 14:03:35 neunhoef Exp $
+##  $Id: CHANGES,v 1.10 2003/10/05 14:54:29 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -23,7 +23,6 @@ Otherwise:
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
-* removed bug that made page with distribution into exercises classes nonvalid
 * removed bug with double use of <Semester/>.
 * introduced the 'openfrom' attribute for sheets, including admin
   access to not yet open sheets.
@@ -38,6 +37,11 @@ Changes from 1.0-pre2  to  1.0-pre3
   consideration of each of the interactive resp. homework exercises can 
   can be switched off.
 * remove temporary files for PDF sheets.
+* removed bug that made page with distribution into exercises classes nonvalid
+* added export of people for distribution into groups
+* added helper scripts to facilitate distribution in a semi-automatic way
+* document this process in the manual under "Managing Participants"
+* distribution into exercise classes should now be ready for usage
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------
