@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE SHEET SYSTEM "sheet.dtd">
+
+<SHEET counts="0"
+       magic="2001"
+       nr="0"
+       first="1"
+       opento="14:00_19.10.2002">
+
+<TEXT>Dieses Blatt ist bis auf Weiteres wieder für Demo-Zwecke
+geöffnet.</TEXT>
+<EXERCISE key="B0_Mengen"/>
+<EXERCISE key="B0_PunktvorStrich"/>
+<EXERCISE key="B0_Brueche"/>
+<EXERCISE key="B0_Dreisatz"/>
+<EXERCISE key="B0_Teilbarkeit"/>
+<TEXT>Die folgende Aufgabe ist schriftlich zu bearbeiten.</TEXT>
+<INCLUDE file="B0_Affen.tex"/>
+<TEXT>
+Abgabe bis spätestens am Freitag, dem 19. Oktober 2001, um 14 Uhr.
+(siehe oben!)
+Dieses Blatt brauchen Sie noch nicht abzugeben, es geht nicht in die
+Wertung ein!
+</TEXT>
+</SHEET>

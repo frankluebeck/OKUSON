@@ -1,0 +1,3 @@
+# examregistrations.txt - here we store registrations for exams
+# Format:  id:examnr:1
+# Note: exam numbers are zero based and must not be negative

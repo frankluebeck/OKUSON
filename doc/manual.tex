@@ -1,0 +1,1297 @@
+\documentclass[12pt,openany]{book}
+
+\parindent0.0em
+\setlength{\parskip}{0.7ex plus 1.0ex}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
+
+% avoid overfull hboxes because of long typewriter font strings
+\tolerance=200
+\setlength{\emergencystretch}{2em}
+
+\newcommand{\OKUSON}{\textsf{OKUSON}}
+
+\begin{document}
+\title{\Huge \textbf {\OKUSON} Manual}
+\author{Frank Lübeck\\Max Neunhöffer}
+
+\maketitle
+\tableofcontents
+
+\chapter*{}
+\section*{Copyright and License}
+
+This software package is freely distributed under the terms of the GNU Public
+License, see Chapter~\ref{ch:GPL} for the details of that license.
+
+\copyright\  (2003) Frank Lübeck and Max Neunhöffer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Overview}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Installation}
+
+\section{Quick Installation Overview}
+
+The following describes the installation of {\OKUSON} extremely briefly.
+Probably you want to use this section only to get an overview or as
+a reminder for later installations when you already know the process:
+\begin{enumerate}
+\setlength{\parskip}{0mm}
+\item Make sure you have Python version 2.2 or later installed.
+\item Download \texttt{okuson.tar.gz} from:
+
+\hspace*{5mm}\href{http://www.math.rwth-aachen.de/OKUSON/}%
+{\texttt{http://www.math.rwth-aachen.de/OKUSON/}}
+\item Extract archive with: 
+
+\hspace*{5mm}\texttt{gzip -dc okuson.tar.gz | tar xvf -}
+\item Compile \texttt{pyRXP} with: 
+
+\hspace*{5mm}\texttt{cd okuson/server ; ./makepyRXP}
+\item Leave the \texttt{server} directory with: 
+
+\hspace*{5mm}\texttt{cd ..}
+\item Copy \texttt{Config.xml.sample} to \texttt{Config.xml} by doing
+
+\hspace*{5mm}\texttt{cp Config.xml.sample Config.xml}
+
+and edit it to adjust \texttt{AdministratorPassword}
+and \texttt{Port} (use \texttt{cryptpasswd} to encrypt your password)
+\item Copy the sample web pages to the document root: 
+
+\hspace*{5mm}\verb!cp -r html.sample/* html!
+\item Copy empty data files to places where they belong:
+
+\hspace*{5mm}\texttt{cd data ; cp empty/* . ; cd ..}
+\item Start server with: 
+
+\hspace*{5mm}\texttt{start}
+\item Test server by pointing browser to 
+
+\hspace*{5mm}\href{http://localhost:8000/index.html}%
+{\texttt{http://localhost:8000/index.html}}
+\end{enumerate}
+
+
+\section{Prerequisites}
+
+To run the {\OKUSON} server you need a UNIX system with the following things
+installed:
+
+\begin{itemize}
+\item \textbf{Python} version 2.2 or later (as of this writing, 2.3 is
+the latest version released). You can test your Python installation by
+just typing \texttt{python} in your shell. If it is installed, a short
+banner with the version appears. You can leave the interpreter again
+by typing Control-D.
+
+If you are using Linux, there are probably packages available for
+your distribution. However, you can also download the source from
+\href{http://www.python.org}{\texttt{http://www.python.org}} 
+and install it without having root
+privileges.
+\item A \textbf{C-compiler}. {\OKUSON} uses an XML parser coming as an 
+Python extension module, which is implemented in C. We include this
+module in the {\OKUSON} distribution. However, it has to be built with your
+version of Python being available. You also need the C-compiler to compile
+the Python interpreter and libraries yourself if you do not rely on
+packages from a distribution.
+\item \textbf{\LaTeX}. The texts for questions are processed by {\TeX}, 
+therefore one does need a full featured installation of {\TeX/\LaTeX} 
+with PDF support. For example the teTeX-Distribution provides everything
+necessary.
+\item \textbf{ghostscript}. Exercise texts are translated to images for use
+on the Web pages delivered by {\OKUSON}.
+\item A \textbf{text editor}. Input for exercises, sheets and web pages
+is generated with an ASCII text editor, which is also used to edit
+the configuration.
+\end{itemize}
+
+If you want to use all features of {\OKUSON}, the following additional 
+software packages are needed:
+\begin{itemize}
+\item A \textbf{web browser}. Not only the user access but also a great
+deal of administrative tasks are done via the web interface, using
+{\OKUSON}'s builtin web server. {\OKUSON} is tested with a wide range
+of web browsers, including Mozilla and friends, Opera, Netscape, Lynx,
+w3m, and even Internet Explorer.
+\item A \textbf{PDF viewer} like \texttt{xpdf} or \texttt{acroread}. 
+Previews of exercise sheets are generated as PDF files.
+\item \texttt{xloadimage} is used to display test versions of exercises.
+\item \texttt{less} is used to conveniently browse log files. 
+\end{itemize}
+
+The students participating in the courses organized with {\OKUSON} only 
+need a web browser on any operating system and a PDF viewer to print out
+their exercise sheets.
+
+The following is \textbf{not} needed to run an {\OKUSON} server:
+\begin{itemize}
+\item Root privileges. A normal user can install and run an {\OKUSON}
+server.
+\item Web server. No web server apart from the one built into {\OKUSON} is
+needed.
+\end{itemize}
+
+
+\section{Download}
+
+You can download the {\OKUSON} distribution from the following web address:
+
+\hspace*{1cm}\href{http://www.math.rwth-aachen.de/OKUSON/}%
+{\texttt{http://www.math.rwth-aachen.de/OKUSON/}}
+
+\noindent There you find this manual as a PDF file and a zipped tar archive
+containing the source code. You can extract the contents in any place in
+the filesystem that is convenient by the following command:
+
+\hspace*{1cm}\texttt{gzip -dc okuson.tar.gz | tar xvf -}
+
+This command creates a directory \texttt{OKUSON} in the current working
+directory, under which the full distribution resides. This directory
+will be called ``the {\OKUSON} home directory'' in the sequel.
+
+The next step is to compile the \texttt{pyRXP} extension module.
+
+
+\section{Compilation}
+
+As {\OKUSON} uses the Python extension module \texttt{pyRXP} which builts 
+on the XML parser \texttt{RXP} written in C, some compilation is necessary.
+Assuming that you have extracted the distribution as described in the 
+previous section, you can compile \texttt{pyRXP} with the following
+commands:
+
+\hspace*{1cm}\texttt{cd okuson/server ; makepyRXP}
+
+\noindent After the compilation you should find two files \texttt{pyRXP.so} and 
+\texttt{pyRXPU.so} in this directory. Otherwise, please look for error 
+messages in the output.
+
+\noindent You can now leave the \texttt{server} directory again with
+
+\hspace*{1cm}\texttt{cd ..}
+
+\noindent The next step is to edit the configuration.
+
+
+\section{Configuration}
+
+In the  {\OKUSON} home  directory (the  directory \texttt{OKUSON}  which was
+created during  extraction of  the archive)  there is a  file with  the name
+\texttt{Config.xml.sample}. It is a sample file for the file 
+\texttt{Config.xml}, which is the  central  place  for configuration  of  the
+{\OKUSON} server. In the beginning, you should copy the sample file to
+the real one with the command:
+
+\hspace*{1cm}\texttt{cp Config.xml.sample Config.xml}
+
+This file is  an XML file (see  section \ref{ch:introXML}
+for a short introduction) that can be edited conveniently with an ASCII text
+editor.  It tries  to  explain  itself via  embedded  comments.  For a  full
+description of the available configuration options see section \ref{config}.
+
+For the moment, you only need to edit two configuration options:
+
+\texttt{AdministratorPassword} and \texttt{Port}. 
+
+The administrator password is used for authentication purposes during
+administration. It is only stored encrypted. You can use the little
+program \texttt{cryptpasswd} in the {\OKUSON} home directory to create
+an encrypted version of your password to put it into the configuration
+file.
+
+The port is the network port the {\OKUSON} server is listening to on the
+local host. The default value is $8000$, which should usually not be used
+by other programs. The {\OKUSON} server actually \textbf{is} a web server
+listening on this port.
+
+
+\section{Getting started}
+
+Because {\OKUSON} contains a web server and does nearly all its user
+interaction via this web interface, you have to supply some web pages.
+Of course, these have to be adjusted to the specific needs of the course
+you are using {\OKUSON} for.
+
+Probably the easiest way to get started is to copy all the example pages
+coming with the distribution to the place, where the {\OKUSON} server
+finds them at startup and to edit them later to your needs. 
+This is done with the following commands (issued from the {\OKUSON} home
+directory):
+
+\hspace*{1cm}\verb!cp -r html.sample/* html!
+
+The subdirectory \texttt{html} of the {\OKUSON} home directory is the
+document root of the web server (at least in default configuration).
+The stuff that is copied with the abovementioned command consists of
+\begin{itemize}
+\item Style sheets with the extension \texttt{.css}.
+\item Web page templates with the extension \texttt{.tpl}. These are
+processed by the {\OKUSON} web server during startup and then delivered
+to the web browser.
+\item A few images with the extension \texttt{.png}.
+\end{itemize}
+Note that most if not all of the functionality of the {\OKUSON} server
+is driven by these web pages. Their structure and content lead the user
+through the menu system, organizes input and output from the server
+and is therefore essential. Please apply changes as you need but
+be careful not to ruin the overall structure of the system!
+
+See section \ref{creawebpages} for a description of how to create web
+pages with {\OKUSON}.
+
+Next you need empty versions of the data files. They are already stored
+in the \texttt{data} subdirectory and can be activated via the following
+command:
+
+\hspace*{1cm}\verb!cd data ; cp empty/* . ; cd ..!
+
+This basically copies the empty versions of the data files to the
+real versions. Please do not do this later, when your server already
+has accumulated data!
+
+\section{Starting and Stopping the Server}
+
+\noindent You can now try out the {\OKUSON} server by typing 
+
+\hspace*{1cm}\texttt{start}
+
+\noindent in the {\OKUSON} home directory. If everything went well, you
+see some log messages, concluding with
+
+\hspace*{1cm}[TIMESTAMP] \ \texttt{Server up and running...}
+
+Otherwise, you have to read through the log messages and identify error 
+messages, which start with ``\texttt{Error:}''. You also find the complete
+log file under \texttt{log/server.log} in the {\OKUSON} home directory.
+
+\noindent If the server was started up successfully, you can test it by
+pointing your browser to the following URL:
+
+\hspace*{1cm}\href{http://localhost:8000/index.html}%
+{\texttt{http://localhost:8000/index.html}}
+
+\noindent where the main menu for students should appear. Note that the
+``\texttt{:8000}'' in this URL tells the browser to contact the
+{\OKUSON} server on port $8000$. Therefore this has of course to be
+changed according to the network port you chose during configuration.
+
+\noindent If you want to stop the server, you can issue the command
+
+\hspace*{1cm}\texttt{stop}
+
+\noindent in the {\OKUSON} home directory. You are asked for the
+administator password. If you entered it correctly, then the server
+terminates and you see a few log messages.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Short Introduction to XML}\label{ch:introXML}
+
+XML is a standard by the W3C consortium ({\texttt http://www.w3c.org}) that
+allows to define \emph{markup languages} for text documents and data such 
+that documents using such a language can be checked and processed 
+systematically with generic tools.
+
+The {\OKUSON} package uses XML in several places:
+\begin{itemize}
+\item its configuration file \texttt{Config.xml} 
+\item the files specifying exercise sheets (\texttt{xxx.bla})
+\item the files containing the interactive exercises (\texttt{yyy.auf}) -
+but the exercise texts are written in {\LaTeX}, a much more complicated
+markup language
+\item the delivered Web pages are written with XHTML markup and the
+templates for these pages are written with an XML markup  
+\end{itemize}
+
+The markup languages in each of these cases are different, but they are
+almost self explaining and we provide sample files for all of them. 
+
+In this Chapter we give a basic introduction to the XML concept. This
+knowledge may be useful to avoid syntax errors and to understand the messages 
+of programs parsing an XML file containing errors and to correct such errors.
+
+\section{An Example XML Document}\label{sec:exampleXML}
+\label{sec:XMLbasics}
+
+Here is a complete XML document. Below we give a short glossary  and explain
+the main concepts of the markup.
+
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE MainElt SYSTEM "nowhere.dtd">
+
+<!-- This is a comment.          -->
+
+<MainElt>
+
+<A xattr="val of xattr"> abc <B yattr='contains " quotes'> </B> </A> 
+
+<EmptyElt />
+
+<Long><![CDATA[
+Protected <A> <B> XXX </A> </B>
+]]></Long>
+
+<Short>With &lt; entities &gt; and ampersand &amp; </Short>
+
+</MainElt>
+
+\end{verbatim}
+
+An XML document usually starts with some meta-information.
+
+The first line \texttt{<?xml \ldots} just tells that this is a document with
+an XML defined markup.
+
+The \texttt{<!DOCTYPE MainElt SYSTEM "nowhere.dtd">} line specifies the
+language to which the markup belongs by pointing to the file name of a so 
+called \emph{document type definition} (DTD). It also tells that the actual
+content of the document is enclosed by \texttt{<MainElt \ldots>} and
+\texttt{</MainElt>}.
+
+The actual content of an XML document is structured by so called
+\emph{elements}.  They
+basically have the form \texttt{<A>something</A>}. Here \texttt{<A>} is called 
+the \emph{begin tag} and \texttt{</A>} the \emph{end tag} of the element and 
+\texttt{something} is the \emph{content} of the element.
+
+The \emph{name} of an element, here \texttt{A}, is case sensitive, that is
+\texttt{<A></A>} and \texttt{<a></a>} are different elements. 
+
+There always must be a begin and end tag. A begin tag can contain further
+information as in \texttt{<A xattr="val of xattr">} above. 
+This extra information is called an \emph{attribute}, where
+\texttt{xattr} is the \emph{name} of the attribute and \texttt{val of attr}
+is the \emph{value} of the attribute. An attribute must always have a value
+and the specification of the value must be enclosed either in double
+quotes (\texttt{"}) or in single quotes (\texttt{'}). The enclosing quotes
+are not allowed within the value.
+
+Contents of elements can themselves contain strings and/or other elements. But
+elements must always be properly nested, as in the line 
+\texttt{<A xattr=\ldots} above, for example \texttt{<A> <B> XXX </A> </B>}
+is \emph{not allowed}.
+
+Anywhere before or after all elements or in the content of an element there
+can be a \emph{comment}. This is specified by enclosing it in
+\texttt{<!--} and \texttt{-->}, the only character sequence not allowed in a
+comment is \texttt{--}. A comment is \emph{not} part of the content of an
+element. 
+
+There can be elements whose content is always empty and which can be written
+with a combined begin and end tag as in \texttt{<EmptyElt />}, these are
+called \emph{empty elements}.
+
+Sometimes the content of an element is a string which looks like containing XML 
+markup. There are two possibilities to avoid an interpretation as markup.
+
+The first is demonstrated in the \texttt{Long} element above, its content is
+enclosed in \texttt{<![CDATA[} and \texttt{]]>}. Everything between these
+markers is considered as content as it is. The only string not allowed
+within such a CDATA section is \texttt{]]>}. (Note that the line
+\texttt{Protected\ldots} is just element content and that there is no syntax
+error.)
+
+The other possibility are so called \emph{entities}. They are demonstrated
+in the \texttt{Short} element of our example. They start with an ampersand
+\texttt{\&} and close with a semicolon \texttt{;}. Entities are placeholders
+for which a substitution text is somewhere defined. For example, the given
+entities \texttt{\&lt;}, \texttt{\&gt;} and \texttt{\&amp;} specify the special
+characters \texttt{<>\&} used for XML markup.
+
+A document type definition (DTD) defines a markup language in the sense that
+it says which elements are allowed in a document, which attributes are
+allowed for each element and how elements can or must be nested. We don't
+explain this in more detail here. The {\OKUSON} package has a directory
+\texttt{dtd} containing the definitions of the markup used in this package.
+
+\subsubsection*{Summary}
+XML documents contain elements which must be empty or have begin and end
+tag and which must be properly nested. Element names are case sensitive.
+Elements can have attributes which
+must have a value and the value must be enclosed in double or single quotes.
+There a CDATA sections and entities for specifying content containing the
+special characters used for XML markup.
+
+\subsubsection*{Reference}
+A detailed specification of the XML standard with useful annotations
+is given in\\
+\mbox{}\hspace{1in}\texttt{http://www.xml.com/axml/axml.html}.
+
+\section{Parsing and Validating XML Documents}\label{sec:valXML}
+
+The main advantage of using  XML for new document formats (like the exercise
+sheets and exercises in \OKUSON) is that one can use standard tools to read
+in and process the content of such documents. Programs which read  XML
+documents  and translate it to some internal data structure are called
+\emph{XML-parser}. 
+
+XML documents that follow the formal rules explained 
+in~\ref{sec:XMLbasics} and so can
+be parsed are called \emph{well formed XML documents}. This does not imply
+that a documents makes any sense. 
+
+As mentioned above the \texttt{DOCTYPE} entry of an XML file can point to a
+document type definition. This defines element  names and gives restrictions
+how elements can or must be nested, gives some information on the type of
+content of certain elements, and it  defines for each element which
+attributes are allowed and maybe some restriction on their values.
+
+An XML  document which is  consistent with  the definitions in  its document
+type is called  a \emph{valid XML document}. Some XML  parsers, like the one
+we use  in the {\OKUSON}  programs, can check if  an XML document  is valid.
+Such a parser is called a \emph{validating parser}. It is useful 
+for the user who wants to check if a newly created document has the correct XML
+structure, and it is useful for the programer as a general tool for checking
+the formal correctness of XML input.
+
+As administrative user  of {\OKUSON} you can come across  the parsing of XML
+files when you use the testscripts for exercise and exercise sheet documents
+(see~\ref{ssec:checkexercise} and~\ref{ssec:checksheet}) and during startup
+of the {\OKUSON} server when the template files for the web pages are
+cached.
+
+\chapter{Creating Exercises and Sheets}\label{ch:createExercisesSheets}
+
+The {\OKUSON} package delivers exercises via the web. There are two types of
+exercises, \emph{text  exercises} for which written  solutions are necessary
+and \emph{interactive  exercises} whose  solutions are  submitted via  a Web
+interface  and  which are  automatically  graded  by the  {\OKUSON}  server.
+The  interactive exercises  depend on  the  participant, they  consist of  a
+(pseudo-)random  ordering and  choice of  variants of  some questions.  Such
+exercises  cannot be  specified in  a  single static  \LaTeX-file, but  some
+additional information is needed.
+
+While the actual exercise texts must be written in \LaTeX, the additional
+structure is added via some simple XML markup, see~\ref{ch:introXML}.
+We provide for both types of documents templates which you can just copy and
+fill in. While these are almost self explaining we describe the details in
+this Chapter.
+
+\section{Generalities on the Exercise and Sheet Files}
+
+The directories containing exercises and sheets for an {\OKUSON} server must
+be given  in the  configuration  file \texttt{<OKUSONHOME>/Config.xml},
+see the \texttt{<ExerciseDirectories>} and \texttt{<SheetDirectories>}
+elements. Each directory is given as a \texttt{DIR} element whose content
+has the form \texttt{path/to/dir} or \texttt{path/to/dir|prefix}, the prefix
+is used to distinguish exercises with the same name from different
+directories, see~\ref{sec:Sheets}.
+
+The default directories are \texttt{<OKUSONHOME>/exercises} and
+\texttt{<OKUSONHOME>/sheets}, but you can change these and also use 
+several directories for each or merge them into a single directory.
+
+There are three types of files recognized by {\OKUSON} which are
+distinguished by their file extensions as follows:
+\begin{description}
+\item[\texttt{.tex}] this is for text exercises, such a file
+contains just the text of the exercise in \LaTeX-format.
+\item[\texttt{.auf}] this is for files containing one or several interactive 
+exercises, these are XML files with the actual exercise texts written in
+\LaTeX.
+\item[\texttt{.bla}] this if for files which specify one or several exercise
+sheets. They contain some meta information like sheet number or submission
+date and refer to the exercises to include, some intermediate texts can also
+be given (in \LaTeX-format).
+\end{description}
+
+\subsubsection*{Which {\LaTeX} Macros?}
+
+In the standard setup of {\OKUSON} the following packages and macros are 
+loaded when \texttt{latex} is called: \texttt{inputenc}, with parameter
+\texttt{latin1} which allows to use German umlauts and other western
+European accented characters in the {\LaTeX} code; \texttt{graphicx} for
+including images in exercises; \texttt{amssymb} which provides many
+mathematical symbols; and finally macros \verb+\Z+, \verb+\N+, \verb+\Q+, 
+\verb+\R+, \verb+\C+, \verb+\F+ as
+abbreviations for \verb+\mathbb{Z}+, and so on. 
+
+The {\LaTeX} templates used for producing the images of exercise texts for
+the web pages and for producing the exercise sheets in PDF-format can be
+found (and adjusted, if you know what you are doing) in the {\OKUSON}
+configuration  file \texttt{<OKUSONHOME>/Config.xml}, see the elements
+\texttt{<LaTeXTemplate>} and \texttt{<PDFTemplate>}.
+
+If you just want to add the loading of some further packages or to read in
+some of your favourite personal macros, use the \texttt{<ExtraLaTeXHeader>}
+element of the configuration file.
+
+
+\section{Writing Exercises}\label{sec:writeEx}
+
+A text exercise used by {\OKUSON} is written in a separate file with
+the extension \texttt{.tex}. Put only the \LaTeX-code of the exercise text
+itself in that file.
+
+We explain the format of an \texttt{.auf} file by an example that contains
+all possible constructs. In practice one may copy the template file
+\texttt{<OKUSONHOME>/exercises/empty.auf.template} and fill in the exercise
+texts.
+
+\subsection*{An Example File \texttt{example.auf}}
+
+This example  demonstrates all types of questions which can be posed
+in interactive {\OKUSON} exercises. The example probably almost explains
+itself, but read the comments below on the types of questions and how the
+possible answers are specified.
+
+{\small
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="Example1" keywords="">
+
+<ANSWERS type="r">Yes | No</ANSWERS>
+
+<TEXT>
+Let $a = \frac{2}{3}$ and $b = \frac{14}{7} \in \Q$ and 
+set $c = 3a + 5$ and $d  = a + 7b$.
+</TEXT>
+
+<QUESTION>
+<VARIANT solution="Yes">
+The numerator of $a$ is $2$.
+</VARIANT>
+<VARIANT solution="No">
+The denominator of $a$ is $2$.
+</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="c">b | c | d </ANSWERS>
+<VARIANT solution="b|c">
+Mark the number(s) which are integers.
+</VARIANT>
+<VARIANT solution=" d">
+Mark the number(s) which are not integers.
+</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="s"></ANSWERS>
+<VARIANT solution="30">
+What is $3d+c$ (canceled down)?
+</VARIANT>
+<VARIANT solutionregexp="4\|9\|14">
+Give an integer which is the sum of two of the numbers $a, b, c, d$.
+</VARIANT>
+</QUESTION>
+
+</EXERCISE>
+\end{verbatim}
+}
+
+As  usual  for  XML  documents  the   first  two  lines  say  that  this  is
+an  XML  encoded  document  whose  document type  is  described  in  a  file
+\texttt{exercise.dtd}  and whose  content consists  of an  \texttt{EXERCISE}
+element.
+
+The document type definition  is contained in {\OKUSON}s \texttt{dtd} 
+subdirectory. We now explain all elements in this example, these
+explanations include the rules given in the document type definition.
+
+The \texttt{EXERCISE} element  marks one exercise. Its content is a sequence
+of \texttt{ANSWERS}, \texttt{TEXT} and \texttt{QUESTION} elements. 
+
+\texttt{TEXT} elements are used for text appearing before (and maybe between 
+or after) the actual questions of the exercise. Their content consists of
+{\LaTeX} code.
+
+There can be at most one \texttt{ANSWERS} element. If it is there it
+describes a default for the answers to all questions of this exercise.
+This element has the form 
+\texttt{<ANSWERS type="?">? | ? </ANSWERS>} with three possibilities for
+the \texttt{type} attribute:
+\begin{description}
+\item[\texttt{"r"}] (radio button) this is for questions where several possible answers 
+are given and exactly one of them is correct. In this case the content of
+the \texttt{ANSWERS} element is a list of strings for the possible answers
+which are separated by \verb+|+-characters. Leading and trailing whitespace
+in each possibility is removed (so that \texttt{>Yes|No<} and \texttt{>  Yes |
+No <} are interpreted the same).
+\item[\texttt{"c"}] (multiple choice) this is for questions where several
+possible answers are given, and some subset of them is correct. The syntax
+for the content in this case is the same as for \texttt{"r"}.
+\item[\texttt{"s"}] (string) this is for question where the answer is
+expected as a string (that has to be typed into an input field). In this
+case the content of the \texttt{ANSWERS} element should be empty.
+\end{description}
+
+The \texttt{QUESTION} elements are for the actual questions. Their content
+is a sequence of at most one \texttt{ANSWERS} element and at least one
+\texttt{VARIANT} element. In case there is an \texttt{ANSWERS} element, this
+must have the same syntax as just described and it is taken as description
+of the answers to all variants of the current question. If there is no
+\texttt{ANSWERS} element, the default given in the content of the
+\texttt{EXERCISE} element is taken. 
+
+The content of each \texttt{VARIANTS} element is the {\LaTeX} code of a
+question. The correct  solution to this question is specified in one of the
+attributes \texttt{solution} or \texttt{solutionregexp}, more precisely the
+syntax depends on the answer type of the question:
+\begin{description}
+\item[\texttt{"r"}] the solution must be given in the \texttt{solution} 
+attribute and be exactly one of the answers given in
+the relevant \texttt{ANSWERS} element (again, up to leading or trailing
+whitespace).
+\item[\texttt{"c"}] the solution must be given in the \texttt{solution}
+attribute and be a subset of the answers given in the relevant
+\texttt{ANSWERS} element, separated by \verb+|+-characters.
+\item[\texttt{"s"}] the solution can be given either in the
+\texttt{solution} attribute as list of possible answer strings separated by 
+\verb+|+-characters (usually just one string), or it can be given in the 
+\texttt{solutionregexp} attribute as a regular expression such that an
+answer is correct if and only if it matches this regular expression.
+In any case in the solutions and submitted answers leading and trailing
+whitespace will be deleted before the comparison.
+\end{description}
+
+\subsection*{Several Exercises in One Document}
+
+It is possible to put several exercises as above into one document. In that
+case the document should look like
+
+\begin{verbatim}
+<?xml version=``1.0'' encoding=``ISO-8859-1''?>
+<!DOCTYPE EXERCISES SYSTEM ``exercise.dtd''>
+
+<EXERCISES>
+
+<EXERCISE>
+   ...
+</EXERCISE>
+   
+...
+
+</EXERCISES>
+
+\end{verbatim}
+
+(note the entry \texttt{EXERCISES} in the \texttt{DOCTYPE} declaration).
+There can be an arbitrary number of \texttt{EXERCISE} elements as explained
+above.
+
+\subsection*{Checking Exercises}\label{ssec:checkexercise}
+
+The {\OKUSON} package contains a utility script for checking files with
+interactive exercises as well as text exercises. 
+The script assumes that you have the pager program
+\texttt{less} and the image viewer program \texttt{xloadimage} installed on
+your computer. The  script is called as follows:
+
+\verb+          <OKUSONHOME>/testexercise file1 file2 ...+
+
+where \texttt{file1}, \texttt{file2} are exercise files with either
+\texttt{.tex} or \texttt{.auf} extension. 
+
+For each \texttt{.tex} file the {\LaTeX} code is processed as configured in
+your {\OKUSON} installation and the result is converted to an image. If
+there was a problem with the call of \texttt{latex}, the pager program
+\texttt{less} is called with the log file describing the error. 
+
+Otherwise, if an image could be successfully generated, this image is shown
+with the help of the  image viewer \texttt{xloadimage}. Except for
+the pixel resolution this is the image used to display the corresponding
+exercise text to the course participants in the HTML version of the exercise
+sheets.
+
+For each given name of an \texttt{.auf} file this utility first parses the
+file and checks if it is a valid document. If not, some error
+message is printed giving the exact position in the file where a 
+problem occured.
+
+After a successful parsing of the file the utility considers each piece of
+{\LaTeX} code given in some \texttt{TEXT} or \texttt{VARIANT} element.
+Each such piece of text is checked as described above for an 
+exercise text from a \texttt{.tex} file.
+
+
+\section{Specifying Sheets}\label{sec:Sheets}
+
+For exercise sheets in {\OKUSON} there is another XML document type which we
+will also explain by looking at an example. Interactive exercises are referred
+to by the value of their \texttt{key} attribute.
+And text exercises are identified by their file names.
+
+\subsection*{Example of an Exercise Sheet document}
+
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE SHEET SYSTEM "sheet.dtd">
+
+<SHEET counts="1" 
+       magic="2003"
+       nr="0"
+       name="0"
+       first="1"
+       opento="14:00_20.10.2003">
+
+<TEXT>The first exercise is interactive. You must send the solution 
+via the Web interface.</TEXT>
+
+<EXERCISE key="Example1" prefix="" nrquestions="2" order="p" />
+
+<TEXT>For the next exercise hand in a written 
+solution to your tutor. </TEXT>
+
+<INCLUDE file="fractions.tex"/>
+
+<TEXT>Solutions for this sheet are accepted until 
+Monday, Oct. 20, 2 pm.</TEXT>
+
+</SHEET>
+\end{verbatim}
+
+The first two lines tell that the document is an XML document with a
+document type specified in a file \texttt{sheet.dtd}.
+The content of the file consists of a \texttt{SHEET} element.
+
+A \texttt{SHEET} element has several attributes:
+\begin{description}
+\item[\texttt{nr}] must be the string of a non-negative integer. All sheets
+must have different values for this attribute, which is used to order
+all sheets numerically. 
+\item[\texttt{name}] (optional, default value is value of \texttt{nr}
+attribute) this is used as a name of the sheet that appears for example in
+the header of the sheet, for example, it could be \texttt{name="Test 1"}.
+\item[\texttt{first}] (optional, default value is \texttt{1}) fixes the
+number of the first exercise on this sheet.
+\item[\texttt{counts}] (optional, default value is \texttt{1}) determines if
+this sheet is relevant for the grading of the course, value
+\texttt{1} means \emph{yes} and value \texttt{0} means \emph{no}. 
+\item[magic] string of some positive integer number smaller than $2^{32}$. This
+is used in the pseudo-random choice of questions and variants in the
+exercise sheets. Vary this value if you reuse a sheet or exercise to avoid
+that people with the same identity get the same choices again.
+\item[\texttt{opento}] this entry determines how long solutions for this
+sheet are accepted. The value must be in the format \verb+hh:mm_dd.MM.yyyy+,
+with \texttt{hh} the hour in the range $00..23$, \texttt{mm} the minutes in
+the range $00..23$, \texttt{dd} the day of the month in the range $1..31$,
+\texttt{MM} the month in the range $1..12$ and \texttt{yyyy} the year. This
+time is interpretet as local time on the machine running the {\OKUSON}
+server.
+\end{description}
+
+The content of a \texttt{SHEET} element is a sequence of any number of 
+\texttt{TEXT}, \texttt{EXERCISE} and \texttt{INCLUDE} elements.
+
+The \texttt{EXERCISE} elements are empty elements with some  attributes:
+\begin{description}
+\item[\texttt{key}] the value must be the same as for a \texttt{key}
+attribute of some exercise read before by the {\OKUSON} server.
+\item[\texttt{prefix}] (optional, default value is the empty string) only
+matches an exercise with the correct \texttt{key} which was loaded with the
+given prefix. (This allows the use of several exercise directories, which
+may contain exercises with the same keys.)
+\item[\texttt{nrquestions}] (optional, the default is the number of
+questions available in the exercise) the number of questions from this 
+exercise which should be pseudo-randomly choosen for each 
+sheet (there can be more questions in the exercise).
+\item[\texttt{order}] (optional, default value is \texttt{"p"}) the value
+can be either \texttt{"p"} which means that the pseudo-random choice for the
+exercise sheets will permute the given questions; or the value can be
+\texttt{"f"} which means that the ordering of questions is fixed such that
+the questions will appear in the given order on each sheet.
+\end{description}
+
+The \texttt{INCLUDE} elements are also empty and have an attribute
+\texttt{file} whose value is interpreted as name of a file containing a
+text exercise. There is also the optional attribute \texttt{prefix} with the
+same meaning and default as for \texttt{EXERCISE} elements.
+
+The \texttt{TEXT} elements contain {\LaTeX} code of text which is included
+in the exercise sheets before, between or after the specified exercises.
+
+\subsection*{Specifying Several Sheets in One Document}
+
+On can put several \texttt{SHEET} elements in one \texttt{.bla} file, but
+these must be enclosed a \texttt{SHEETS} begin and end tag, and the
+\texttt{DOCTYPE} declaration must tell that there is one \texttt{SHEETS}
+element in the document.
+
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE SHEETS SYSTEM "sheet.dtd">
+
+<SHEETS>
+
+<SHEET>
+  ...
+</SHEET>
+...
+
+</SHEETS>
+\end{verbatim}
+
+
+\subsection*{Checking Sheets}\label{ssec:checksheet}
+
+The {\OKUSON} package contains a utility script \texttt{testsheet} 
+for checking  sheet files.
+It produces a {\LaTeX} file and a PDF file of the given sheets containing all
+questions in all variants, and containing a list of solutions of all
+interactive exercises. The layout of the exercises is exactly as it should
+look in the PDF versions of the exercise sheets of the course participants.
+
+It maybe useful to check the individual exercises first with
+\texttt{testexercise}, see~\ref{ssec:checkexercise}.
+
+The syntax for this utility is
+
+\verb+          <OKUSONHOME>/testsheet file1.bla file2.bla ...+
+
+For a sheet in \texttt{<file>.bla} with name \texttt{<name>} a {\LaTeX} 
+file \verb+<file>_<name>.tex+ and a PDF file \verb+<file>_<name>.pdf+ 
+are generated, if no error occurs.
+These contain all variants of all questions and on an extra page the
+solutions for the interactive exercises.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\chapter{Creating the Web Pages}\label{creawebpages}
+
+\section{General Format of the Web Pages}
+
+The  web   pages  delivered  by   the  {\OKUSON}  server  should   be  valid
+with  respect  to   a  specification  from  the  W3C   consortium  which  is
+called   \texttt{XHTML  1.0   Strict}. These are  combined  with   \texttt{CSS
+2.0}   style  sheets   which  are   also  specified   by  that   consortium,
+see~\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}.  
+
+Furthermore, we avoid the use of client side programs like \texttt{java} or
+\texttt{javascript}, plugins or other features of web browsers which 
+some people tend to switch off. 
+
+This may sound quite tedious and restrictive on a first glance, but we see
+several advantages:
+\begin{itemize}
+\item Participants of the course need very little prerequisites, which are
+nowadays available on essentially any computer. 
+\item Strictly following some official standard guarantees a predictable and
+good appearance of the pages on all web browsers and all
+operating systems.
+\item Having the page layout information (fonts, font-sizes, colors, border
+sizes, \ldots) in style sheet files makes it easy to give all pages a
+uniform appearance and to change this appearance for all pages at once.
+\item Using the XML variant of the released HTML specifications allows to use 
+standard tools for processing and checking such files (see
+Chapter~\ref{ch:introXML}).  Actually, most pages delivered by an {\OKUSON}
+server are dynamically created from templates on demand. The templates are
+also well formed XML documents, which allow an efficient preparsing and
+processing.
+\item There are  developments like MathML which will allow in the future to
+include mathematical formulae directly in web pages (currently, we use
+images for that). Also, a systematic processing of XML documents on the client 
+side is already possible in new Web browsers. Such extensions will only work 
+in combination with HTML pages which are strictly conform with some official
+specification.
+\end{itemize}
+
+The {\OKUSON} package comes with a complete set of sample web pages, they
+are in the subdirectory \verb+html_sample+. Of course, the text of web 
+pages is language dependent. Our sample pages are
+written in German since we use the package in Aachen. But it should be
+straight forward to produce versions in other languages.
+
+If you want German pages as well, you probably just need to copy all the
+sample pages to the web directory given in your configuration file. 
+It is then not difficult to adjust some details.
+
+All sample pages are provided as template files with extension
+\texttt{.tpl}. These are well formed XML documents and almost
+\texttt{XHTML}, except for some extra tags.
+
+The interface between the web pages and the {\OKUSON} server is described by
+the meaning of these extra tags and by the names and meaning of input 
+variables which are used in input forms for the course participants and for
+the administrator. These are explained in the next Sections.
+
+\section{Interfaces Between Web Pages and the {\OKUSON} Server}
+
+-general variables <CourseName />, \ldots
+
+-registration (first and change)
+
+-getting sheets
+
+-submitting solutions
+
+-querying results
+
+
+
+\chapter{Managing Participants}
+\chapter{Administration via the Web Interface}
+\chapter{Schedule of Events for one Course}
+\chapter{Import and Export of Data}
+\chapter{Finetuning the Configuration}
+\label{config}
+\chapter{File Formats}
+\chapter{Internal Data Structures}
+\chapter{Security and Backup}
+\chapter{Structure of the Program}
+\appendix
+\chapter{Differences Between XHTML and Other Variants of HTML}
+\chapter{GPL}\label{ch:GPL}
+
+Here is the text of the license under which the {\OKUSON} package is
+distributed. Instead of this you may also take any newer version as
+published in {\texttt http://www.gnu.org/licenses/gpl.html}.
+
+
+{ \scriptsize
+\begin{center}
+{\parindent 0in
+
+Version 2, June 1991
+
+Copyright \copyright\ 1989, 1991 Free Software Foundation, Inc.
+
+\bigskip
+
+59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+
+\bigskip
+
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+}
+\end{center}
+
+\begin{center}
+{\bf\large Preamble}
+\end{center}
+
+
+The licenses for most software are designed to take away your freedom to
+share and change it.  By contrast, the GNU General Public License is
+intended to guarantee your freedom to share and change free software---to
+make sure the software is free for all its users.  This General Public
+License applies to most of the Free Software Foundation's software and to
+any other program whose authors commit to using it.  (Some other Free
+Software Foundation software is covered by the GNU Library General Public
+License instead.)  You can apply it to your programs, too.
+
+When we speak of free software, we are referring to freedom, not price.
+Our General Public Licenses are designed to make sure that you have the
+freedom to distribute copies of free software (and charge for this service
+if you wish), that you receive source code or can get it if you want it,
+that you can change the software or use pieces of it in new free programs;
+and that you know you can do these things.
+
+To protect your rights, we need to make restrictions that forbid anyone to
+deny you these rights or to ask you to surrender the rights.  These
+restrictions translate to certain responsibilities for you if you
+distribute copies of the software, or if you modify it.
+
+For example, if you distribute copies of such a program, whether gratis or
+for a fee, you must give the recipients all the rights that you have.  You
+must make sure that they, too, receive or can get the source code.  And
+you must show them these terms so they know their rights.
+
+We protect your rights with two steps: (1) copyright the software, and (2)
+offer you this license which gives you legal permission to copy,
+distribute and/or modify the software.
+
+Also, for each author's protection and ours, we want to make certain that
+everyone understands that there is no warranty for this free software.  If
+the software is modified by someone else and passed on, we want its
+recipients to know that what they have is not the original, so that any
+problems introduced by others will not reflect on the original authors'
+reputations.
+
+Finally, any free program is threatened constantly by software patents.
+We wish to avoid the danger that redistributors of a free program will
+individually obtain patent licenses, in effect making the program
+proprietary.  To prevent this, we have made it clear that any patent must
+be licensed for everyone's free use or not licensed at all.
+
+The precise terms and conditions for copying, distribution and
+modification follow.
+
+\begin{center}
+{\Large \sc Terms and Conditions For Copying, Distribution and
+  Modification}
+\end{center}
+
+
+%\renewcommand{\theenumi}{\alpha{enumi}}
+\begin{enumerate}
+
+\addtocounter{enumi}{-1}
+
+\item 
+
+This License applies to any program or other work which contains a notice
+placed by the copyright holder saying it may be distributed under the
+terms of this General Public License.  The ``Program'', below, refers to
+any such program or work, and a ``work based on the Program'' means either
+the Program or any derivative work under copyright law: that is to say, a
+work containing the Program or a portion of it, either verbatim or with
+modifications and/or translated into another language.  (Hereinafter,
+translation is included without limitation in the term ``modification''.)
+Each licensee is addressed as ``you''.
+
+Activities other than copying, distribution and modification are not
+covered by this License; they are outside its scope.  The act of
+running the Program is not restricted, and the output from the Program
+is covered only if its contents constitute a work based on the
+Program (independent of having been made by running the Program).
+Whether that is true depends on what the Program does.
+
+\item You may copy and distribute verbatim copies of the Program's source
+  code as you receive it, in any medium, provided that you conspicuously
+  and appropriately publish on each copy an appropriate copyright notice
+  and disclaimer of warranty; keep intact all the notices that refer to
+  this License and to the absence of any warranty; and give any other
+  recipients of the Program a copy of this License along with the Program.
+
+You may charge a fee for the physical act of transferring a copy, and you
+may at your option offer warranty protection in exchange for a fee.
+
+\item
+
+You may modify your copy or copies of the Program or any portion
+of it, thus forming a work based on the Program, and copy and
+distribute such modifications or work under the terms of Section 1
+above, provided that you also meet all of these conditions:
+
+\begin{enumerate}
+
+\item 
+
+You must cause the modified files to carry prominent notices stating that
+you changed the files and the date of any change.
+
+\item
+
+You must cause any work that you distribute or publish, that in
+whole or in part contains or is derived from the Program or any
+part thereof, to be licensed as a whole at no charge to all third
+parties under the terms of this License.
+
+\item
+If the modified program normally reads commands interactively
+when run, you must cause it, when started running for such
+interactive use in the most ordinary way, to print or display an
+announcement including an appropriate copyright notice and a
+notice that there is no warranty (or else, saying that you provide
+a warranty) and that users may redistribute the program under
+these conditions, and telling the user how to view a copy of this
+License.  (Exception: if the Program itself is interactive but
+does not normally print such an announcement, your work based on
+the Program is not required to print an announcement.)
+
+\end{enumerate}
+
+
+These requirements apply to the modified work as a whole.  If
+identifiable sections of that work are not derived from the Program,
+and can be reasonably considered independent and separate works in
+themselves, then this License, and its terms, do not apply to those
+sections when you distribute them as separate works.  But when you
+distribute the same sections as part of a whole which is a work based
+on the Program, the distribution of the whole must be on the terms of
+this License, whose permissions for other licensees extend to the
+entire whole, and thus to each and every part regardless of who wrote it.
+
+Thus, it is not the intent of this section to claim rights or contest
+your rights to work written entirely by you; rather, the intent is to
+exercise the right to control the distribution of derivative or
+collective works based on the Program.
+
+In addition, mere aggregation of another work not based on the Program
+with the Program (or with a work based on the Program) on a volume of
+a storage or distribution medium does not bring the other work under
+the scope of this License.
+
+\item
+You may copy and distribute the Program (or a work based on it,
+under Section 2) in object code or executable form under the terms of
+Sections 1 and 2 above provided that you also do one of the following:
+
+\begin{enumerate}
+
+\item
+
+Accompany it with the complete corresponding machine-readable
+source code, which must be distributed under the terms of Sections
+1 and 2 above on a medium customarily used for software interchange; or,
+
+\item
+
+Accompany it with a written offer, valid for at least three
+years, to give any third party, for a charge no more than your
+cost of physically performing source distribution, a complete
+machine-readable copy of the corresponding source code, to be
+distributed under the terms of Sections 1 and 2 above on a medium
+customarily used for software interchange; or,
+
+\item
+
+Accompany it with the information you received as to the offer
+to distribute corresponding source code.  (This alternative is
+allowed only for noncommercial distribution and only if you
+received the program in object code or executable form with such
+an offer, in accord with Subsection b above.)
+
+\end{enumerate}
+
+
+The source code for a work means the preferred form of the work for
+making modifications to it.  For an executable work, complete source
+code means all the source code for all modules it contains, plus any
+associated interface definition files, plus the scripts used to
+control compilation and installation of the executable.  However, as a
+special exception, the source code distributed need not include
+anything that is normally distributed (in either source or binary
+form) with the major components (compiler, kernel, and so on) of the
+operating system on which the executable runs, unless that component
+itself accompanies the executable.
+
+If distribution of executable or object code is made by offering
+access to copy from a designated place, then offering equivalent
+access to copy the source code from the same place counts as
+distribution of the source code, even though third parties are not
+compelled to copy the source along with the object code.
+
+\item
+You may not copy, modify, sublicense, or distribute the Program
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense or distribute the Program is
+void, and will automatically terminate your rights under this License.
+However, parties who have received copies, or rights, from you under
+this License will not have their licenses terminated so long as such
+parties remain in full compliance.
+
+\item
+You are not required to accept this License, since you have not
+signed it.  However, nothing else grants you permission to modify or
+distribute the Program or its derivative works.  These actions are
+prohibited by law if you do not accept this License.  Therefore, by
+modifying or distributing the Program (or any work based on the
+Program), you indicate your acceptance of this License to do so, and
+all its terms and conditions for copying, distributing or modifying
+the Program or works based on it.
+
+\item
+Each time you redistribute the Program (or any work based on the
+Program), the recipient automatically receives a license from the
+original licensor to copy, distribute or modify the Program subject to
+these terms and conditions.  You may not impose any further
+restrictions on the recipients' exercise of the rights granted herein.
+You are not responsible for enforcing compliance by third parties to
+this License.
+
+\item
+If, as a consequence of a court judgment or allegation of patent
+infringement or for any other reason (not limited to patent issues),
+conditions are imposed on you (whether by court order, agreement or
+otherwise) that contradict the conditions of this License, they do not
+excuse you from the conditions of this License.  If you cannot
+distribute so as to satisfy simultaneously your obligations under this
+License and any other pertinent obligations, then as a consequence you
+may not distribute the Program at all.  For example, if a patent
+license would not permit royalty-free redistribution of the Program by
+all those who receive copies directly or indirectly through you, then
+the only way you could satisfy both it and this License would be to
+refrain entirely from distribution of the Program.
+
+If any portion of this section is held invalid or unenforceable under
+any particular circumstance, the balance of the section is intended to
+apply and the section as a whole is intended to apply in other
+circumstances.
+
+It is not the purpose of this section to induce you to infringe any
+patents or other property right claims or to contest validity of any
+such claims; this section has the sole purpose of protecting the
+integrity of the free software distribution system, which is
+implemented by public license practices.  Many people have made
+generous contributions to the wide range of software distributed
+through that system in reliance on consistent application of that
+system; it is up to the author/donor to decide if he or she is willing
+to distribute software through any other system and a licensee cannot
+impose that choice.
+
+This section is intended to make thoroughly clear what is believed to
+be a consequence of the rest of this License.
+
+\item
+If the distribution and/or use of the Program is restricted in
+certain countries either by patents or by copyrighted interfaces, the
+original copyright holder who places the Program under this License
+may add an explicit geographical distribution limitation excluding
+those countries, so that distribution is permitted only in or among
+countries not thus excluded.  In such case, this License incorporates
+the limitation as if written in the body of this License.
+
+\item
+The Free Software Foundation may publish revised and/or new versions
+of the General Public License from time to time.  Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns.
+
+Each version is given a distinguishing version number.  If the Program
+specifies a version number of this License which applies to it and ``any
+later version'', you have the option of following the terms and conditions
+either of that version or of any later version published by the Free
+Software Foundation.  If the Program does not specify a version number of
+this License, you may choose any version ever published by the Free Software
+Foundation.
+
+\item
+If you wish to incorporate parts of the Program into other free
+programs whose distribution conditions are different, write to the author
+to ask for permission.  For software which is copyrighted by the Free
+Software Foundation, write to the Free Software Foundation; we sometimes
+make exceptions for this.  Our decision will be guided by the two goals
+of preserving the free status of all derivatives of our free software and
+of promoting the sharing and reuse of software generally.
+
+\begin{center}
+{\Large\sc
+No Warranty
+}
+\end{center}
+
+\item
+{\sc Because the program is licensed free of charge, there is no warranty
+for the program, to the extent permitted by applicable law.  Except when
+otherwise stated in writing the copyright holders and/or other parties
+provide the program ``as is'' without warranty of any kind, either expressed
+or implied, including, but not limited to, the implied warranties of
+merchantability and fitness for a particular purpose.  The entire risk as
+to the quality and performance of the program is with you.  Should the
+program prove defective, you assume the cost of all necessary servicing,
+repair or correction.}
+
+\item
+{\sc In no event unless required by applicable law or agreed to in writing
+will any copyright holder, or any other party who may modify and/or
+redistribute the program as permitted above, be liable to you for damages,
+including any general, special, incidental or consequential damages arising
+out of the use or inability to use the program (including but not limited
+to loss of data or data being rendered inaccurate or losses sustained by
+you or third parties or a failure of the program to operate with any other
+programs), even if such holder or other party has been advised of the
+possibility of such damages.}
+
+\end{enumerate}
+}
+
+
+\end{document}

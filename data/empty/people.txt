@@ -1,0 +1,2 @@
+# people.txt - Registration information
+# Format:  id:last name:first name:semester:studies:passwd:wishes

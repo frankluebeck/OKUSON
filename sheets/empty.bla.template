@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE SHEET SYSTEM "sheet.dtd">
+
+<!--  counts (for grading):  "0" if no, "1" if yes
+      magic: some number, change if you reuse exercises or a sheet
+      nr: a number, determines the ordering of sheets for the course
+      name (optional): a name for the sheet, default is to use 'nr' as name
+      first: the number of the first exercise on that sheet
+      opento: the time until which solutions can be submitted, 
+              (format   hh:mm_dd.mm.yyyy)                                   -->
+<SHEET counts="0" 
+       magic="2001"
+       nr="0"
+       first="1"
+       opento="14:00_19.10.2002">
+
+<!-- Optional opening text for this sheet. -->
+<TEXT>???</TEXT>
+<!-- Interactive exercises are included by their 'key' attribute. -->
+<!-- Add as many <EXERCISE> and <INCLUDE> elements as you need. -->
+<EXERCISE key="???"/>
+<!-- Optional texts between exercises are possible. -->
+<TEXT>???</TEXT>
+<!-- Conventional exercises are included by referring to the file name. -->
+<INCLUDE file="???"/>
+
+<!-- Optional closing text for this sheet. -->
+<TEXT>???</TEXT>
+</SHEET>
+

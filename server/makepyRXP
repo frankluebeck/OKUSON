@@ -1,0 +1,14 @@
+#!/bin/sh
+if [ ! -x pyRXP ]; then
+  gzip -dc daily-pyRXP.tgz | tar xvf -
+fi
+
+cd pyRXP
+python setup.py build_ext
+cp "`find build -name pyRXP.so`" ..
+cp "`find build -name pyRXPU.so`" ..
+
+echo
+echo
+echo You should find two files \"pyRXP.so\" and \"pyRXPU.so\" in this 
+echo directory. Otherwise, please look for error messages above.

@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# -*- coding: ISO-8859-1 -*-
+#  OKUSON Package
+#  Frank Lübeck and Max Neunhöffer
+# $Id: cryptpasswd,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
+ 
+'''This little script helps to calculate encrypted administrator passwords.'''
+
+import getpass,crypt,random,time,sys
+
+print __doc__,"\n\nPlease enter a password to encrypt:"
+p = getpass.getpass("Password: ")
+p2 = getpass.getpass("Again: ")
+if p != p2:
+    print "Passwords are not identical! Aborting."
+    sys.exit(0)
+
+random.seed(time.time());
+s = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") + \
+    random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+c = crypt.crypt(p,s)
+print "Encrypted password:",c

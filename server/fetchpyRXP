@@ -1,0 +1,13 @@
+#!/bin/sh
+#wget -N http://www.reportlab.com/ftp/daily-pyRXP.tgz
+wget -N http://www.math.rwth-aachen.de/~Max.Neunhoeffer/daily-pyRXP.tgz
+echo "***********************  ATTENTION  *****************************"
+echo "The subdirectores pyRXP and pyRXP-* will now be deleted and      "
+echo "replaced by the content of the daily pyRXP archive just          "
+echo "downloaded. If you do want to abort now, please hit ^C, otherwise"
+echo "press ENTER do go on.                                            "
+read
+rm -rf pyRXP pyRXP-*
+tar xzvf daily-pyRXP.tgz
+mv pyRXP-* pyRXP
+./makepyRXP

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_Dreisatz" keywords="B0 Dreisatz">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Beantworten Sie die folgenden Fragen (geben Sie nur Zahlen ein, 
+keine Einheiten und kein \%-Zeichen):
+</TEXT>
+
+<ANSWERS type="s"></ANSWERS>
+
+<QUESTION>
+<VARIANT solution="60"> Zwei Backsteine wiegen zusammen 24 Kilogramm. Wieviele 
+      Kilogramm wiegen 5 Backsteine?</VARIANT>
+<VARIANT solution="77"> Zwei Backsteine wiegen zusammen 22 Kilogramm. Wieviele 
+      Kilogramm wiegen 7 Backsteine?</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="5"> Zehn Affen fressen in einer Woche eine Tonne Bananen.
+Wieviele Tage brauchen 7 Affen, um eine halbe Tonne Bananen zu fressen?
+</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="3510"> Wenn man 3000 Euro um 17 Prozent vermehrt, wieviele
+Euro hat man dann?</VARIANT>
+<VARIANT solution="2520"> Wenn man 2000 Euro um 26 Prozent vermehrt, wieviele
+Euro hat man dann?</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="4"> Das Gehalt eines Angestellten erhöht sich von 2500 Euro 
+auf 2600 Euro. Wieviele Prozent Gehaltserhöhung sind das?</VARIANT>
+<VARIANT solution="2500"> Ein Angestellter bekommt eine Gehaltserhöhung von
+4\% und verdient danach 2600 Euro. Wieviele Euro verdiente er vor der
+Gehaltserhöhung?</VARIANT>
+</QUESTION>
+
+</EXERCISE>

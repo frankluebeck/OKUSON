@@ -1,0 +1,2 @@
+# messages.txt - private messages for participants
+# Format:  id:message

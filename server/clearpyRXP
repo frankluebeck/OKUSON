@@ -1,0 +1,2 @@
+#!/bin/sh
+rm -rf pyRXP pyRXP.so pyRXPU.so

@@ -1,0 +1,2 @@
+# submissions.txt - file to store submissions (and results)
+# Format:  id:sheetname:mark:score:submission:date

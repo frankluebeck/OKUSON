@@ -1,0 +1,61 @@
+"visible" attribut bei sheets (echt nötig???)
+
+automatische Validierung vor Auslieferung
+???Visitor-IDs getrennt, die nicht in Statistik eingehen
+Sanity-Checks wie checken auf tmp verzeichnis usw.
+Datenexport: Personen, Gruppen, Ergebnisse, Scheindaten, Scheine
+automatische Scheinermittlung
+Messageeingabe
+Messageausgabe
+Scheinanfertigung
+Uebungsgruppeneinteilung
+Aufkleber drucken (nur Export?)
+Statistik ueber Uebungsblaetter
+Statistik ueber Resultate
+Klausuranmeldungen
+Hiwi-Modus bzw. Hiwi-Seiten
+
+Handbuch:
+
+Getting started
+Kurze, verstaendliche Installationsanleitung
+   (tar xzvf ..., cd server, fetchpyrxp, [Config.xml, ] start)
+Datenformate (auch intern)
+Verfassen von Exercises und Sheets
+Standardablaeufe
+Zeitplan
+Bedienung
+Die einzelnen Webseiten
+Templates: Moegliche Ersetzungen
+Die Konfiguration
+Schnittstellen
+Aufbau des Programms
+verwendete Standards
+Anhaenge-Prinzip
+Locking-Prinzip
+
+Testen:
+
+persondata? and User? in config ausprobieren
+Alle Fehlermeldungen einmal sehen.
+Normalen Betrieb eines Semesters simulieren.
+Alle Moeglichkeiten bei den Sheets ausprobieren.
+Insbesondere regexp-Korrektur und type="c"
+
+Ideen:
+
+DocRoot konfigurierbar
+ISO-8859-1 konfigurierbar?
+
+
+Kommentare zum Manual:
+
+Chapter 4:
+
+Schlimme overfull boxes
+Chapter gross
+<OKUSONHOME> verwirrend?
+Bilder, wo stehen die? garantieren wir, dass sie in den Exercises-Dirs gefunden
+werden?
+regexp kriegt ein implizites ^ vorne und ein $ hinten?
+

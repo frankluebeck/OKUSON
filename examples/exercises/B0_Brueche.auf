@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_Brueche" keywords="B0 Bruch">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Kreuzen Sie jeweils ``Ja'' an, wenn die Aussage stimmt oder ``Nein'', wenn
+sie nicht stimmt!
+</TEXT>
+
+<QUESTION>
+<VARIANT solution="Ja">   $\frac{1}{2} + \frac{1}{3} = \frac{5}{6}$ </VARIANT>
+<VARIANT solution="Nein"> $\frac{1}{2} + \frac{1}{3} = \frac{4}{5}$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Ja">   $\frac{1}{2}\cdot\frac{1}{3}=\frac{1}{6}$ </VARIANT>
+<VARIANT solution="Nein"> $\frac{1}{2}\cdot\frac{1}{3}=\frac{1}{5}$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Nein"> $\frac{5}{7} &lt; \frac{7}{12}$ </VARIANT>
+<VARIANT solution="Ja">   $\frac{5}{7} &gt; \frac{7}{12}$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Ja"> $\frac{x^2-1}{x+1} = \frac{x-1}{1}$, wobei
+$x$ eine beliebige rationale Zahl ungleich $-1$ ist. </VARIANT>
+<VARIANT solution="Ja"> $\frac{x^2-1}{x-1} = \frac{x+1}{1}$, wobei
+$x$ eine beliebige rationale Zahl ungleich $1$ ist. </VARIANT>
+</QUESTION>
+
+</EXERCISE>

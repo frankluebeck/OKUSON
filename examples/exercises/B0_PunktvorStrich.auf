@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_PunktvorStrich" keywords="B0 rechnen Punkt vor Strich">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Berechnen Sie die folgenden Aufgaben und kreuzen Sie das richtige
+Ergebnis an:
+</TEXT>
+
+<QUESTION>
+<ANSWERS type="r"> 10|18</ANSWERS>
+<VARIANT solution="10"> $4 + 2 \cdot 3$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="r"> 14|18</ANSWERS>
+<VARIANT solution="18"> $3 \cdot ( 4 + 2 )$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="r"> 6|3 </ANSWERS>
+<VARIANT solution="6"> $\frac{7}{2}+\frac{5}{2}$ </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="r"> 64|256 </ANSWERS>
+<VARIANT solution="256"> $2^{2^3}$ </VARIANT>
+</QUESTION>
+
+</EXERCISE>

@@ -1,0 +1,28 @@
+$Id: INSTALL,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
+
+                   Installation instructions for OKUSON
+                  ======================================
+
+                    by Frank Lübeck and Max Neunhöffer
+
+ * Make sure you have Python version 2.2 or later installed.
+ * Download okuson.tar.gz from:
+      http://www.math.rwth-aachen.de/OKUSON/
+ * Extract archive with: 
+      gzip -dc okuson.tar.gz | tar xvf -}
+ * Compile pyRXP with: 
+      cd OKUSON/server ; ./makepyRXP
+ * Leave the server directory with: 
+      cd ..
+ * Copy Config.xml.sample to Config.xml and edit to adjust at least
+   AdministratorPassword and Port sections (use cryptpasswd to encrypt 
+   your password)
+ * Copy the sample web pages to the document root: 
+      cp -r html.sample/* html
+ * Copy the empty data files to the place where they should be:
+      cd data ; cp empty/* . ; cd ..
+ * Start server with: 
+      start
+ * Test server by pointing browser to 
+      http://localhost:8000/index.html
+

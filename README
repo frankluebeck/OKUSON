@@ -1,0 +1,45 @@
+$Id: README,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
+
+Welcome to OKUSON by Frank Lübeck and Max Neunhöffer
+
+
+The subdirectories in this directory contain:
+
+  data          data about participants of course
+  doc           documentation about OKUSON
+  dtd           document type definitions for various XML files
+                (used by the XML parser for validation!)
+  examples      directory with examples
+  exercises     the canonical place for exercises (can be configured)
+  html          your web site for this course, served by OKUSON
+  html/images   images for the HTML version of the exercise sheets
+  log           log files
+  server        the code of the server including libraries
+  server/pyRXP  the XML parser (see installation instructions)
+  sheets        the canonical place for sheets (can be configured)
+  tmp           temporary storage, especially for latex/pdflatex runs
+
+
+Further there are some utility scripts for the administrator in this directory:
+
+  cryptpasswd   encryption tool for administrator password
+  restart       restarts the server
+  start         starts the server
+  stop          stops the server
+  testexercise  test tool for exercises
+  testsheet     test tool for sheets
+
+
+The following files are here for documentation purposes:
+
+  README        this file
+  INSTALL       installation instructions (see also manual in doc/)
+  LICENSE       licensing information (GPL)
+  GPL           a copy of the GNU public license
+
+
+Please see the INSTALL file for installation instructions and the manual
+in the doc subdirectory.
+
+
+                                        Frank Lübeck and Max Neunhöffer.

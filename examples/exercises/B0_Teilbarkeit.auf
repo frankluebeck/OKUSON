@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_Teilbarkeit" keywords="B0 Teilbarkeit teilbar">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Kreuzen Sie ``Ja'' an, wenn die Aussage stimmt und ``Nein'' sonst.
+</TEXT>
+
+<QUESTION>
+<VARIANT solution="Ja">   Wenn eine natürliche Zahl $a$ durch $6$ teilbar ist,
+dann ist $a^2$ auch durch $6$ teilbar. </VARIANT>
+<VARIANT solution="Nein"> Wenn eine natürliche Zahl $a$ durch $6$ teilbar ist,
+dann ist $a+3$ auch durch $6$ teilbar. </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Nein"> Wenn zwei natürliche Zahlen $a$ und $b$ jeweils
+durch $2$ teilbar ist, dann ist ihre Summe $a+b$ durch $4$ teilbar. 
+</VARIANT>
+<VARIANT solution="Nein"> Wenn die Summe zweier natürlicher Zahlen $a$ und
+$b$ durch $4$ teilbar ist, dann ist jede der beiden Zahlen durch $2$ teilbar.
+</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Ja"> Wenn eine natürliche Zahl durch $2$ und durch $3$
+teilbar ist, dann ist sie auch durch $6$ teilbar. </VARIANT>
+<VARIANT solution="Nein"> Wenn eine natürliche Zahl durch $6$ und durch $10$
+teilbar ist, dann ist sie auch durch $60$ teilbar. </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Ja">  Ist eine natürliche Zahl $a$ durch 6 teilbar und
+eine andere natürliche Zahl $b$ durch $a$ teilbar, dann ist auch
+$b$ durch $6$ teilbar. </VARIANT>
+</QUESTION>
+
+</EXERCISE>

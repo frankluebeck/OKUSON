@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_Mengen" keywords="B0 Menge Abbildung">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Beantworten Sie die folgenden Fragen über Mengen:
+</TEXT>
+
+<QUESTION>
+<ANSWERS type="r"> 3|5 </ANSWERS>
+<VARIANT solution="3"> Wieviele Elemente hat die Menge
+                       $\{ 1, \{ 2,3,4 \}, 5\}$?  </VARIANT>
+<VARIANT solution="3"> Wieviele Elemente hat die Menge
+                       $\{ 5, \{ 4,3,2 \}, 1 \}$?  </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Nein"> Ist die Menge $\{ 1, \{2, 3\}\}$ eine Teilmenge
+                          der Menge $\{ 1, \{ 2,3,4 \}, 5\}$? </VARIANT>
+<VARIANT solution="Ja">   Ist die Menge $\{ 1, \{2, 3,4 \}\}$ eine Teilmenge
+                          der Menge $\{ 1, \{ 2,3,4 \}, 5\}$? </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="Nein"> Ist die Menge $\{2, 3, 4 \}$ eine Teilmenge
+                          der Menge $\{ 1, \{ 2,3,4 \}, 5\}$? </VARIANT>
+<VARIANT solution="Ja">   Ist die Menge $\{ 1 \}$ eine Teilmenge
+                          der Menge $\{ 1, \{ 2,3,4 \}, 5\}$? </VARIANT>
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="s"></ANSWERS>
+<VARIANT solution="8">   Wieviele verschiedene Abbildungen von der Menge 
+    $\{ 1,2,3 \}$ gibt es in die Menge $\{ 1,2 \}$? </VARIANT>
+<VARIANT solution="9">   Wieviele verschiedene Abbildungen von der Menge 
+    $\{ 1,2 \}$ gibt es in die Menge $\{ 1,2,3 \}$? </VARIANT>
+</QUESTION>
+
+</EXERCISE>

@@ -1,0 +1,4 @@
+# exams.txt - results of exams
+# Format:  id:examnr:totalscore:maxscore:separatescore
+# Note: exam numbers are zero based and must not be negative!
+#       separatescore can be any string and is not processed

@@ -1,0 +1,60 @@
+#!/bin/sh
+# Part of the OKUSON project
+# Copyright (C) 2003 by Frank Lübeck and Max Neunhöffer
+# $Id: makeArchive,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
+
+# This script is used to make a zipped tar archive with the distribution
+# and a pdf version of the manual outside this directory. For this
+# purpose the whole CVS tree should be exported and this script be run
+# in this exported directory.
+
+# Safety check:
+if [ -x CVS ] ; then
+  echo Please execute me only in an exported tree, not in a checked out one.
+  exit 0
+fi
+
+# Make the manual:
+cd doc
+pdflatex manual
+pdflatex manual
+pdflatex manual
+rm -f manual.toc manual.aux manual.out manual.log
+cd ..
+
+# Copy it outside:
+cp doc/manual.pdf ../okuson.pdf
+
+# Move the configuration file and the web page templates from "html" to
+# "html.sample":
+mv Config.xml Config.xml.sample
+mv html html.sample
+mkdir html
+mkdir html/images
+
+# Cut the log file:
+rm -f log/server.log
+touch log/server.log
+
+# Release only empty files:
+cd data
+rm -f examregistrations.txt generalmessage.txt homework.txt people.txt \
+      exams.txt groups.txt messages.txt submissions.txt
+cd ..
+
+# Copy example sheet B0 to the sheets and exercise directories:
+cp examples/exercises/B0* exercises
+cp examples/sheets/B0.bla sheets
+
+# Make sure a temporary directory is there:
+if [ ! -x tmp ]; then
+  mkdir tmp
+fi
+
+# Delete ourselves:
+rm -f makeArchive
+
+# Now put together things:
+cd ..
+tar czvf okuson.tar.gz okuson
+

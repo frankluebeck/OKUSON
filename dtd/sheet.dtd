@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ==================================================================
+     sheet.dtd - XML Document type definition for "Sheet"s
+     Copyright 2001 Frank Lübeck and Max Neunhöffer
+     ================================================================== -->
+
+<!-- $Id: sheet.dtd,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+
+<!ELEMENT SHEETS (SHEET)*>
+
+<!ELEMENT SHEET (EXERCISE | INCLUDE | TEXT)*>
+<!-- attributes:
+                counts     should be a number
+                nr         a number for sorting the sheets
+                name       a name of the sheet, default is nr
+                first      number of first exercise
+                magic      goes into seed for random
+                opento     time to submit at latest, in format:  
+                             HH:mm_DD.MM.YYYY, Hour, minute, day, month, year
+-->
+<!ATTLIST SHEET counts    CDATA #IMPLIED 
+                nr        CDATA #REQUIRED 
+                name      CDATA #IMPLIED
+                first     CDATA #IMPLIED 
+                magic     CDATA #IMPLIED
+                opento    CDATA #REQUIRED> 
+
+<!ELEMENT EXERCISE EMPTY>
+<!-- attributes:
+                   key
+                   prefix       to import collections 
+                   nrquestions  nr. of qu. to choose 
+                   order        can be "p" or "f", meaning: permuted or fixed 
+-->
+<!ATTLIST EXERCISE key         CDATA #REQUIRED
+                   prefix      CDATA #IMPLIED  
+                   nrquestions CDATA #IMPLIED 
+                   order       CDATA #IMPLIED>
+
+<!ELEMENT INCLUDE EMPTY>
+<!ATTLIST INCLUDE file CDATA #REQUIRED
+                  prefix CDATA #IMPLIED>
+
+<!ELEMENT TEXT (#PCDATA)>
+
+
