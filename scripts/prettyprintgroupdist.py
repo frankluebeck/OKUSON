@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: prettyprintgroupdist.py,v 1.2 2003/10/22 22:21:54 neunhoef Exp $
+#   $Id: prettyprintgroupdist.py,v 1.3 2004/05/02 12:29:10 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
@@ -66,9 +66,9 @@ lastgroup = -1
 opened = 0
 for i in range(len(people)):
     p = people[i]
-    if p[17] != lastgroup:
+    if p[9] != lastgroup:
         if opened: print TeXGroupEnd
-        lastgroup = p[17]
+        lastgroup = p[9]
         print TeXGroupStart % (lastgroup)
         opened = 1
     print TeXPerson % (p[0],p[1]+', '+p[2])

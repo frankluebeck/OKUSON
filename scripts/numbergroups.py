@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: numbergroups.py,v 1.2 2003/10/09 12:02:30 neunhoef Exp $
+#   $Id: numbergroups.py,v 1.3 2004/05/02 12:29:10 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
@@ -56,7 +56,7 @@ number.'''
         if line[0] == '#':   # a comment, we ignore line
             continue
         p = line.split(':')
-        if len(p) < 15:
+        if len(p) < 7:
             print "Illegal format, offending line:\n  "+line+"\nignoring..."
             continue
         output.write(p[0]+':'+str(nr)+'\n')

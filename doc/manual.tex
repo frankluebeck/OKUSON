@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.61 2004/03/09 14:16:54 neunhoef Exp $
+% $Id: manual.tex,v 1.62 2004/05/02 12:29:10 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1813,7 +1813,7 @@ There are some special elements used with the sheets in HTML format.
 \begin{description}
 \item[\texttt{<SheetNumber/>}] number of sheet.
 \item[\texttt{<SheetName/>}] name of sheet.
-\item[\texttt{<IfOpen>\ldots</IfOpen>}] content only included if sheet is still open.
+\item[\texttt{<IfOpen>\ldots</IfOpen>}] content only included if sheet is still open (or if administrator overruled with his password).
 \item[\texttt{<IfClosed>\ldots</IfClosed>}] content only included 
 if sheet is no longer open.
 \item[\texttt{<HiddenIdOfPerson/>} and \texttt{<HiddenNameOfSheet/>}] 
@@ -2413,12 +2413,17 @@ interpreted in the following ordering:
 \item[place] place of group meeting.
 \item[time]  time of group meeting.
 \item[email] email address of tutor.
+\item[maxsize] maximal number of participants in group.
 \item[groupdata] additional entries for customization.
 \end{description}
 
 Note that you could give pieces of HTML code containing appropriate links as
 some of these entries. Note also that entries are separated by colons, within 
 the entries you can encode a colon by typing \verb+\d+ instead.
+
+The second last entry comes into play, if one uses the feature, that
+participants can choose the number of their tutoring group during
+registration (see the explanations in the \texttt{Config.xml} file).
 
 The last entry \emph{groupdata} must be specified as comma separated list of
 concatenated key-value pairs. Example: you can store that the lecture hall
@@ -2828,6 +2833,8 @@ time & Time of group session (remember ``\verb!\d!'' for ``\verb!:!''!)
      & string \\
 \hline
 email & Email address of tutor & string \\
+\hline
+maxsize & Maximal number of participants & non-negative integer \\
 \hline
 groupdata & Additional customization data & string \\
 \hline

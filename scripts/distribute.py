@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: distribute.py,v 1.4 2003/10/15 21:31:04 neunhoef Exp $
+#   $Id: distribute.py,v 1.5 2004/05/02 12:29:10 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
@@ -60,7 +60,7 @@ wishes.'''
         if line[0] == '#':   # a comment, we ignore line
             continue
         p = line.split(':')
-        if len(p) < 15:
+        if len(p) < 7:
             print "Illegal format, offending line:\n  "+line+"\nignoring..."
             continue
         p[5] = p[5].split(',')
@@ -124,7 +124,7 @@ wishes.'''
             else:
                 p = people[k]
                 output.write(string.join(p[:5],':')+':'+string.join(p[5],',')+
-                             ':'+string.join(p[6:],':')+'\n')
+                             ':'+p[6]+'\n')
         output.write('\n')
              
     return done

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.101 2004/03/09 15:16:39 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.102 2004/05/02 12:29:10 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -140,14 +140,14 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             for a in fields:
                 if hasattr(grp, a):
                     # special case of custom data
-                    if len(a) > 9 and a[:10] == 'groupdata.':
-                        key = a[11:]
-                        s.append('<td>'+str(grp.groupdata.get(key, ''))+'</td>')
-                    elif a in ['number','nrparticipants']:
+                    if a in ['number','nrparticipants']:
                         s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
                              str(getattr(grp, a))+'</a></td>')
                     else:
                         s.append('<td>'+str(getattr(grp, a))+'</td>')
+                elif len(a) > 9 and a[:10] == 'groupdata.':
+                    key = a[10:]
+                    s.append('<td>'+str(grp.groupdata.get(key, ''))+'</td>')
             s.append('</tr>\n')
         out.write(string.join(s,''))
     def handle_MembersOfGroup(self,node,out):
@@ -991,7 +991,7 @@ a Person object and a Sheet object as data.'''
                 for n in node[2]:
                     XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_IfClosed(self,node,out):
-        if self.s.IsClosed() and not(self.iamadmin):    
+        if self.s.IsClosed():
             # Sheet already closed
             # Write out tree recursively:
             if node[2] != None:
@@ -2012,7 +2012,7 @@ def TutorRequest(req,onlyhead):
         passwd = crypt.crypt(pw1,salt)
         # Now change password for this group:
         line = AsciiData.LineTuple( (str(groupnr), passwd, g.tutor, g.place,
-                                     g.time, g.emailtutor, 
+                                     g.time, g.emailtutor, str(g.maxsize),
                                      AsciiData.LineDict(g.groupdata) ) )
         Data.Lock.acquire()
         try:

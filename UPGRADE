@@ -1,0 +1,44 @@
+===============================================================================
+ This file describes the upgrade procedure from okuson 1.1 to okuson 1.1-fix1:
+===============================================================================
+
+$Id: UPGRADE,v 1.12 2004/05/02 12:29:10 neunhoef Exp $
+
+Just stop the server, unpack the new archive over your installation and
+restart the server:
+
+  cd okuson
+  ./stop
+  cd ..
+  tar xzvf okuson-1.1-fix1.tar.gz
+  cd okuson
+  ./start
+
+The archive does *not* overwrite any files you configured, especially:
+  html/*
+  Config.xml
+  data/*.txt
+
+remain unchanged.
+
+If you applied any patches to the server programs, make sure to reapply them.
+
+Files changed in this bugfix:
+
+    data/empty/groupinfo.txt
+    doc/manual.tex
+    doc/manual.pdf
+    scripts/distribute.py
+    scripts/numbergroups.py
+    scripts/prettyprintgroupdist.py
+    server/WebWorkers.py
+    CHANGES
+    TODO
+    UPGRADE
+    VERSION
+
+
+Have fun!
+
+  Frank Lübeck and Max Neunhöffer
+
