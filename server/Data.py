@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.3 2003/10/06 13:13:05 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.4 2003/10/06 16:34:23 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -176,17 +176,58 @@ messagedesc = AsciiData.FileDescription(Config.conf['MessageFile'],people,
 
 groups = {}
 
+class GroupInfo(Utils.WithNiceRepr):
+    '''Object containing general information about a tutoring group.'''
+    people = []        # list of participants by their ID
+    number = -1        # number of group ( = its key in 'groups')
+    passwd = ''        # encrypted password for tutor access
+    tutor = ''         # name of tutor
+    place = ''         # description where the group meets
+    time = ''          # description when the group meets
+    emailtutor = ''    # email of tutor
+    groupinfo1 = ''    # customization info for use on group specific web pages 
+    groupinfo2 = ''    # customization info for use on group specific web pages 
+    groupinfo3 = ''    # customization info for use on group specific web pages 
+    groupinfo4 = ''    # customization info for use on group specific web pages 
+    groupinfo5 = ''    # customization info for use on group specific web pages 
+    groupinfo6 = ''    # customization info for use on group specific web pages 
+    groupinfo7 = ''    # customization info for use on group specific web pages 
+    groupinfo8 = ''    # customization info for use on group specific web pages 
+    groupinfo9 = ''    # customization info for use on group specific web pages 
+
+    def __init__(self, number = -1):
+        self.people = []
+        self.number = number
+
 def AddToGroupStatistic(p):
     '''Adds a person to the groups statistic.'''
     global groups
     g = p.group
-    if not(groups.has_key(g)): groups[g] = []
-    groups[g].append(p.id)
+    if not(groups.has_key(g)): groups[g] = GroupInfo(g)
+    groups[g].people.append(p.id)
 
 def MakeGroupStatistic():
     global groups
-    groups = {}
     for k in people.keys():
         p = people[k]
         AddToGroupStatistic(p)
+
+# General information about tutoring groups 
+groupinfodesc = AsciiData.FileDescription(Config.conf['GroupInfoFile'],groups,
+  (  "ENTER", 0, "KEY",        GroupInfo,
+     "STORE", 0, "number",     "INT",
+     "STORE", 1, "passwd",     "STRING",
+     "STORE", 2, "tutor",      "STRING",
+     "STORE", 3, "place",      "STRING",
+     "STORE", 4, "time",       "STRING",
+     "STORE", 5, "emailtutor", "STRING",
+     "STORE", 6, "groupinfo1", "STRING",
+     "STORE", 7, "groupinfo2", "STRING",
+     "STORE", 8, "groupinfo3", "STRING",
+     "STORE", 9, "groupinfo4", "STRING",
+     "STORE", 10, "groupinfo5", "STRING",
+     "STORE", 11, "groupinfo6", "STRING",
+     "STORE", 12, "groupinfo7", "STRING",
+     "STORE", 13, "groupinfo8", "STRING",
+     "STORE", 14, "groupinfo9", "STRING"    )  )
 

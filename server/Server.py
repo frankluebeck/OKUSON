@@ -102,6 +102,8 @@ try:
     Data.groupdesc.LoadFile()
     Utils.Error('Reading message data...',prefix='Info:')
     Data.messagedesc.LoadFile()
+    Utils.Error('Reading group information...',prefix='Info:')
+    Data.groupinfodesc.LoadFile()
 except:
     Utils.Error('Aborting.',prefix='')
     sys.exit(0)

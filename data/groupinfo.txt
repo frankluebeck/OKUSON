@@ -1,0 +1,2 @@
+# groupinfo.txt - Information on tutoring groups
+# Format:  nr:passwd:tutor:place:time:email of tutor:groupinfo1: ... :groupinfo9

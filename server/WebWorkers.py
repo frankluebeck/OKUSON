@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.14 2003/10/06 13:13:05 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.15 2003/10/06 16:34:23 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -39,6 +39,15 @@ ValidatorIconText = '''<a href="http://validator.w3.org/check/referer">
 # Make the main site dictionary available here:
 
 Site = BuiltinWebServer.Site
+
+# Helper for installing dynamic pages:
+# There are two different sorts of pages:
+# 1) Pages without input which are generated from templates by filling
+#    in some values.
+# 2) Pages with input that trigger a function that works on the input
+#    and sends out a page of the first kind.
+PPXML = XMLRewrite.PreparsedXMLWebResponse
+FunWR = BuiltinWebServer.FunctionWebResponse
 
 
 #############################################################################
@@ -125,7 +134,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                         'Ignoring.', prefix='Warning:')
             return
         if Data.groups.has_key(nr):
-            l = list(Data.groups[nr])
+            l = list(Data.groups[nr].people)
             l.sort()
             for k in l[:-1]:
                 out.write(k+', ')
@@ -792,6 +801,60 @@ there and send a form to display and change the saved data.'''
     return Delegate('/results.html',req,onlyhead,currentHandler)
 
 
+#######################################################################
+# This is for tutoring group specific pages:
+
+class EH_withGroupInfo_class(EH_Generic_class):
+    grp = None
+    def __init__(self,grp):
+        self.grp = grp
+    def handle_GroupNumber(self,node,out):
+        out.write(str(self.grp.number))
+    def handle_GroupTutor(self,node,out):
+        out.write(str(self.grp.tutor))
+    def handle_GroupPlace(self,node,out):
+        out.write(str(self.grp.place))
+    def handle_GroupTime(self,node,out):
+        out.write(str(self.grp.time))
+    def handle_GroupEmailTutor(self,node,out):
+        out.write(str(self.grp.emailtutor))
+    def handle_GroupInfo1(self,node,out):
+        out.write(str(self.grp.groupinfo1))
+    def handle_GroupInfo2(self,node,out):
+        out.write(str(self.grp.groupinfo2))
+    def handle_GroupInfo3(self,node,out):
+        out.write(str(self.grp.groupinfo3))
+    def handle_GroupInfo4(self,node,out):
+        out.write(str(self.grp.groupinfo4))
+    def handle_GroupInfo5(self,node,out):
+        out.write(str(self.grp.groupinfo5))
+    def handle_GroupInfo6(self,node,out):
+        out.write(str(self.grp.groupinfo6))
+    def handle_GroupInfo7(self,node,out):
+        out.write(str(self.grp.groupinfo7))
+    def handle_GroupInfo8(self,node,out):
+        out.write(str(self.grp.groupinfo8))
+    def handle_GroupInfo9(self,node,out):
+        out.write(str(self.grp.groupinfo9))
+    def handle_GroupIDs(self,node,out):
+        l = list(self.grp.people)
+        l.sort()
+        out.write(string.join(l, ', '))
+
+def GroupInfo(req, onlyhead):
+    try:
+        grp = Data.groups[int(req.number)]
+    except:
+        grp = None
+    if grp:
+        handler = EH_withGroupInfo_class(grp)
+        return Delegate('/groupinfo.html', req, onlyhead, handler)
+    else:
+        return Delegate('/errors/unknowngroup.html',req,onlyhead)
+    
+Site['/GroupInfo'] = FunWR(GroupInfo)
+
+#######################################################################
 # The following is for the administrator's pages:
 
 currentcookie = None
@@ -988,15 +1051,6 @@ def AdminWork(req,onlyhead):
         return Adminexquery.getresult(req, onlyhead)
     if action == 'Send message':
         return SendMessage(req,onlyhead)
-
-# Install the dynamic pages:
-# There are two different sorts of pages:
-# 1) Pages without input which are generated from templates by filling
-#    in some values.
-# 2) Pages with input that trigger a function that works on the input
-#    and sends out a page of the first kind.
-PPXML = XMLRewrite.PreparsedXMLWebResponse
-FunWR = BuiltinWebServer.FunctionWebResponse
 
 BuiltinWebServer.SiteLock.acquire()
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)

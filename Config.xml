@@ -212,6 +212,12 @@ data/groups.txt
 data/messages.txt
 </MessageFile>
 
+<!-- The name of the file where general information on tutoring groups
+     is stored: -->
+<GroupInfoFile>
+data/groupinfo.txt
+</GroupInfoFile>
+
 <!-- The name of the directory where the DTDs are stored: -->
 <PathToDTDs>
 dtd

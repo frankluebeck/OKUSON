@@ -52,6 +52,7 @@ Parameters = {
   "ExamFile":                 ["PATH",1],
   "GroupFile":                ["PATH",1],
   "MessageFile":              ["PATH",1],
+  "GroupInfoFile":            ["PATH",1],
   "PathToDTDs":               ["PATH",1],
   "PDFTemplate":              ["STRING",1],
 
