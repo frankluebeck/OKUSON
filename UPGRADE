@@ -48,6 +48,13 @@ scores (beware, you could possibly have edited "results.tpl" yourself):
   cp html.sample/results.tpl.nointeractive html
      (copy this to "html.sample/results.tpl" if you do not use MC exercises)
 
+There was a little layout change in "regchange2.tpl", which you can 
+activate with the following command:
+
+  cp html.sample/regchange2.tpl html
+
+Beware if you have edited this file yourselve!
+
 You can use the new utility script "showdiffsintemplates" to display the
 files in your html directory, which differ from those in the distribution's
 html.sample directory:
