@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.57 2004/03/08 10:02:47 luebeck Exp $
+% $Id: manual.tex,v 1.58 2004/03/08 11:52:24 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -517,12 +517,14 @@ There is also a script
 
 \hspace*{1cm}\texttt{restart}
 
-that stops the server and restarts it. In general, whenever you change
-something in the servers setup (say, you add or change exercises or sheets,
-add some data in the \texttt{data} directory, change some web page, \ldots)
-you must restart the server. The advantage of this approach is that you can
-play around with your changes before they are published to the outside world
-by the server (and the server is more efficient, because it caches and
+that stops the server and restarts it. 
+
+In general, whenever you change something in the servers setup (say, you 
+add or change exercises or sheets or add some data in the \texttt{data} 
+directory, change the \texttt{Config.xml} file, \ldots) you must restart 
+the server. The advantage of this approach is that 
+you can play around with your changes before they are published to the outside 
+world by the server (and the server is more efficient, because it caches and
 preparses everything it needs during startup).
 
 \section{Tips and Tricks: Security, Backup, etc.}\label{sec:insttips}
@@ -1039,6 +1041,21 @@ date and refer to the exercises to include, some intermediate texts can also
 be given (in \LaTeX-format).
 \end{description}
 
+\subsubsection*{Publishing and Changing Sheets}\label{sssec:publishsheet}
+
+Whenever you have added (or changed) an exercise sheet you must restart the
+server. (There is no automatism for this to avoid that participants get
+incomplete or messed up sheets.)
+
+After a sheet is published only small changes are allowed: Do \textbf{not}
+add or remove exercises, questions or variants of questions. Whenever you
+change an exercise text be aware that participants may have already
+downloaded the old version. 
+
+Whenever you need to correct the given solutions of interactive exercises
+(see~\ref{sec:writeEx}) you must reevaluate the solutions submitted so far,
+see~\ref{ssec:reeval}.
+
 \subsubsection*{Which {\LaTeX} Macros?}
 
 In the standard setup of {\OKUSON} the following packages and macros are 
@@ -1217,7 +1234,7 @@ possible answers are given, and some subset of them is correct. This means
 that one has to select \textbf{exactly} the right subset to score a 
 point. The syntax for the content in this case is the same as for
 \texttt{"r"}.
-\item[\texttt{"s"}] (string) this is for question where the answer is
+\item[\texttt{"s"}] (string) this is for questions where the answer is
 expected as a string (that has to be typed into an input field). In this
 case the content of the \texttt{ANSWERS} element should be empty.
 \end{description}
@@ -2101,7 +2118,7 @@ as a new message with a dollar sign \verb!$! prepended in the internal
 data format. The participant of course does no longer see revocated messages.
 In this way, no message is ever lost.
 
-\subsection{Reevaluate participants' answers for sheet}
+\subsection{Reevaluate participants' answers for sheet}\label{ssec:reeval}
 
 This options comes in handy if the unfortunate case happens (and it will
 happen eventually, believe it or not!) that a ``correct'' solution was
@@ -3319,7 +3336,8 @@ put in the document via the \texttt{<ValidatorIcon/>} tag.
 
 Here is the text of the license under which the {\OKUSON} package is
 distributed. Instead of this you may also take any newer version as
-published in {\texttt http://www.gnu.org/licenses/gpl.html}.
+published in \href{http://www.gnu.org/licenses/gpl.html}%
+{\texttt http://www.gnu.org/licenses/gpl.html}.
 
 
 { \scriptsize
