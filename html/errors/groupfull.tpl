@@ -36,5 +36,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupfull.html,v 1.1 2004/03/08 00:23:05 neunhoef Exp $ -->
+     $Id: groupfull.tpl,v 1.1 2004/03/08 07:29:32 neunhoef Exp $ -->
 
