@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.117 2005/04/04 10:39:32 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.118 2005/04/04 12:37:46 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -3029,7 +3029,7 @@ def ExportResults(req,onlyhead):
             else:
                 msg = ''
                 grade = 0
-            exams = string.join(map(locale.str,exams),';')
+            exams = string.join(exams,';')
             out.write( p.id+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
                        str(p.group)+':'+str(mcscore)+':'+
                        locale.str(homescore)+':'+
