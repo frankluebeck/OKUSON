@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.26 2003/10/10 12:37:39 luebeck Exp $
+% $Id: manual.tex,v 1.27 2003/10/10 12:53:58 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -327,7 +327,7 @@ editor.  The entries of this file are explained in detail via  embedded
 comments.  
 
 For a start and to get an impression adjust the first few entries in 
-this file, say \texttt{AdministratorPassword}, \texttt{CourseName},
+this file, say \texttt{CourseName}, \texttt{AdministratorPassword}, 
 \texttt{Semester}, \texttt{Lecturer}, \texttt{Feedback} and maybe
 \texttt{Port}.
 
@@ -510,7 +510,7 @@ server machine with ssh without password).
 
 \begin{verbatim}
    #!/bin/sh
-   ##  okusonsync       syncronizes an OKUSON installation using rsync
+   ##  okusonsync    syncronizes an OKUSON inst. using rsync
 
    BACKUPDIR="..."
    ORIGSERVER="..."
@@ -524,7 +524,7 @@ and
 
 \begin{verbatim}
    #!/bin/sh
-   ##  okusonarchive          packs whole backup into an archive
+   ##  okusonarchive     packs whole backup into an archive
 
    BACKUPDIR="..."
    DIRNAME="..."
@@ -1444,7 +1444,8 @@ however, the {\OKUSON} server offers a convenient web interface. You can
 reach this by pointing your browser to the following URL, when the {\OKUSON} 
 server is running:
 
-\hspace*{5mm}\texttt{http://localhost:8000/adminmenu.html}
+\hspace*{5mm}\href{http://localhost:8000/adminmenu.html}%
+{\texttt{http://localhost:8000/adminmenu.html}}
 
 This assumes, that the {\OKUSON} server is running on the same machine than 
 your web browser. If this is not the case, you have to substitute the name
@@ -1466,7 +1467,8 @@ avoid repeated password input. This works as follows:
 
 To log in you have to visit the URL
 
-\hspace*{5mm}\texttt{http://localhost:8000/adminlogin.html}
+\hspace*{5mm}\href{http://localhost:8000/adminlogin.html}%
+{\texttt{http://localhost:8000/adminlogin.html}}
 
 and type the administrator password. After login you are led to the
 administrator menu, however, a secret number for this login session is
@@ -1486,46 +1488,196 @@ with administrative tasks.
 
 You have the following options in the administrator menu:
 
-\begin{itemize}
-\item \textbf{Restart server}. This stops the {\OKUSON} server gracefully
+\subsection{Restart server} 
+
+This stops the {\OKUSON} server gracefully
 and restarts it immediately. This is the same as launching the \texttt{restart}
 script in the {\OKUSON} home directory. Note that you have to log in again
 for further administrative tasks, as the login session is terminated 
 automatically.
-\item \textbf{Stop server}. This stops the {\OKUSON} server gracefully.
+
+\subsection{Stop server} 
+
+This stops the {\OKUSON} server gracefully.
 This is the same as launching the \texttt{stop} script in the {\OKUSON}
 home directory.
-\item \textbf{Export people for tutoring group distribution.} With this option
+
+\bigskip
+\textbf{Comment:} 
+The following options are for data exports. They all send a file with
+content type ``\texttt{text/okuson}'' and your browser probably will
+ask you to save the file, because it does not know what to do with this
+content type. In all cases we send sensible default names along.
+
+\subsection{Export people for tutoring group distribution} 
+
+With this option
 you can export data about all registered participants for the purpose of
 distributing them into smaller tutoring groups. Usually this will be 
-a semi-automatic process, that is described in chapter \ref{ch:managepeople}
+a semi-automatic process that is described in chapter \ref{ch:managepeople}
 below.
-\item \textbf{Export people.} With this option you can export the personal
-data of all registered participants into a single ASCII file. See
-section \ref{ExportPersData} for a description of the data format produced.
+
+\subsection{Export people} 
+
+With this option you can export the personal
+data of all registered participants into a single ASCII file.
+
+In the file exported there is --- after some comment
+lines beginning with a \#-character --- for every participant one line.
+This line comes in the same format as the file \texttt{data/people.txt}
+(see \ref{people.txt}), \textbf{except} that there is an additional
+field, namely the number of the group in which the person is.
+
+This means, that there are three reasons, why you should \textbf{not} copy
+the output of this export directly to the file \texttt{data/people.txt}.
+Apart from making no sense at all, you have to remove the last data field
+with the group, and, what is probably worse, all colons and newlines that
+may be contained in personal data fields are deleted or replaced by a 
+space respectively, whereas in \texttt{data/people.txt} special precautions
+are taken to store such data (see \ref{commonformat}).
+
+So the fields in \texttt{peoplelist.txt} are separated by colons and
+arranged in the following order:
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+ID \\
+\hline
+last name \\
+\hline
+first name \\
+\hline
+semester number \\
+\hline
+studiengang \\
+\hline
+encrypted password \\
+\hline
+email address (possibly empty) \\
+\hline
+wishlist as typed in \\
+\hline
+personal data \#1 \\
+\hline
+personal data \#2 \\
+\hline
+personal data \#3 \\
+\hline
+personal data \#4 \\
+\hline
+personal data \#5 \\
+\hline
+personal data \#6 \\
+\hline
+personal data \#7 \\
+\hline
+personal data \#8 \\
+\hline
+personal data \#9 \\
+\hline
+group number ($0$ if not in any group) \\
+\hline
+\end{tabular}
+\end{center}
+
 You can choose among a number of orderings. There seems to be no immediate
 application of this export facility, but it offers easy access to the
 available personal data for private scripts and standard UNIX text
 tools.
-\item \textbf{Export participants of exam.} This export facility is to get
+
+Our intention for this export is to be able to access the current data
+in the server easily with private scripts.
+
+
+\subsection{Export participants of exam} 
+
+This export facility is to get
 information about the registration situation for exams. Therefore the
 exported data is restricted to ID, name, first name and the time stamp 
-of the registration. See section \ref{ExportExamReg} for a description of
-the data format and section \ref{ExamReg} for a description of how to
-organize registration for exams conveniently.
-\item \textbf{Export results.} This export facility produces information
-about all the results of the participants, including multiplce choice
-exercises, homework exercises, and exams. For the data format see section
-\ref{ExportResults}. The obvious application of this export is at the
+of the registration. The file format is as follows: For every participant
+there is one line that contains the abovementioned fields, separated by
+colons. See chapter \ref{ExamOrga} for a description of how to
+organize exams conveniently.
+
+\subsection{Export results} 
+
+This export facility produces information
+about all the results of the participants, including multiple choice
+exercises, homework exercises, and exams. The data format is as follows:
+There is one line for each participants with fields separated by colons.
+The fields and their order can be read off the following table:
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+id \\ \hline
+last name \\ \hline
+first name \\ \hline
+group number \\ \hline
+total score in multiple choice exercises \\ \hline
+total score in written homework exercises \\ \hline
+total score \\ \hline
+generated message from automatic grading function \\ \hline
+grade from automatic grading function \\ \hline
+a string of all exam results, separated by semicolons \\ \hline
+for every sheet one more field, see below \\ \hline
+\end{tabular}
+\end{center}
+
+Note that the fields generated by automatic grading are there but empty, if 
+automatic grading is switched off. If a participant has a data field for
+some exam (for example if he has registered for this exam), but did not
+take part, a \texttt{-} is exported as his result. At the end of the
+line, there is for every closed sheet a field with sheetname, 
+multiple choice score and homework score, separated by semicolons.
+
+The obvious application of this export is at the
 end of the semester to produce certificates for successful participants.
-\item \textbf{Display available and future sheets.} This option gives
-the administrator access to a page to display sheets exactly as the
-page for regular participants, except, that also future sheets (which
-have not yet reached their \texttt{openfrom} date) are accessible.
-\item \textbf{Send message.} With this option one can send an individual
-message to a certain participant. This message will appear on the page
-where the participant queries his results. More
-\end{itemize}
+
+\subsection{Display available and future sheets} 
+
+This option gives the administrator access to a page to display sheets
+exactly as the page for regular participants, except, that also future
+sheets (which have not yet reached their \texttt{openfrom} date) are
+accessible.
+
+\subsection{Send message} 
+
+With this option one can send an individual message to a certain
+participant. This message will appear on the page where the participant
+queries his results. More than one message is possible. All messages
+are stored in the file \texttt{data/messages.txt}. The format of this
+file is described in section \ref{formatmessages.txt}.
+
+This messaging system can also be used to automatically produce individual
+messages for all participants. In this case it is probably better not to
+type in the messages via the web interface, but to store the messages directly
+into the file \texttt{data/messages.txt}.
+
+\subsection{Delete messages of}
+
+With this option you can delete a subset of the private messages of one
+participant. To this purpose one gets a display of all messages and can
+choose the subset to delete. Note that this deletion is not really a 
+deletion but more a ``revocation''. A ``deleted'' message is just repeated
+as a new message with a dollar sign \verb!$! prepended in the internal
+data format. The participant of course does no longer see revocated messages.
+In this way, no message is ever lost.
+
+\subsection{Reevaluate participant's answers for sheet}
+
+This options comes in handy if the unfortunate case happens (and it will
+happen eventually, believe it or not!) that a ``correct'' solution was
+entered incorrectly in the exercise description. One has to know that
+the evaluation of the submission of a participant happens at the time
+of submission and is then cached in memory (and on disk). Therefore later
+changes in the correct solutions in the exercise source files are \textbf{not}
+considered without manual intervention!
+
+To this end, one can select this option and reevaluate all submissions of
+all participants for a certain sheet.
+
 
 \chapter{Managing Participants}\label{ch:managepeople}
 
@@ -1601,7 +1753,7 @@ distribution''. You have the choice of exporting all participants together
 (option ``all together'') or separated by their course of studies. Also you
 can choose the data fields by which the output is sorted. The result
 of this export is an ASCII file in a certain format (see
-\ref{exportexclassformat}), that contains basically the IDs, the first and
+\ref{distribute.py}), that contains basically the IDs, the first and
 last names, the semester number, the course of studies, the wishlist and
 possible additional data you may collect of each participant.
 
@@ -1621,6 +1773,8 @@ result of \texttt{numbergroups.py} can be appended to
 information is available to the {\OKUSON} server.
 
 \subsection{Usage of \texttt{distribute.py}}
+
+\label{distribute.py}
 
 The input to \texttt{distribute.py} is an ASCII file with one line for
 each participant (plus extra lines, see below). Each such line has to
@@ -1786,91 +1940,6 @@ importing exam results in the {\OKUSON} server, displaying the results.
 \section{}
 \section{}
 \section{}
-
-\chapter{Import and Export of Data}
-
-In this section we describe the export facilities of the {\OKUSON} server.
-The basic idea is that most of the data within {\OKUSON} should be
-accessible for the user in a well-defined way. The reason for this is that
-it is impossible to foresee all the cases that may occur. Well-documented
-export facilities make it easy for the user to reuse existing data in
-private scripts or programs.
-
-All the export facilities can be reached via the administrator's menu
-(see \ref{adminpages}). They all send a file with content type
-``\texttt{text/okuson}'' and your browser probably will ask you to save the
-file, because it does not know what to do with this content type.
-In all cases we send sensible default names along.
-
-In this chapter we quickly go through the different options.
-
-\section{Export of Personal Data of Participants}
-\label{ExportPersData}
-
-This export facility can be reached with the button marked ``Export
-people'' in the administrator's menu. You can choose the data fields,
-by which the output is sorted. The server sends a file with default
-name ``\texttt{peoplelist.txt}''. In this file there is --- after some comment
-lines beginning with a \#-character --- for every participant one line.
-This line comes in the same format as the file \texttt{data/people.txt}
-(see \ref{people.txt}), \textbf{except} that there is an additional
-field, namely the number of the group in which the person is.
-
-This means, that there are three reasons, why you should \textbf{not} copy
-the output of this export directly to the file \texttt{data/people.txt}.
-Apart from making no sense at all, you have to remove the last data field
-with the group, and, what is probably worse, all colons and newlines that
-may be contained in personal data fields are deleted or replaced by a 
-space respectively, whereas in \texttt{data/people.txt} special precautions
-are taken to store such data (see \ref{commonformat}).
-
-So the fields in \texttt{peoplelist.txt} are separated by colons and
-arranged in the following order:
-
-\begin{center}
-\begin{tabular}{|l|}
-\hline
-ID \\
-\hline
-last name \\
-\hline
-first name \\
-\hline
-semester number \\
-\hline
-studiengang \\
-\hline
-encrypted password \\
-\hline
-email address (possibly empty) \\
-\hline
-wishlist as typed in \\
-\hline
-personal data \#1 \\
-\hline
-personal data \#2 \\
-\hline
-personal data \#3 \\
-\hline
-personal data \#4 \\
-\hline
-personal data \#5 \\
-\hline
-personal data \#6 \\
-\hline
-personal data \#7 \\
-\hline
-personal data \#8 \\
-\hline
-personal data \#9 \\
-\hline
-group number ($0$ if not in any group) \\
-\hline
-\end{tabular}
-\end{center}
-
-Our intention for this export is to be able to access the current data
-in the server easily with private scripts.
 
 %\chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{Customization Examples}
