@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Unbekanntes Blatt</h1>
 
     <p>Das von Ihnen angeforderte Übungsblatt existiert nicht. Bitte benutzen
@@ -29,9 +30,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: tutunknownsheet.tpl,v 1.1 2003/10/08 21:53:10 neunhoef Exp $ -->
+     $Id: tutunknownsheet.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

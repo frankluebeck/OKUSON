@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Notwendige Angaben fehlen</h1>
 
     <p>Sie haben mindestens eine der notwendigen Angaben "Nachname",
@@ -32,9 +33,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: emptyfields.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: emptyfields.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

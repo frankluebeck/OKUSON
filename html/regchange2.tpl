@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Änderung von Daten</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -127,9 +128,10 @@ Ihr Passwort nicht ändern wollen.
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange2.tpl,v 1.4 2004/03/05 13:25:03 neunhoef Exp $ -->
+     $Id: regchange2.tpl,v 1.5 2004/03/08 21:35:49 neunhoef Exp $ -->
 

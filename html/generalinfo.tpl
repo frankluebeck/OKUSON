@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Allgemeine Informationen</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -118,9 +119,10 @@ vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: generalinfo.tpl,v 1.4 2003/10/12 12:25:24 neunhoef Exp $ -->
+     $Id: generalinfo.tpl,v 1.5 2004/03/08 21:35:49 neunhoef Exp $ -->
 

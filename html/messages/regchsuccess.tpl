@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Änderung der Daten erfolgreich</h1>
 
     <p>Ihre Datenänderung wurde erfolgreich registriert. </p>
@@ -28,9 +29,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchsuccess.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: regchsuccess.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

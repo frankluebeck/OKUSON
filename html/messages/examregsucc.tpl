@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Anmeldung zur Klausur registriert</h1>
 
     <p>Ihre An- bzw. Abmeldung zur Klausur wurde erfolgreich registriert
@@ -29,9 +30,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregsucc.tpl,v 1.1 2003/10/08 14:16:31 neunhoef Exp $ -->
+     $Id: examregsucc.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

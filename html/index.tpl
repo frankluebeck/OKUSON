@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Übungen <CourseName />, <Semester /></h1>
 
     <h2><Lecturer /></h2>
@@ -84,9 +85,10 @@
       <a href="techinfo.html">Technische Informationen</a>
     </p>
 
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.4 2003/10/10 00:18:50 luebeck Exp $ -->
+     $Id: index.tpl,v 1.5 2004/03/08 21:35:49 neunhoef Exp $ -->
 

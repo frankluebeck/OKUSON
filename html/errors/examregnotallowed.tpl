@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Klausuranmeldung nicht erlaubt</h1>
 
     <p>Derzeit sind keine Klausuran- bzw. -abmeldungen erlaubt.
@@ -30,9 +31,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregnotallowed.tpl,v 1.1 2004/03/04 13:52:24 neunhoef Exp $ -->
+     $Id: examregnotallowed.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

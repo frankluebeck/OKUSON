@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Unknown Sheet</h1>
 
     <p>The sheet you requested does not exist. Please use the "Back"-Button
@@ -29,9 +30,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: admunknownsheet.tpl,v 1.1 2003/10/08 23:37:31 neunhoef Exp $ -->
+     $Id: admunknownsheet.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

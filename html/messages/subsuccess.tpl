@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Abgabe erfolgreich</h1>
 
     <p> Ihre Abgabe für Blatt <SheetName /> wurde erfolgreich registriert 
@@ -39,9 +40,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: subsuccess.tpl,v 1.2 2003/10/08 23:38:56 neunhoef Exp $ -->
+     $Id: subsuccess.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
 

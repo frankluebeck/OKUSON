@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Übungsgruppe bereits voll</h1>
 
     <p>Die Übungsgruppe, für die Sie sich entschieden haben, ist bereits
@@ -32,9 +33,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupfull.tpl,v 1.1 2004/03/08 07:29:32 neunhoef Exp $ -->
+     $Id: groupfull.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

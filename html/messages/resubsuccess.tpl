@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Resubmission successful</h1>
 
     <p>The resubmission was successful. All marks should now be correct.
@@ -30,9 +31,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: resubsuccess.tpl,v 1.1 2003/10/08 23:37:31 neunhoef Exp $ -->
+     $Id: resubsuccess.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

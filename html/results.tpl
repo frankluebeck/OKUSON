@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Anzeige der Ergebnisse</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -92,9 +93,10 @@ ja von den korrigierten Zetteln.):</p>
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.9 2004/03/05 14:31:54 luebeck Exp $ -->
+     $Id: results.tpl,v 1.10 2004/03/08 21:35:49 neunhoef Exp $ -->
 

@@ -14,6 +14,7 @@
   </head>
 
   <body>
+    <Header />
 
     <h1>Statistics for sheet <SheetName /></h1>
 
@@ -32,6 +33,7 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 

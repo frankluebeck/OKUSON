@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Übungsgruppeneinteilung</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -62,9 +63,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupoverview.tpl,v 1.2 2004/03/05 10:40:23 luebeck Exp $ -->
+     $Id: groupoverview.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
 

@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Übungsblatt <SheetName /></h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -67,9 +68,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: sheet.tpl,v 1.3 2004/03/05 14:31:54 luebeck Exp $ -->
+     $Id: sheet.tpl,v 1.4 2004/03/08 21:35:49 neunhoef Exp $ -->
 

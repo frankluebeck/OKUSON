@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Anmeldung zu den Übungen</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -122,9 +123,10 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: registration.tpl,v 1.2 2004/03/05 13:25:03 neunhoef Exp $ -->
+     $Id: registration.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
 

@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Teilnehmer nicht in dieser Gruppe</h1>
 
     <p>Der von Ihnen angeforderte Teilnehmer ist nicht in dieser Gruppe.
@@ -30,9 +31,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: idnotingroup.tpl,v 1.1 2003/10/08 20:36:39 neunhoef Exp $ -->
+     $Id: idnotingroup.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

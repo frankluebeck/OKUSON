@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Anmeldung nicht erlaubt</h1>
 
     <p>Derzeit sind keine neuen Anmeldungen erlaubt.
@@ -30,9 +31,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regnotallowed.tpl,v 1.1 2004/03/04 13:45:42 neunhoef Exp $ -->
+     $Id: regnotallowed.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

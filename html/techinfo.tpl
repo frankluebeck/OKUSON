@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Technische Informationen</h1>
 
         <p>
@@ -77,9 +78,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.5 2003/10/15 20:02:34 luebeck Exp $ -->
+     $Id: techinfo.tpl,v 1.6 2004/03/08 21:35:49 neunhoef Exp $ -->
 

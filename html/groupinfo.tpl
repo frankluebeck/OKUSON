@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Übungsgruppen Information</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -38,9 +39,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupinfo.tpl,v 1.2 2003/10/06 22:38:12 luebeck Exp $ -->
+     $Id: groupinfo.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
 

@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Ungültige Gruppennummer</h1>
 
     <p>Bitte geben Sie als Gruppennummer eine positive, ganze Zahl ein,
@@ -30,9 +31,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: badgroupnr.tpl,v 1.1 2003/10/08 20:36:38 neunhoef Exp $ -->
+     $Id: badgroupnr.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

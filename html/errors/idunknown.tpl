@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Matrikelnummer unbekannt</h1>
 
     <p>Unter der von Ihnen angegebenen Matrikelnummer existiert noch
@@ -35,9 +36,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: idunknown.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: idunknown.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

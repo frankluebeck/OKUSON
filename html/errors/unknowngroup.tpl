@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Fehler: Unbekannte Gruppe</h1>
 
     <p>Es gibt keine Gruppe mit der angefragten Nummer.
@@ -29,9 +30,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: unknowngroup.tpl,v 1.1 2003/10/06 16:34:23 luebeck Exp $ -->
+     $Id: unknowngroup.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

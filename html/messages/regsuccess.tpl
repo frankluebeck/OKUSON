@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Anmeldung erfolgreich</h1>
 
     <p>Ihre Anmeldung wurde erfolgreich registriert. Sie können die über
@@ -37,9 +38,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regsuccess.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: regsuccess.tpl,v 1.2 2004/03/08 21:35:49 neunhoef Exp $ -->
 

@@ -14,6 +14,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Cumulated statistics for all closed sheets</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -31,6 +32,7 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 

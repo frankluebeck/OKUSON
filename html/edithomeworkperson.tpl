@@ -13,6 +13,7 @@
   </head>
 
   <body>
+    <Header />
     <h1>Eingabe von Hausaufgabenpunkten</h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
@@ -47,9 +48,10 @@
     <p class="foot">
       <ValidatorIcon />
     </p>
+    <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkperson.tpl,v 1.5 2003/10/29 16:31:36 luebeck Exp $ -->
+     $Id: edithomeworkperson.tpl,v 1.6 2004/03/08 21:35:49 neunhoef Exp $ -->
 
