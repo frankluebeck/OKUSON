@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.38 2003/10/10 20:33:14 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.39 2003/10/10 20:58:19 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1303,7 +1303,9 @@ def AdminLogin(req,onlyhead):
     currentcookie = str(random.randrange(10000000))
     (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
     header['Set-Cookie'] = 'OKUSON='+currentcookie
-    header['Location'] = '/adminmenu.html'
+    #header['Location'] = '/adminmenu.html'
+    # Taken out to please opera, which does not get the cookie for the
+    # login with this header. Max.
     return (header,content)
 
 Site['/AdminLogin'] = FunWR(AdminLogin)
