@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.16 2003/11/07 23:25:18 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.17 2003/11/10 13:58:10 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -593,9 +593,14 @@ of the sheet with seed "seed" and returns the result as a string.
                 l = choice[i]
                 
                 # Now we write out the questions:
+                qnr = 1
                 for j,k in l:
                     if (j,k) == (None,None):
-                        f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n & ')
+                        if seed == '':  # called for checking all variants
+                            f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n {\\tiny ' + str(qnr) +'} & ')
+                            qnr = qnr + 1
+                        else:
+                            f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n & ')
                         continue;
                     q = o.list[j]
                     f.write(('\\begin{minipage}[t]{'+woq+\
@@ -678,6 +683,69 @@ of the sheet with seed "seed" and returns the result as a string.
                               qu.solutions[k][0])
                 res.append('')
         return string.join(res, '\n')
+
+    def Statistics(self):
+        presented = {}   # How many students have seen this question/variant?
+        tried = {}  # How many students have submitted an solution?
+        solved = {}  # How many students did it right?
+
+        peopleKeys = Data.people.keys()
+
+        for i in range(len(self.list)):
+            if isinstance(self.list[i], Exercise):
+                ex = self.list[i]
+                presented[ex.key] = {}
+                tried[ex.key] = {}
+                solved[ex.key] = {}
+                for j in range(len(ex.list)):
+                    qu = ex.list[j]
+                    if isinstance(qu, Question):
+                        presented[ex.key][j]=[]
+                        tried[ex.key][j]=[]
+                        solved[ex.key][j]=[]
+                        for k in range(qu.nrvariants):
+                            presented[ex.key][j].append(0)
+                            tried[ex.key][j].append(0)
+                            solved[ex.key][j].append(0)
+        submissionCount = 0
+        peopleCount = 0
+        for k in peopleKeys:
+                p = Data.people[k]
+                if not(Config.conf['GuestIdRegExp'].match(k)):
+                    personalExercises = self.ChooserFunction(hash(k))
+                    countOfQuestions = 0
+                    peopleCount += 1
+                    if p.mcresults.has_key(self.name): submissionCount+=1
+                    for i in range(len(personalExercises)):
+                        if isinstance(self.list[i], Exercise):
+                            exKey = self.list[i].key
+#                            if not presented.has_key(exKey):
+#                                presented[exKey] = {}
+#                                tried[]
+                            exerciseList = personalExercises[i]
+                            for exerciseIndex,variantNumber in exerciseList:
+                                if p.mcresults.has_key(self.name):
+                                    presented[exKey][exerciseIndex][variantNumber] += 1
+                                    if p.mcresults[self.name].marks[countOfQuestions] != '0':
+                                        tried[exKey][exerciseIndex][variantNumber] += 1
+                                    if p.mcresults[self.name].marks[countOfQuestions] == '+':
+                                        solved[exKey][exerciseIndex][variantNumber] += 1
+                                    countOfQuestions += 1
+
+        res = []
+        for i in range(len(self.list)):
+            if isinstance(self.list[i], Exercise):
+                ex = self.list[i]
+                qunr = 0
+                for j in range(len(ex.list)):
+                    qu = ex.list[j]
+                    if isinstance(qu, Question):
+                        qunr = qunr+1
+                        for k in range(qu.nrvariants):
+                            res.append( (self.exnr[i], qunr, k+1, \
+                                 presented[ex.key][j][k] , tried[ex.key][j][k], solved[ex.key][j][k] ) )
+
+        return (peopleCount, submissionCount, res)
 
 class Exercise(Utils.WithNiceRepr):
     key = "auf123"           # a unique key for the Exercise

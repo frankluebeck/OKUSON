@@ -93,6 +93,13 @@
       </select>
     </p></form>
 
+    <form action="/ExportExerciseStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Export Exercise Statistics for sheet
+    <AvailableSheetsAsButtons />
+    </p>
+    </form>
+
     <h3>Special Access for Administrators:</h3>
 
     <form action="/DisplaySheets" method="post">
@@ -133,5 +140,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.13 2003/10/26 23:29:17 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.14 2003/11/10 13:58:10 neunhoef Exp $ -->
 

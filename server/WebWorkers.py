@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.63 2003/11/07 16:25:41 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.64 2003/11/10 13:58:10 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -815,7 +815,53 @@ a Person object and a Sheet object as data.'''
     def handle_OpenFrom(self,node,out):
         if self.s.openfrom:
             out.write(LocalTimeString(self.s.openfrom))
+    def handle_StatisticsTable(self, node, out):
+        numberOfPeople, numberOfSubmissions, statistics = self.s.Statistics()
+        out.write('<table class="statistics">\n')
+        out.write('<tr><th>Ex</th><th>Qu</th><th>Var</th>'
+            + '<th colspan="2">Seen By</th><th colspan="2">Tried By</th><th colspan="2">Solved By</th></tr>')
+        exnr_old, qnr_old, vnr, presented, tried, solved = statistics[0]
+        for exnr, qnr, vnr, presented, tried, solved in statistics:
+            out.write('<tr')
+            if exnr > exnr_old:
+                out.write(' class="extrenner"')
+                exnr_old = exnr
+                qnr_old = qnr
+            elif qnr > qnr_old:
+                out.write(' class="qutrenner"')
+                qnr_old = qnr
+            out.write('>')
+            out.write('<td>%d</td><td>%d</td><td>%d</td>' % (exnr,qnr,vnr))
+            if numberOfPeople > 0:
+                out.write('<td>%d</td><td>%.2f%%</td>' % (presented, (float(100*presented)/float(numberOfPeople))))
+            else:
+                out.write('<td>%d</td><td></td>' % presented )
+            if presented > 0:
+                pc = float(tried)/float(presented)
+                out.write('<td>%d</td><td %s>%.2f%%</td>' % (tried, ClassFromFraction(pc) ,100.0*pc))
+            else:
+                out.write('<td>%d</td><td>0 %%</td>' % tried)
+            if tried > 0:
+                pc = float(solved)/float(tried)
+                out.write('<td>%d</td><td %s>%.2f%%</td>' % (solved, ClassFromFraction(pc), 100*pc ))
+            else:
+                out.write('<td>%d</td><td>0</td>' % solved)
+            out.write('</tr>\n')
+        out.write('</table>')
 
+def ClassFromFraction(pc):
+    # pc should be a float. Meaningfull results only with 0<=pc<=1
+    # Returns string with CSS-"class"-statement, corresponding to pc
+    # col0 - col100 with stepwidth 5
+    try:
+        pc = float(pc)
+        if pc < 0: pc = 0
+        if pc > 1: pc = 1
+    except:
+        return ''
+    pc = int (pc * 100)
+    col  = (pc / 5) * 5
+    return ' class="col' + str(col) + '" '
 
 
 def SeedFromId(id):
@@ -1688,6 +1734,54 @@ Site['/ExportExamParticipants'] = FunWR(ExportExamParticipants)
 Site['/ExportExamParticipants'].access_list = \
       Config.conf['AdministrationAccessList']
 
+def ExportExerciseStatistics2(req,onlyhead):
+    '''Export statistics for the MC-questions. How many tried, how
+        many failed for which question?'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+
+    out = cStringIO.StringIO()
+
+    sheet = req.query.get('sheet',[''])[0].strip()
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet: i += 1
+    if i < len(sl):   # we know this sheet!
+        s = sl[i][2]
+        out.write('Statistik für Blatt ' + s.name + '\n')
+        statistics = s.Statistics()
+        for exnr, qnr, vnr, presented, tried, solved in statistics:
+            out.write(str(exnr) + ' ' + str(qnr) + ' ' + str(vnr) + ' ' \
+                + str(presented) + ' ' + str(tried) + ' ' + str(solved) + '\n')
+    else:
+        out.write('Blatt nicht gefunden.\n')
+    st = out.getvalue()
+    head = {'Content-type':'text/text',
+               'Content-transfer-encoding':'iso-8859-1',
+               'Last-modified':req.date_time_string(time.time())}
+    return(head,st)
+
+Site['/ExportExerciseStatistics2'] = FunWR(ExportExerciseStatistics2)
+Site['/ExportExerciseStatistics2'].access_list = Config.conf['AdministrationAccessList']
+
+def ExportExerciseStatistics(req,onlyhead):
+    if AuthenticateAdmin(req,onlyhead)<0:
+        return Delegate('/errors/notloggedin.html', req, onlyhead)
+
+    sheet = req.query.get('sheet',[''])[0].strip()
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet: i+=1
+    if i < len(sl):
+        s = sl[i][2]
+        handler = EH_withPersSheet_class(None,s,Config.conf['Resolutions'][0])
+        return Delegate('/exercisestatistics.html', req, onlyhead, handler)
+    else:
+        return Delegate('/errors/unknownsheet.html', req, onlyhead)
+
+
+Site['/ExportExerciseStatistics'] = FunWR(ExportExerciseStatistics)
+Site['/ExportExerciseStatistics'].access_list = Config.conf['AdministrationAccessList']
 
 def ExportResults(req,onlyhead):
     '''Exports all results of all participants, including MC, homework and
