@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.41 2003/10/13 15:21:26 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.42 2003/10/13 15:42:28 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -23,7 +23,7 @@ LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 # First we set our document root:
 DocRoot = BuiltinWebServer.DocRoot = Config.conf['DocumentRoot']
 ElHandlers = XMLRewrite.ElementHandlers_tpl
-# We store an xml header with DOCTYPE for XTML 1.0 Strict into the
+# We store an xml header with DOCTYPE for XHTML 1.0 Strict into the
 # class variable "begin" such that this is the global default header:
 XMLRewrite.PreparsedXMLWebResponse.begin = \
 '''<?xml version="1.0" encoding="ISO-8859-1"?>
