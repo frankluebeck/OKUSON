@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.7 2003/10/04 23:03:08 luebeck Exp $
+##  $Id: CHANGES,v 1.8 2003/10/04 23:38:02 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -36,7 +36,7 @@ Changes from 1.0-pre2  to  1.0-pre3
 * improved the <Results > element used in html/results.tpl, now the
   consideration of each of the interactive resp. homework exercises can 
   can be switched off.
-
+* remove temporary files for PDF sheets.
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------
