@@ -121,12 +121,13 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
     </p>
 
     <p class="foot">
-      <ValidatorIcon /> OKUSON-Version: <Version/>
+      <ValidatorIcon /> <a href="http://www.math.rwth-aachen.de/~OKUSON/">
+      (OKUSON <Version/>)</a>
     </p>
     <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: registration.tpl,v 1.4 2004/10/05 09:04:20 neunhoef Exp $ -->
+     $Id: registration.tpl,v 1.5 2004/10/06 10:26:44 neunhoef Exp $ -->
 

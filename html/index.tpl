@@ -81,7 +81,8 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon /> OKUSON-Version: <Version/>
+      <ValidatorIcon /> <a href="http://www.math.rwth-aachen.de/~OKUSON/">
+      (OKUSON <Version/>)</a>
       <a href="techinfo.html">Technische Informationen</a>
     </p>
 
@@ -90,5 +91,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.6 2004/10/05 09:04:20 neunhoef Exp $ -->
+     $Id: index.tpl,v 1.7 2004/10/06 10:26:44 neunhoef Exp $ -->
 

@@ -31,7 +31,8 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon /> OKUSON-Version: <Version/>
+      <ValidatorIcon /> <a href="http://www.math.rwth-aachen.de/~OKUSON/">
+      (OKUSON <Version/>)</a>
     </p>
     <Footer />
   </body>
