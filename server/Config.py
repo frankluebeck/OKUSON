@@ -108,23 +108,15 @@ def OurDtdOpener(d):
 def ReadConfig():
     global conf
     configfile = os.path.join(home,"Config.xml")
-    try:
-        cf = Utils.StringFile(configfile)
-    except:
+    parseconf = { 'fourth': pyRXPU.recordLocation,
+                  'ReturnDefaultedAttributes': 0,
+                  'MergePCData': 1,
+                  'Validate': 1,
+                  'eoCB': OurDtdOpener }
+    tree = XMLRewrite.Parse(config = parseconf, file = configfile)
+    if not tree:
+        Utils.Error("Cannot parse the Config.xml file!")
         FailMiserably()
-
-    XMLRewrite.pyRXPLock.acquire()
-    p = pyRXPU.Parser(fourth = pyRXPU.recordLocation,
-                      ReturnDefaultedAttributes = 0,
-                      MergePCData = 1,
-                      Validate = 1,
-                      eoCB = OurDtdOpener)
-    try:
-        tree = p.parse(cf, srcName = configfile)
-    except pyRXPU.error, e:
-        Utils.Error("XML parser error:\n\n"+str(e))
-        FailMiserably()
-    XMLRewrite.pyRXPLock.release()
 
     # Now run through the tree:
     # We know by the DTD that there is exactly one "Config" element.

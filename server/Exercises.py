@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.15 2003/11/07 16:25:41 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.16 2003/11/07 23:25:18 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -739,13 +739,11 @@ def OurDtdOpener(d):
 
 
 # Create an XML parser, we switch on location information.
-XMLRewrite.pyRXPLock.acquire()
-Parser = pyRXPU.Parser(fourth = pyRXPU.recordLocation,
-                       ReturnDefaultedAttributes = 0,
-                       MergePCData = 1,
-                       Validate = 1,
-                       eoCB = OurDtdOpener)
-XMLRewrite.pyRXPLock.release()
+Parser = XMLRewrite.NewParser({'fourth': pyRXPU.recordLocation,
+                       'ReturnDefaultedAttributes': 0,
+                       'MergePCData': 1,
+                       'Validate': 1,
+                       'eoCB': OurDtdOpener })
 
 
 # A little comment on error processing:
@@ -900,18 +898,10 @@ def MakeExercise(t, prefix=''):
 # The prefix is prepended to the exercise key.
 def ReadExercisesFile(fname, prefix=''):
   # Parsing and validating the content of an .auf file
-  try:
-      s = Utils.StringFile(fname)
-  except Utils.UtilsError:
-      Utils.Error('Cannot read exercises file '+fname+'.')
-      return
-  XMLRewrite.pyRXPLock.acquire()
-  try:
-      tree = Parser.parse(s, srcName=fname)
-  except pyRXPU.error, e:
-      Utils.Error("XML parser error:\n\n"+str(e))
-      return
-  XMLRewrite.pyRXPLock.release()
+  tree = XMLRewrite.Parse(Parser, file = fname)
+  if not tree:
+    Utils.Error('Cannot read or parse exercises file '+fname+'.')
+    return
 
   # Now we can be sure that the "tree" contains data of a valid exercises
   # document.
@@ -1110,18 +1100,10 @@ def MakeSheet(t):
 # tag) or just one <SHEET> is contained in the file fname.
 def ReadSheetsFile(fname):
   # Parsing and validating the content of an .bla file
-  try:
-      s = Utils.StringFile(fname)
-  except UtilsError:
-      Utils.Error('Cannot read sheets file '+fname+'.')
+  tree = XMLRewrite.Parse(Parser, file = fname)
+  if not tree:
+      Utils.Error('Cannot read or parse sheet(s) file '+fname+'.')
       return
-  XMLRewrite.pyRXPLock.acquire()
-  try:
-      tree = Parser.parse(s, srcName=fname)
-  except pyRXPU.error, e:
-      Utils.Error("XML parser error:\n\n"+str(e))
-      return
-  XMLRewrite.pyRXPLock.release()
 
   # Now we can be sure that the "tree" contains data of a valid sheets
   # document.

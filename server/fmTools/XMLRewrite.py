@@ -10,19 +10,68 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.2 2003/11/07 16:25:41 luebeck Exp $'
+CVS = '$Id: XMLRewrite.py,v 1.3 2003/11/07 23:25:18 luebeck Exp $'
 
-import os, types, glob, pyRXPU, cStringIO, threading
+import os, sys, types, glob, pyRXPU, cStringIO, threading, traceback
 import Utils
 
 # We create a pyRXP Lock, because there are global variables in that
-# C-module which cannot be shared by threads.
+# C-module which cannot be shared by threads. So, in an application with
+# threads: *Never* call a pyRXP function without having this lock.
 pyRXPLock = threading.Lock()
 
+# This is for creating a new parser while locking the pyRXP module. By
+# default a parser with the pyRXP default settings is created. The settings
+# can be changed by giving a dictionary with the parser attribute names as keys
+# as argument 'config'.
+def NewParser(config = {}):
+  pyRXPLock.acquire()
+  res = pyRXPU.Parser()
+  for k in config.keys():
+    setattr(res, k, config[k])
+  pyRXPLock.release()
+  return res
 
+def Parse(parser = None, string = None, file = None, config = None, 
+          srcName = 'stringtoparse', reporterror = Utils.Error):
+  '''This utility should be used for parsing XML files/strings in a threaded
+environment. One can give a parser as argument 'parser' and a string
+'string' as input or a filename by the 'file' argument, then its content is
+parsed. If successful, the result of the pyRXP parser are returned,
+otherwise None is returned.
+'''
+  # first get input string, if 'file' given then get its content
+  if file != None:
+    try:
+      string = Utils.StringFile(file)
+      srcName = file
+    except:
+      string = ''
+  if string == None or type(string) != types.StringType:
+    reporterror('No string to parse.')
+    return None
+  # now get parser, either given as argument or newly created if argument
+  # 'config' is given
+  if config and type(config) == types.DictType:
+    parser =  NewParser(config)
+  if not parser:
+    reporterror('No parser given.')
+    return None
+  # now parse
+  pyRXPLock.acquire()
+  try:
+    res = parser.parse(string, srcName = srcName)
+  except:
+    etype, value, tb = sys.exc_info()
+    lines = traceback.format_exception(etype,value,tb)
+    reporterror('Problem with XML parsing '+srcName+':\n'+string.join(lines))
+    res = None  
+  pyRXPLock.release()
+  return res
+  
 # Here is a dictionary of .dtd and .ent file names as keys and a
 # corresponding system path as values. By default we use files in 
-# the 'dtds' subdirectory.
+# the 'dtds' subdirectory of the fmTools package.
 DTD_ENT_FILES = {}
 
 def find_dtd_ent_locate():
@@ -93,31 +142,11 @@ RewriteParserFlags = {
 # Create a parser for rewriting with above flags, see the pyRXP documentation 
 # for an  explanation of the format of the output of this parser 
 # (we append the a section from that doc at the end of this file)
-def NewParser():
-  pyRXPLock.acquire()
-  res = pyRXPU.Parser()
-  for k in RewriteParserFlags.keys():
-    setattr(res, k, RewriteParserFlags[k])
-  pyRXPLock.release()
-  return res
-
-Parser = NewParser()
-
-# call parser with file name
-def ParseFile(fname, reporterror = Utils.Error):
-  s = Utils.StringFile(fname, reporterror=reporterror)
-  pyRXPLock.acquire()
-  try:
-      t = Parser(s, srcName = fname)
-  except pyRXPU.error, e:
-      reporterror("XML parser error:\n\n"+str(e))
-      raise
-  pyRXPLock.release()
-  return t
+RewriteParser = NewParser(RewriteParserFlags)
 
 # And another list for use for validation with fully resolved of entities
 # and info on processing instructions and comments.
-ValidatingParserFlags = {
+ValidatingParserConfig = {
     'NormaliseAttributeValues': 1,
     'WarnOnRedefinitions': 1,
     'ExpandCharacterEntities': 1,
@@ -156,42 +185,20 @@ ValidatingParserFlags = {
     'Validate': 1,
     'XMLSpace': 0,
     'ExpandGeneralEntities': 1,
-    'ErrorOnUndefinedEntities': 1}
+    'ErrorOnUndefinedEntities': 1,
+    'eoCB': eoCBfun,
+    }
 
 
 # Create a validating parser with above flags, see the pyRXP documentation 
 # for an explanation of the format of the output of this parser 
 # (we append the a section from that doc at the end of this file)
-def NewValidatingParser():
-  pyRXPLock.acquire()
-  res = pyRXPU.Parser(eoCB = eoCBfun)
-  for k in ValidatingParserFlags.keys():
-    setattr(res, k, ValidatingParserFlags[k])
-  pyRXPLock.release()
-  return res
+ValidatingParser = NewParser(ValidatingParserConfig)
+
   
-ValidatingParser = NewValidatingParser()
-
-# call parser with file name
-def ValidateXMLFile(fname, reporterror = Utils.Error):
-  global lastpe
-  s = Utils.StringFile(fname, reporterror=reporterror)
-  t = None
-  pyRXPLock.acquire()
-  try:
-      t = ValidatingParser(s, srcName = fname)
-  except pyRXPU.error, e:
-      lines = str(e).split('\n')
-      for l in lines:
-          if l[:12] != "Parse Failed":
-               Utils.Error(l, prefix = '')
-      Utils.Error('No success! Correct shown error and try again.', prefix='')
-      return None
-  pyRXPLock.release()
-  return t
-
-
-# Recursive walk through an XMLTree:
+#########################################################################
+##
+##  Recursive walk through an XMLTree with possible modifications.
 
 def XMLTreeRecursion(node,handlers,res):
     '''This is the dispatcher for a recursive walk through the XMLTree.
@@ -363,7 +370,7 @@ ElementHandlers_tpl = XMLElementHandlers()
 # With the entry in webserv.site we cache the parsed XML tree.
 def InitXHTMLRewriteWebResponse(req, nam):
   try:
-    tree = ParseFile(nam)
+    tree = Parse(RewriteParser, file = nam)
     response = XMLRewriteWebResponse(tree, handler = ElementHandlers_tpl,
                beginresult = '''<?xml version=1.0 encoding="ISO-8859-1"?>
 
@@ -405,7 +412,7 @@ occurs the error is reported via "Utils.Error" and an exception is raised.
 a string for delivery. "begin" and "end" are strings which are put before
 and after the result respectively.'''
         self.filename = os.path.join(docroot,filename)
-        self.tree = ParseFile(self.filename)
+        self.tree = Parse(RewriteParser, file = self.filename)
         self.handlers = handlers
         self.type = type
         if begin != None: self.begin = begin
