@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.83 2004/03/05 08:24:34 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.84 2004/03/05 10:40:23 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -128,7 +128,12 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             s.append('<tr>')
             for a in fields:
                 if hasattr(grp, a):
-                    if a in ['number','nrparticipants']:
+                    # special case of custom data
+                    if len(a) > 9 and a[:10] == 'groupdata.':
+                        key = a[11:]
+                        s.append('<td>'+str(grp.groupdata.get(key, [''])[0])+ \
+                                 '</td>')
+                    elif a in ['number','nrparticipants']:
                         s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
                              str(getattr(grp, a))+'</a></td>')
                     else:
@@ -1253,24 +1258,11 @@ class EH_withGroupInfo_class(EH_Generic_class):
         out.write(str(self.grp.time))
     def handle_GroupEmailTutor(self,node,out):
         out.write(str(self.grp.emailtutor))
-    def handle_GroupInfo1(self,node,out):
-        out.write(str(self.grp.groupinfo1))
-    def handle_GroupInfo2(self,node,out):
-        out.write(str(self.grp.groupinfo2))
-    def handle_GroupInfo3(self,node,out):
-        out.write(str(self.grp.groupinfo3))
-    def handle_GroupInfo4(self,node,out):
-        out.write(str(self.grp.groupinfo4))
-    def handle_GroupInfo5(self,node,out):
-        out.write(str(self.grp.groupinfo5))
-    def handle_GroupInfo6(self,node,out):
-        out.write(str(self.grp.groupinfo6))
-    def handle_GroupInfo7(self,node,out):
-        out.write(str(self.grp.groupinfo7))
-    def handle_GroupInfo8(self,node,out):
-        out.write(str(self.grp.groupinfo8))
-    def handle_GroupInfo9(self,node,out):
-        out.write(str(self.grp.groupinfo9))
+    def handle_GroupData(self,node,out):
+        try: 
+            out.write(self.grp.groupdata[node[1]['key']])
+        except: 
+            pass
     def handle_GroupIDs(self,node,out):
         l = Utils.SortNumerAlpha(self.grp.people)
         out.write(string.join(l, ', '))
@@ -1899,10 +1891,8 @@ def TutorRequest(req,onlyhead):
         passwd = crypt.crypt(pw1,salt)
         # Now change password for this group:
         line = AsciiData.LineTuple( (str(groupnr), passwd, g.tutor, g.place,
-                                     g.time, g.emailtutor, g.groupinfo1,
-                                     g.groupinfo2, g.groupinfo3, g.groupinfo4,
-                                     g.groupinfo5, g.groupinfo6, g.groupinfo7,
-                                     g.groupinfo8, g.groupinfo9) )
+                                     g.time, g.emailtutor, 
+                                     AsciiData.LineDict(g.groupdata) ) )
         Data.Lock.acquire()
         try:
             Data.groupinfodesc.AppendLine(line)

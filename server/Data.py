@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.17 2004/03/05 08:24:34 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.18 2004/03/05 10:40:23 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -215,15 +215,7 @@ class GroupInfo(Utils.WithNiceRepr):
     time = ''          # description when the group meets
     emailtutor = ''    # email of tutor
     maxsize = 1000     # maximal number of participants
-    groupinfo1 = ''    # customization info for use on group specific web pages 
-    groupinfo2 = ''    # customization info for use on group specific web pages 
-    groupinfo3 = ''    # customization info for use on group specific web pages 
-    groupinfo4 = ''    # customization info for use on group specific web pages 
-    groupinfo5 = ''    # customization info for use on group specific web pages 
-    groupinfo6 = ''    # customization info for use on group specific web pages 
-    groupinfo7 = ''    # customization info for use on group specific web pages 
-    groupinfo8 = ''    # customization info for use on group specific web pages 
-    groupinfo9 = ''    # customization info for use on group specific web pages 
+    groupdata = {}     # a dictionary for custom data for groups
 
     def __init__(self, number = -1):
         self.people = []
@@ -333,13 +325,5 @@ groupinfodesc = AsciiData.FileDescription(Config.conf['GroupInfoFile'],groups,
      "STORE", 4, "time",       "STRING",
      "STORE", 5, "emailtutor", "STRING",
      "STORE", 6, "maxsize",    "INT",
-     "STORE", 7, "groupinfo1", "STRING",
-     "STORE", 8, "groupinfo2", "STRING",
-     "STORE", 9, "groupinfo3", "STRING",
-     "STORE", 10, "groupinfo4", "STRING",
-     "STORE", 11, "groupinfo5", "STRING",
-     "STORE", 12, "groupinfo6", "STRING",
-     "STORE", 13, "groupinfo7", "STRING",
-     "STORE", 14, "groupinfo8", "STRING",
-     "STORE", 15, "groupinfo9", "STRING"    )  )
+     "STORE", 7, "groupdata",  "LINEDICT" )  )
 

@@ -46,7 +46,7 @@ F Person-Data-Seiten generisch mit weiterer Endung
 F! beliebige Anzahl persondata fuer Benutzer konfigurierbar
 !     --> "persondata" ist dictionary im Person object
 !         Diese dict-Daten werden in einen String verpackt in person.dat
-     --> "groupinfo" genauso
+!     --> "groupinfo" genauso
 M!wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
 M!Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
 M!Anmeldung fuer exams schaltbar?

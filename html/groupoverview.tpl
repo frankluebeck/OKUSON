@@ -31,8 +31,7 @@
          <th>Teilnehmerzahl</th></tr>
      <!-- customize with attribute 'components', default is
        components="number,place,tutor,nrparticipants"
-       other possible components : time, emailtutor, groupinfo1, ..., 
-       groupinfo9                  
+       other possible components : time, emailtutor, groupinfo.xxx 
      <GroupsOverview components="number,place,tutor,nrparticipants"/>
     --> <GroupsOverview/>
 
@@ -67,5 +66,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupoverview.tpl,v 1.1 2003/10/06 22:38:12 luebeck Exp $ -->
+     $Id: groupoverview.tpl,v 1.2 2004/03/05 10:40:23 luebeck Exp $ -->
 

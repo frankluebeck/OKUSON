@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.53 2004/03/05 08:24:34 luebeck Exp $
+% $Id: manual.tex,v 1.54 2004/03/05 10:40:23 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1787,7 +1787,7 @@ this information can be given to the {\OKUSON} server.
 \item[\texttt{<GroupEmailTutor/>}] the email address of the tutor of the group.
 \item[\texttt{<GroupIDs/>}] a comma separated sorted list (numerically or
 alphabetically) of the IDs of the participants.
-\item[\texttt{<GroupInfo1/>} to \texttt{<GroupInfo9/>}] further unspecified 
+\item[\texttt{<GroupData key="..."/>}]  further unspecified 
 data for customization.
 \end{description}
 
@@ -2321,12 +2321,24 @@ interpreted in the following ordering:
 \item[place] place of group meeting.
 \item[time]  time of group meeting.
 \item[email] email address of tutor.
-\item[groupinfo1 to groupinfo9] freely usable variables for customization.
+\item[groupdata] additional entries for customization.
 \end{description}
 
 Note that you could give pieces of HTML code containing appropriate links as
 some of these entries. Note also that entries are separated by colons, within 
 the entries you can encode a colon by typing \verb+\d+ instead.
+
+The last entry \emph{groupdata} must be specified as comma separated list of
+concatenated key-value pairs. Example: you can store that the lecture hall
+for a group has a blackboard and no beamer by an entry like:
+
+\hspace*{5mm} \verb!...:blackboard,yes (2 big ones),beamer,no!
+
+Such information can be used in the template web pages via tags
+
+\hspace*{5mm} \verb!<GroupData key="blackboard"/>! and 
+\verb!<GroupData key="beamer"/>!.
+
 
 \section{Input of Homework Results by Tutors}
 \label{sec:tutpage}
@@ -2725,14 +2737,13 @@ time & Time of group session (remember ``\verb!\d!'' for ``\verb!:!''!)
 \hline
 email & Email address of tutor & string \\
 \hline
-groupinfo1 & Additional group info number 1 & string \\
-\hline
-\vdots & \vdots & \vdots \\
-\hline
-groupinfo9 & Additional group info number 9 & string \\
+groupdata & Additional customization data & string \\
 \hline
 \end{tabular}
 \end{center}
+
+The format of the \emph{groupdata} entry which encodes key-value pairs is
+explained in~\ref{sec:groupinfo}.
 
 Note that in the case of this file the group number is the identifying
 field such that if more than one line with the same group number appears,
