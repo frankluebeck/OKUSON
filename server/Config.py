@@ -41,7 +41,7 @@ Parameters = {
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
-  "DocumentRoot":             ["PATH",1],
+  "DocumentRoot":             ["PATH",0],
   "ExerciseDirectories":      ["PATHLIST",1],
   "SheetDirectories":         ["PATHLIST",1],
   "GeneralMessageFile":       ["PATH",1],
@@ -249,4 +249,8 @@ into a usable form. Some values are changed into other data types.'''
             traceback.print_exc()
             Utils.Error('Cannot parse IP range for AdministrationAccessList: '+s)
             FailMiserably()
+    # Give a default for the DocumentRoot:
+    if not(conf.has_key('DocumentRoot')):
+        conf['DocumentRoot'] = os.path.join(home,'html')
+
 
