@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.34 2003/10/10 12:54:36 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.35 2003/10/10 14:38:07 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -14,7 +14,8 @@ import Config,Data,Exercises
 from fmTools import BuiltinWebServer, XMLRewrite, Utils, AsciiData
 from fmTools import SimpleTemplate, LatexImage
 
-def LocalTimeString(t = time.time()):
+def LocalTimeString(t = None):
+  if t == None: t = time.time()
   return time.strftime("%c", time.localtime(t))
 
 LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

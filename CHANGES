@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.29 2003/10/10 00:18:50 luebeck Exp $
+##  $Id: CHANGES,v 1.30 2003/10/10 14:38:07 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -9,23 +9,15 @@ This file documents the changes between released versions of OKUSON.
 How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
-In case that you have customized only those file which you have copies from
-sample files (Config.xml.sample -> Config.xml, html.sample/* -> html, 
-data/empty/* -> data):
-  Just unpack the newer archive in the same location where you have unpacked
-  an earlier version. 
+         See the separate file UPDATE.
 
-Otherwise:
-  Save files which you have changed and which are not mentioned above.
-  Unpack the newer archive. Reapply your changes. (Actually, you may tell
-  us which files you want to change, maybe this can be avoided by improving
-  the files in the distribution.)
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
 Attention: The following four configuration options are new in the file
            Config.xml.sample:
-             DocumentRoot, GroupInfoFile, GradingFunction, and GradingActive.
+             DocumentRoot, GroupInfoFile, GradingFunction, GradingActive,
+             and GuestIdRegExp.
            They are all optional and have sensible defaults.
 
 * removed bug with double use of <Semester/>.
