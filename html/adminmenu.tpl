@@ -26,7 +26,7 @@
     
 <hr />
 
-    <h3>Control of Server:<a name="contr" /></h3>
+    <h3>Control of Server:<a name="contr"></a></h3>
 
     <form action="/Restart" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
@@ -38,7 +38,7 @@
 
 <hr />
     
-    <h3>Special Access for Administrators:<a name="acc" /></h3>
+    <h3>Special Access for Administrators:<a name="acc"></a></h3>
 
     <form action="/DisplaySheets" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
@@ -65,7 +65,7 @@
 
     <hr />
 
-    <h3>Statistics:<a name="stat" /></h3>
+    <h3>Statistics:<a name="stat"></a></h3>
 
     <form action="/ShowExerciseStatistics" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
@@ -129,7 +129,7 @@
     
 <hr />
 
-    <h3>Export of Data:<a name="exp" /></h3>
+    <h3>Export of Data:<a name="exp"></a></h3>
 
     <form action="/ExportCustom" method="post">
     <p>Use the following format options for a customized export file.</p>
@@ -219,5 +219,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.20 2004/03/09 10:47:30 luebeck Exp $ -->
+     $Id: adminmenu.tpl,v 1.21 2004/03/09 12:58:29 luebeck Exp $ -->
 
