@@ -1,5 +1,5 @@
 %% 
-%% This is file `a0poster.cls'
+%% This is file a0poster.cls
 %% 
 %% 
 %% Copyright (C) 02.03.98 Karsten Held
@@ -36,30 +36,30 @@
 }
 \DeclareOption{a0}{
 \anulltrue\anullbfalse
-\xkoord=2380 % big points (1 bp=1/72 inch)
-\ykoord=3368 % big points (1 bp=1/72 inch)
+\xkoord=2384 % big points (1 bp=1/72 inch)
+\ykoord=3371 % big points (1 bp=1/72 inch)
 \xscale=2
 \yscale=2
 }
 \DeclareOption{a1}{
 \aeinstrue\anullbfalse
-\xkoord=1684 % big points (1 bp=1/72 inch)
-\ykoord=2380 % big points (1 bp=1/72 inch)
+\xkoord=1686 % big points (1 bp=1/72 inch)
+\ykoord=2384 % big points (1 bp=1/72 inch)
 \xscale=3
 \yscale=3
 }
 \DeclareOption{a2}{
 \azweitrue\anullbfalse
-\xkoord=1190 % big points (1 bp=1/72 inch)
-\ykoord=1684 % big points (1 bp=1/72 inch)
+\xkoord=1192 % big points (1 bp=1/72 inch)
+\ykoord=1686 % big points (1 bp=1/72 inch)
 \xscale=4
 \yscale=4
 
 }
 \DeclareOption{a3}{
 \adreitrue\anullbfalse
-\xkoord=842  % big points (1 bp=1/72 inch)
-\ykoord=1190 % big points (1 bp=1/72 inch)
+\xkoord=843  % big points (1 bp=1/72 inch)
+\ykoord=1192 % big points (1 bp=1/72 inch)
 \xscale=6
 \yscale=6
 }
@@ -76,34 +76,34 @@
 \draftfalse
 }
 \DeclareOption*{\PackageWarning{a0poster}{Unknown Option \CurrentOption}}
-\ExecuteOptions{landscape,a0b,final}
+\ExecuteOptions{landscape,a0,final}
 \ProcessOptions\relax
 
 \ifanullb
    \setlength{\paperwidth}{119cm}
    \setlength{\paperheight}{88cm}
-   \setlength{\textwidth}{116cm}
-   \setlength{\textheight}{88cm}
+   \setlength{\textwidth}{117cm}
+   \setlength{\textheight}{86cm}
 \else\ifanull
-        \setlength{\paperwidth}{118.82cm}
-        \setlength{\paperheight}{83.96cm}
-        \setlength{\textwidth}{117.82cm}
-        \setlength{\textheight}{82.96cm}
+        \setlength{\paperwidth}{118.92cm}
+        \setlength{\paperheight}{84.09cm}
+        \setlength{\textwidth}{116.92cm}
+        \setlength{\textheight}{82.09cm}
      \else\ifaeins
-             \setlength{\paperwidth}{83.96cm}
-             \setlength{\paperheight}{59.4cm}
-             \setlength{\textwidth}{83.96cm}
-             \setlength{\textheight}{58.4cm}
+             \setlength{\paperwidth}{84.09cm}
+             \setlength{\paperheight}{59.46cm}
+             \setlength{\textwidth}{82.09cm}
+             \setlength{\textheight}{57.46cm}
           \else\ifazwei
-                  \setlength{\paperwidth}{59.4cm}
-                  \setlength{\paperheight}{41.98cm}
-                  \setlength{\textwidth}{58.4cm}
-                  \setlength{\textheight}{40.98cm}
+                  \setlength{\paperwidth}{59.46cm}
+                  \setlength{\paperheight}{42.04cm}
+                  \setlength{\textwidth}{57.46cm}
+                  \setlength{\textheight}{40.04cm}
                \else\ifadrei
-                       \setlength{\paperwidth}{41.98cm}
-                       \setlength{\paperheight}{29.7cm}
-                       \setlength{\textwidth}{40.98cm}
-                       \setlength{\textheight}{28.7cm}
+                       \setlength{\paperwidth}{42.04cm}
+                       \setlength{\paperheight}{29.73cm}
+                       \setlength{\textwidth}{40.04cm}
+                       \setlength{\textheight}{27.73cm}
                     \else\relax
                     \fi
                \fi
@@ -127,9 +127,11 @@
 
 \setlength{\headheight}{0 cm}
 \setlength{\headsep}{0 cm}
-\setlength{\topmargin}{-10.7 mm}  % -1in +1.47cm
-\setlength{\oddsidemargin}{-21.4 mm} % -1in +0.4cm
-
+\setlength{\topmargin}{-15.4 mm}  % -1in +1cm
+\setlength{\oddsidemargin}{-15.4 mm} % -1in +1cm
+\setlength{\topskip}{0 cm}
+\setlength{\footskip}{0 cm}
+\setlength{\parindent}{0 cm}
 
 \catcode`\%=11
 \newwrite\Ausgabe
@@ -185,18 +187,18 @@
 
 \AtBeginDocument{
 \ifanullb
-   \ifportrait\special{papersize=91.51cm,120cm}\else\special{papersize=120cm,91.51cm}\fi
+   \ifportrait\special{papersize=88.00cm,119cm}\else\special{papersize=119cm,88.00cm}\fi
 \else\ifanull
-        \ifportrait\special{papersize=83.96cm,118.82cm}\else\special{papersize=118.82cm,83.96cm}\fi
+        \ifportrait\special{papersize=84.09cm,118.92cm}\else\special{papersize=118.92cm,84.09cm}\fi
      \else\ifaeins
-             \ifportrait\special{papersize=59.4cm,83.96cm}\else\special{papersize=83.96cm,59.4cm}\fi
+             \ifportrait\special{papersize=59.46cm,84.09cm}\else\special{papersize=84.09cm,59.46cm}\fi
           \else\ifazwei
-                  \ifportrait\special{papersize=41.98cm,59.4cm}\else\special{papersize=59.4cm,41.98cm}\fi
+                  \ifportrait\special{papersize=42.04cm,59.46cm}\else\special{papersize=59.46cm,42.04cm}\fi
                \else\ifadrei
                       \ifdraft
-                       \ifportrait\special{papersize=29.7cm,41.35cm}\else\special{papersize=41.98cm,29.0cm}\fi
+                       \ifportrait\special{papersize=29.73cm,42.04cm}\else\special{papersize=42.04cm,29.73cm}\fi
                       \else
-                       \ifportrait\special{papersize=29.7cm,41.98cm}\else\special{papersize=41.98cm,29.7cm}\fi
+                       \ifportrait\special{papersize=29.73cm,42.04cm}\else\special{papersize=42.04cm,29.73cm}\fi
                       \fi
                     \else\relax
                     \fi

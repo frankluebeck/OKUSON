@@ -7,28 +7,27 @@
 \usepackage{times}
 \usepackage{helvetic}
 
-\begin{document}
-
+\begin{document}%
 % Fliessenden Hintergrund von RGB-Farbe 1. .98 .98 nach 1. .85 .85 
 % und wieder nach  1. .98 .98 (1. .85 .85 wird nach 0.1=10% des Hinter-
 % grunds angenommen)
 % Achtung Werte unter .8 verbrauchen zu viel Tinte!!!
 %\background{1. .98 .98}{1. .85 .85}{0.1}
 % Hier haben wir ein paar Experimente gemacht und uns schliesslich auf
-\background{.98 .98 1.}{0.698 .819 0.941}{0.05}
+\background{.98 .98 1.}{0.698 .819 0.941}{0.10}%
 % geeinigt. Andere Versuche:
 %\background{.98 .98 1.}{.0 .39 0.65}{0.1}
 %\background{.98 .98 1.}{.0 .57 0.95}{0.1}
 %\background{.98 .98 1.}{0.741 .870 0.941}{0.05}
 %\background{.85 .85 1.}{.98 .98 1.}{-0.1}
-
+%
 % Groesse der einzelnen Spalten als Anteil der Gesamt-Textbreite
-\renewcommand{\columnfrac}{.3}
-
-
+\renewcommand{\columnfrac}{.3}%
+%
+%
 % Posterueberschrift, optional mit RGB-Hintergrundfarbe (hier .99 .99 1.)
 \begin{header}[1. .98 .98]
-\begin{tabular}{|p{9.5in}|p{19.5in}|}
+\begin{tabular}{|p{9.5in}|p{19in}|}
 \hline
 \begin{minipage}[t]{9.5in}
  \vspace*{0mm}
@@ -49,7 +48,7 @@
  \vspace*{0.3ex}
 \end{minipage}
 &
-\begin{minipage}[t]{19.5in}
+\begin{minipage}[t]{19in}
  \vspace*{0mm}
 \begin{center}
 \vspace*{2ex}
@@ -64,7 +63,7 @@ Vorlesungen
 \end{tabular}
 
 \end{header}
-
+%
 \begin{poster}
 %
 % Erste Spalte:
@@ -112,8 +111,8 @@ Das {\sf OKUSON}-System erlaubt,
 aus einer einfach zu erkennende Zeichenkette wie zum Beispiel einer Zahl
 bestehen). 
 \item Teilnehmern {\bf individuelle Aufgabenblätter} zu stellen, indem
-das System automatisch aus einer Menge von Varianten von Aufgaben in 
-Abhängigkeit der Identität des Benutzers ein Aufgabenblatt zusammenstellt.
+das System automatisch aus einer Menge von Varianten von Aufgaben, abhängig
+von der Identität des Benutzers, ein Aufgabenblatt zusammenstellt.
 \item die {\bf Verwaltung der Teilnehmer} zu automatisieren, indem von der
 {\bf Anmeldung} über die {\bf Einteilung in kleine Übungsgruppen}, die 
 {\bf Verteilung der Aufgabenblätter}, die {\bf Bekanntgabe der Ergebnisse} 
@@ -125,7 +124,7 @@ Internet abgewickelt werden.
 \begin{pbox}[1. .98 .98]
 \section{Aufgabentypen}
 
-{\sf OKUSON} bietet neben der Tatsache, das schriftlich zu lösende Aufgaben
+{\sf OKUSON} bietet neben der Tatsache, dass schriftlich zu lösende Aufgaben
 über das Internet verbreitet werden können, die folgenden drei Typen von
 automatisch bewerteten Aufgaben:
 
@@ -144,7 +143,7 @@ korrekt gewertet wird.
 \item {\bf Aufgaben mit einer eindeutigen, kurzen Ergebniszeichenkette}
 
 Hier hat der Teilnehmer eine kurze Zeichenkette, beispielsweise eine ganze
-Zahl, einzugeben, die exakt stimmen muss (nach Beseitigung von White Space
+Zahl, einzugeben, die exakt stimmen muss (nach Beseitigung von Leerzeichen
 an Anfang und Ende), damit die Antwort als korrekt gewertet wird.
 \end{enumerate}
 
@@ -172,84 +171,80 @@ Die Eingabe von Aufgaben und die Zusammenstellung von Aufgaben zu
 Aufgabenblättern erfolgt mit einem Texteditor in Form von XML-Dateien.
 Dazu wurden zwei Dokumenttypen definiert, einer für automatisch bewertete
 Aufgaben (siehe Kasten "`Aufgabentypen"') und einer für Aufgabenblätter.
-Die Texte der Aufgaben werden als \TeX-Quelltext eingegeben, so dass auch
+Die Texte der Aufgaben werden als \LaTeX-Quelltext eingegeben, so dass auch
 mathematische Formeln in hoher Qualität benutzt werden können.
 
 Wir zeigen ein Beispiel für eine Aufgabe und eines für ein Aufgabenblatt:
 
-{\small\blue
-\begin{verbatim}
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+{\ttfamily\small
+\blue<?xml \green version\black=\red\verb!"1.0"! \green encoding\black=\red\verb!"ISO-8859-1"!\blue?>\black\\
+\blue<!DOCTYPE \green EXERCISE SYSTEM \red\verb!"exercise.dtd"!\blue>\black
 
-<EXERCISE key="B0_Mengen" keywords="Menge Abbildung">
-<ANSWERS type="r"> Ja|Nein </ANSWERS>
+\blue<EXERCISE \green key\black=\red\verb!"B0_Mengen"! \green keywords\black=\red\verb!"Menge Abbildung"!>\\
+\blue<ANSWERS \green type\black=\red\verb!"r"!\blue>\black Ja|Nein \blue</ANSWERS>\black\\
 
-<TEXT>
-Beantworten Sie die folgenden Fragen über Mengen:
-</TEXT>
+\blue<TEXT>\black\\
+Beantworten Sie die folgenden Fragen über Mengen:\\
+\blue</TEXT>\black\\
 
-<QUESTION>
-<VARIANT solution="Nein"> 
-Ist die Menge $\{ 1, \{2, 3\}\}$ eine Teilmenge der 
-Menge $\{ 1, \{ 2,3,4 \}, 5\}$? 
-</VARIANT>
-<VARIANT solution="Ja">
-Ist die Menge $\{ 1, \{2, 3,4 \}\}$ eine Teilmenge der 
-Menge $\{ 1, \{ 2,3,4 \}, 5\}$? 
-</VARIANT>
-</QUESTION>
+\blue<QUESTION>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"Nein"!\blue>\black\\
+Ist die Menge \verb!$\{ 1, \{2, 3\}\}$! eine Teilmenge der \\
+Menge \verb!$\{ 1, \{ 2,3,4 \}, 5\}$!? \\
+\blue</VARIANT>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"Ja"!\blue>\black\\
+Ist die Menge \verb!$\{ 1, \{2, 3,4 \}\}$! eine Teilmenge der \\
+Menge \verb!$\{ 1, \{ 2,3,4 \}, 5\}$!? \\
+\blue</VARIANT>\black\\
+\blue</QUESTION>\black\\
 
-<QUESTION>
-<VARIANT solution="2|3|5|7">
-Welche der natürlichen Zahlen von $1$ bis $10$ sind 
-Primzahlen?
-</VARIANT>
-<VARIANT solution="1|4|6|8|9|10">
-Welche der natürlichen Zahlen von $1$ bis $10$ sind 
-keine Primzahlen?
-</VARIANT>
+\blue<QUESTION>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"2|3|5|7"!\blue>\black\\
+Welche der natürlichen Zahlen von \verb!$1$! bis \verb!$10$! sind\\
+Primzahlen?\\
+\blue</VARIANT>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"1|4|6|8|9|10"!\blue>\black\\
+Welche der natürlichen Zahlen von \verb!$1$! bis \verb!$10$! sind\\
+keine Primzahlen?\\
+\blue</VARIANT>\black\\
+\blue</QUESTION>\black\\
 
-<QUESTION>
-<ANSWERS type="s"> </ANSWERS>
-<VARIANT solution="3"> 
-Wieviele Elemente hat die Menge $\{ 1,\{2,3,4\},5\}$?  
-</VARIANT>
-<VARIANT solution="3"> 
-Wieviele Elemente hat die Menge $\{ 5,\{4,3,2\},1\}$?
-</VARIANT>
-</QUESTION>
+\blue<QUESTION>\black\\
+\blue<ANSWERS \green type\black=\red\verb!"s"!\blue> </ANSWERS>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"3"!\blue> \black\\
+Wieviele Elemente hat die Menge \verb!$\{ 1,\{2,3,4\},5\}$!?\\
+\blue</VARIANT>\black\\
+\blue<VARIANT \green solution\black=\red\verb!"3"!\blue>\black\\ 
+Wieviele Elemente hat die Menge \verb!$\{ 5,\{4,3,2\},1\}$!?\\
+\blue</VARIANT>\black\\
+\blue</QUESTION>\black\\
+\blue</EXERCISE>\black
 
-</EXERCISE>
-\end{verbatim}
 }
 
 Dies ist ein Beispiel für ein Aufgabenblatt:
 
-{\small
-\begin{verbatim}
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE SHEET SYSTEM "sheet.dtd">
+{\ttfamily\small
+\blue<?xml \green version\black=\red\verb!"1.0"! \green encoding\black=\red\verb!"ISO-8859-1"!\blue?>\black\\
+\blue<!DOCTYPE \green SHEET SYSTEM \red\verb!"sheet.dtd"!\blue>\black\\
 
-<SHEET counts="0" magic="2001" nr="0" first="1"
-       opento="14:00_19.10.2003" 
-       openfrom="14:00_12.10.2003">
+\blue<SHEET \green counts\black=\red\verb!"0"! \green magic\black=\red\verb!"2001"! \green nr\black=\red\verb!"0"! \green first\black=\red\verb!"1"! \green\\
+\verb!       !\green opento\black=\red\verb!"14:00_19.10.2003"!\black\\
+\verb!       !\green openfrom\black=\red\verb!"14:00_12.10.2003"!\blue>\\
 
-<TEXT>Dieses Blatt ist bis auf Weiteres wieder für 
-Demo-Zwecke geöffnet.</TEXT>
+\blue<TEXT>\black Dieses Blatt ist bis auf Weiteres wieder für\\
+Demo-Zwecke geöffnet.\blue</TEXT>\black\\
+\blue<EXERCISE \green key\black=\red\verb!"B0_Mengen"!\blue/>\black\\
+\blue<EXERCISE \green key\black=\red\verb!"B0_PunktvorStrich"!\blue/>\black\\
+\blue<TEXT>\black Die folgende Aufgabe ist schriftlich zu \\
+bearbeiten. \blue</TEXT>\black\\
+\blue<INCLUDE \green file\black=\red\verb!"B0_Affen.tex"!\blue/>\black\\
+\blue<TEXT>\black\\
+Abgabe bis spätestens am Freitag, dem 19. Oktober 2003, \\
+um 14 Uhr.\\
+\blue</TEXT>\black\\
+\blue</SHEET>\black
 
-<EXERCISE key="B0_Mengen"/>
-<EXERCISE key="B0_PunktvorStrich"/>
-
-<TEXT>Die folgende Aufgabe ist schriftlich zu bearbeiten.
-</TEXT>
-<INCLUDE file="B0_Affen.tex"/>
-<TEXT>
-Abgabe bis spätestens am Freitag, dem 19. Oktober 2003, 
-um 14 Uhr.
-</TEXT>
-</SHEET>
-\end{verbatim}
 }
 \end{pbox}
 \begin{pbox}
@@ -266,7 +261,8 @@ für (unter anderem) die folgenden Vorlesungen erfolgreich eingesetzt:
 \item Höhere Mathematik I
 \item Analysis I
 \end{itemize}
-
+Zusätzlich wurde {\sf OKUSON} auch für etliche kleinere Vorlesungen
+eingesetzt, um die Verwaltung zu vereinfachen.
 \end{pbox}
 \end{pcolumn}
 %
@@ -281,7 +277,7 @@ Multiple-Choice- bzw.~Multiple-Choice-ähnlichen Fragen in Klausuren
 gemacht. Es hat sich gezeigt, dass es zumindest in Mathematik
 möglich ist, Multiple-Choice-Fragen zu stellen, die relativ leicht
 zu beantworten sind, wenn man den Vorlesungsstoff verstanden hat, die
-aber praktisch nicht zu erraten sind, wenn man nichts verstanden hat.
+aber große Probleme bereiten, wenn dies nicht der Fall ist.
 Dabei ist es wichtig, dass falsche Antworten Minuspunkte geben, damit
 Raten nichts hilft.
 
@@ -295,8 +291,8 @@ Insofern scheinen Multiple-Choice-ähnliche Aufgaben eine gute Ergänzung
 des bisher üblichen Übungsbetriebs zu sein bzw.~sogar einen Teil der
 schriftlichen Aufgaben sinnvoll ersetzen zu können.
 
-Es darf jedoch nicht vergessen werden, dass ein wichtiger Teil insbesondere
-der Mathematik-Ausbildung ist, dass man lernt, eigene Gedanken und Ergebnisse
+Es darf jedoch nicht vergessen werden, dass es ein wichtiger Teil
+der Ausbildung ist zu lernen, eigene Gedanken und Ergebnisse
 zu formulieren und verständlich anderen mitteilen zu können. Deswegen ist
 es unmöglich, den gesamten Übungsbetrieb durch automatisch bewertete
 Aufgaben zu ersetzen.
@@ -318,35 +314,39 @@ Die folgenden Technologien/Standards bzw. Software wurden benutzt:
 \begin{itemize}
 \item {\bf XML - eXtentible Markup Language}
     Zur Kodierung der Aufgaben und Aufgabenblätter. Aufgabentexte in
-LaTeX. Webseiten durch Verwendung von XHTML voll XML-konform.
+\LaTeX. Webseiten durch Verwendung von XHTML voll XML-konform.
 \item {\bf  XHTML 1.0} und {\bf CSS 2.0}
-    Alle Webseiten entsprechen den Standards XHTML 1.0 und CSS 2.0, 
-    gecheckt mit W3C-Validierer.
-\item {\bf  LaTeX/PDF-LaTeX}
-    Das Setzen der Aufgabentexte erfolgt mit LaTeX bzw.~PDF-LaTeX. Die
+    Alle Webseiten entsprechen den Standards XHTML 1.0 und CSS 2.0. 
+\item {\bf  \LaTeX/PDF-\LaTeX}
+    Das Setzen der Aufgabentexte erfolgt mit \LaTeX bzw.~PDF-\LaTeX. Die
 HTML-Version der Aufgaben enthält die Aufgabentexte als Bilder.
 \item {\bf  Ghostscript}
-    Zur Wandlung von LaTeX-generierten Postscriptdokumenten in
+    Zur Wandlung von \LaTeX-generierten Postscriptdokumenten in
 PNG-Grafiken kommt das Programm Ghostscript zum Einsatz.
-\item {\bf  Erfolgreich getestet mit:}
-    Galeon 1.2.7 auf Linux (mozilla 1.2.1), Mozilla 1.2.1 auf Linux,
-Internet Explorer 5.5 auf Windows, Internet Explorer 6.0 auf Windows,
-Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows, Konqueror
-3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1 auf Linux,
-Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows, W3M 0.3 auf Linux,
-Netscape 7.01 auf Linux.
+\item {\bf  Erfolgreich getestet mit} allen derzeit gängigen Browsern auf
+verschiedenen Betriebssystemen.
+\item {\sf OKUSON} kann {\bf  ohne Programmierung} an andere {\bf Sprachen} 
+und {\bf örtliche Gegebenheiten} angepasst werden, da für sämtliche Webseiten
+einfach zu verändernde Templates benutzt werden.
+%    Galeon 1.2.7 auf Linux (mozilla 1.2.1), Mozilla 1.2.1 auf Linux,
+%Internet Explorer 5.5 auf Windows, Internet Explorer 6.0 auf Windows,
+%Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows, Konqueror
+%3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1 auf Linux,
+%Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows, W3M 0.3 auf Linux,
+%Netscape 7.01 auf Linux.
+\item {\bf Ausführliche Dokumentation.}
 \end{itemize}
 
 Die Übungsblätter können in Form von HTML-Seiten und als PDF-Datei
 heruntergeladen werden. Bei der HTML-Variante kommt nur eine kleine
 Teilmenge des XHTML-1.0 Standards zum Einsatz, wobei die Texte der 
 einzelnen Aufgaben als Bilder in einer Tabelle angezeigt werden, um
-die gesamte Vielfalt der Möglichkeiten von {\TeX} benutzen zu können.
+die gesamte Vielfalt der Möglichkeiten von {\LaTeX} benutzen zu können.
 Die PDF-Variante eignet sich besonders gut zum Ausdrucken in hoher
 Qualität.
 
-{\sf OKUSON} lässt sich von jedem grafischen Webbrowser auf jeder Plattform
-aus benutzen. Es ist keine Installation beim einzelnen Teilnehmer 
+{\sf OKUSON} lässt sich mit jedem grafischen Webbrowser auf jeder Plattform
+benutzen. Es ist keine Installation beim einzelnen Teilnehmer 
 mehr notwendig.
 \end{pbox}
 %\begin{pbox}

@@ -1,5 +1,5 @@
 #!/bin/bash
-psresize -W84cm -H119cm -w21cm -h30cm $1 $1.tmp
+psresize -W84.09cm -H118.92cm -w21.02cm -h29.73cm $1 $1.tmp
 export l=`grep '%%DocumentPaperSizes' $1.tmp | wc -l`
 if [ $l = "0" ]; then
   export l1=`grep -n '%%EndComments' $1.tmp | head -1 | sed 's/:.*$//'`
