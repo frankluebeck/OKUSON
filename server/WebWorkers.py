@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.98 2004/03/09 13:30:12 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.99 2004/03/09 14:15:39 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -2379,7 +2379,7 @@ def ExportPeopleForGroups(req,onlyhead):
     l = Data.people.keys()
     sortedby = req.query.get('sortedby',[''])[0]
     out = cStringIO.StringIO()
-    out.write('# ID:last name:first name:semester:studies:wishes:pdata1-9\n')
+    out.write('# ID:last name:first name:semester:studies:wishes:pdata\n')
     def writegroup(l,out):
         global sorttable
         if sorttable.has_key(sortedby):
@@ -2647,22 +2647,23 @@ def ExportHelper_e(p, d = ';', nr = None):
     t = p.exams
     res = ['']
     if nr:
-      rg = [nr]
+      rg = [int(nr)]
     else:
       rg = xrange(len(t))
     for i in rg:
       try:
         a = t[i]
-        res.append(str(i)+d+str(a.score)+d)
+        res.append(str(i)+d+str(a.totalscore)+d+str(a.scores)+d)
       except:
-        res.append(str(i)+d+'none'+d)
+        res.append(str(i)+d+'none'+d+'none'+d)
     res = string.join(res, '')
     if res[-1] == d:
       res = res[:-1]
     return res
   except:
     return 'no exams'
-ExportHelper['%e'] = ('''Exams as concatenation of pairs "nr;score" with ";"s
+ExportHelper['%e'] = ('''[<strong>extended syntax %[d][nr]e</strong>] 
+Exams as concatenation of sequences "nr;totalscore;scores" with ";"s
 as delimiters, with %[d][nr]e use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only exam number [nr].''',
   ExportHelper_e)
@@ -2687,7 +2688,8 @@ def ExportHelper_c(p, d = ';', nr = None):
     return res
   except:
     return 'no mcresults'
-ExportHelper['%c'] = ('''Results of interactive exercises as concatenation 
+ExportHelper['%c'] = ('''[<strong>extended syntax %[d][nr]c</strong>] 
+Results of interactive exercises as concatenation 
 of pairs "sheet nr;score" with ";"s
 as delimiters, with %[d][nr]c use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only sheet number [nr].''',
@@ -2713,7 +2715,8 @@ def ExportHelper_h(p, d = ';', nr = None):
     return res
   except:
     return 'no homework results'
-ExportHelper['%h'] = ('''Results of homework exercises as concatenation 
+ExportHelper['%h'] = ('''[<strong>extended syntax %[d][nr]h</strong>] 
+Results of homework exercises as concatenation 
 of pairs "sheet nr;score" with ";"s
 as delimiters, with %[d][nr]h use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only sheet number [nr].''',
@@ -2773,7 +2776,7 @@ def ExportHelper_Grade(p):
 ExportHelper['%M'] = ('Grading message (gives "no grade" if not available)',
   lambda p: ExportHelper_Grade(p)[0] )
 ExportHelper['%G'] = ('Grade (gives "no grade" if not available)',
-  lambda p: ExportHelper_Grade(p)[1] )
+  lambda p: str(ExportHelper_Grade(p)[1]) )
      
 # parse a format string for custom export for use with 'ExportLine' below
 def ParsedExportFormat(s):
