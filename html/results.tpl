@@ -30,9 +30,8 @@ ja von den korrigierten Zetteln.):</p>
     <tr><th>Übungsblatt</th><th>Interaktive Aufgaben</th>
         <th>Schriftliche Aufgaben</th></tr>
 <!-- Specify "false" as value if you don't want corresponding info.
-     Attributes are optional and default to "true".  
-    <Results interactive="true" homework="false" /> -->
-    <Results />
+     Attributes are optional and default to "true".  -->
+    <Results interactive="true" homework="true" /> 
 
     </table>
 
@@ -59,5 +58,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
+     $Id: results.tpl,v 1.3 2003/10/04 23:16:12 luebeck Exp $ -->
 
