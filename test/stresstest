@@ -2,7 +2,7 @@
 
 import os,sys,httplib, random
 
-srv = 'gemma:8000'
+srv = 'gemma.math.rwth-aachen.de:8000'
 urllist = [ [srv, '/', 0],
     [srv, '/exquery.html', 0],
     [srv, '/QuerySheet?id=214199&passwd=unbekannt&sheet=0', 0],
@@ -49,18 +49,15 @@ def getpage(host, path):
    h.putrequest('GET', path)
    h.endheaders()
    errcode, errmsg, headers = h.getreply()
-   #print 'ERRORCODE:\n',errcode # Should be 200
-   #print 'ERRORMESSAGE:\n',errmsg
-   #print 'HEADERS:\n',headers
    f = h.getfile()
-   data = f.read() # Get the raw HTML
+   data = f.read() # Get the raw data
    f.close()
    return data
 
-for i in range(20):
-  #a = random.choice(urllist)
+for i in range(1000):
+  a = random.choice(urllist)
   #a = urllist[2]
- for a in urllist:
+ #for a in urllist:
   p = getpage(a[0],a[1])
   a[2] += 1
 
