@@ -301,7 +301,7 @@ dtd
 -->
 
 <PDFTemplate><![CDATA[
-\documentclass[german,12pt]{article}
+\documentclass[german,12pt,a4paper]{article}
 
 \usepackage[latin1]{inputenc}
 \usepackage{babel}
@@ -357,7 +357,7 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 
 
 <PDFTemplateNoTable><![CDATA[
-\documentclass[german,12pt]{article}
+\documentclass[german,12pt,a4paper]{article}
 
 \usepackage[latin1]{inputenc}
 \usepackage{babel}
@@ -432,7 +432,7 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
      by the width of the image, possible extra stuff for the preamble (see 
      ExtraLaTeXHeader above), and the image text itself respectively. -->
 <LaTeXTemplate><![CDATA[
-\documentclass[german,12pt]{article}
+\documentclass[german,12pt,a4paper]{article}
 
 \usepackage[latin1]{inputenc}
 \usepackage{babel}
