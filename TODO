@@ -3,7 +3,7 @@ Luecken im Manual:
   welche Seiten erlauben welche Tags? --> nicht-generische aufzaehlen?
   insbes. Tags in result page scheinen zu fehlen
   
-
+Seiten fuer Tutoren schoener.
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
@@ -14,22 +14,20 @@ Interessante Ergebnisse des Browser-Checks:
 begleitmail
 
 Für Release:
+  delete-script fuer Benutzer, die falsch angemeldet sind.
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
   Mechanismus für Bilder in TeX
   Scheinanfertigung   --> Hilfsskript
   Aufkleber drucken (nur Export?)    --> Hilfsskript
-  Statistik ueber Uebungsblaetter    --> Hilfsskript?
-  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
   Tests siehe unten
-  
+  guest ids auf Gruppeneinteilungsseite?  
 
 Handbuch:
  
   > means "done"
 
   >Die einzelnen Webseiten
-  Die Konfiguration
   Aufbau des Programms
   verwendete Standards
   >Locking-Prinzip
@@ -48,4 +46,8 @@ Ideen:
 
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
-
+  Eingabe der Gruppennummer bei der Anmeldung
+  Aenderung der Gruppennummer bei Datenaenderung
+  letzte beiden Optionen schaltbar.
+  Statistik ueber Uebungsblaetter    --> Hilfsskript?
+  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?

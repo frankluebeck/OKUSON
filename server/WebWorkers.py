@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.50 2003/10/20 11:30:36 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.51 2003/10/20 22:51:41 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1122,8 +1122,10 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
         l = list(self.grp.people)
         l.sort()   # FIXME, bessere Sortierung
         s = self.s
+        counter = 0
         for k in l:
             if Data.people.has_key(k):
+                counter += 1
                 p = Data.people[k]
                 if p.homework.has_key(s.name) and s.openfrom < time.time():
                     default = str(p.homework[s.name].totalscore)
@@ -1131,10 +1133,16 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                 else:
                     default = ''
                     default2 = ''
-                out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
-                          ' name="P'+k+'" value="'+default+'" /></td>\n'
-                          '    <td><input size="30" maxlength="60" name="S'+k+
-                          '" value="'+default2+'" /></td></tr>\n')
+                if counter % 5 == 0:
+                    out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
+                              ' name="P'+k+'" value="'+default+'" /></td>\n'
+                              '    <td><input size="30" maxlength="60" name="S'+k+
+                              '" value="'+default2+'" /></td></tr>\n')
+                else:
+                    out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
+                              ' name="P'+k+'" value="'+default+'" /></td>\n'
+                              '    <td><input size="30" maxlength="60" name="S'+k+
+                              '" value="'+default2+'" /></td></tr>\n')
     
 class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
     '''This class exists to produce handlers that can fill data from a
@@ -1149,17 +1157,27 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
                   str(self.grp.number)+'" />\n')
     def handle_HomeworkPersonInput(self,node,out):
         sl = Exercises.SheetList()
+        counter = 0
         for nr,na,s in sl:
+            counter += 1
             if self.p.homework.has_key(na):
                 default = str(self.p.homework[na].totalscore)
                 default2 = self.p.homework[na].scores
             else:
                 default = ''
                 default2 = ''
-            out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
-                      ' name="S'+na+'" value="'+default+'" /></td>\n'
-                      '    <td><input size="30" maxlength="60" name="T'+na+
-                      '" value="'+default2+'" /></td></tr>\n')
+            if counter % 5 == 0:
+                out.write('<tr><td class="trenner">'+na+'</td>'
+                          '<td class="trenner"><input size="6" maxlength="3"'
+                          ' name="S'+na+'" value="'+default+'" /></td>\n'
+                          '    <td class="trenner"><input size="30" '
+                          'maxlength="60" name="T'+na+
+                          '" value="'+default2+'" /></td></tr>\n')
+            else:
+                out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
+                          ' name="S'+na+'" value="'+default+'" /></td>\n'
+                          '    <td><input size="30" maxlength="60" name="T'+na+
+                          '" value="'+default2+'" /></td></tr>\n')
 
 
 def TutorRequest(req,onlyhead):
@@ -1581,8 +1599,9 @@ def ExportPeople(req,onlyhead):
         if not(Config.conf['GuestIdRegExp'].match(k)):
             p = Data.people[k]
             out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                      str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+p.email+
-                      ':'+Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
+                      str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+
+                      Protect(p.email)+':'+
+                      Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
                       Protect(p.persondata2)+':'+Protect(p.persondata3)+':'+
                       Protect(p.persondata4)+':'+Protect(p.persondata5)+':'+
                       Protect(p.persondata6)+':'+Protect(p.persondata7)+':'+
