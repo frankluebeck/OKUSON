@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.24 2003/10/10 00:18:50 luebeck Exp $
+% $Id: manual.tex,v 1.25 2003/10/10 11:02:33 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -251,7 +251,8 @@ of web browsers, including Mozilla and friends, Opera, Netscape, Lynx,
 w3m, and even Internet Explorer.
 \item A \textbf{PDF viewer} like \texttt{xpdf} or \texttt{acroread}. 
 Previews of exercise sheets are generated as PDF files.
-\item \texttt{xloadimage} is used to display test versions of exercises.
+\item \texttt{xloadimage} (or some other viewer for images in PNG format) is 
+needed to display test versions of exercises.
 \item \texttt{less} is used to conveniently browse log files. 
 \end{itemize}
 
@@ -761,7 +762,7 @@ additional information is needed.
 While the actual exercise texts must be written in \LaTeX, the additional
 structure is added via some simple XML markup, see~\ref{ch:introXML}.
 We provide for both types of documents templates which you can just copy and
-fill in. While these are almost self explaining we describe the details in
+fill in. Although these are almost self explaining we describe the details in
 this Chapter.
 
 \section{Generalities on the Exercise and Sheet Files}
@@ -813,6 +814,23 @@ If you just want to add the loading of some further packages or to read in
 some of your favourite personal macros, use the \texttt{<ExtraLaTeXHeader>}
 element of the configuration file.
 
+\subsubsection*{Remark on the PDF-version of the Exercise Sheets}
+
+The PDF-version of an exercise sheet shows exercises and questions in a
+table with border lines between the entries. This should make it look
+similar to the HTML-version of the sheet, such that the transfer of the
+solutions of interactive exercises from the printed version to the web form
+is easier.
+
+This \LaTeX-input for the PDF-version uses the \texttt{longtable}
+environment and the table entries are packed in \texttt{minipage}s. This
+seems to be quite robust with the setup mentioned above. We had reports that 
+sheets could not be compiled by {\LaTeX} with exercises using certain
+environments from additionally loaded packages. While these are probably
+bugs in one or some of the involved packages, it is difficult to find a
+general strategy to avoid them. As one general rule, when something goes
+wrong, try to enclose critical blocks by additional markup, e.g.,
+enclose with \texttt{\{\ldots\}} or put text in some boxes.
 
 \section{Writing Exercises}\label{sec:writeEx}
 
@@ -980,10 +998,11 @@ above.
 The {\OKUSON} package contains a utility script for checking files with
 interactive exercises as well as text exercises. 
 The script assumes that you have the pager program
-\texttt{less} and the image viewer program \texttt{xloadimage} installed on
+\texttt{less} and the image viewer program \texttt{xloadimage} (or some
+other image viewer which you specify with an optional argument) installed on
 your computer. The  script is called as follows:
 
-\verb+          $OKUSONHOME/testexercise file1 file2 ...+
+\verb+          $OKUSONHOME/testexercise [-v viewer] file1 file2 ...+
 
 where \texttt{file1}, \texttt{file2} are exercise files with either
 \texttt{.tex} or \texttt{.auf} extension. 
@@ -1415,7 +1434,7 @@ alphabetically) of the IDs of the participants.
 data for customization.
 \end{description}
 
-\chapter{Schedule of Events for one Course}\label{ch:semsched}
+\chapter{Schedule of Events for One Course}\label{ch:semsched}
 \chapter{Administration via the Web Interface}
 \label{adminpages}
 
@@ -1755,6 +1774,19 @@ comma separated  list of partial results. You may specify the optional
 grading or statistics.
 
 
+\chapter{Managing Exams}
+
+Unfortunately, we have no idea how {\OKUSON} can help with checking and
+grading written exam exercises.
+
+Nevertheless, there is functionality for the administrational aspect of
+exams, this is explained in this chapter: Registration for exams, 
+importing exam results in the {\OKUSON} server, displaying the results.
+
+\section{}
+\section{}
+\section{}
+
 \chapter{Import and Export of Data}
 
 In this section we describe the export facilities of the {\OKUSON} server.
@@ -1840,7 +1872,7 @@ group number ($0$ if not in any group) \\
 Our intention for this export is to be able to access the current data
 in the server easily with private scripts.
 
-\chapter{Finetuning the Configuration}\label{ch:config}
+%\chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{Customization Examples}
 \section{Using IDs of Different Type}
 \section{A Course Without Non-Interactive Homework Exercises}
@@ -1848,9 +1880,9 @@ in the server easily with private scripts.
 \section{Managing Additional Personal Registration Data}
 \section{Customizing the Look and Feel of the Web Pages}
 \section{}
-\chapter{File Formats}
-\chapter{Internal Data Structures}
-\chapter{Structure of the Program}
+%\chapter{File Formats}
+%\chapter{Internal Data Structures}
+%\chapter{Structure of the Program}
 \appendix
 \chapter{Differences Between XHTML and Other Variants of
 HTML}\label{ch:diffHTMLXHTML}
@@ -1876,9 +1908,23 @@ use the \texttt{.css} style sheet file. (For complicated cases use the
 formating rules in the style sheet.
 \end{itemize}
 
-?links to HTML 4.01 strict specification.
+Using the W3C \href{http://www.w3.org/TR/html401/}{HTML~4.01 specification
+(\texttt{http://www.w3.org/TR/html401/})} -- this includes a nice
+\emph{elements} overview -- together with the above rules and the general rule
+to avoid complicated looking constructs when possible, we found it not too
+difficult to produce sets of valid web pages.
 
-?validating scripts
+In the {\OKUSON} home directory you find the tool \texttt{xmlvalidate},
+which can be used for validating (or finding problems with) XHTML documents.
+But actually, all of our {\OKUSON} web pages are generated dynamically from
+\texttt{.tpl} template  files, which cannot be validated directly.  Therefore,
+we have included an on-the-fly XHTML-validation of HTML pages in the
+{\OKUSON} builtin web server. It does not refuse the delivery of non-valid
+pages, but removes in that case the validator icon which may have been 
+put in the document via the \texttt{<ValidatorIcon/>} tag.
+
+
+
 
 \chapter{GPL}\label{ch:GPL}
 
