@@ -273,39 +273,38 @@ für (unter anderem) die folgenden Vorlesungen erfolgreich eingesetzt:
 % Dritte Spalte:
 %
 \begin{pcolumn}
-%\begin{pbox}[1. .98 .98]
-%\section{Multiple-Choice-Aufgaben in der Lehre}
-%
-%Bereits vor der Einführung von {\sf OKUSON} haben wir Erfahrungen mit
-%Multiple-Choice- bzw.~Multiple-Choice-ähnlichen Fragen in Klausuren
-%gemacht. Es hat sich gezeigt, dass es zumindest in Mathematik
-%möglich ist, Multiple-Choice-Fragen zu stellen, die relativ leicht
-%zu beantworten sind, wenn man den Vorlesungsstoff verstanden hat, die
-%aber praktisch nicht zu erraten sind, wenn man nichts verstanden hat.
-%Dabei ist es wichtig, dass falsche Antworten Minuspunkte geben, damit
-%Raten nichts hilft.
-%
-%Weiterhin haben wir beobachtet, dass die Ergebnisse in 
-%Multiple-Choice-Aufgaben ziemlich gut mit den Ergebnissen in schriftlich
-%zu beantwortenden Fragen korrelieren: Dieselben Leute, die gute und gut 
-%formulierte schriftliche Lösungen abliefern, bekommen viele Punkte bei den
-%Multiple-Choice-Aufgaben.
-%
-%Insofern scheinen Multiple-Choice-ähnliche Aufgaben eine gute Ergänzung
-%des bisher üblichen Übungsbetriebs zu sein bzw.~sogar einen Teil der
-%schriftlichen Aufgaben sinnvoll ersetzen zu können.
-%
-%Es darf jedoch nicht vergessen werden, dass ein wichtiger Teil insbesondere
-%der Mathematik-Ausbildung ist, dass man lernt, eigene Gedanken und Ergebnisse
-%zu formulieren und verständlich anderen mitteilen zu können. Deswegen ist
-%es unmöglich, den gesamten Übungsbetrieb durch automatisch bewertete
-%Aufgaben zu ersetzen.
-%
-%Beim tatsächlichen Einsatz von {\sf OKUSON} konnten wir feststellen,
-%dass die Teilnehmer offenbar Spaß daran hatten, den Vorlesungsstoff
-%auf diese Weise nachzuarbeiten und über die Multiple-Choice-Aufgaben
-%nachzudenken.
-%\end{pbox}
+\begin{pbox}[1. .98 .98]
+\section{Multiple-Choice-Aufgaben in der Lehre}
+
+Bereits vor der Einführung von {\sf OKUSON} haben wir Erfahrungen mit
+Multiple-Choice- bzw.~Multiple-Choice-ähnlichen Fragen in Klausuren
+gemacht. Es hat sich gezeigt, dass es zumindest in Mathematik
+möglich ist, Multiple-Choice-Fragen zu stellen, die relativ leicht
+zu beantworten sind, wenn man den Vorlesungsstoff verstanden hat, die
+aber praktisch nicht zu erraten sind, wenn man nichts verstanden hat.
+Dabei ist es wichtig, dass falsche Antworten Minuspunkte geben, damit
+Raten nichts hilft.
+
+Weiterhin haben wir beobachtet, dass die Ergebnisse in 
+Multiple-Choice-Aufgaben ziemlich gut mit den Ergebnissen in schriftlich
+zu beantwortenden Fragen korrelieren: Dieselben Leute, die gute und gut 
+formulierte schriftliche Lösungen abliefern, bekommen viele Punkte bei den
+Multiple-Choice-Aufgaben.
+
+Insofern scheinen Multiple-Choice-ähnliche Aufgaben eine gute Ergänzung
+des bisher üblichen Übungsbetriebs zu sein bzw.~sogar einen Teil der
+schriftlichen Aufgaben sinnvoll ersetzen zu können.
+
+Es darf jedoch nicht vergessen werden, dass ein wichtiger Teil insbesondere
+der Mathematik-Ausbildung ist, dass man lernt, eigene Gedanken und Ergebnisse
+zu formulieren und verständlich anderen mitteilen zu können. Deswegen ist
+es unmöglich, den gesamten Übungsbetrieb durch automatisch bewertete
+Aufgaben zu ersetzen.
+
+Beim tatsächlichen Einsatz von {\sf OKUSON} konnten wir feststellen,
+dass die Teilnehmer offenbar Spaß daran hatten, den Stoff auf diese 
+Weise nachzuarbeiten und über die Multiple-Choice-Aufgaben nachzudenken.
+\end{pbox}
 \begin{pbox}
 \section{Implementation}
 
@@ -320,11 +319,9 @@ Die folgenden Technologien/Standards bzw. Software wurden benutzt:
 \item {\bf XML - eXtentible Markup Language}
     Zur Kodierung der Aufgaben und Aufgabenblätter. Aufgabentexte in
 LaTeX. Webseiten durch Verwendung von XHTML voll XML-konform.
-\item {\bf  XHTML 1.0}
-    Alle Webseiten entsprechen dem XHTML 1.0 Standard, gecheckt mit 
-    W3C-Validierer.
-\item {\bf  CSS 2.0}
-    Seitenlayoutinformationen zur besseren Lesbarkeit mit modernen Browsern.
+\item {\bf  XHTML 1.0} und {\bf CSS 2.0}
+    Alle Webseiten entsprechen den Standards XHTML 1.0 und CSS 2.0, 
+    gecheckt mit W3C-Validierer.
 \item {\bf  LaTeX/PDF-LaTeX}
     Das Setzen der Aufgabentexte erfolgt mit LaTeX bzw.~PDF-LaTeX. Die
 HTML-Version der Aufgaben enthält die Aufgabentexte als Bilder.
@@ -339,16 +336,28 @@ Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows, Konqueror
 Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows, W3M 0.3 auf Linux,
 Netscape 7.01 auf Linux.
 \end{itemize}
+
+Die Übungsblätter können in Form von HTML-Seiten und als PDF-Datei
+heruntergeladen werden. Bei der HTML-Variante kommt nur eine kleine
+Teilmenge des XHTML-1.0 Standards zum Einsatz, wobei die Texte der 
+einzelnen Aufgaben als Bilder in einer Tabelle angezeigt werden, um
+die gesamte Vielfalt der Möglichkeiten von {\TeX} benutzen zu können.
+Die PDF-Variante eignet sich besonders gut zum Ausdrucken in hoher
+Qualität.
+
+{\sf OKUSON} lässt sich von jedem grafischen Webbrowser auf jeder Plattform
+aus benutzen. Es ist keine Installation beim einzelnen Teilnehmer 
+mehr notwendig.
 \end{pbox}
 %\begin{pbox}
 %\section{Eingebauter Webserver}
 %\end{pbox}
-\begin{pbox}
-\section{Screenshot}
-\begin{center}
-\includegraphics[width=0.83\textwidth]{screenshot.eps}
-\end{center}
-\end{pbox}
+%\begin{pbox}
+%\section{Screenshot}
+%\begin{center}
+%\includegraphics[width=0.83\textwidth]{screenshot.eps}
+%\end{center}
+%\end{pbox}
 \begin{pbox}
 \section{Lizenz}
 
