@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.36 2003/10/10 19:11:11 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.37 2003/10/10 19:24:57 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1535,10 +1535,10 @@ def ExportExamParticipants(req,onlyhead):
         # Exclude guest IDs:
         if not(Config.conf['GuestIdRegExp'].match(k)):
             p = Data.people[k]
-            ts = LocalTimeString(p.exams[examnr].timestamp)
-            ts.replace(':','.')
             if len(p.exams) > examnr and p.exams[examnr] != None and \
                p.exams[examnr].registration == 1:
+                ts = LocalTimeString(p.exams[examnr].timestamp)
+                ts.replace(':','.')
                 out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
                           ts+'\n')
     st = out.getvalue()
