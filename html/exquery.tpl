@@ -29,18 +29,19 @@
 
     <table>
     <tr><td>Ihre Matrikelnummer: </td>
-    <td><input size="8"  maxlength="6" name="id" value="" /></td></tr>
+    <td><input size="8"  maxlength="6" name="id" value="" 
+               tabindex="1"/></td></tr>
     <tr><td>Ihr Passwort: </td>
     <td><input type="password" size="16"
-               maxlength="16" name="passwd" value="" /> </td></tr>
+               maxlength="16" name="passwd" value="" tabindex="2" /> </td></tr>
     <tr><td>Gewünschter Dokumenttyp 
             (<a href="/doctypehelp.html">Hilfe</a>):</td>
-    <td><select name="format">
+    <td><select name="format" tabindex="10000">
         <option selected="selected">HTML</option>
         <option>PDF</option>
     </select></td></tr>
     <tr><td>Auflösung:</td>
-    <td><select name="resolution">
+    <td><select name="resolution" tabindex="10001">
         <AvailableResolutions />
     </select></td></tr>
     </table>
@@ -65,5 +66,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: exquery.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: exquery.tpl,v 1.2 2003/10/27 09:12:07 neunhoef Exp $ -->
 

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.59 2003/10/24 22:30:42 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.60 2003/10/27 09:12:07 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -196,10 +196,10 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
            if s.openfrom and time.time() < s.openfrom:
                if self.iamadmin:
                    out.write('(<input type="submit" name="sheet" value="'
-                             +name+'" /> not yet open)\n')
+                      +name+'" tabindex="'+str(1000-nr)+'"/> not yet open)\n')
            else:
                out.write('<input type="submit" name="sheet" value="'
-                         +name+'" />\n')
+                         +name+'" tabindex="'+str(1000-nr)+'"/>\n')
     def handle_AvailableResolutions(self,node,out):
         out.write('<option selected="selected">Standard</option>\n')
         for r in Config.conf['Resolutions']:
