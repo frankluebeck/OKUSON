@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.63 2004/03/03 14:35:15 neunhoef Exp $
+##  $Id: CHANGES,v 1.64 2004/03/04 14:13:10 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -11,12 +11,32 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
-Changes from 1.0-fix3 to ???
+Changes from 1.0-fix3 to 1.1
 
 * Added 'value = ""' for string input fields, if nothing was entered before.
   This hopefully avoids pre-filled-in fields by "intelligent" browsers.
 * Changed authentication for statistics. Login is no longer necessary.
 * Fixed two bugs with ExamGradingFunction reported by Thorsten.
+* Put a hint to "schein.py" into the manual.
+* Handle additional info to "Studiengang" better
+* Header and Footer configurable (change from Ingo)
+* Introduce a switch in Config.py to allow/disallow registration.
+* Introduce a switch in Config.py to allow/disallow exam registration.
+* Introduce a switch in Config.py to allow/disallow group choice during
+  registration.
+* Introduce a switch in Config.py to allow/disallow group change after
+  registration.
+* Make administrator menu a function (AdminMenu) to allow different behaviour
+  according to login status.
+* Make cookies persistent (resolution (13 weeks) and login status (60 minutes).
+* Simplify/unify authentication code (AuthenticateAdmin is gone).
+* Better statistical displays (thanks to Lehrstuhl A)
+* Display of exam registration status (thanks to Lehrstuhl A).
+* Star homework exercises (do not count in the denominator, thanks to LAFM).
+* Maximal possible homework score (thanks to LAFM).
+* Fixed bug with non-uniform distribution of variants in the case of
+  3 variants.
+* Sort order by TotalMCScore, TotalHomeScore, and TotalScore (thanks to LAFM).
 
 Changes from 1.0-fix2 to 1.0-fix3
 

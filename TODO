@@ -25,12 +25,9 @@ Vor naechstem Release:
   <AvailableIds /> aus Adminseite wieder raus?
   .totalscore durchschauen, ob -1 weh tut
   neue Authenticates /-Admin durchschauen
-  AdminMenu - funktion machen und ueberall aendern mit authentification
 
 Ideen:
 
-? Statistik ueber Uebungsblaetter    --> Hilfsskript?
-? Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
 M Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
 M Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
 M Aenderung der Gruppennummer bei Datenaenderung
@@ -49,7 +46,7 @@ F beliebige Anzahl persondata fuer Benutzer konfigurierbar
          Diese dict-Daten werden in einen String verpackt in person.dat
      --> "groupinfo" genauso
 M!wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
-! Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
+M!Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
 M!Anmeldung fuer exams schaltbar?
 M!Anmeldung schaltbar
 M log-Datei nicht ins Archiv, dafuer beim Start abchecken
@@ -78,7 +75,7 @@ M   Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
         1.1000000000000001
      Punktzahlen alle mit locale....  verarbeiten : fertig
 ! pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
-! Aufloesungs-Cookie persistent
+M!Aufloesungs-Cookie persistent
 M Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
     von vorigen Blaettern uebernommen werden.
 M Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
@@ -95,6 +92,8 @@ M ExportResults mit dieser Anzahl von Klausuren bei allen
 F Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
 M Dokumentation der neuen Features von LAFM
   Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+  Dokumentation von maxhomescore und starhomescore
+  AvailableIds dokumentieren?
 
 Vor release:
 
