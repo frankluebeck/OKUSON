@@ -1,11 +1,9 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON 1.1-fix1 or 1.1-fix2 
-                                             to OKUSON 1.1-fix3:
+ This file describes the upgrade procedure from OKUSON 1.1-fix3
+                                             to OKUSON 1.1-fix4:
 ===============================================================================
 
-NOTE: DO NOT USE 1.1-fix2 !!!  (Some pages do not work in this version) 
-
-$Id: UPGRADE,v 1.17 2004/10/12 03:07:38 neunhoef Exp $
+$Id: UPGRADE,v 1.18 2005/04/04 11:36:11 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -13,8 +11,9 @@ restart the server:
   cd okuson
   ./stop
   cd ..
-  tar xzvf okuson-1.1-fix3.tar.gz
+  tar xzvf okuson-1.1-fix4.tar.gz
   cd okuson
+  cp html.sample/messages/subdubious.tpl html/messages
   ./start
 
 Unpacking the archive does *not* overwrite the following customizable files:
@@ -22,48 +21,14 @@ Unpacking the archive does *not* overwrite the following customizable files:
   Config.xml
   data/*.txt
 
-The following between the lines applies only to the case coming from 1.1-fix1):
--------------------------------------------------------------------------------
-There are a few small changes in the web page templates, maybe you want to
-copy them from html.sample/ to html/ :
-  html.sample/favicon.ico          (new) a default address line icon
-  html.sample/tutors.tpl           function to access group statistics
-  html.sample/globalstatistics.tpl shows current group number
-  html.sample/adminmenu.tpl        function to move participant to other group
-  html.sample/[*/]*.tpl            added small "(OKUSON 1.1-fix2)" at the end
+Note that there are two new configuration options in Config.xml, namely:
+  MaxStringInputLength
+  InteractiveMode
 
-So, if you didn't apply any changes to the default .tpl files just copy
-  cp -r html.sample/*  html
-Otherwise, if you didn't touch the defaults of the first four files,
-you may want:
-  cp html.sample/{tutors.tpl,globalstatistics.tpl,adminmenu.tpl} html
-  cp html.sample/favicon.ico html
--------------------------------------------------------------------------------
+However, they have sensible default values, such that an old Config.xml
+will still work as before.
 
 If you applied any patches to the server programs, make sure to reapply them.
-
-Files changed in bugfix 1.1-fix2:
-  html.sample/favicon.ico        (new)
-  CHANGES
-  TODO
-  UPGRADE
-  VERSION
-  doc/manual.pdf
-  doc/manual.tex
-  server/Config.py
-  server/Exercises.py
-  server/WebWorkers.py
-  server/fmTools/BuiltinWebServer.py
-  server/fmTools/SimpleRand.py
-  html.sample/tutors.tpl 
-  html.sample/globalstatistics.tpl
-  html.sample/adminmenu.tpl
-  (and the foot of all html.sample/*.tpl, html.sample/*/*.tpl,  see above)  
-
-Files changed in bugfix 1.1-fix3:
-  server/WebWorkers.py
-  html.sample/edithomeworkperson.tpl
-
 
 Have fun!
 
