@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: xmlvalidate,v 1.1 2003/10/06 18:35:46 luebeck Exp $
+#   $Id: xmlvalidate,v 1.2 2003/11/11 09:46:50 luebeck Exp $
 
 import os, sys
 sys.path = [os.path.join(sys.path[0], 'server')] + sys.path
@@ -17,8 +17,8 @@ With -w option it is checked if the file is a well formed XML document.
 
 action = 'Validating'
 if '-w' in sys.argv:
-  XMLRewrite.ValidatingParser.NoNoDTDWarning = 1
-  XMLRewrite.Validate = 0
+  XMLRewrite.ValidatingParserConfig['NoNoDTDWarning'] = 1
+  XMLRewrite.ValidatingParserConfig['Validate'] = 0
   action = 'Checking'
   
 files = sys.argv[1:]
@@ -29,9 +29,6 @@ for fn in files:
     Utils.Error('File '+fn+' does not exist.')
   else:
     Utils.Error(action+' file '+fn+' ...', prefix='')
-    try:
-      t = None
-      t = XMLRewrite.ValidateXMLFile(fn)
-      if t: Utils.Error('Success!', prefix='')
-    except:
-      pass 
+    t = XMLRewrite.Parse(config=XMLRewrite.ValidatingParserConfig, file=fn)
+    if t: 
+      Utils.Error('Success!', prefix='')
