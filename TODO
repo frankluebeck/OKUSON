@@ -27,6 +27,10 @@ Spaeter:
        (etwa .tplpers, oder proc.inst.) 
        entsprechend mit sheets, results
        ==> Benutzer kann beliebige Seiten neu machen.
+M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
+  Richtig, das machen wir auch jetzt nicht.
+  Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
+
 M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
     (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
 
@@ -37,8 +41,6 @@ Matthias:
 
 F ShowGlobalStatisticsForGroup tut nicht
 M  Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
-M ShowExerciseStatistics for Sheet (admin)
-M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
 F Export fuer Zusatztext zum Hausaufgabenergebnis
 
 F Group 0 in <GroupsOverview per Attr. ausblendbar.
@@ -72,3 +74,5 @@ M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
 
 M  Ergaenzung von Marc --> okuson-folder
   
+M ShowExerciseStatistics for Sheet (admin)
+  --> scheint mir zu gehen???
