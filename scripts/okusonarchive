@@ -1,0 +1,11 @@
+#!/bin/sh
+##  okusonarchive          packs whole backup into an archive
+##  $Id: okusonarchive,v 1.1 2003/10/20 23:34:29 luebeck Exp $
+
+BACKUPDIR="..."
+DIRNAME="..."
+
+cd $BACKUPDIR
+fname=`date +"BACKUP-%Y-%m-%d_%H_%M_%S.tgz"`
+tar czf $fname $DIRNAME
+
