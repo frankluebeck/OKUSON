@@ -4,7 +4,7 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: exercise.dtd,v 1.1 2003/10/06 13:01:06 luebeck Exp $ -->
+<!-- $Id: exercise.dtd,v 1.2 2003/11/07 09:40:23 neunhoef Exp $ -->
 
 <!ELEMENT EXERCISES (EXERCISE)*>
 <!ELEMENT EXERCISE (ANSWERS | TEXT | QUESTION)*>

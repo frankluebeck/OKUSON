@@ -4,7 +4,7 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: sheet.dtd,v 1.2 2003/10/10 15:41:47 luebeck Exp $ -->
+<!-- $Id: sheet.dtd,v 1.3 2003/11/07 09:40:23 neunhoef Exp $ -->
 
 <!ELEMENT SHEETS (SHEET)*>
 
