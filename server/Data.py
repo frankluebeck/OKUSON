@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.12 2003/10/24 20:35:08 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.13 2003/10/24 22:30:42 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -129,7 +129,7 @@ homeworkdesc = AsciiData.FileDescription(Config.conf['HomeworkFile'],people,
     "STORE", 0, "id",         "STRING",
     "ENTER", 0, "homework",   "DICT",
     "ENTER", 1, "KEY",        Homework,
-    "STORE", 2, "totalscore", "FLOAT",
+    "STORE", 2, "totalscore", "NUMBER",
     "STORE", 3, "scores",     "STRING" ) )
 
 

@@ -142,8 +142,6 @@ WebWorkers.RegisterAllTpl()
 Utils.Error('Formatting current time on sheets like: ' + 
             WebWorkers.LocalTimeString(), prefix = 'Info: ')
 
-from fmTools import BuiltinWebServer
-
 # We are ready, service can begin:
 try:
     Utils.Error(time.asctime(time.localtime(time.time()))+

@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.4 2003/10/16 08:13:10 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.5 2003/10/24 22:30:42 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -317,14 +317,12 @@ otherwise self.query is {}. self.path is the path.'''
             import XMLRewrite, pyRXPU, tempfile
             if type(res[1]) != types.StringType:
                 try:
-                    # das geht so nicht:
-                    #res[1] = Utils.StringFile(res[1])
                     dummy = res[1]
-                    res[1] = dummy.read()
+                    res = (res[0], dummy.read())
                     dummy.close()
                 except:
-                    res[1] = ''
-            Utils.Error('Validating '+str(self.path), prefix='Check: ')
+                    res = (res[0], '')
+            #Utils.Error('Validating '+str(self.path), prefix='Check: ')
             t = None
             try:
                 t = XMLRewrite.ValidatingParser(res[1])
@@ -333,27 +331,30 @@ otherwise self.query is {}. self.path is the path.'''
                 NoValidFunction(self, res, e)
                 res = (res[0], res[1])
             if not t:
-                Utils.Error('Validation: NO SUCCESS!')
-
+                Utils.Error('NO SUCCESS on '+str(self.path), 
+                             prefix='Validation: ')
         # Now send the header:
-        if res[0].has_key('Location'):
-          self.send_response(301)
-        else:
-          self.send_response(200)
-        self.send_header('Accept-Ranges', 'bytes')
-        for a in res[0].keys():
-            self.send_header(a, res[0][a])
-        self.end_headers()
-        if onlyhead:
-            return
-
+        try:
+            if res[0].has_key('Location'):
+              self.send_response(301)
+            else:
+              self.send_response(200)
+            self.send_header('Accept-Ranges', 'bytes')
+            for a in res[0].keys():
+                self.send_header(a, res[0][a])
+            self.end_headers()
+            if onlyhead:
+                return
+        except:
+            Utils.Error('Could not send header for '+str(self.path),
+                         prefix='Warning: ')
         # send content away 
         if type(res[1]) == types.StringType:
             try:
                 self.wfile.write(res[1])
             except:
                 Utils.Error('Peer closed connection before all data '
-                            'was sent.',prefix="Warning")
+                            'was sent.',prefix="Warning: ")
         else:
             try:
               shutil.copyfileobj(res[1], self.wfile)
@@ -421,6 +422,9 @@ class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
 
 SERVER = None
 
+# number of seconds we are willing to wait for threads to terminate:
+TERMWAIT = 3
+
 def sigusr1handler(sig,sta):
     '''Signal handler for SIGUSR1.'''
     SERVER.raus = 1
@@ -438,8 +442,10 @@ def StartServer(port = 8000):
     while not(httpd.raus):
         httpd.handle_request()
     Utils.Error("Waiting for threads to terminate...", prefix="Info: ")
-    while threading.activeCount() > 1:
+    wait = TERMWAIT
+    while threading.activeCount() > 1 and wait > 0:
         time.sleep(1)
+        wait = wait - 1
     if httpd.restartcommand != '':
       # for freeing the port the new server will listen
       Utils.Error("Restarting...", prefix="Info: ")

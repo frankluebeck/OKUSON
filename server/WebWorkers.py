@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.58 2003/10/24 20:35:08 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.59 2003/10/24 22:30:42 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -111,14 +111,14 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_GroupSize(self,node,out):
         if node[1] == None or not(node[1].has_key('number')):
             Utils.Error('Found <GroupSize /> tag without "number" attribute. '
-                        'Ignoring.',prefix='Warning:') 
+                        'Ignoring.',prefix='Warning: ') 
             return
         try:
             nr = node[1]['number'].encode('ISO-8859-1','replace')
         except:
             Utils.Error('Found "number" attribute in <GroupSize /> tag with '
                         'value not being a non-negative integer. Ignoring.',
-                        prefix='Warning:')
+                        prefix='Warning: ')
             return
         if Data.groups.has_key(nr):
             out.write(str(len(Data.groups[nr].people)))
@@ -156,21 +156,21 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_MembersOfGroup(self,node,out):
         if node[1] == None or not(node[1].has_key('number')):
             Utils.Error('Found <MemberOfGroups /> tag without "number" '
-                        'attribute. Ignoring.',prefix='Warning:') 
+                        'attribute. Ignoring.',prefix='Warning: ') 
             return
         try:
             nr = int(node[1]['number'])
         except:
             Utils.Error('Found "number" attribute in <MembersOfGroup /> tag '
                         'with value not being a non-negative integer. '
-                        'Ignoring.', prefix='Warning:')
+                        'Ignoring.', prefix='Warning: ')
             return
         if Data.groups.has_key(nr):
             l = Utils.SortNumerAlpha(Data.groups[nr].people)
             out.write(string.join(l,', ')+'.')
         else:
             Utils.Error('<MembersOfGroup /> tag requested empty group "'+
-                        str(nr)+'".',prefix='Warning:')
+                        str(nr)+'".',prefix='Warning: ')
     def handle_LoginStatus(self,node,out):
         if currentcookie != None:
             out.write('There is somebody logged in. '
@@ -363,6 +363,7 @@ and either send an error message or a report.'''
     Data.Lock.release()
 
     # At last write out a sensible response:
+    Utils.Error('registered '+id, prefix='SubmitRegistration: ')
     return Delegate('/messages/regsuccess.html',req,onlyhead)
 
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
@@ -748,6 +749,7 @@ and either send an error message or a report.'''
     Data.Lock.release()
 
     # At last write out a sensible response:
+    Utils.Error('id '+id, prefix='SubmitRegChange: ')
     return Delegate('/messages/regchsuccess.html',req,onlyhead)
 
 Site['/SubmitRegChange'] = FunWR(SubmitRegChange)
@@ -862,6 +864,8 @@ def QuerySheet(req,onlyhead):
         # for person p's sheet l[i]:
         handler = EH_withPersSheet_class(p,sheet[2],resolution)
         handler.iamadmin = iamadmin
+        Utils.Error('id '+id+', sheet '+sheet[2].name+' as HTML', 
+                    prefix='QuerySheet: ')
         return Delegate('/sheet.html',req,onlyhead,handler,addheader)
     elif format == 'PDF':
         # Collect placeholder values in dictionary
@@ -908,6 +912,8 @@ def QuerySheet(req,onlyhead):
             Utils.Error('Cannot pdflatex sheet input (id='+id+\
                         ', sheet='+sheetname+').')
             return Delegate('/errors/pdfproblem.html', req, onlyhead)
+        Utils.Error('id '+id+', sheet '+sheet[2].name+' as PDF', 
+                    prefix='QuerySheet: ')
         return ({'Content-type': 'application/pdf', 'Expires': 'now',
                  'Content-Disposition': 'attachment; filename="sheet_%s.pdf"' % sheet[2].name}, pdf)
     else:
@@ -951,10 +957,14 @@ submission as well as the results.'''
 
     ok = s.AcceptSubmission(p,SeedFromId(p.id),req.query)
     if not(ok):
+        Utils.Error('bad submission, id '+id+', sheet '+sheetname, 
+                    prefix='SubmitSheet: ')
         return Delegate('/error/badsubmission.html',req,onlyhead)
     else:
         handler = EH_withPersSheet_class(p,s,Config.conf['Resolutions'][0])
         handler.iamadmin = iamadmin
+        Utils.Error('successful submission, id '+id+', sheet '+sheetname, 
+                    prefix='SubmitSheet: ')
         return Delegate('/messages/subsuccess.html',req,onlyhead,handler)
 
 Site['/SubmitSheet'] = FunWR(SubmitSheet)
@@ -978,6 +988,7 @@ there and send a form to display and change the saved data.'''
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
     currentHandler = EH_withPersData_class(p)
+    Utils.Error('id '+id, prefix='QueryResults: ')
     return Delegate('/results.html',req,onlyhead,currentHandler)
 
 Site['/QueryResults'] = FunWR(QueryResults)
@@ -1081,6 +1092,8 @@ def ExamRegistration(req, onlyhead):
     Data.Lock.release()
 
     # At last write out a sensible response:
+    Utils.Error('registered '+id+' for exam '+str(examnr),
+                prefix='ExamRegistration: ' )
     return Delegate('/messages/examregsucc.html',req,onlyhead)
 
 Site['/ExamRegistration'] = FunWR(ExamRegistration)
@@ -1279,7 +1292,10 @@ def SubmitHomeworkSheet(req,onlyhead):
                 score = req.query.get('P'+k,[''])[0]
                 scores = req.query.get('S'+k,[''])[0]
                 try:
-                    totalscore = float(score)
+                    if '.' in score:
+                        totalscore = float(score)
+                    else:
+                        totalscore = int(score)
                 except:
                     totalscore = 0
                 if p.homework.has_key(s.name) or score != '':

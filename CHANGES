@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.49 2003/10/23 11:08:51 neunhoef Exp $
+##  $Id: CHANGES,v 1.50 2003/10/24 22:30:42 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -27,18 +27,26 @@ Changes from 1.0-pre4  to  1.0
 * documented missing interface elements
 * added an example of needed resources
 * chapter with customization examples
-* made tutors page more user friendly
 * cleanup pyRXP directory after build
 * allow group number 0 in tutor input pages
 * added some utilities to 'scripts' subdirectory
-* improved 'testsheet' for optionally using the NoTable template
+* improved 'testsheet' for optionally using the NoTable template (-n option)
 * guest IDs are no longer members of groups (in cache in GroupInfo objects)
 * sorting of IDs consistent (numerical if possible)
-* little paragraph about usage of TEXINPUTS
-* made tutors page even more user friendly by adding name column
+* little paragraph about usage of TEXINPUTS (e.g., for exercises containing
+  images)
+* made tutors page more user friendly by adding name column and separating
+  lines
 * added a script to remove a person from all data files when server
   is *not* running. Please pay ATTENTION to your data when using this!
 * fixed bug with SHEETS element in .bla files reported by Ingo
+* now floating point entries are allowed in homework excercises (this uses
+  new "FLOAT" and "NUMBER" types in the AsciiData module
+* changed log entries: validation only logs message if not successful,
+  and for main user/sheet dependend pages a log-message now shows the id
+  and sheet number (before the standard webserver line)
+* the builtin webserver now waits some maximal number of seconds on
+  terminating threads (set via BuiltinWebServer.TERMWAIT, default 3 sec)
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
