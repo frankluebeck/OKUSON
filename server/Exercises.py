@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.2 2003/09/23 08:42:54 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.3 2003/09/23 15:02:49 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -59,7 +59,7 @@ ignored. We assume that for each resolution X there is already a subdirectory
             except:
               Utils.Error('Offending LaTeX source comes from "'+self.filename+
                           '" line '+str(self.position)+'.',prefix='')
-              traceback.print_exc()
+              #traceback.print_exc()
               return
             try:
               for i in range(len(resolutions)):
@@ -268,7 +268,8 @@ otherwise.'''
                     elif q.type == 'c':
                         checked = 0  # flag, whether something is checked
                         if sub:
-                            checkeditems=AsciiData.TupleLine(sub,delimiter=',')
+                            checkeditems=AsciiData.TupleLine(sub[counter],
+                                                             delimiter=',')
                         for a in q.answers:
                             ch = ''
                             if sub and a in checkeditems:
@@ -278,7 +279,7 @@ otherwise.'''
                                      'name="%s" value="+" %s/> %s /') % 
                                     ('Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
-                        if sub and '' in checkeditems:
+                        if (sub and '' in checkeditems) or not(sub):
                             ch = 'checked="checked" '
                         f.write(('\n      <input type="checkbox" name="%s" '
                                  'value="+" %s/> - ') % 
@@ -339,7 +340,7 @@ the user.'''
                 for j,k in l:
                     q = o.list[j]    # the question object
                     if q.type == 'r':     # a radio button
-                        val = query.get('Q'+str(counter),'')[0]
+                        val = query.get('Q'+str(counter),[''])[0]
                         if val == '---': val = ''  # we say nothing!
                         val = val[:20]   # limit size!
                         if val != '' and not(val in q.answers):
@@ -361,14 +362,14 @@ the user.'''
                             exscore -= 1
                     elif q.type == 'c':   # a choice question
                         # first get selected choice:
-                        val = query.get('Q'+str(counter),'')[0].strip()
+                        val = query.get('Q'+str(counter),[''])[0].strip()
                         if val == '+':    # nothing submitted
                             choice = ['']
                         else:
                             choice = []
                         for a in q.answers:
-                            val = query.get('Q'+str(counter)[0]+'.'+a,
-                                            '').strip()
+                            val = query.get('Q'+str(counter)+'.'+a,
+                                            [''])[0].strip()
                             if val == '+':
                                 choice.append(a)
                         choice.sort()
@@ -382,7 +383,7 @@ the user.'''
                             marks.append('-')
                             exscore -= 1
                     elif q.type == 's':   # a free form question
-                        val = query.get('Q'+str(counter),'')[0].strip()
+                        val = query.get('Q'+str(counter),[''])[0].strip()
                         if val == '---': val = ''  # we say nothing!
                         val = val[:20]   # limit size!
                         sub.append(val)
@@ -397,7 +398,7 @@ the user.'''
                                     marks.append('-')
                                     exscore -= 1
                             else:
-                                if q.solutions[k][1].match(val):
+                                if q.solutions[k][1].search(val):
                                     marks.append('+')
                                     exscore += 1
                                 else:
@@ -920,6 +921,8 @@ def MakeSheet(t):
             counter += 1
         elif a[0] == 'INCLUDE':
             fi = a[1]['file'].encode('ISO-8859-1','replace')
+            if a[1].has_key('prefix'):
+                fi = a[1]['prefix'].encode('ISO-8859-1','replace') + fi
             if not(AllExercises.has_key(fi)):
                 Utils.Error('Unknown exercise "'+fi+'" needed by sheet at '+
                             Utils.StrPos(a[3])+'\nIgnoring sheet.')

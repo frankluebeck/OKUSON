@@ -15,7 +15,7 @@
 <TEXT>
 Bitte kreuzen Sie genau die Aussagen an, die sie für richtig halten.
 Um einen Punkt zu erhalten, müssen Sie alle richtigen und keine falschen
-Aussagen ankreuzen. Wenn Sie "-" anwählen, zählen Ihre anderen Kreuze
+Aussagen ankreuzen. Wenn Sie ``---'' anwählen, zählen Ihre anderen Kreuze
 nicht und Sie bekommen $0$ Punkte.
 </TEXT>
 
@@ -40,14 +40,20 @@ nicht und Sie bekommen $0$ Punkte.
 
 <QUESTION>
 <ANSWERS type="c">(x)|(y)|(z)</ANSWERS>
-<VARIANT solution="(z)">
+<VARIANT solution="(y)">
 \begin{itemize}
 \item[(x)] $(a+b)^2 = a^2+b^2$ in beliebigen Ringen.
 \item[(y)] $(a+b)^2 = a^2+b^2$ in Ringen der Charakteristik $2$.
-\item[(y)] $(a+b)^2 = a^2-2ab+b^2$ in beliebigen Ringen.
+\item[(z)] $(a+b)^2 = a^2-2ab+b^2$ in beliebigen Ringen.
 \end{itemize}
 </VARIANT>
 </QUESTION>
 
+<QUESTION>
+<ANSWERS type="s"></ANSWERS>
+<VARIANT solutionregexp="^(a|b|c.d)$">Geben Sie \texttt{a} oder \texttt{b}
+oder \texttt{cxd} ein, wobei in letzterem Fall \texttt{x} ein beliebiger
+Buchstabe sein darf.</VARIANT>
+</QUESTION>
 </EXERCISE>
 
