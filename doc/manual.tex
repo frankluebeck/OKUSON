@@ -1162,7 +1162,161 @@ web pages.
 \chapter{Security and Backup}\label{ch:security}
 \chapter{Schedule of Events for one Course}
 \chapter{Administration via the Web Interface}
+
+\label{adminpages}
+
 \chapter{Managing Participants}
+
+\section{Registration of Participants}
+
+Once you start the server, participants can register on their own, without
+any interaction with you. Note that later during the course it is still
+possible to register new participants, because experience shows, that there
+is already the occasional late bloomer.
+
+\section{Distributing Participants into smaller Exercise Classes}
+
+Usually one wants to distribute all the participants into much smaller
+exercises classes, for example to give them the opportunity to present
+their solutions of the exercises or to ask their tutors about them.
+
+For bigger courses, this distribution task is not simple, at least if you
+want to fulfill wishes of participants to be together with some other
+participants. {\OKUSON} helps you to complete this task in the following ways:
+
+First (already at registration time), participants can enter a wishlist
+of people with whom they want to be in the same exercise class. {\OKUSON}
+offers one input field, where participants can basically type in IDs of
+other participants, usually separated by commas or whitespace.
+
+Secondly you can export all registered people via the administrator pages 
+(see \ref{adminpages}) using the button ``Export people for exercise
+classes''. You have the choice of exporting all participants together
+(option ``all together'') or separated by their ``Studiengang''. The result
+of this export is an ASCII file in a certain format (see
+\ref{exportexclassformat}), that contains basically the IDs, the first and
+last names, the semester number, the Studiengang, and the wishlist of
+each participant.
+
+This file is sent to your web browser with the content type 
+``\texttt{text/okuson}''. This usually means that your browser --- not
+knowing this type --- asks you, where it should store this file. It should
+offer the default file name ``\texttt{peoplelist.txt}''. Once you have
+saved this file on your hard disk, you can use the following two scripts
+in the ``\texttt{scripts}'' directory of your {\OKUSON} home directory:
+``\texttt{distribute.py}'' and ``\texttt{numbergroups.py}''. The first
+does a distribution of participants into exercises classes thereby
+fulfilling the wishes of participants as far as possible and forming as
+many groups as you order. The second script just takes the result and
+brings it in a format suitable to reimport it into {\OKUSON}. The 
+result of ``\texttt{numbergroups.py}'' can be appended to 
+``\texttt{data/groups.txt}''. After the next server restart the new
+information is available to the {\OKUSON} server.
+
+\subsection{Usage of \texttt{distribute.py}}
+
+The input to \texttt{distribute.py} is an ASCII file with one line for
+each participant (plus extra lines, see below). Each such line has to
+be in the following format:
+
+\hspace*{5mm}\texttt{id:last name:first name:semester:studiengang:wishlist}
+
+where \texttt{wishlist} is a comma separated list of valid IDs. Lines
+beginning with a hash \# character are ignored as comments. Empty lines
+play a special role, because they separate so called ``parts'' of the
+input. If you for example want to form exercise classes for participants
+of each Studiengang separately, you can just separate the lists of
+participants by empty lines, which is also done by the {\OKUSON} server,
+if you select the option ``by Studiengang'' during export.
+
+The output of \texttt{distribute.py} is in the same format, except that
+empty lines now separate the groups into which the script has divided the
+participants. Some comment lines have been added.
+
+What does \texttt{distribute.py} do?
+
+First it calculates for each part the finest equivalence relation with the
+property, that all wishes (within the part) are fulfilled in the sense,
+that any two participants where one had the other on his wishlist, are in
+the same equivalence class.
+
+Then it distributes these equivalence classes into a number of groups you
+have specified on the command line (see below). To this end it uses the
+following simple algorithm: It always puts the biggest equivalence class
+left into the smallest group available. This algorithm works amazingly
+well, because usually you will have lots of people without wishes, which
+help to fill the groups in the end. Occasionally there will be one
+equivalence class which is too big, thereby making one exercises class
+which is bigger than all the others. See below how to overcome this
+problem.
+
+\texttt{distribute.py} is called with the following command line arguments:
+
+\hspace*{5mm} \verb!scripts/distribute.py INPUTFILE OUTPUTFILE GROUPS {GROUPS}!
+
+where ``\texttt{INPUTFILE}'' is replaced with the name of the input file,
+``\texttt{OUTPUTFILE}'' is replaced by the name of the output file and
+these two file names are followed by as many numbers as there are parts
+(separated by empty lines, see above) in the input. Each number specifies,
+how many groups should be formed out of the corresponding part. Note that
+the output file is overwritten and therefore should be different from the
+input file.
+
+The information about the equivalence classes is preserved in the following
+way: between any two equivalence classes within the same group a comment
+line is added, indicating the delimiter between equivalence classes.
+
+\subsection{Usage of \texttt{numbergroups.py}}
+
+The usage of \texttt{numbergroups.py} is even simpler. It is just called in
+the following way:
+
+\hspace*{5mm} \verb!scripts/numbergroups.py INPUTFILE OUTPUTFILE [FIRSTGROUP]!
+
+where ``\texttt{INPUTFILE}'' is replaced with the name of the input file,
+``\texttt{OUTPUTFILE}'' is replaced by the name of the output file, and
+``\texttt{FIRSTGROUP}'' is an optional argument which selects the number
+of the first group and defaults to $1$.
+
+The script \texttt{numbergroups.py} just reads in the input file, reads
+empty lines as group delimiters, ignores comments and writes out the
+group distribution in the format the {\OKUSON} server needs it in the
+file \texttt{data/groups.txt}. The import works just by appending the
+result of \texttt{numbergroups.py} to the file \texttt{data/groups.txt}
+and restarting the server.
+
+\subsection{Strategies for Distribution}
+
+Usually, the following strategy should be good enough:
+
+\begin{enumerate}
+\item Export people ``all together''.
+\item Run \texttt{distribute.py} once with the number of groups you want to
+have.
+\item Look at the output on the screen and decide whether groups sizes
+are suitable.
+\item Run \texttt{numbergroups.py} to prepare the input for {\OKUSON}.
+\item Append it to \texttt{data/groups.txt} and restart the server.
+\end{enumerate}
+
+Because of the nature of this procedure with many intermediate steps you
+can do manual interventions at all stages. For example you can divide the
+output of the {\OKUSON} server by hand in a number of parts which are
+handled separatedly. Or you can play around with the number of groups
+(note that using $1$ for the number of groups basically gives you
+statistics about the equivalence classes). In this way, you can overcome
+problems with too big equivalence classes by manually separating them
+into different parts. At last you also can look at the output of 
+\texttt{distribute.py} and change the distribution before importing it
+into the {\OKUSON} server via \texttt{numbergroups.py}.
+
+Note finally that you can also separate different parts of the input into
+different files manually and run the scripts on these files separately.
+In the end you can put everything together by choosing the
+\texttt{FIRSTGROUP} argument of \texttt{numbergroups.py} accordingly.
+
+We hope that this whole procedure is flexible enough for all situations.
+
 \chapter{Import and Export of Data}
 \chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{File Formats}
