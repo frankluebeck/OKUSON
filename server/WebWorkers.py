@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.112 2004/10/12 01:49:34 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.113 2005/04/02 19:54:01 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -394,9 +394,17 @@ def AuthenticateTutor(g,req,onlyhead):
     pw = req.query.get('passwd',['1'])[0].strip()[:16]
     salt = g.passwd[:2]
     passwd = crypt.crypt(pw,salt)
+    # Check for cookie:
+    cookie = Cookie.SimpleCookie()
+    cookie.load('Cookie: '+req.headers.get('Cookie',''))
+    try: 
+        cookieval = cookie['OKUSON'].value
+    except:
+        cookieval = ''
     # Check admin password:
     passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
-    if passwdadmin == Config.conf['AdministratorPassword'] and \
+    if (passwdadmin == Config.conf['AdministratorPassword'] or
+        cookieval == currentcookie) and \
        BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
                                       req.client_address[0]):
         iamadmin = 1
@@ -411,20 +419,28 @@ def SubmitRegistration(req,onlyhead):
     '''This function is called when a user submits a registration. It will
 work on the submitted form data, register the new participant if possible
 and either send an error message or a report.'''
-    # Very first check whether registration is allowed:
-    if Config.conf['RegistrationPossible'] == 0:
-        return Delegate('/errors/regnotallowed.html',req,onlyhead)
+    # Very first check, whether the first password is the administrator
+    # password. If so, registration is possible also when otherwise not 
+    # allowed:
+    if Authenticate(None,req,onlyhead) == 1:
+        # We accept the second password as if typed twice:
+        pw1 = req.query.get('passwd2',['2'])[0].strip()[:16]
+        pw2 = req.query.get('passwd2',['2'])[0].strip()[:16]
+    else:
+        # Now check whether registration is allowed:
+        if Config.conf['RegistrationPossible'] == 0:
+            return Delegate('/errors/regnotallowed.html',req,onlyhead)
 
-    # First check whether the id is valid:
+        # Now check whether the two passwords are identical:
+        pw1 = req.query.get('passwd',['1'])[0].strip()[:16]
+        pw2 = req.query.get('passwd2',['2'])[0].strip()[:16]
+        if pw1 != pw2:
+            return Delegate('/errors/diffpasswd.html',req,onlyhead)
+
+    # Now check whether the id is valid:
     id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
-
-    # Now check whether the two passwords are identical:
-    pw1 = req.query.get('passwd',['1'])[0].strip()[:16]
-    pw2 = req.query.get('passwd2',['2'])[0].strip()[:16]
-    if pw1 != pw2:
-        return Delegate('/errors/diffpasswd.html',req,onlyhead)
 
     # Now check for empty fields:
     lname = req.query.get('lname',[''])[0].strip()[:30]
@@ -2620,10 +2636,8 @@ def ShowGlobalStatistics(req,onlyhead):
     handler.iamadmin = 1
     return Delegate('/globalstatistics.html', req, onlyhead, handler)
         
-        
 Site['/ShowGlobalStatistics'] = FunWR(ShowGlobalStatistics)
-Site['/ShowGlobalStatistics'].access_list = \
-         Config.conf['AdministrationAccessList']
+
 
 def ShowCumulatedScoreStatistics(req,onlyhead):
     '''This function handles the request for the cumulated score statistics '''
