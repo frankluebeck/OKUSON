@@ -45,22 +45,22 @@ M!Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
 M!Hoechstanzahl von Leuten in Gruppe
 M!  Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
  !    eigenes logrotate: n versionen aufbewahren, alle ab .1 zippen
-? Dezimalkomma schaltbar
-        >>> locale.format("%2.1f",1.1)
-        '1.1'
-        >>> locale.setlocale(locale.LC_ALL, '')
-        'de_DE.ISO-8859-1'
-        >>> locale.format("%2.1f",1.1)
-        '1,1'
-        >>> locale.str(1.12)
-        '1.12'
-        >>> locale.atof("1,1")
-        11.0
-        >>> locale.setlocale(locale.LC_ALL, '')
-        'de_DE.ISO-8859-1'
-        >>> locale.atof("1,1")
-        1.1000000000000001
-     Punktzahlen alle mit locale....  verarbeiten : fertig
+?!Dezimalkomma schaltbar
+ !      >>> locale.format("%2.1f",1.1)
+ !      '1.1'
+ !      >>> locale.setlocale(locale.LC_ALL, '')
+ !      'de_DE.ISO-8859-1'
+ !      >>> locale.format("%2.1f",1.1)
+ !      '1,1'
+ !      >>> locale.str(1.12)
+ !      '1.12'
+ !      >>> locale.atof("1,1")
+ !      11.0
+ !      >>> locale.setlocale(locale.LC_ALL, '')
+ !      'de_DE.ISO-8859-1'
+ !      >>> locale.atof("1,1")
+ !      1.1000000000000001
+ !   Punktzahlen alle mit locale....  verarbeiten : fertig
 ! pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
 M!Aufloesungs-Cookie persistent
 M!Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
