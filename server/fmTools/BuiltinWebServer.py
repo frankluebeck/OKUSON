@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.12 2004/03/08 08:14:49 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.13 2004/03/08 13:03:46 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -417,12 +417,10 @@ otherwise self.query is {}. self.path is the path.'''
         every message.
         """
 
-        msg = ("%s - - [%s] %s" % 
-           (self.address_string(), self.log_date_time_string(), format%args))
+        msg = ("%s - - [%s] %s - User-Agent: %s" % 
+           (self.address_string(), self.log_date_time_string(), format%args,
+            self.headers.getheader('User-Agent')))
         Utils.Error(msg,"Log:")
-        # Comment out the following if you do not want to see the user agent
-        # lines:
-        Utils.Error(self.headers.getheader('User-Agent'),"User-Agent:")
 
 class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
     def get_request(self):
