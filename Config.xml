@@ -76,6 +76,19 @@ Frank Lübeck (Frank.Luebeck@Math.RWTH-Aachen.De)</a> oder
 Max Neunhöffer (Max.Neunhoeffer@Math.RWTH-Aachen.De)</a>
 ]]></Feedback>
 
+
+<!-- The following is put as string (no element content allowed, use a
+     CDATA section if necessary!) at the top of each page (directly behind
+     the <body> tag of the xhtml page. -->
+<Header></Header>
+
+
+<!-- The following is put as string (no element content allowed, use a
+     CDATA section if necessary!) at the bottom of each page (directly before
+     the </body> tag of the xhtml page. -->
+<Footer></Footer>
+
+
 <!-- The following appears on the registration page under the entry
 "Studiengang", which means the direction of studies. Note that there
 is also a free form field which - when nonempty - overwrites the choice
