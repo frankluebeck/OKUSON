@@ -63,6 +63,16 @@ Ihr Passwort nicht ändern wollen.
       <td> <SemesterField /> </td>
     </tr>
 
+    <!-- The following should be activated if you allow participants to
+         change their tutoring group number (see <GroupChangePossible> in
+         Config.xml . -->
+    <!--
+    <tr>
+      <td>Übungsgruppennummer:</td>
+      <td> <GroupField /> </td>
+    </tr>
+    -->
+
     <tr>
       <td>Neues Passwort (<a href="hinwpasswd.html">HINWEIS</a>):</td>
       <td> <input type="password" size="16" maxlength="16" name="pw1"
@@ -121,5 +131,5 @@ Ihr Passwort nicht ändern wollen.
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange2.tpl,v 1.3 2003/11/16 19:59:52 neunhoef Exp $ -->
+     $Id: regchange2.tpl,v 1.4 2004/03/05 13:25:03 neunhoef Exp $ -->
 

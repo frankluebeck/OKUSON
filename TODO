@@ -1,4 +1,3 @@
-
 Fragen:  - Header und Footer nur sinnvoll, wenn sie in den .tpl's vorkommen???
          - handle_ExamRegStatus  enthält deutschen Text !???
 
@@ -31,9 +30,9 @@ Vor naechstem Release:
 Ideen:
 
 M Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
-M Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
-M Aenderung der Gruppennummer bei Datenaenderung
-     letzte beiden Optionen schaltbar.
+M!Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
+M!Aenderung der Gruppennummer bei Datenaenderung
+ !   letzte beiden Optionen schaltbar.
 M!Hoechstzahl der Mitglieder einer Gruppe (schaltbar)
 M!Scheinanfertigung   --> Hilfsskript dokumentieren
 F!Beim Einlesen von Webtemplates filename und timestamp speichern und 

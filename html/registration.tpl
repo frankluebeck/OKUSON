@@ -74,6 +74,16 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
       </td>
     </tr>
 
+    <!-- The following should be activated if you allow participants to
+         choose their tutoring group number (see <GroupChoicePossible> in
+         Config.xml . -->
+    <!--
+    <tr>
+      <td>Übungsgruppennummer:</td>
+      <td> <input size="3" maxlength="3" name="groupnr" value="" /> </td>
+    </tr>
+    -->
+
     <tr>
       <td> <strong>Freiwillige Angaben:</strong> </td>
       <td></td>
@@ -116,5 +126,5 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: registration.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: registration.tpl,v 1.2 2004/03/05 13:25:03 neunhoef Exp $ -->
 

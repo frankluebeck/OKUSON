@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.84 2004/03/05 10:40:23 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.85 2004/03/05 13:25:03 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -411,6 +411,17 @@ and either send an error message or a report.'''
     if lname == '' or fname == '' or stud == '':
         return Delegate('/errors/emptyfields.html',req,onlyhead)
 
+    if Config.conf['GroupChoicePossible']:
+        groupnr = req.query.get('groupnr',['0'])[0].strip()[:3]
+        try:
+            groupnr = int(groupnr)
+            if not(Data.groups.has_key(str(groupnr))):
+                groupnr = 0
+        except:
+            groupnr = 0
+    else:
+        groupnr = 0
+
     email = req.query.get('email',[''])[0].strip()[:80]
     wishes = req.query.get('wishes',[''])[0].strip()[:80]
 
@@ -430,6 +441,8 @@ and either send an error message or a report.'''
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
                                  AsciiData.LineDict(persondata) ) )
+    # Construct data line with group information:
+    groupline = AsciiData.LineTuple( (id,groupnr) )
 
     # Create a new Person object:
     p = Data.Person()
@@ -441,6 +454,8 @@ and either send an error message or a report.'''
     p.passwd = passwd
     p.email = email
     p.wishes = wishes
+    p.group = groupnr
+
     p.persondata = persondata
 
     # Then check at last whether we already have someone with that id:
@@ -452,6 +467,7 @@ and either send an error message or a report.'''
     # Put new person into file on disk:
     try:
         Data.peopledesc.AppendLine(line)
+        Data.groupdesc.AppendLine(groupline)
     except:
         Data.Lock.release()
         Utils.Error('Failed to register person:\n'+line)
@@ -589,6 +605,14 @@ one Person object as data.'''
     def handle_SemesterField(self,node,out):
         out.write('<input size="2" maxlength="2" name="sem" value="'+
                   str(self.p.sem)+'" />')
+    def handle_Group(self,node,out):
+        out.write(str(self.p.group))
+    def handle_GroupField(self,node,out):
+        if Config.conf['GroupChangePossible']:
+            out.write('<input size="3" maxlength="3" name="groupnr" value="'+
+                  str(self.p.group)+'" />')
+        else:
+            out.write(str(self.p.group))
     def handle_Email(self,node,out):
         out.write(str(self.p.email))
     def handle_EmailField(self,node,out):
@@ -810,6 +834,17 @@ and either send an error message or a report.'''
     if lname == '' or fname == '' or stud == '':
         return Delegate('/errors/emptyfields.html',req,onlyhead)
 
+    if Config.conf['GroupChangePossible']:
+        groupnr = req.query.get('groupnr',['0'])[0].strip()[:3]
+        try:
+            groupnr = int(groupnr)
+            if not(Data.groups.has_key(str(groupnr))):
+                groupnr = 0
+        except:
+            groupnr = p.group
+    else:
+        groupnr = p.group
+
     email = req.query.get('email',[''])[0].strip()[:80]
     wishes = req.query.get('wishes',[''])[0].strip()[:80]
 
@@ -827,6 +862,7 @@ and either send an error message or a report.'''
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
                                  AsciiData.LineDict(persondata) ) )
+    groupline = AsciiData.LineTuple( (id,groupnr) )
 
     # Note: Between the moment we looked up our person and stored it in
     # 'p' there might have been some change in the database, because we
@@ -837,6 +873,7 @@ and either send an error message or a report.'''
     Data.Lock.acquire()
     try:
         Data.peopledesc.AppendLine(line)
+        Data.groupdesc.AppendLine(groupline)
     except:
         Data.Lock.release()
         Utils.Error('Failed to register person:\n'+line)
@@ -851,7 +888,12 @@ and either send an error message or a report.'''
     p.email = email
     p.wishes = wishes
     p.persondata = persondata
-
+    if p.group != groupnr:   # we have to delete the person from the groups
+                             # database
+         Data.DelFromGroupStatistic(p)
+         p.group = groupnr
+         Data.AddToGroupStatistic(p)
+    
     # The same person object stays in the "people" dictionary.
     Data.Lock.release()
 

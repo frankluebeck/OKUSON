@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.18 2004/03/05 10:40:23 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.19 2004/03/05 13:25:03 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -231,6 +231,18 @@ def AddToGroupStatistic(p):
         # we only add "real" IDs to the group cache
         groups[g].people.append(p.id)
 
+def DelFromGroupStatistic(p):
+    '''Deletes a person from the groups statistic.'''
+    global groups
+    g = str(p.group)
+    if not(groups.has_key(g)):
+        groups[g] = GroupInfo(g)
+    try:
+        i = groups[g].people.index(p.id)
+        del groups[g].people[i]
+    except:
+        pass
+        
 def MakeGroupStatistic():
     global groups
     for k in people.keys():
