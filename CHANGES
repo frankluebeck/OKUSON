@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.39 2003/10/15 00:05:12 neunhoef Exp $
+##  $Id: CHANGES,v 1.40 2003/10/15 15:35:36 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -17,6 +17,7 @@ Changes from 1.0-pre3  to  1.0
 * added support for ExamGradingFunction to automatically calculate messages
   and grades for results of exams. This should now complete the support
   for exams.
+* added 'Content-Disposition' header line for PDF sheets
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
