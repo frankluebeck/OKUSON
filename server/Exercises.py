@@ -9,12 +9,12 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.19 2003/11/16 14:09:55 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.20 2003/11/16 18:38:35 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
 
-import Config,Data
+import Config,Data,WebWorkers
 from fmTools import Utils,LatexImage,SimpleRand,AsciiData,XMLRewrite
 
 # the data structure of sheets and exercises is described in the following 
@@ -727,7 +727,7 @@ of the sheet with seed "seed" and returns the result as a string.
         for k in peopleKeys:
           p = Data.people[k]
           if not(Config.conf['GuestIdRegExp'].match(k)):
-            personalExercises = self.ChooserFunction(hash(k))
+            personalExercises = self.ChooserFunction(WebWorkers.SeedFromId(k))
             countOfQuestions = 0
             peopleCount += 1
             if p.mcresults.has_key(self.name): submissionCount+=1
