@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.23 2003/10/09 21:06:05 neunhoef Exp $
+% $Id: manual.tex,v 1.24 2003/10/10 00:18:50 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -740,6 +740,13 @@ files when you use the testscripts for exercise and exercise sheet documents
 of the {\OKUSON} server when the template files for the web pages are
 cached.
 
+\subsubsection*{Validating and Checking Well Formedness}
+
+In the {\OKUSON} home directory, there is a script \texttt{xmlvalidate}
+which can be used to validate XML documents. (With \texttt{-w} argument it
+is only checked if a document is well formed.) In case of an error, a
+sensible message for removing the problem is printed.
+
 \chapter{Creating Exercises and Sheets}\label{ch:createExercisesSheets}
 
 The {\OKUSON} package delivers exercises via the web. There are two types of
@@ -1202,6 +1209,10 @@ images for that). Also, a systematic processing of XML documents on the client
 side is already possible in new Web browsers. Such extensions will only work 
 in combination with HTML pages which are strictly conform with some official
 specification.
+\item We can include in our builtin web server an automatic check of the
+validity of all delivered web pages. (Non valid pages are still delivered,
+but they are saved in temporary files for debugging and the validator 
+icon is removed.)
 \end{itemize}
 
 The {\OKUSON} package comes with a complete set of sample web pages, they
@@ -1319,7 +1330,8 @@ participants in group with given number.
 sheets,  for use on query page for sheets.
 \end{description}
 
-\subsection{Special Elements in Pages Containing Personal Data}
+\subsection{Special Elements in Pages Containing Personal
+Data}\label{ssec:regelts}
 
 There are  two pages for registration, one for the actual
 registration and one for changing the personal data, see the sample pages
@@ -1388,7 +1400,7 @@ of sheet in readable format (same format as explained for
 Pages}\label{ssec:groupelements}
 
 All information about tutoring groups is also exported for use on web pages
-related to one such group. In~\ref{ssec:groupdata} it is explained how
+related to one such group. In~\ref{sec:groupinfo} it is explained how
 this information can be given to the {\OKUSON} server.
 
 \begin{description}
@@ -1467,7 +1479,7 @@ home directory.
 \item \textbf{Export people for tutoring group distribution.} With this option
 you can export data about all registered participants for the purpose of
 distributing them into smaller tutoring groups. Usually this will be 
-a semi-automatic process that is described in chapter \ref{Managing}
+a semi-automatic process, that is described in chapter \ref{ch:managepeople}
 below.
 \item \textbf{Export people.} With this option you can export the personal
 data of all registered participants into a single ASCII file. See
@@ -1497,54 +1509,96 @@ where the participant queries his results. More
 \end{itemize}
 
 \chapter{Managing Participants}\label{ch:managepeople}
-\label{Managing}
 
 \section{Registration of Participants}
 
-Once you start the server, participants can register on their own, without
-any interaction with you. Note that later during the course it is still
-possible to register new participants, because experience shows, that there
-is already the occasional late bloomer.
+Once you start the server, participants can register via the {\OKUSON} web 
+interface without  any administrational interaction. Registration is
+possible as long as the service is running. 
 
-\section{Distributing Participants into smaller Exercise
-Classes}\label{sec:groups}
+Among the sample web pages coming with {\OKUSON} the template files
+\texttt{registration.tpl} and \texttt{regchange2.tpl} are used for the
+initial registration and change of personal data, respectively. 
 
-Usually one wants to distribute all the participants into much smaller
-exercises classes, for example to give them the opportunity to present
-their solutions of the exercises or to ask their tutors about them.
+Before you start the service check if the personal data collected on these
+pages are what you need in case of your course. It is advisable to ask for
+all data you may need later, e.g., for the grading and a possible
+certificate in the end of the course. In chapter~\ref{ch:webpages} we have
+explained the customization of the web pages, in particular in
+section~\ref{ssec:regelts} we mentioned some customization variables you can
+use for additional data. On the other hand you can just delete input fields 
+in the registration pages which you do not need.
 
-For bigger courses, this distribution task is not simple, at least if you
-want to fulfill wishes of participants to be together with some other
-participants. {\OKUSON} helps you to complete this task in the following ways:
+The most important datum of a registration is the ID of the participant,
+which cannot be changed later. All data concerning a specific course
+participant are stored by {\OKUSON} together with the corresponding ID.
+
+
+\subsubsection*{IDs of Participants}
+
+In our university there is a natural ID for each student (the "Matrikel" 
+number)  which is often used. If you want to use other types of IDs, e.g.,
+login names of the students choice, you can customize  the configuration option
+\texttt{IdCheckRegExp} in \texttt{Config.xml}.
+
+\subsubsection*{Visitor IDs}
+
+Sometimes it is useful to have some visitor IDs which can be used with
+arbitrary password and which do not appear in the export of user data or
+result statistics. {\OKUSON} has the configuration option 
+\texttt{GuestIdRegExp} for specifying such IDs.
+
+
+\section{Distributing Participants into Tutoring Groups}\label{sec:groups}
+
+We always accompany our exercises with regular meetings in a number of 
+smaller groups with an assigned tutor. (The tutors check and grade the written
+solutions of non-interactive exercises, and they discuss all exercises with
+their group.)
+
+You can tell the {\OKUSON} server about the membership of a course
+participant in a tutoring group by numbering the groups (starting from 1,
+the number 0 is a default number for people not (yet) put in one of those
+groups), and by appending a line of the form
+
+\verb+   someid:groupnumber+
+
+to the file \texttt{data/groups.txt} (more precisely, the file configured
+by \texttt{GroupFile}).
+
+But, as you may know, for bigger courses, this distribution 
+of the participants into tutoring groups is not easy, at least if you
+want to fulfill wishes of participants to be together with some others.
+{\OKUSON} helps you to complete this task in the following ways:
 
 First (already at registration time), participants can enter a wishlist
-of people with whom they want to be in the same exercise class. {\OKUSON}
+of other students IDs with whom they want to be in the same group. {\OKUSON}
 offers one input field, where participants can basically type in IDs of
 other participants, usually separated by commas or whitespace.
 
 Secondly you can export all registered people via the administrator pages 
-(see \ref{adminpages}) using the button ``Export people for exercise
-classes''. You have the choice of exporting all participants together
-(option ``all together'') or separated by their ``Studiengang''. Also you
+(see \ref{adminpages}) using the button ``Export people for tutoring group
+distribution''. You have the choice of exporting all participants together
+(option ``all together'') or separated by their course of studies. Also you
 can choose the data fields by which the output is sorted. The result
 of this export is an ASCII file in a certain format (see
 \ref{exportexclassformat}), that contains basically the IDs, the first and
-last names, the semester number, the Studiengang, and the wishlist of
-each participant.
+last names, the semester number, the course of studies, the wishlist and
+possible additional data you may collect of each participant.
 
 This file is sent to your web browser with the content type 
-``\texttt{text/okuson}''. This usually means that your browser --- not
+\texttt{text/okuson}. This usually means that your browser --- not
 knowing this type --- asks you, where it should store this file. It should
-offer the default file name ``\texttt{peoplelistforgroups.txt}''. Once you have
+offer the default file name \texttt{peoplelistforgroups.txt}. Once you have
 saved this file on your hard disk, you can use the following two scripts
-in the ``\texttt{scripts}'' directory of your {\OKUSON} home directory:
-``\texttt{distribute.py}'' and ``\texttt{numbergroups.py}''. The first
-does a distribution of participants into exercises classes thereby
+in the \texttt{scripts} directory of your {\OKUSON} home directory:
+\texttt{distribute.py} and \texttt{numbergroups.py}. The first
+does a distribution of participants into groups thereby
 fulfilling the wishes of participants as far as possible and forming as
 many groups as you order. The second script just takes the result and
 brings it in a format suitable to reimport it into {\OKUSON}. The 
-result of ``\texttt{numbergroups.py}'' can be appended to 
-``\texttt{data/groups.txt}''. After the next server restart the new
+result of \texttt{numbergroups.py} can be appended to 
+\texttt{data/groups.txt}. After the next server restart the new
 information is available to the {\OKUSON} server.
 
 \subsection{Usage of \texttt{distribute.py}}
@@ -1553,17 +1607,20 @@ The input to \texttt{distribute.py} is an ASCII file with one line for
 each participant (plus extra lines, see below). Each such line has to
 be in the following format:
 
-\hspace*{5mm}\texttt{id:last name:first name:semester:studiengang:wishlist}
+\hspace*{5mm}\texttt{id:last name:first name:semester:studiengang:wishlist:\ldots}
 
-where \texttt{wishlist} is a comma separated list of valid IDs. Lines
+where \texttt{wishlist} is a comma separated list of valid IDs and the dots
+in the end mean the 9 customization data \texttt{persondata1}, \ldots, which
+may be empty. Lines
 beginning with a hash \# character are ignored as comments. Empty lines
-play a special role, because they separate so called ``parts'' of the
-input. If you for example want to form exercise classes for participants
-of each Studiengang separately, you can just separate the lists of
+play a special role,  they separate so called ``parts'' of the
+input. If you for example want to form groups for participants
+of some course of studies separately, you can just separate the lists of
 participants by empty lines, which is also done by the {\OKUSON} server,
-if you select the option ``by Studiengang'' during export.
+if you select the option ``by course of studies'' during export. Via the
+sorting options it is also easy to split into parts by other criteria.
 
-The output of \texttt{distribute.py} is in the same format, except that
+The output of \texttt{distribute.py} has the same format, except that
 empty lines now separate the groups into which the script has divided the
 participants. Some comment lines have been added.
 
@@ -1588,8 +1645,8 @@ problem.
 
 \hspace*{5mm} \verb!scripts/distribute.py INPUTFILE OUTPUTFILE GROUPS {GROUPS}!
 
-where ``\texttt{INPUTFILE}'' is replaced with the name of the input file,
-``\texttt{OUTPUTFILE}'' is replaced by the name of the output file and
+where \texttt{INPUTFILE} is replaced with the name of the input file,
+\texttt{OUTPUTFILE} is replaced by the name of the output file and
 these two file names are followed by as many numbers as there are parts
 (separated by empty lines, see above) in the input. Each number specifies,
 how many groups should be formed out of the corresponding part. Note that
@@ -1602,14 +1659,14 @@ line is added, indicating the delimiter between equivalence classes.
 
 \subsection{Usage of \texttt{numbergroups.py}}
 
-The usage of \texttt{numbergroups.py} is even simpler. It is just called in
+The usage of \texttt{numbergroups.py} is even simpler. It is  called in
 the following way:
 
 \hspace*{5mm} \verb!scripts/numbergroups.py INPUTFILE OUTPUTFILE [FIRSTGROUP]!
 
-where ``\texttt{INPUTFILE}'' is replaced with the name of the input file,
-``\texttt{OUTPUTFILE}'' is replaced by the name of the output file, and
-``\texttt{FIRSTGROUP}'' is an optional argument which selects the number
+where \texttt{INPUTFILE} is replaced with the name of the input file,
+\texttt{OUTPUTFILE} is replaced by the name of the output file, and
+\texttt{FIRSTGROUP} is an optional argument which selects the number
 of the first group and defaults to $1$.
 
 The script \texttt{numbergroups.py} just reads in the input file, reads
@@ -1621,13 +1678,13 @@ and restarting the server.
 
 \subsection{Strategies for Distribution}
 
-Usually, the following strategy should be good enough:
+We found that often the following strategy was good enough:
 
 \begin{enumerate}
 \item Export people ``all together''.
 \item Run \texttt{distribute.py} once with the number of groups you want to
 have.
-\item Look at the output on the screen and decide whether groups sizes
+\item Look at the output on the screen and decide whether the group sizes
 are suitable.
 \item Run \texttt{numbergroups.py} to prepare the input for {\OKUSON}.
 \item Append it to \texttt{data/groups.txt} and restart the server.
@@ -1650,6 +1707,53 @@ In the end you can put everything together by choosing the
 \texttt{FIRSTGROUP} argument of \texttt{numbergroups.py} accordingly.
 
 We hope that this whole procedure is flexible enough for all situations.
+
+\section{Importing Information About the Tutoring
+Groups}\label{sec:groupinfo}
+
+If you are using the distribution of the course participants into tutoring
+groups, there are pages among the {\OKUSON} sample web pages for publishing 
+information on each group: number, meeting place and time, tutor, contact
+address and also further infos that can be freely customized, see the
+templates \texttt{groupoverview.tpl} and \texttt{groupinfo.tpl}. There is
+also an encrypted password for each group. This can be used (and changed) by
+the groups tutor for sending grading results of non-interactive homework 
+exercises to the {\OKUSON} server, see below. The placeholder elements in
+these template files are described in~\ref{ssec:groupelements}.
+
+The import of these data for the existing groups is by appending one line
+per group to the text file \texttt{data/groupinfo.txt} (more precisely, the
+file  configured in entry \texttt{GroupInfoFile}). Each such line is a
+sequence of entries separated by colons \texttt{:}. The entries are
+interpreted in the following ordering:
+
+\begin{description}
+\item[nr] number of the group, a positive number.
+\item[passwd] encrypted password for the tutors input access.
+\item[tutor] name of tutor.
+\item[place] place of group meeting.
+\item[time]  time of group meeting.
+\item[email] email address of tutor.
+\item[groupinfo1 to groupinfo9] freely usable variables for customization.
+\end{description}
+
+Note that you could give pieces of HTML code containing appropriate links as
+some of these entries. Note also that entries are separated by colons, within 
+the entries you can encode a colon by typing \verb+\d+ instead.
+
+\section{Input of Homework Results by Tutors}
+
+There is a web page \texttt{/tutors.html} where tutors can request input
+forms for homework exercise results, either for a particular member of the
+group and all sheets, or for a particular sheet and all members of the
+group. The groups password is needed for accessing these forms. This
+password can also be changed via this request page.
+
+Each result must be given in form of a total score and (maybe optionally) a
+comma separated  list of partial results. You may specify the optional
+\texttt{maxhomescore} attribute for your exercise sheets for later use with
+grading or statistics.
+
 
 \chapter{Import and Export of Data}
 
@@ -1737,6 +1841,13 @@ Our intention for this export is to be able to access the current data
 in the server easily with private scripts.
 
 \chapter{Finetuning the Configuration}\label{ch:config}
+\chapter{Customization Examples}
+\section{Using IDs of Different Type}
+\section{A Course Without Non-Interactive Homework Exercises}
+\section{A Course Without Interactive Exercises}
+\section{Managing Additional Personal Registration Data}
+\section{Customizing the Look and Feel of the Web Pages}
+\section{}
 \chapter{File Formats}
 \chapter{Internal Data Structures}
 \chapter{Structure of the Program}
@@ -1769,7 +1880,6 @@ formating rules in the style sheet.
 
 ?validating scripts
 
-\chapter{HOWTOs} ???
 \chapter{GPL}\label{ch:GPL}
 
 Here is the text of the license under which the {\OKUSON} package is

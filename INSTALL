@@ -1,4 +1,4 @@
-$Id: INSTALL,v 1.3 2003/10/08 14:16:15 neunhoef Exp $
+$Id: INSTALL,v 1.4 2003/10/10 00:18:50 luebeck Exp $
 
                    Installation instructions for OKUSON
                   ======================================
@@ -17,14 +17,16 @@ $Id: INSTALL,v 1.3 2003/10/08 14:16:15 neunhoef Exp $
  * Leave the server directory with: 
       cd ..
  * Copy Config.xml.sample to Config.xml and edit to adjust at least
-   AdministratorPassword and Port sections (use cryptpasswd to encrypt 
-   your password)
+   AdministratorPassword (use cryptpasswd to encrypt your password)
+   and some other obvious entries in the top part.
  * Copy the sample web pages to the document root: 
       cp -r html.sample/* html
  * Copy the empty data files to the place where they should be:
       cd data ; cp empty/* . ; cd ..
  * Start server with: 
       start
- * Test server by pointing browser to 
+ * Test server by pointing browser to (if port 8000 was not changed)
       http://localhost:8000/index.html
+ * Start customization and prepare first exercises and sheets
+
 

@@ -17,6 +17,12 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
+<h3>Ihre Daten</h3>
+
+    <p>Selbstverständlich werden alle persönlichen Daten <strong>streng
+    vertraulich</strong> behandelt und nur für die Zwecke der Verwaltung
+    der Vorlesung benutzt.</p>
+
 <h3>Übungsbetrieb</h3>
 
 <p>Die  regelmäßige  Bearbeitung  der  Übungsaufgaben  und die   regelmäßige
@@ -116,5 +122,5 @@ vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: generalinfo.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
+     $Id: generalinfo.tpl,v 1.3 2003/10/10 00:18:50 luebeck Exp $ -->
 

@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+
+import os,sys,httplib, random
+
+srv = 'localhost:8000'
+urllist = [ [srv, '/', 0],
+    [srv, '/exquery.html', 0],
+    [srv, '/QuerySheet?id=214199&passwd=unbekannt&sheet=0', 0],
+    [srv, '/images/96dpi/93e930dc66c6af1d1cd306167ddcf593.png', 0],
+    [srv, '/images/96dpi/ec784bbdc31547398d66d19723cf64e2.png', 0],
+    [srv, '/images/96dpi/7b173be23eb5cf1e50ddf22d3396e89e.png', 0],
+    [srv, '/images/96dpi/dd96ffb1a60487de1dbad0796cafbcbd.png', 0],
+    [srv, '/images/96dpi/de73d705eb438e55e715ad3f4bf36b32.png', 0],
+    [srv, '/images/96dpi/8c26070719f10b8409820160365cb7db.png', 0],
+    [srv, '/images/96dpi/495858bd718cb404cb788e4c4f6f0964.png', 0],
+    [srv, '/images/96dpi/003bd1743d992419b1cb35cfc089f201.png', 0],
+    [srv, '/images/96dpi/bcfc8d19b5280b753546880776234dce.png', 0],
+    [srv, '/images/96dpi/a60fc90907f0f4b4034b5e4b7097709e.png', 0],
+    [srv, '/images/96dpi/8a0fc4d6715b99be0d710785e132fbb2.png', 0],
+    [srv, '/images/96dpi/cca4e2c16be089e3eb0a4b8ff134a662.png', 0],
+    [srv, '/images/96dpi/3cc8aa1549f2647abdfd810cf0a50575.png', 0],
+    [srv, '/images/96dpi/7c4703adebbd5a6e51e0be91027c91f9.png', 0],
+    [srv, '/images/96dpi/9b58ddd0513279dc29be83c2fbb0e91a.png', 0],
+    [srv, '/images/96dpi/9ef54912349b22d42756fbeafee97efb.png', 0],
+    [srv, '/images/96dpi/1d257b91605fbb6fb204b26c5667d121.png', 0],
+    [srv, '/images/96dpi/69801b4bd8e6ee1e3de80d4a28660385.png', 0],
+    [srv, '/images/96dpi/61cd762023677908e90133e3897c73b1.png', 0],
+    [srv, '/images/96dpi/73613d952c546c1985cc29ae19ae91b8.png', 0],
+    [srv, '/images/96dpi/c544c9ae9ef369323b6a2f0fd88b09f7.png', 0],
+    [srv, '/images/96dpi/c654df2c668fbed6104e021c90b8eaa5.png', 0],
+    [srv, '/images/96dpi/3808481fe3fcf8a69099e66e4d2f88bc.png', 0],
+    [srv, '/images/96dpi/737fd4ae4ed59feffbf8136e71882560.png', 0],
+    [srv, '/images/96dpi/c5a4717d11eb4f5f9ba5303f241828c4.png', 0],
+    [srv, '/images/96dpi/c252d5b31902e39d5bbf7a60ae873ed0.png', 0],
+    [srv, '/images/96dpi/3a393eb7059edc0b0a166c6a99da51f3.png', 0],
+    [srv, '/images/96dpi/876b11268052d5e96c18cc8d6d2f0740.png', 0],
+    [srv, '/images/96dpi/9309927e18bb02cbac971432dcb0a593.png', 0],
+    [srv, '/images/96dpi/a668c54157526ba1ad72d615cf8c27a4.png', 0],
+    [srv, '/images/96dpi/591b558735e4c97c514829bd059288de.png', 0],
+    [srv, '/images/96dpi/6895bb9a28240e2593f08cbfdc45f8f9.png', 0],
+    [srv, '/images/96dpi/95a26f7aa11c94061382ec51f3ac4935.png', 0],
+    [srv, '/QuerySheet?id=214199&passwd=unbekannt&sheet=0&format=PDF', 0]
+    ]
+
+def getpage(host, path):
+   sys.stdout.write('.')
+   sys.stdout.flush()
+   h = httplib.HTTP(host)
+   h.putrequest('GET', path)
+   h.endheaders()
+   errcode, errmsg, headers = h.getreply()
+   #print 'ERRORCODE:\n',errcode # Should be 200
+   #print 'ERRORMESSAGE:\n',errmsg
+   #print 'HEADERS:\n',headers
+   f = h.getfile()
+   data = f.read() # Get the raw HTML
+   f.close()
+   return data
+
+for i in range(100):
+  #a = random.choice(urllist)
+  #a = urllist[2]
+ for a in urllist:
+  p = getpage(a[0],a[1])
+  a[2] += 1
+
+for a in urllist: print a

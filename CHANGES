@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.28 2003/10/09 12:02:30 neunhoef Exp $
+##  $Id: CHANGES,v 1.29 2003/10/10 00:18:50 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -77,6 +77,9 @@ Attention: The following four configuration options are new in the file
   potential errors in the "correct solutions".
 * made output at startup shorter (not every loaded web page is shown)
 * add optional attribute "maxhomescore", not used up to now
+* corrected loading of extra LaTeX headers in all cases
+* improved testexercise and testsheet scripts, can now use other image viewer
+* much more complete documentation
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

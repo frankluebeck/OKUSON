@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.32 2003/10/09 21:54:54 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.33 2003/10/10 00:18:50 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1030,12 +1030,13 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
     def handle_HomeworkSheetInput(self,node,out):
         l = list(self.grp.people)
         l.sort()   # FIXME, bessere Sortierung
+        s = self.s
         for k in l:
             if Data.people.has_key(k):
                 p = Data.people[k]
-                if p.homework.has_key(self.s.name):
-                    default = str(p.homework[self.s.name].totalscore)
-                    default2 = p.homework[self.s.name].scores
+                if p.homework.has_key(s.name) and s.openfrom < time.time():
+                    default = str(p.homework[s.name].totalscore)
+                    default2 = p.homework[s.name].scores
                 else:
                     default = ''
                     default2 = ''
@@ -1058,17 +1059,16 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
     def handle_HomeworkPersonInput(self,node,out):
         sl = Exercises.SheetList()
         for nr,na,s in sl:
-            if s.counts and s.openfrom < time.time():
-                if self.p.homework.has_key(na):
-                    default = str(self.p.homework[na].totalscore)
-                    default2 = self.p.homework[na].scores
-                else:
-                    default = ''
-                    default2 = ''
-                out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
-                          ' name="S'+na+'" value="'+default+'" /></td>\n'
-                          '    <td><input size="30" maxlength="60" name="T'+na+
-                          '" value="'+default2+'" /></td></tr>\n')
+            if self.p.homework.has_key(na):
+                default = str(self.p.homework[na].totalscore)
+                default2 = self.p.homework[na].scores
+            else:
+                default = ''
+                default2 = ''
+            out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
+                      ' name="S'+na+'" value="'+default+'" /></td>\n'
+                      '    <td><input size="30" maxlength="60" name="T'+na+
+                      '" value="'+default2+'" /></td></tr>\n')
 
 
 def TutorRequest(req,onlyhead):
@@ -1119,7 +1119,8 @@ def TutorRequest(req,onlyhead):
         sl = Exercises.SheetList()
         i = 0
         while i < len(sl) and sl[i][1] != sheet: i += 1
-        if i < len(sl):   # we know this sheet!
+        if i < len(sl) and (sl[i][2]==None or sl[i][2].openfrom < time.time()):
+            # we know this sheet!
             handler = EH_withGroupAndSheet_class(g,sl[i][2])
             return Delegate('/edithomeworksheet.html',req,onlyhead,handler)
         else:

@@ -15,13 +15,14 @@
   <body>
     <h1>Impressum/Technische Informationen</h1>
 
-        <p><strong>Design und Implementation</strong>
-       von Frank Lübeck und Max Neunhöffer,
+        <p>
+        <a href="http://www.math.rwth-aachen.de/~OKUSON"><strong>OKUSON
+        </strong></a>, Design und Implementation von 
+       <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck">Frank Lübeck</a>
+       und 
+       <a href="http://www.math.rwth-aachen.de/~Max.Neunhoeffer">Max 
+       Neunhöffer</a>,
        Lehrstuhl D für Mathematik, RWTH Aachen.</p>
-
-    <p>Selbstverständlich werden alle persönlichen Daten <strong>streng
-    vertraulich</strong> behandelt und nur für die Zwecke der Verwaltung
-    der Vorlesung benutzt.</p>
 
     <h3>Benutzte Technologien/Standards/Software</h3>
     <dl>
@@ -79,5 +80,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: techinfo.tpl,v 1.2 2003/10/10 00:18:50 luebeck Exp $ -->
 

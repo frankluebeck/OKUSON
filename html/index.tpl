@@ -81,12 +81,12 @@
 
     <p class="foot">
       <ValidatorIcon />
-      <a href="techinfo.html">Impressum/Technische Informationen</a>
+      <a href="techinfo.html">Technische Informationen</a>
     </p>
 
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.3 2003/10/08 14:16:15 neunhoef Exp $ -->
+     $Id: index.tpl,v 1.4 2003/10/10 00:18:50 luebeck Exp $ -->
 
