@@ -1,6 +1,10 @@
+Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
+
 Ideen: 
-  (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
-  generischem Drumherum hinzufügen kann.
+  - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
+     generischem Drumherum hinzufügen kann.
+  - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
+    <input type="file" ...>.)
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
