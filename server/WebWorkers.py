@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.81 2004/03/04 13:52:24 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.82 2004/03/04 14:06:43 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -724,8 +724,8 @@ one Person object as data.'''
                     'exception, ID: '+self.p.id+', message:\n'+
                     string.join(lines))
     def handle_ExamRegStatus(self, node,out):
-        if node[1].has_key('examnr'):
-            examnr = node[1]['examnr'].encode('ISO-8859-1', 'replace')
+        if node[1].has_key('nr'):
+            examnr = node[1]['nr'].encode('ISO-8859-1', 'replace')
         try:
             exam = int(examnr)
         except:
