@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.109 2004/10/06 11:27:31 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.110 2004/10/07 02:21:57 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -545,7 +545,7 @@ one Person object as data.'''
                   CleanQuotes(self.p.fname)+'" />')
     def handle_PersonData(self, node, out):
         try:
-          out.write(self.p.persondata[node[1]['key']])
+          out.write(CleanWeb(self.p.persondata[node[1]['key']]))
         except:
           pass
     def handle_PersonDataField(self,node,out):
