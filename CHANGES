@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.86 2004/10/12 01:51:46 neunhoef Exp $
+##  $Id: CHANGES,v 1.87 2004/11/26 11:44:16 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -10,6 +10,11 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.1-fix3 to ???
+
+* Forcing PGM output from ghostscript to avoid non-antialiased images with
+  big LaTeX input (should not make a difference for most people).
 
 Changes from 1.1-fix2 to 1.1-fix3
 
