@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.88 2004/03/08 00:23:05 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.89 2004/03/08 07:55:34 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -494,7 +494,8 @@ and either send an error message or a report.'''
     Data.Lock.release()
 
     # At last write out a sensible response:
-    Utils.Error('registered '+id, prefix='SubmitRegistration: ')
+    Utils.Error('['+LocalTimeString()+'] registered '+id, 
+                prefix='SubmitRegistration: ')
     return Delegate('/messages/regsuccess.html',req,onlyhead)
 
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
@@ -695,7 +696,8 @@ one Person object as data.'''
                 except:
                     etype, value, tb = sys.exc_info()
                     lines = traceback.format_exception(etype,value,tb)
-                    Utils.Error('Call of ExamGradingFunction raised an '
+                    Utils.Error('['+LocalTimeString()+
+                            '] Call of ExamGradingFunction raised an '
                             'exception, ID: '+self.p.id+', message:\n'+
                             string.join(lines))
     def handle_ExamGrade(self,node,out):
@@ -716,7 +718,8 @@ one Person object as data.'''
         except:
             etype, value, tb = sys.exc_info()
             lines = traceback.format_exception(etype,value,tb)
-            Utils.Error('Call of ExamGradingFunction raised an '
+            Utils.Error('['+LocalTimeString()+
+                    ' [Call of ExamGradingFunction raised an '
                     'exception, ID: '+self.p.id+', message:\n'+
                     string.join(lines))
     def handle_ExamRegStatus(self, node,out):
@@ -760,7 +763,8 @@ one Person object as data.'''
         except:
             etype, value, tb = sys.exc_info()
             lines = traceback.format_exception(etype,value,tb)
-            Utils.Error('Call of GradingFunction raised an exception, '
+            Utils.Error('['+LocalTimeString()+
+                        '] Call of GradingFunction raised an exception, '
                         'ID: '+self.p.id+', message:\n'+string.join(lines))
     def handle_GeneralMessages(self,node,out):
         out.write(Config.conf['GeneralMessages'])
@@ -897,7 +901,7 @@ and either send an error message or a report.'''
         Data.groupdesc.AppendLine(groupline)
     except:
         Data.Lock.release()
-        Utils.Error('Failed to register person:\n'+line)
+        Utils.Error('['+LocalTimeString()+'] Failed to register person:\n'+line)
         return Delegate('/errors/fatal.html',req,onlyhead)
     
     # Put new person into database in memory:
@@ -919,7 +923,7 @@ and either send an error message or a report.'''
     Data.Lock.release()
 
     # At last write out a sensible response:
-    Utils.Error('id '+id, prefix='SubmitRegChange: ')
+    Utils.Error('['+LocalTimeString()+ '] id '+id, prefix='SubmitRegChange: ')
     return Delegate('/messages/regchsuccess.html',req,onlyhead)
 
 Site['/SubmitRegChange'] = FunWR(SubmitRegChange)
@@ -1182,8 +1186,8 @@ def QuerySheet(req,onlyhead):
         else:
             handler = EH_withPersSheet_class(None,sheet[2],resolution)
         handler.iamadmin = iamadmin
-        Utils.Error('id '+id+', sheet '+sheet[2].name+' as HTML', 
-                    prefix='QuerySheet: ')
+        Utils.Error('['+LocalTimeString()+'] id '+id+', sheet '+
+                    sheet[2].name+' as HTML', prefix='QuerySheet: ')
         return Delegate('/sheet.html',req,onlyhead,handler,addheader)
     elif format == 'PDF':
         # Collect placeholder values in dictionary
@@ -1229,8 +1233,8 @@ def QuerySheet(req,onlyhead):
             Utils.Error('Cannot pdflatex sheet input (id='+id+\
                         ', sheet='+sheetname+').')
             return Delegate('/errors/pdfproblem.html', req, onlyhead)
-        Utils.Error('id '+id+', sheet '+sheet[2].name+' as PDF', 
-                    prefix='QuerySheet: ')
+        Utils.Error('['+LocalTimeString()+'] id '+id+', sheet '+
+                    sheet[2].name+' as PDF', prefix='QuerySheet: ')
         return ({'Content-type': 'application/pdf', 'Expires': 'now',
                  'Content-Disposition': 'attachment; filename="sheet_%s.pdf"' % sheet[2].name}, pdf)
     else:
@@ -1274,14 +1278,14 @@ submission as well as the results.'''
 
     ok = s.AcceptSubmission(p,SeedFromId(p.id),req.query)
     if not(ok):
-        Utils.Error('bad submission, id '+id+', sheet '+sheetname, 
-                    prefix='SubmitSheet: ')
+        Utils.Error('['+LocalTimeString()+'] bad submission, id '+id+
+                    ', sheet '+sheetname, prefix='SubmitSheet: ')
         return Delegate('/error/badsubmission.html',req,onlyhead)
     else:
         handler = EH_withPersSheet_class(p,s,Config.conf['Resolutions'][0])
         handler.iamadmin = iamadmin
-        Utils.Error('successful submission, id '+id+', sheet '+sheetname, 
-                    prefix='SubmitSheet: ')
+        Utils.Error('['+LocalTimeString()+'] successful submission, id '+id+
+                    ', sheet '+sheetname, prefix='SubmitSheet: ')
         return Delegate('/messages/subsuccess.html',req,onlyhead,handler)
 
 Site['/SubmitSheet'] = FunWR(SubmitSheet)
@@ -1305,7 +1309,7 @@ there and send a form to display and change the saved data.'''
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
     currentHandler = EH_withPersData_class(p)
-    Utils.Error('id '+id, prefix='QueryResults: ')
+    Utils.Error('['+LocalTimeString()+'] id '+id, prefix='QueryResults: ')
     return Delegate('/results.html',req,onlyhead,currentHandler)
 
 Site['/QueryResults'] = FunWR(QueryResults)
@@ -1827,7 +1831,8 @@ def ExamRegistration(req, onlyhead):
         Data.examregdesc.AppendLine(line)
     except:
         Data.Lock.release()
-        Utils.Error('Failed to register person for exam:\n'+line)
+        Utils.Error('['+LocalTimeString()+
+                    '] Failed to register person for exam:\n'+line)
         return Delegate('/errors/fatal.html',req,onlyhead)
     while len(p.exams) < examnr+1: p.exams.append(None)
     if p.exams[examnr] == None:
@@ -1837,8 +1842,8 @@ def ExamRegistration(req, onlyhead):
     Data.Lock.release()
 
     # At last write out a sensible response:
-    Utils.Error('registered '+id+' for exam '+str(examnr),
-                prefix='ExamRegistration: ' )
+    Utils.Error('['+LocalTimeString()+'] registered '+id+' for exam '+
+                str(examnr), prefix='ExamRegistration: ' )
     return Delegate('/messages/examregsucc.html',req,onlyhead)
 
 Site['/ExamRegistration'] = FunWR(ExamRegistration)
@@ -1967,7 +1972,8 @@ def TutorRequest(req,onlyhead):
             Data.groupinfodesc.AppendLine(line)
         except:
             Data.Lock.release()
-            Utils.Error('Failed to change group password:\n'+line)
+            Utils.Error('['+LocalTimeString()+
+                        '] Failed to change group password:\n'+line)
             return Delegate('/errors/fatal.html',req,onlyhead)
         g.passwd = passwd
         Data.Lock.release()
@@ -2060,7 +2066,8 @@ def SubmitHomeworkSheet(req,onlyhead):
                         Data.homeworkdesc.AppendLine(line)
                     except:
                         Data.Lock.release()
-                        Utils.Error('Failed store homework result:\n'+line)
+                        Utils.Error('['+LocalTimeString()+
+                                    '] Failed store homework result:\n'+line)
                         return Delegate('/errors/fatal.html',req,onlyhead)
                     if not(p.homework.has_key(s.name)):
                         p.homework[s.name] = Data.Homework()
@@ -2131,7 +2138,8 @@ def SubmitHomeworkPerson(req,onlyhead):
                     Data.homeworkdesc.AppendLine(line)
                 except:
                     Data.Lock.release()
-                    Utils.Error('Failed to store homework result:\n'+line)
+                    Utils.Error('['+LocalTimeString()+
+                                '] Failed to store homework result:\n'+line)
                     return Delegate('/errors/fatal.html',req,onlyhead)
                 if not(p.homework.has_key(s.name)):
                     p.homework[s.name] = Data.Homework()
@@ -2626,7 +2634,8 @@ def ExportResults(req,onlyhead):
                         except:
                             etype, value, tb = sys.exc_info()
                             lines = traceback.format_exception(etype,value,tb)
-                            Utils.Error('Call of ExamGradingFunction raised '
+                            Utils.Error('['+LocalTimeString()+
+                               '] Call of ExamGradingFunction raised '
                                'an exception, ID: '+p.id+', message:\n'+
                                string.join(lines))
                             (msg,grade) = ('',0)
@@ -2640,8 +2649,9 @@ def ExportResults(req,onlyhead):
                 except:
                     etype, value, tb = sys.exc_info()
                     lines = traceback.format_exception(etype,value,tb)
-                    Utils.Error('Call of GradingFunction raised an exception, '
-                                'ID: '+p.id+', message:\n'+string.join(lines))
+                    Utils.Error('['+LocalTimeString()+
+                            '] Call of GradingFunction raised an exception, '
+                            'ID: '+p.id+', message:\n'+string.join(lines))
                     msg = ''
                     grade = 0
             else:
@@ -2707,7 +2717,7 @@ def SendMessage(req,onlyhead):
         Data.messagedesc.AppendLine(line)
     except:
         Data.Lock.release()
-        Utils.Error('Failed to append message:\n'+line)
+        Utils.Error('['+LocalTimeString()+'] Failed to append message:\n'+line)
         return Delegate('/errors/fatal.html',req,onlyhead)
 
     # Put new message into database in memory:
@@ -2761,7 +2771,8 @@ def DeleteMessagesDowork(req,onlyhead):
                 Data.messagedesc.AppendLine(line)
             except:
                 Data.Lock.release()
-                Utils.Error('Failed to append deletion of message:\n'+line)
+                Utils.Error('['+LocalTimeString()+
+                            '] Failed to append deletion of message:\n'+line)
                 return Delegate('/error/fatal.html',req,onlyhead)
             del p.messages[i]
             Data.Lock.release()
