@@ -8,14 +8,15 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: LatexImage.py,v 1.2 2003/10/09 15:24:14 luebeck Exp $'
 
 import sys, os, types, tempfile, shutil
 import Utils
 
 tempfile.tempdir = './'
 
-# The following may be overwritten by the user, take care!
+# The following may be overwritten by the user, take care (in particular,
+# don't use '%' comment characters!
 
 LatexTemplate = """
 \documentclass[german,12pt]{article}
@@ -147,7 +148,8 @@ file to a PDF file with pdflatex. '''
             
   # run latex:
   for i in range(repeat):
-    ret = os.system('cd '+tmpdir+';pdflatex a.tex >/dev/null')
+    ret = os.system('cd '+tmpdir+
+                    ';pdflatex -interaction=nonstopmode a.tex >/dev/null')
   if ret:
       msg = 'Problem with latex, see '+tmpdir+'/a.tex'
       reporterror(msg)

@@ -112,6 +112,7 @@ indicate that the free form field counts which is also available. -->
      that you need in your exercises. See "LaTeXTemplate" below to learn 
      which facilities are included by default. This entry is optional. -->
 <ExtraLaTeXHeader>
+\usepackage{amsmath}
 </ExtraLaTeXHeader>
 
 
@@ -173,8 +174,8 @@ def Grade(p,sl,mcscore,homescore,exams):
      ==================================================================== -->
 
 <!-- The following is a list of IP ranges of hosts that may connect to the
-     server. The default is to allow all hosts access. The notation of an
-     IP range is a pair of strings separated by '/'. The first entry is an 
+     server. The default is to allow  access from all hosts. The notation of 
+     an IP range is a pair of strings separated by '/'. The first entry is an 
      IPv4 address of a subnet in dotted quad string notation and the second
      the corresponding netmask in the same notation: -->
 <AccessList>
@@ -183,16 +184,17 @@ def Grade(p,sl,mcscore,homescore,exams):
 
 <!-- The following is a list of IP ranges of hosts that may connect to the
      server for administration. The first line below means to deny access 
-     from all hosts except the localhost.  The notation of an IP range is 
-     a pair of strings separated by '/'. The first entry is an IPv4 address
-     of a subnet in dotted quad string notation and the second the
-     corresponding netmask in the same notation. Note that this setting
-     even denies access to the localhost if one uses the hostname instead
-     of "localhost" in the URL! -->
+     from all hosts except the localhost.  The notation is the same as 
+     explained for AccessList above. 
+     Note that this setting even denies access to the localhost if one uses 
+     the hostname instead of "localhost" in the URL! -->
 <AdministrationAccessList>
 <Range>127.0.0.0/255.0.0.0</Range>
-<!-- you probably want to remove or adjust this line! -->
+<!-- Another example, we use the following to allow admin access
+from all machines in our institute: -->
+<!--
 <Range>137.226.152.0/255.255.255.128</Range>
+-->
 </AdministrationAccessList>
 
 <!-- The following contains the path to the document root of the web server.
@@ -283,6 +285,7 @@ dtd
   
      The following strings can be used as place holders (similar to the
      place holder tags in the HTML version of the sheets):
+       (%ExtraLaTeXHeader%) as given in ExtraLaTeXHeader above
        (%SheetName%)      
        (%CourseName%)
        (%Semester%)
@@ -333,7 +336,7 @@ dtd
 % to avoid overful hboxes
 \sloppy
 
-%s
+(%ExtraLaTeXHeader%)
 
 \begin{document}
 \pagestyle{empty}

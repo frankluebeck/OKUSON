@@ -81,7 +81,7 @@ for a in files:
     values = {}
     values['SheetName'] = sheet.name
     values['IdOfPerson'] = 'CHECKING ALL VARIANTS'
-    for a in ['CourseName', 'Semester', 'Lecturer']:
+    for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
       values[a] = Config.conf[a]
     values['OpenTo'] = LocalTimeString(sheet.opento)
     if sheet.openfrom:
@@ -113,7 +113,6 @@ for a in files:
       if pdf:
         Utils.FileString(fname+'_'+sheet.name+'.pdf',pdf)    
         print 'Wrote PDF file to '+fname+'_'+sheet.name+'.pdf'
-
-os.system('rm -rf tmpsheettest')    
+        os.system('rm -rf tmpsheettest')    
 
 

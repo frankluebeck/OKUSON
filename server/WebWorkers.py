@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.29 2003/10/09 12:02:30 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.30 2003/10/09 15:24:14 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -800,7 +800,7 @@ def QuerySheet(req,onlyhead):
         values = {}
         values['SheetName'] = sheetname
         values['IdOfPerson'] = id
-        for a in ['CourseName', 'Semester', 'Lecturer']:
+        for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
           values[a] = Config.conf[a]
         # find values of custom variables from config and for persons
         for i in range(9):

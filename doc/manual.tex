@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.21 2003/10/09 13:00:06 neunhoef Exp $
+% $Id: manual.tex,v 1.22 2003/10/09 15:24:14 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -99,7 +99,8 @@ chapters~\ref{ch:introXML} and~\ref{ch:createExercisesSheets} to
 learn how to create the exercises and sheets for the service. 
 \item chapter~\ref{ch:webpages} describes the customization of the web
 pages, so read this if you need to adjust some details. 
-\item look at chapter~\ref{ch:security} to make your installation more
+\item consider some of the remarks in~\ref{sec:insttips} to make your 
+installation more
 secure and robust. Then you are ready to publish the web site for your
 course.
 \item the next few chapters describe some administrative tasks when the course
@@ -137,8 +138,9 @@ and tricks in~\ref{sec:insttips}.
 \item Make sure you have Python version 2.2 or later installed.
 \item Download \texttt{okuson-XXX.tar.gz} from:
 
-\hspace*{5mm}\href{http://www.math.rwth-aachen.de/~OKUSON/}%
-{\texttt{http://www.math.rwth-aachen.de/\textasciitilde OKUSON/}}
+\hspace*{5mm}\href{http://www.math.rwth-aachen.de/~OKUSON}%
+{\texttt{http://www.math.rwth-aachen.de/\~{}OKUSON}}
+
 \item Extract archive with: 
 
 \hspace*{5mm}\texttt{gzip -dc okuson-XXX.tar.gz | tar xvf -}
@@ -189,14 +191,14 @@ To use the {\OKUSON} package as an administrator you need a working
 knowledge of the following things:
 \begin{itemize}
 \item Editing of ASCII files with a text editor.
-\item Basic knowledge of installing and starting programs under UNIX.
-\item Basic knowledge of HTML.
+\item Installing and starting programs under UNIX.
+\item Writing HTML.
 \item Writing {\LaTeX} code for exercises.
 \end{itemize}
-In addition you have to be willing to learn a few facts about XML (see
+In addition you should be willing to learn a few facts about XML (see
 chapter \ref{ch:introXML}) and XHTML 1.0. And, if you want to know in some
 detail how things work or if you want to add some functionality to the
-package, you need knowledge about the language Python.
+package, you need knowledge about the programming language Python.
 
 \subsubsection*{Technical}
 To run the {\OKUSON} server you need a UNIX system that is accessible from
@@ -270,16 +272,16 @@ needed.
 
 You can download the {\OKUSON} distribution from the following web address:
 
-\hspace*{1cm}\href{http://www.math.rwth-aachen.de/OKUSON/}%
-{\texttt{http://www.math.rwth-aachen.de/OKUSON/}}
+\hspace*{1cm}\href{http://www.math.rwth-aachen.de/~OKUSON/}%
+{\texttt{http://www.math.rwth-aachen.de/\~{}OKUSON}}
 
-\noindent There you find this manual as a PDF file and a zipped tar archive
+\noindent There you find this manual as a PDF file and a gzip'ed tar archive
 containing the source code. You can extract the contents in any place in
 the filesystem that is convenient by the following command:
 
 \hspace*{1cm}\texttt{gzip -dc okuson-XXX.tar.gz | tar xvf -}
 
-This command creates a directory \texttt{OKUSON} in the current working
+This command creates a directory \texttt{okuson} in the current working
 directory, under which the full distribution resides. This directory
 will be called ``the {\OKUSON} home directory'' in the sequel.
 
@@ -309,7 +311,7 @@ messages in the output.
 
 \section{Configuration}
 
-In the  {\OKUSON} home  directory (the  directory \texttt{OKUSON}  which was
+In the  {\OKUSON} home  directory (the  directory \texttt{okuson}  which was
 created during  extraction of  the archive)  there is a  file with  the name
 \texttt{Config.xml.sample}. It is a sample file for the file 
 \texttt{Config.xml}, which is the  central  place  for configuration  of  the
@@ -321,45 +323,50 @@ the real one with the command:
 This file is  an XML file (see  section~\ref{ch:introXML}
 for a short introduction) that can be edited conveniently with an ASCII text
 editor.  It tries  to  explain  itself via  embedded  comments.  For a  full
-description of the available configuration options see section~\ref{ch:config}.
+description of the available configuration options see chapter~\ref{ch:config}.
 
-For a start, you need at least to edit  two configuration options:
+For a start and to get an impression adjust the first few entries in 
+this file, say \texttt{AdministratorPassword}, \texttt{CourseName},
+\texttt{Semester}, \texttt{Lecturer}, \texttt{Feedback} and maybe
+\texttt{Port}.
 
-\texttt{AdministratorPassword} and \texttt{Port}
+Note that the administrator password is stored encrypted, use the script
+\texttt{cryptpasswd} in the {\OKUSON} home directory  to find an encryption 
+of your password.
 
-(and maybe some more of the obvious options in the beginning of the
-configuration file).
-
-The administrator password is used for authentication purposes during
-administration. It is only stored encrypted. You can use the little
-program \texttt{cryptpasswd} in the {\OKUSON} home directory to create
-an encrypted version of your password to put it into the configuration
-file.
-
-The port is the network port the {\OKUSON} server is listening to on the
-local host. The default value is $8000$, which should usually not be used
-by other programs. The {\OKUSON} server actually \textbf{is} a web server
-listening on this port. Check with your system administrator that the computer
-running the {\OKUSON} server can be contacted on the port you choose here.
+%%  For a start, you need to edit at least  two configuration options:
+%%  
+%%  \texttt{AdministratorPassword} and \texttt{Port}
+%%  
+%%  (and maybe some more of the obvious options in the beginning of the
+%%  configuration file).
+%%  
+%%  The administrator password is used for authentication purposes during
+%%  administration. It is only stored encrypted. You can use the little
+%%  program \texttt{cryptpasswd} in the {\OKUSON} home directory to create
+%%  an encrypted version of your password to put it into the configuration
+%%  file.
+%%  
+%%  The port is the network port the {\OKUSON} server is listening to on the
+%%  local host. The default value is $8000$, which should usually not be used
+%%  by other programs. The {\OKUSON} server actually \textbf{is} a web server
+%%  listening on this port. Check with your system administrator that the computer
+%%  running the {\OKUSON} server can be contacted on the port you choose here.
 
 
 \section{Getting started}
 
-Because {\OKUSON} contains a web server and does nearly all its user
-interaction via this web interface, you have to supply some web pages.
-Of course, these have to be adjusted to the specific needs of the course
-you are using {\OKUSON} for.
+{\OKUSON} has a builtin web server and does nearly all its user
+interaction via a  web interface.
 
-Probably the easiest way to get started is to copy all the example pages
-coming with the distribution to the place, where the {\OKUSON} server
-finds them at startup and to edit them later to your needs. 
-This is done with the following commands (issued from the {\OKUSON} home
-directory):
+The package contains a set of sample web pages (in German) and to get 
+started just copy them into the subdirectory \texttt{html} (which is the
+document root of the builtin web server in the default configuration). 
+This is done with the following command, issued from the {\OKUSON} home
+directory:
 
 \hspace*{1cm}\verb!cp -r html.sample/* html!
 
-The subdirectory \texttt{html} of the {\OKUSON} home directory is the
-document root of the web server (at least in default configuration).
 The stuff that is copied with the abovementioned command consists of
 \begin{itemize}
 \item Style sheets with the extension \texttt{.css}.
@@ -368,22 +375,23 @@ processed by the {\OKUSON} web server during startup and then delivered
 to the web browser.
 \item A few images with the extension \texttt{.png}.
 \end{itemize}
-Note that most if not all of the functionality of the {\OKUSON} server
+Note that most  of the functionality of the {\OKUSON} server
 is driven by these web pages. Their structure and content lead the user
 through the menu system, organizes input and output from the server
-and is therefore essential. Please apply changes as you need but
-be careful not to ruin the overall structure of the system!
+and is therefore essential. 
 
-See section \ref{ch:webpages} for a description of how to create web
-pages with {\OKUSON}.
+In chapter~\ref{ch:webpages} we explain how to customize these web pages for
+your course.
 
-Next you need empty versions of the data files. They are already stored
-in the \texttt{data} subdirectory and can be activated via the following
-command:
+An {\OKUSON} server collects data about participants of your course,
+submitted solutions of exercises, tutoring groups, \ldots Such data are
+stored in the subdirectory \texttt{data}. 
+For a start you need empty versions of the data files. This can be achieved 
+by the following commands:
 
 \hspace*{1cm}\verb!cd data ; cp empty/* . ; cd ..!
 
-This basically copies the empty versions of the data files to the
+This copies the empty versions of the data files to the
 real versions. Please do not do this later, when your server already
 has accumulated data!
 
@@ -398,7 +406,7 @@ call this some images of exercise texts are generated before the server can
 start serving.) If everything went well, you
 see some log messages, concluding with
 
-\hspace*{1cm}[TIMESTAMP] \ \texttt{Server up and running...}
+\hspace*{1cm}[TIMESTAMP] \ \texttt{Ready to start service ...}
 
 Otherwise, you have to read through the log messages and identify error 
 messages, which start with ``\texttt{Error:}''. You also find the complete
@@ -427,9 +435,15 @@ There is also a script
 
 \hspace*{1cm}\texttt{restart}
 
-that stops the server and restarts it. 
+that stops the server and restarts it. In general, whenever you change
+something in the servers setup (say, you add or change exercises or sheets,
+add some data in the \texttt{data} directory, change some web page, \ldots)
+you must restart the server. The advantage of this approach is that you can
+play around with your changes before they are published to the outside world
+by the server (and the server is more efficient, because it caches and
+preparses everything it needs during startup).
 
-\section{Further Tips and Tricks}\label{sec:insttips}
+\section{Tips and Tricks: Security, Backup, \ldots}\label{sec:insttips}
 
 In this section we mention some details of our own use of this package.
 Maybe you find some of these remarks useful.
@@ -482,9 +496,9 @@ this. It has the GNU version of the \texttt{cron} program installed and
 we define (as the {\OKUSON} pseudo user) \texttt{crontab} entries like:
 
 \begin{verbatim}
-MAILTO=""
-*/5 * * * * ~/okusonsync 
-10 * * * * ~/okusonarchive
+   MAILTO=""
+   */5 * * * * ~/okusonsync 
+   10 * * * * ~/okusonarchive
 \end{verbatim}
 
 Here, the scripts \texttt{okusonsync} and \texttt{okusonarchive} are in the
@@ -494,35 +508,35 @@ assuming that the pseudo user can login from the backup machine to the
 server machine with ssh without password).
 
 \begin{verbatim}
-#!/bin/sh
-##  okusonsync       syncronizes an OKUSON installation using rsync
+   #!/bin/sh
+   ##  okusonsync       syncronizes an OKUSON installation using rsync
 
-BACKUPDIR="..."
-ORIGSERVER="..."
-ORIGDIR="..."  # no final '/'
+   BACKUPDIR="..."
+   ORIGSERVER="..."
+   ORIGDIR="..."  # no final '/'
 
-cd $BACKUPDIR
-rsync -a --delete -e ssh $ORIGSERVER:$ORIGDIR .
+   cd $BACKUPDIR
+   rsync -a --delete -e ssh $ORIGSERVER:$ORIGDIR .
 \end{verbatim}
 
 and
 
 \begin{verbatim}
-#!/bin/sh
-##  okusonarchive          packs whole backup into an archive
+   #!/bin/sh
+   ##  okusonarchive          packs whole backup into an archive
 
-BACKUPDIR="..."
-DIRNAME="..."
+   BACKUPDIR="..."
+   DIRNAME="..."
 
-cd $BACKUPDIR
-fname=`date +"BACKUP-%Y-%m-%d_%H_%M_%S.tgz"`
-tar czf $fname $DIRNAME
+   cd $BACKUPDIR
+   fname=`date +"BACKUP-%Y-%m-%d_%H_%M_%S.tgz"`
+   tar czf $fname $DIRNAME
 \end{verbatim}
 
-So, every five minutes all files of an {\OKUSON} installation 
-are synchronised to the backup machine (takes a split second after the first
-time). And once an hour all files are packed and compressed, archiving the
-precise status of the whole system.
+In this setup, every five minutes all files of an {\OKUSON} installation 
+are synchronised to the backup machine (this takes a split second after the 
+first time). And once an hour all files are packed and compressed, archiving 
+the precise status of the whole system.
 
 (Furthermore we have a daily backup of all data on all machines in our 
 institute.)
@@ -538,7 +552,7 @@ the {\OKUSON} service is as short as possible. For this we use an entry
 in the GNU \texttt{crontab} of the pseudo user on the server machine like
 
 \begin{verbatim}
-@reboot  /my/okuson/dir/start
+   @reboot  /my/okuson/dir/start
 \end{verbatim}
 
 
@@ -1389,7 +1403,6 @@ alphabetically) of the IDs of the participants.
 data for customization.
 \end{description}
 
-\chapter{Security and Backup}\label{ch:security}
 \chapter{Schedule of Events for one Course}\label{ch:semsched}
 \chapter{Administration via the Web Interface}
 \label{adminpages}

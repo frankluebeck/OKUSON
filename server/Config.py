@@ -228,7 +228,6 @@ into a usable form. Some values are changed into other data types.'''
         lines = traceback.format_exception(etype,value,tb)
         Utils.Error(string.join(lines),prefix="")
         FailMiserably()
-    conf['PDFTemplate'] = SimpleTemplate.ParseString(conf['PDFTemplate'])
     try:
         conf['GeneralMessages'] = Utils.StringFile(conf['GeneralMessageFile'])
     except:
@@ -270,6 +269,11 @@ into a usable form. Some values are changed into other data types.'''
     # Give a default for GroupInfoFile:
     if not(conf.has_key('GroupInfoFile')):
         conf['GroupInfoFile'] = os.path.join(home,'data/groupinfo.txt')
+    # Give a default for ExtraLaTeXHeader:
+    if not(conf.has_key('ExtraLaTeXHeader')):
+        conf['ExtraLaTeXHeader'] = ''
+    # Preparse the PDFTemplate:
+    conf['PDFTemplate'] = SimpleTemplate.ParseString(conf['PDFTemplate'])
     # Now parse the GradingFunction if applicable:
     if conf.has_key('GradingFunction'):
         d = {}

@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.2 2003/10/09 15:24:14 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -433,15 +433,15 @@ def StartServer(port = 8000):
     signal.signal(signal.SIGUSR1,sigusr1handler)   # handle signal USR1
     while not(httpd.raus):
         httpd.handle_request()
-    Utils.Error("Waiting for threads to terminate...", prefix="Info:")
+    Utils.Error("Waiting for threads to terminate...", prefix="Info: ")
     while threading.activeCount() > 1:
         time.sleep(1)
     if httpd.restartcommand != '':
       # for freeing the port the new server will listen
-      Utils.Error("Restarting...", prefix="Info:")
+      Utils.Error("Restarting...", prefix="Info: ")
       httpd.server_close()
       os.execl(httpd.restartcommand, httpd.restartcommand)
-    Utils.Error("Terminating...", prefix="Info:")
+    Utils.Error("Terminating...", prefix="Info: ")
      
 
 # finally, we add here a few more WebResponse classes of general interest

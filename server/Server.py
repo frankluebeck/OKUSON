@@ -58,7 +58,7 @@ tempfile.tempdir = os.path.join(Config.home,'tmp')
 
 # Next we read all available exercises:
 
-Utils.Error('Reading exercises and sheets...',prefix='Info:')
+Utils.Error('Reading exercises and sheets...',prefix='Info: ')
 
 import Exercises
 
@@ -88,29 +88,29 @@ Exercises.CreateAllImages()
 import Data
 
 try:
-    Utils.Error('Reading personal data...',prefix='Info:')
+    Utils.Error('Reading personal data...',prefix='Info: ')
     Data.peopledesc.LoadFile()
-    Utils.Error('Reading multiple choice data...',prefix='Info:')
+    Utils.Error('Reading multiple choice data...',prefix='Info: ')
     Data.mcresultsdesc.LoadFile()
-    Utils.Error('Reading homework data...',prefix='Info:')
+    Utils.Error('Reading homework data...',prefix='Info: ')
     Data.homeworkdesc.LoadFile()
-    Utils.Error('Reading exam registration data...',prefix='Info:')
+    Utils.Error('Reading exam registration data...',prefix='Info: ')
     Data.examregdesc.LoadFile()
-    Utils.Error('Reading exam result data...',prefix='Info:')
+    Utils.Error('Reading exam result data...',prefix='Info: ')
     Data.examdesc.LoadFile()
-    Utils.Error('Reading group data...',prefix='Info:')
+    Utils.Error('Reading group data...',prefix='Info: ')
     Data.groupdesc.LoadFile()
-    Utils.Error('Reading message data...',prefix='Info:')
+    Utils.Error('Reading message data...',prefix='Info: ')
     Data.messagedesc.LoadFile()
     Data.cleanRevokedMessages()   # clean revoked messages
-    Utils.Error('Reading group information...',prefix='Info:')
+    Utils.Error('Reading group information...',prefix='Info: ')
     Data.groupinfodesc.LoadFile()
 except:
     Utils.Error('Aborting.',prefix='')
     sys.exit(0)
 
-# Now count the statistics for the distribution into exercises classes:
-Utils.Error('Counting participants of exercise classes...',prefix='Info:')
+# Now count the statistics for the distribution into tutoring groups:
+Utils.Error('Counting participants of tutoring groups...',prefix='Info: ')
 Data.MakeGroupStatistic()
 
 
@@ -130,13 +130,14 @@ def NoValidFunction(req, res, e):
     # Remove ValidatorIcon
     res[1] = string.replace(res[1], WebWorkers.ValidatorIconText, '')
 BuiltinWebServer.NoValidFunction = NoValidFunction
-
+Utils.Error('Preparsing all web page templates...',prefix='Info: ')
 import WebWorkers           # this initializes the web services
+
 WebWorkers.RegisterAllTpl()
 
 # Just an info:
-Utils.Error(' Formatting current time on sheets like: ' + 
-            WebWorkers.LocalTimeString(), prefix = 'Info:')
+Utils.Error('Formatting current time on sheets like: ' + 
+            WebWorkers.LocalTimeString(), prefix = 'Info: ')
 
 from fmTools import BuiltinWebServer
 
