@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.42 2003/10/20 00:13:40 neunhoef Exp $
+##  $Id: CHANGES,v 1.43 2003/10/20 23:23:20 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -24,6 +24,7 @@ Changes from 1.0-pre4  to  1.0
   grading functions and for overview
 * documentation of automatic grading
 * documentation of handling of exams
+* made tutors page more user friendly
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
