@@ -58,4 +58,7 @@ hr {
   width: 75%;
 }
 
-/*  $Id: OKUSON.css,v 1.1 2003/09/23 08:14:40 neunhoef Exp $  */ 
+img {
+  border: 0pt;
+}
+/*  $Id: OKUSON.css,v 1.2 2003/10/07 15:54:35 luebeck Exp $  */ 
