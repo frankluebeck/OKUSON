@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.39 2003/10/10 20:58:19 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.40 2003/10/12 11:56:36 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -787,7 +787,8 @@ def QuerySheet(req,onlyhead):
                 if not(resolution in Config.conf['Resolutions']):
                     resolution = Config.conf['Resolutions'][0]
                 else:
-                    addheader = [('Set-Cookie','OKUSONResolution='+str(resolution))]
+                    addheader = [('Set-Cookie',
+                       'OKUSONResolution='+str(resolution)+'Path:/')]
             except: 
                 resolution = Config.conf['Resolutions'][0]
                
@@ -1302,7 +1303,7 @@ def AdminLogin(req,onlyhead):
     random.seed(time.time())
     currentcookie = str(random.randrange(10000000))
     (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
-    header['Set-Cookie'] = 'OKUSON='+currentcookie
+    header['Set-Cookie'] = 'OKUSON='+currentcookie+';Path=/'
     #header['Location'] = '/adminmenu.html'
     # Taken out to please opera, which does not get the cookie for the
     # login with this header. Max.

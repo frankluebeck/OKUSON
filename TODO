@@ -1,5 +1,3 @@
-Für letztes (3.) Prerelease:
-
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
@@ -60,7 +58,6 @@ Testen:
   Normalen Betrieb eines Semesters simulieren.
   Alle Moeglichkeiten bei den Sheets ausprobieren.
   Dateiheader checken.
-  Verschiedene Browser.
 
 Ideen:
 
