@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: xmlvalidate,v 1.3 2004/04/06 14:49:45 luebeck Exp $
+#   $Id: xmlvalidate,v 1.4 2004/05/03 13:11:00 neunhoef Exp $
 
 import os, sys
 sys.path = [os.path.join(sys.path[0], 'server')] + sys.path
@@ -21,10 +21,6 @@ if '-w' in sys.argv:
   XMLRewrite.ValidatingParserConfig['Validate'] = 0
   action = 'Checking'
 
-def reporterror(s):
-  lines = s.split('\n')
-  print lines[0]
-
 files = sys.argv[1:]
 for fn in files:
   if fn == '-w':
@@ -33,7 +29,6 @@ for fn in files:
     Utils.Error('File '+fn+' does not exist.')
   else:
     Utils.Error(action+' file '+fn+' ...', prefix='')
-    t = XMLRewrite.Parse(config=XMLRewrite.ValidatingParserConfig, file=fn,
-                         reporterror=reporterror)
+    t = XMLRewrite.Parse(config=XMLRewrite.ValidatingParserConfig, file=fn)
     if t: 
       Utils.Error('Success!', prefix='')

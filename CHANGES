@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.76 2004/05/02 12:45:51 neunhoef Exp $
+##  $Id: CHANGES,v 1.77 2004/05/03 13:11:00 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -20,7 +20,9 @@ Changes from 1.1 to 1.1-fix1
   was messed up and the server did no longer start).
 * Fixed bug in display of <GroupOverview/> element, which prevented custom
   group data from being displayed properly.
-* Small change in 'xmlvalidate' for error report.
+* In case of non-individual exercises display future sheets for admins.
+* Report XML parsing errors correctly without putting the whole file
+  twice into the log.
 
 
 Changes from 1.0-fix3 to 1.1

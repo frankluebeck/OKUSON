@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.103 2004/05/02 12:45:02 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.104 2004/05/03 13:11:00 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -1181,7 +1181,8 @@ def QuerySheet(req,onlyhead):
     else:
         p = Data.Person()
         id = 'anonymous'
-        iamadmin = 0
+        # Check cookie:
+        iamadmin = Authenticate(None,req,onlyhead)
 
     format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF"
     sheetname = req.query.get('sheet',[''])[0].strip()  # the name of a sheet

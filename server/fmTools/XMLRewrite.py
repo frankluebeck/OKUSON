@@ -10,9 +10,9 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.4 2004/03/04 15:47:36 luebeck Exp $'
+CVS = '$Id: XMLRewrite.py,v 1.5 2004/05/03 13:11:00 neunhoef Exp $'
 
-import os, sys, types, glob, pyRXPU, cStringIO, threading, traceback
+import os, sys, types, glob, pyRXPU, cStringIO, threading, traceback, string
 import Utils
 
 # We create a pyRXP Lock, because there are global variables in that
@@ -32,22 +32,22 @@ def NewParser(config = {}):
   pyRXPLock.release()
   return res
 
-def Parse(parser = None, string = None, file = None, config = None, 
+def Parse(parser = None, stri = None, file = None, config = None, 
           srcName = 'stringtoparse', reporterror = Utils.Error):
   '''This utility should be used for parsing XML files/strings in a threaded
 environment. One can give a parser as argument 'parser' and a string
-'string' as input or a filename by the 'file' argument, then its content is
+'stri' as input or a filename by the 'file' argument, then its content is
 parsed. If successful, the result of the pyRXP parser are returned,
 otherwise None is returned.
 '''
   # first get input string, if 'file' given then get its content
   if file != None:
     try:
-      string = Utils.StringFile(file)
+      stri = Utils.StringFile(file)
       srcName = file
     except:
-      string = ''
-  if string == None or type(string) != types.StringType:
+      stri = ''
+  if stri == None or type(stri) != types.StringType:
     reporterror('No string to parse.')
     return None
   # now get parser, either given as argument or newly created if argument
@@ -60,7 +60,7 @@ otherwise None is returned.
   # now parse
   pyRXPLock.acquire()
   try:
-    res = parser.parse(string, srcName = srcName)
+    res = parser.parse(stri, srcName = srcName)
   except:
     etype, value, tb = sys.exc_info()
     lines = traceback.format_exception(etype,value,tb)
