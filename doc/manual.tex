@@ -1201,7 +1201,7 @@ each participant.
 This file is sent to your web browser with the content type 
 ``\texttt{text/okuson}''. This usually means that your browser --- not
 knowing this type --- asks you, where it should store this file. It should
-offer the default file name ``\texttt{peoplelist.txt}''. Once you have
+offer the default file name ``\texttt{peoplelistforgroups.txt}''. Once you have
 saved this file on your hard disk, you can use the following two scripts
 in the ``\texttt{scripts}'' directory of your {\OKUSON} home directory:
 ``\texttt{distribute.py}'' and ``\texttt{numbergroups.py}''. The first
@@ -1318,6 +1318,88 @@ In the end you can put everything together by choosing the
 We hope that this whole procedure is flexible enough for all situations.
 
 \chapter{Import and Export of Data}
+
+In this section we describe the export facilities of the {\OKUSON} server.
+The basic idea is that most of the data within {\OKUSON} should be
+accessible for the user in a well-defined way. The reason for this is that
+it is impossible to foresee all the cases that may occur. Well-documented
+export facilities make it easy for the user to reuse existing data in
+private scripts or programs.
+
+All the export facilities can be reached via the administrator's menu
+(see \ref{adminpages}). They all send a file with content type
+``\texttt{text/okuson}'' and your browser probably will ask you to save the
+file, because it does not know what to do with this content type.
+In all cases we send sensible default names along.
+
+In this chapter we quickly go through the different options.
+
+\section{Export of Personal Data of Participants}
+
+This export facility can be reached with the button marked ``Export
+people'' in the administrator's menu. The server sends a file with default
+name ``\texttt{peoplelist.txt}''. In this file there is --- after some comment
+lines beginning with a \#-character --- for every participant one line.
+This line comes in the same format as the file \texttt{data/people.txt}
+(see \ref{people.txt}), \textbf{except} that there is an additional
+field, namely the number of the group in which the person is.
+
+This means, that there are three reasons, why you should \textbf{not} copy
+the output of this export directly to the file \texttt{data/people.txt}.
+Apart from making no sense at all, you have to remove the last data field
+with the group, and, what is probably worse, all colons and newlines that
+may be contained in personal data fields are deleted or replaced by a 
+space respectively, whereas in \texttt{data/people.txt} special precautions
+are taken to store such data (see \ref{commonformat}).
+
+So the fields in \texttt{peoplelist.txt} are separated by colons and
+arranged in the following order:
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+ID \\
+\hline
+last name \\
+\hline
+first name \\
+\hline
+semester number \\
+\hline
+studiengang \\
+\hline
+encrypted password \\
+\hline
+email address (possibly empty) \\
+\hline
+wishlist as typed in \\
+\hline
+personal data \#1 \\
+\hline
+personal data \#2 \\
+\hline
+personal data \#3 \\
+\hline
+personal data \#4 \\
+\hline
+personal data \#5 \\
+\hline
+personal data \#6 \\
+\hline
+personal data \#7 \\
+\hline
+personal data \#8 \\
+\hline
+personal data \#9 \\
+\hline
+group number ($0$ if not in any group) \\
+\hline
+\end{tabular}
+\end{center}
+
+Our intention for this export is to be able to access the current data
+in the server easily with private scripts.
+
 \chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{File Formats}
 \chapter{Internal Data Structures}
