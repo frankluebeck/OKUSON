@@ -5,7 +5,7 @@ Small HOWTO for releasing versions.
            ^ This forces tags even to files which are already tagged with
              this tag!
 2) Export the whole tree (somewhere else) with:
-   cvs -d :pserver:neunhoef@antares.math.rwth-aachen.de:2401/home/antares/neunhoef/cvsrepository export -r tar-1r1 okuson
+   cvs -d :pserver:neunhoef@antares.math.rwth-aachen.de:2401/home/antares/neunhoef/cvsrepository export -r tag-1r1 okuson
    (this generates a directory "okuson" in the current directory).
 3) Go to this new directory:
    cd okuson
