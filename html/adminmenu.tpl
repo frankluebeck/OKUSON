@@ -93,13 +93,28 @@
       </select>
     </p></form>
 
-    <form action="/ExportExerciseStatistics" method="post">
+    <form action="/ShowExerciseStatistics" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Export Exercise Statistics for sheet
+    Show Exercise Statistics for sheet
     <AvailableSheetsAsButtons />
     </p>
     </form>
 
+    <form action="/ShowGlobalStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Global Statistics (for group
+    <input  name="group" size="4" maxlength="4" />)
+    </p>
+    </form>
+
+    <form action="/ShowGlobalStatisticsPerGroup" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Global Statistics, seperated per Group, for sheet
+    <AvailableSheetsAsButtons />
+    </p>
+    </form>
+
+    
     <h3>Special Access for Administrators:</h3>
 
     <form action="/DisplaySheets" method="post">
@@ -140,5 +155,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.14 2003/11/10 13:58:10 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.15 2003/11/16 14:08:58 neunhoef Exp $ -->
 

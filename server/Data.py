@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.13 2003/10/24 22:30:42 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.14 2003/11/16 14:08:58 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -232,6 +232,83 @@ def MakeGroupStatistic():
     for k in people.keys():
         p = people[k]
         AddToGroupStatistic(p)
+
+def GlobalStatistics (sheetKey, group=None):
+    '''Returns a tuple of statistical Data for the Exercise Sheets.
+Sheet Number is indicated by sheetKey.
+   The tuple consists of 
+    Number of people who produced homework
+    average score homework
+    median score homework
+    higest score homework
+    list of numbers for each interval homework
+    Number of people who submitted MC
+    average score mc
+    median score mc
+    highest score mc
+    list of numbers for each interval mc'''
+
+    sum = 0
+    sumMc = 0
+    listOfPoints = []
+    listOfPointsMc = []
+    listOfIntervals = [ 0 ]
+    listOfIntervalsMc = [ 0 ]
+    numberOfSubmissions = 0
+    numberOfSubmissionsMc = 0
+    highestScore = 0
+    highestScoreMc=0
+    for k in people.keys():
+        p =people[k]
+        if group != None:
+            if p.group != groups[group].number: continue
+        if not(Config.conf['GuestIdRegExp'].match(k)):
+            if p.homework.has_key(sheetKey):
+                numberOfSubmissions += 1
+                score = p.homework[sheetKey].totalscore
+                listOfPoints.append(score)
+                sum += score
+                roundedscore = int(score)
+                while roundedscore >= len(listOfIntervals):
+                    listOfIntervals.append(0)
+                listOfIntervals[roundedscore] += 1
+                if highestScore < score: highestScore = score;
+            if p.mcresults.has_key(sheetKey):
+                numberOfSubmissionsMc += 1
+                score = p.mcresults[sheetKey].score
+                listOfPointsMc.append(score)
+                sumMc += score
+                roundedscore = int(score)
+                while roundedscore >= len(listOfIntervalsMc):
+                    listOfIntervalsMc.append(0)
+                listOfIntervalsMc[roundedscore] += 1
+                if highestScoreMc < score: highestScoreMc = score;
+    if numberOfSubmissions > 0:
+        average = float(sum) / float(numberOfSubmissions)
+        listOfPoints.sort()
+        if len(listOfPoints) % 2 == 0:
+            median = float(listOfPoints[len(listOfPoints)/2 - 1] + \
+                listOfPoints[len(listOfPoints)/2 ]   ) / 2
+        else:
+            median = listOfPoints[ (len(listOfPoints)-1)/2 ]
+    else:
+        average = 0
+        median = 0
+    if numberOfSubmissionsMc > 0:
+        averageMc = float(sumMc) / float(numberOfSubmissionsMc)
+        listOfPointsMc.sort()
+        if len(listOfPointsMc) % 2 == 0:
+            medianMc = float(listOfPointsMc[len(listOfPointsMc)/2 - 1] + \
+                           listOfPointsMc[len(listOfPointsMc)/2  ]   ) / 2.0
+        else:
+            medianMc = listOfPointsMc[ (len(listOfPointsMc)-1)/2 ]
+    else:
+        averageMc = 0
+        medianMc = 0
+    return ( numberOfSubmissions, average, median, highestScore, 
+             listOfIntervals, numberOfSubmissionsMc, averageMc, medianMc, 
+             highestScoreMc, listOfIntervalsMc)
+                
 
 # General information about tutoring groups 
 groupinfodesc = AsciiData.FileDescription(Config.conf['GroupInfoFile'],groups,
