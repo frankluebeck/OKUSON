@@ -12,6 +12,8 @@ Ideen:
     (z.Z. 2 mal fest in Exercises.py eingebaut).
   - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
     Sollte von überall zugreifbar sein. (Mathias Künzer)
+  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
+    zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
