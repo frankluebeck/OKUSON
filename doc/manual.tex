@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.45 2003/11/02 13:31:19 neunhoef Exp $
+% $Id: manual.tex,v 1.46 2003/11/11 10:32:50 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1031,6 +1031,20 @@ or
 
 \hspace*{5mm} \verb!setenv TEXINPUTS '/path/to/additional/TeX/files:'!
 \hspace*{5mm} (for \texttt{tcsh})
+
+\subsubsection*{Comments in \LaTeX-Code}
+
+The \LaTeX-code for exercises is used in the
+\texttt{alt}-attributes of the images in the HTML version of the exercise
+sheets. More precisely, a simple striping of comments is applied: lines
+starting with a \texttt{\%}-character are deleted, and in other lines
+everything after the first \texttt{\%}-character which is not preceded by
+a backslash is removed. The images are generated with the non-striped input.
+
+This behaviour allows to include references for solutions or solutions in
+comments to the exercise.
+
+
 
 \subsubsection*{Remark on the PDF-version of the Exercise Sheets}
 
