@@ -112,6 +112,7 @@ indicate that the free form field counts which is also available. -->
      that you need in your exercises. See "LaTeXTemplate" below to learn 
      which facilities are included by default. This entry is optional. -->
 <ExtraLaTeXHeader>
+\usepackage{amsxtra}
 </ExtraLaTeXHeader>
 
 
