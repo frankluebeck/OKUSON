@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.27 2004/03/08 08:22:47 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.28 2004/03/08 10:36:30 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -324,6 +324,11 @@ otherwise.'''
                         f.write('<input size="12" maxlength="20" '
                                 'name="%s" %s/> ' %
                                 ('B'+self.name+'Q'+str(counter),ch))
+                    if closed and type(q.solutions[k]) == types.ListType:
+                        # We do not write out regular expressions!
+                        f.write('<span class="ergplus">['+
+                                string.join(q.solutions[k],',')+
+                                ']</span>')
                     if marks and closed:
                         f.write('<span class=')
                         if marks[counter] == '+':
