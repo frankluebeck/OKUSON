@@ -11,7 +11,7 @@ Basic usage:
    ReleaseGAPJob(job)   # give it back to the pool
 """
 
-CVS = '$Id: GAPJob.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: GAPJob.py,v 1.2 2003/10/31 17:05:01 luebeck Exp $'
 
 import os, sys, time, types, cStringIO, threading 
 
@@ -87,6 +87,7 @@ def QueryToGAP(req):
   return s
 
 GAPJobs = []
+GAPJobsLock = threading.Lock()
 
 # Utility to write input to a GAP job. This is done by a thread such that for 
 # big input the main process can work on reading the output buffer to avoid a
@@ -126,14 +127,18 @@ class GAPJob(object):
 
 # Returns a GAPJob object and appends it to the list GAPJobs.
 # Be careful to use the lock in multithreaded server.
-def AddGAPJob(gap='gap', handler='handler.g'):
+def AddGAPJob(gap='gap', handler='handler.g', single=0):
   try:
     # Call GAP as quiet as possible, unfortunately the GAP kernel
     # writes warnings and error messages to stdout instead of stderr,
     # so be careful to avoid such garbage in your response.
     inp,out = os.popen2(gap+" -b -q -e -n -T -r "+handler, bufsize=0)
-    GAPJobs.append(GAPJob(inp, out))
-    return GAPJobs[-1]
+    new = GAPJob(inp, out)
+    if not single:
+      GAPJobsLock.acquire()
+      GAPJobs.append(new)
+      GAPJobsLock.release()
+    return new
   except:
     pass
 
