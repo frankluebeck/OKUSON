@@ -56,3 +56,7 @@ To upgrade to 1.0-pre3 you have to do the following:
    The comments in Config.xml.sample have been improved in quite a few
    places so it may be worthwhile to start with the new Config.xml.sample
    and reapply your changes!
+
+Note that you do *not* have to recompile or to follow the other steps of the
+first time installation instructions in the manual.
+

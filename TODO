@@ -1,21 +1,17 @@
 Für letztes (3.) Prerelease:
 
-UTILITIES zur Administration:
+upgrade script nochmal testen
+UPGRADE instructions finetunen
+changes_to_html weg
+manual schleifen, insbesondere Adminmenu fertig machen.
+taggen
+einpacken
+begleitmail
+
+Für Release:
   Template fuer Fall ohne MC
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
-
-Fragen:
-
-   Bei Homework mehr Angaben als Punktzahl?
-   maxscore?
-      --> beides nicht ermittelbar, bislang ungenutzt
-   Wenn man jemals fuer eine Klausur angemeldet war, dann erscheint
-     im Export auch ein Ergebnis und nicht "nicht mitgeschrieben -", ist das
-     OK?
-   Bei resubmit: altes Datum faelschen?
-
-Für Release:
   Mechanismus für Bilder in TeX
   Scheinanfertigung   --> Hilfsskript
   Aufkleber drucken (nur Export?)    --> Hilfsskript
