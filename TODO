@@ -1,5 +1,7 @@
 "visible" attribut bei sheets (echt nötig???)
 
+Mechanismus für Bilder in TeX
+
 UTILITIES zur Administration:
   automatische Validierung vor Auslieferung
   ???Visitor-IDs getrennt, die nicht in Statistik eingehen
@@ -17,6 +19,9 @@ UTILITIES zur Administration:
   Hiwi-Modus bzw. Hiwi-Seiten
   Resubmit
 
+  ??? Validierungsskript für XML und XHTML Dateien. On the fly Validierung
+  von XHTML.
+
 Handbuch:
 
   Datenformate (auch intern)
@@ -31,6 +36,8 @@ Handbuch:
   verwendete Standards
   Anhaenge-Prinzip
   Locking-Prinzip
+  Erwähnen, dass keine Datenbanken benötigt werden (im file format Kapitel)?
+  Acknowledgements?
 
 Testen:
 
@@ -38,6 +45,7 @@ Testen:
   Alle Fehlermeldungen einmal sehen.
   Normalen Betrieb eines Semesters simulieren.
   Alle Moeglichkeiten bei den Sheets ausprobieren.
+  Dateiheader checken.
 
 Ideen:
 

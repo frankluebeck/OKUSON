@@ -4,6 +4,7 @@
 \setlength{\parskip}{0.7ex plus 1.0ex}
 \usepackage[latin1]{inputenc}
 \usepackage{times}
+\usepackage{calc}
 \usepackage[a4paper]{geometry}
 \usepackage[colorlinks=true]{hyperref}
 
@@ -31,9 +32,87 @@ License, see chapter~\ref{ch:GPL} for the details of that license.
 
 \chapter{Overview}
 
+The {\OKUSON} package provides tools for offering exercise sheets via the
+web. It grew out of programs written and used by the authors since several
+semesters, when we had to organize exercise sessions accompanying beginners
+courses in mathematics. Some of these courses had more than 1000 students.
+
+The main purposes of the package are
+\begin{itemize}
+\item to enable the use of exercises which allow a mechanical check (multiple 
+choice, yes-no questions, questions with easy to parse answers like numbers)
+\item to automatize the management of the participants: registration for the
+exercise course and exams, delivery of the exercise sheets via the web, 
+collecting the  solutions of exercises as mentioned above via the web,
+grading of these solutions, \ldots
+\end{itemize}
+
+A more detailed account of our motivation and the description of some
+experiences can be found in the article:
+
+\begin{center}
+\begin{minipage}{\textwidth-1in}
+   Frank Lübeck und Max Neunhöffer,
+\href{http://www.math.rwth-aachen.de:8001/~Frank.Luebeck/preprints/AufgServCARweb.pdf}{Übungsbetrieb über Webservice}, \href{http://www.fachgruppe-computeralgebra.de/CAR}{Computer Algebra Rundbrief} \textbf{31}, Oktober 2002
+\end{minipage}
+\end{center}
+
+\section{Contents of the {\OKUSON} Package}
+
+In the archive of this package you find:
+\begin{itemize}
+\item a collection of program modules for the scripting language
+\href{http://www.python.org}{Python};
+some are generic tools, for example for reading and writing certain kinds of
+data files, a builtin web server, handling of different types of template files,
+\ldots, and some are specialized code for this package.
+\item 
+a copy of the  XML parser \href{http://www.reportlab.com/xml/pyrxp.html}{pyRXP} by Richard Tobin at the Language
+Technology Group, Edinburgh, for use with Python.
+\item
+a complete set of sample web pages (in German) which are probably not
+difficult to customize for other courses in other places. (The text on these
+pages is the only language dependent part, such that an adjustment of this
+package to other languages would be straight forward.)
+\item 
+a detailed documentation and usage guide.
+\item
+example exercises and exercise sheets.
+\item 
+checking utilities for {\OKUSON} exercises and sheets.
+\end{itemize}
+
+\section{How to Use this Manual}
+
+\begin{itemize}
+\item get started by reading and following chapter~\ref{ch:inst}, then you
+already have a running server.
+\item look at some of the examples of exercises and browse
+chapters~\ref{ch:introXML} and~\ref{ch:createExercisesSheets} to
+learn how to create the exercises and sheets for the service. 
+\item chapter~\ref{ch:webpages} describes the customization of the web
+pages, so read this if you need to adjust some details. 
+\item look at chapter~\ref{ch:security} to make your installation more
+secure and robust. Then you are ready to publish the web site for your
+course.
+\item the next few chapters describe some administrative tasks when the course
+is running and the corresponding tools  in {\OKUSON}.
+\item in the end there are some chapters on more techical aspects of the
+package. These are mainly interesting if you want to add some functionality
+to the package.
+\end{itemize}
+
+\section{Feedback}
+
+We are interested  in all comments, suggestions,  extensions concerning this
+package. Please, tell  us if you are  using the package for  some course. If
+you create exercises and sheets in  {\OKUSON} format we would be greatful if
+we could get a copy.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Installation}
+\chapter{Installation}\label{ch:inst}
 
 \section{Quick Installation Overview}
 
@@ -80,17 +159,21 @@ and \texttt{Port} (use \texttt{cryptpasswd} to encrypt your password)
 
 \section{Prerequisites}
 
-To use the {\OKUSON} system as an administrator you need a working
+\subsubsection*{Personal}
+To use the {\OKUSON} package as an administrator you need a working
 knowledge of the following things:
 \begin{itemize}
 \item Editing of ASCII files with a text editor.
+\item Basic knowledge of installing and starting programs under UNIX.
 \item Basic knowledge of HTML.
 \item Writing {\LaTeX} code for exercises.
 \end{itemize}
 In addition you have to be willing to learn a few facts about XML (see
-chapter \ref{ch:introXML}), XHTML 1.0 and (for advanced usage) a bit
-about the language Python.
+chapter \ref{ch:introXML}) and XHTML 1.0. And, if you want to know in some
+detail how things work or if you want to add some functionality to the
+package, you need knowledge about the language Python.
 
+\subsubsection*{Technical}
 To run the {\OKUSON} server you need a UNIX system with the following things
 installed:
 
@@ -205,11 +288,14 @@ the real one with the command:
 This file is  an XML file (see  section~\ref{ch:introXML}
 for a short introduction) that can be edited conveniently with an ASCII text
 editor.  It tries  to  explain  itself via  embedded  comments.  For a  full
-description of the available configuration options see section~\ref{config}.
+description of the available configuration options see section~\ref{ch:config}.
 
-For the moment, you only need to edit two configuration options:
+For a start, you need at least to edit  two configuration options:
 
-\texttt{AdministratorPassword} and \texttt{Port}. 
+\texttt{AdministratorPassword} and \texttt{Port}
+
+(and maybe some more of the obvious options in the beginning of the
+configuration file).
 
 The administrator password is used for authentication purposes during
 administration. It is only stored encrypted. You can use the little
@@ -220,7 +306,8 @@ file.
 The port is the network port the {\OKUSON} server is listening to on the
 local host. The default value is $8000$, which should usually not be used
 by other programs. The {\OKUSON} server actually \textbf{is} a web server
-listening on this port.
+listening on this port. Check with your system administrator that the computer
+running the {\OKUSON} server can be contacted on the port you choose here.
 
 
 \section{Getting started}
@@ -254,7 +341,7 @@ through the menu system, organizes input and output from the server
 and is therefore essential. Please apply changes as you need but
 be careful not to ruin the overall structure of the system!
 
-See section \ref{creawebpages} for a description of how to create web
+See section \ref{ch:webpages} for a description of how to create web
 pages with {\OKUSON}.
 
 Next you need empty versions of the data files. They are already stored
@@ -273,7 +360,9 @@ has accumulated data!
 
 \hspace*{1cm}\texttt{start}
 
-\noindent in the {\OKUSON} home directory. If everything went well, you
+\noindent in the {\OKUSON} home directory. (Be patient, the first time you
+call this some images of exercise texts are generated before the server can
+start serving.) If everything went well, you
 see some log messages, concluding with
 
 \hspace*{1cm}[TIMESTAMP] \ \texttt{Server up and running...}
@@ -875,7 +964,7 @@ solutions for the interactive exercises.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{The Web Pages}\label{creawebpages}
+\chapter{The Web Pages}\label{ch:webpages}
 
 \section{General Format of the Web Pages}
 
@@ -1045,18 +1134,45 @@ web pages.
 
 
 
-\chapter{Managing Participants}
-\chapter{Administration via the Web Interface}
+\chapter{Security and Backup}\label{ch:security}
 \chapter{Schedule of Events for one Course}
+\chapter{Administration via the Web Interface}
+\chapter{Managing Participants}
 \chapter{Import and Export of Data}
-\chapter{Finetuning the Configuration}
-\label{config}
+\chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{File Formats}
 \chapter{Internal Data Structures}
-\chapter{Security and Backup}
 \chapter{Structure of the Program}
 \appendix
-\chapter{Differences Between XHTML and Other Variants of HTML}
+\chapter{Differences Between XHTML and Other Variants of
+HTML}\label{ch:diffHTMLXHTML}
+
+If you know some HTML and compare it with the basics on XML as explained
+in~\ref{ch:introXML} you see that the syntax rules for XHTML must be more
+restrictive than for other (non-XML) variants of HTML. In particular note
+the following details of XHTML:
+
+\begin{itemize}
+\item all tags must be written with lower case letters in the element names.
+\item all non-empty elements must have a start- and end-tag, in particular
+enclose paragraphs in \texttt{<p>} and \texttt{</p>} or list entries in
+\texttt{<li>} and \texttt{</li>}.
+\item attributes always must have an assigned value and the value must be
+enclosed by either double or single quotes.
+\item write empty elements like \texttt{<br />}, the space before the
+\texttt{/>} is not necessary according to the specification but it helps
+some old browsers to interpret it correctly.
+\item do not put information on colors or fonts in the XHTML file. Instead
+use the \texttt{.css} style sheet file. (For complicated cases use the
+\texttt{class} attribute to mark elements for which you want to give special
+formating rules in the style sheet.
+\end{itemize}
+
+?links to HTML 4.01 strict specification.
+
+?validating scripts
+
+\chapter{HOWTOs} ???
 \chapter{GPL}\label{ch:GPL}
 
 Here is the text of the license under which the {\OKUSON} package is
