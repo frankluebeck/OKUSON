@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.27 2003/10/08 23:37:31 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.28 2003/10/09 11:38:36 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1035,10 +1035,14 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                 p = Data.people[k]
                 if p.homework.has_key(self.s.name):
                     default = str(p.homework[self.s.name].totalscore)
+                    default2 = p.homework[self.s.name].scores
                 else:
                     default = ''
+                    default2 = ''
                 out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
-                          ' name="P'+k+'" value="'+default+'" /></td></tr>\n')
+                          ' name="P'+k+'" value="'+default+'" /></td>\n'
+                          '    <td><input size="30" maxlength="60" name="S'+k+
+                          '" value="'+default2+'" /></td></tr>\n')
     
 class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
     '''This class exists to produce handlers that can fill data from a
@@ -1057,10 +1061,14 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
             if s.counts and s.openfrom < time.time():
                 if self.p.homework.has_key(na):
                     default = str(self.p.homework[na].totalscore)
+                    default2 = self.p.homework[na].scores
                 else:
                     default = ''
+                    default2 = ''
                 out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
-                          ' name="S'+na+'" value="'+default+'" /></td></tr>\n')
+                          ' name="S'+na+'" value="'+default+'" /></td>\n'
+                          '    <td><input size="30" maxlength="60" name="T'+na+
+                          '" value="'+default2+'" /></td></tr>\n')
 
 
 def TutorRequest(req,onlyhead):
@@ -1168,6 +1176,7 @@ def SubmitHomeworkSheet(req,onlyhead):
             if Data.people.has_key(k):
                 p = Data.people[k]
                 score = req.query.get('P'+k,[''])[0]
+                scores = req.query.get('S'+k,[''])[0]
                 try:
                     totalscore = int(score)
                 except:
@@ -1177,7 +1186,7 @@ def SubmitHomeworkSheet(req,onlyhead):
                     # if there was already a result. This allows for
                     # deletion of results.
                     line = AsciiData.LineTuple( 
-                                 (p.id, s.name, str(totalscore),'0','') )
+                                 (p.id, s.name, str(totalscore),scores) )
                     try:
                         Data.homeworkdesc.AppendLine(line)
                     except:
@@ -1187,6 +1196,7 @@ def SubmitHomeworkSheet(req,onlyhead):
                     if not(p.homework.has_key(s.name)):
                         p.homework[s.name] = Data.Homework()
                     p.homework[s.name].totalscore = totalscore
+                    p.homework[s.name].scores = scores
         Data.Lock.release()
         return Delegate('/tutors.html',req,onlyhead)
     else:
@@ -1229,6 +1239,7 @@ def SubmitHomeworkPerson(req,onlyhead):
     for nr,na,s in sl:
         if s.counts and s.openfrom < time.time():
             score = req.query.get('S'+na,[''])[0]
+            scores = req.query.get('T'+na,[''])[0]
             try:
                 totalscore = int(score)
             except:
@@ -1238,7 +1249,7 @@ def SubmitHomeworkPerson(req,onlyhead):
                 # if there was already a result. This allows for
                 # deletion of results.
                 line = AsciiData.LineTuple( 
-                             (p.id, s.name, str(totalscore),'0','') )
+                             (p.id, s.name, str(totalscore),scores) )
                 try:
                     Data.homeworkdesc.AppendLine(line)
                 except:
@@ -1248,6 +1259,7 @@ def SubmitHomeworkPerson(req,onlyhead):
                 if not(p.homework.has_key(s.name)):
                     p.homework[s.name] = Data.Homework()
                 p.homework[s.name].totalscore = totalscore
+                p.homework[s.name].scores = scores
     Data.Lock.release()
     return Delegate('/tutors.html',req,onlyhead)
 
@@ -1564,7 +1576,7 @@ def ExportResults(req,onlyhead):
                         homescore += p.homework[na].totalscore
             exams = []
             for i in range(len(p.exams)):
-                if p.exams[i] == None:
+                if p.exams[i] == None or p.exams[i].totalscore < 0:
                     exams.append('-')
                 else:
                     exams.append(str(p.exams[i].totalscore))
@@ -1765,8 +1777,6 @@ def visitor(arg,dirname,names):
             if not(Site.has_key(ourpath+'.html')):
                 try:
                     Site[ourpath+'.html'] = PPXML(dirname,n,EH_Generic)
-                    Utils.Error('Successfully loaded '+ourpath+'.tpl',
-                                prefix="Info:")
                 except:
                     Utils.Error('Loading of '+ourpath+'.tpl was not '
                                 'successful!')

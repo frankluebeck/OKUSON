@@ -1,2 +1,2 @@
 # homework.txt - file to store homework results
-# Format:  id:sheetname:totalscore:maxscore:separate scores as one string
+# Format:  id:sheetname:totalscore:separate scores as one string
