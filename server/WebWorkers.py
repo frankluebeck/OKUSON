@@ -5,9 +5,9 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.6 2003/10/01 15:46:27 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.7 2003/10/01 15:47:56 neunhoef Exp $'
 
-import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal
+import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
 import Config,Data,Exercises
 
@@ -468,6 +468,8 @@ and either send an error message or a report.'''
             return Delegate('/errors/diffpasswd.html',req,onlyhead)
         salt = random.choice(string.letters) + random.choice(string.letters)
         passwd = crypt.crypt(pw1,salt)
+    else:   # here we have to 
+        passwd = p.passwd
 
     # Now check for empty fields:
     lname = req.query.get('lname',[''])[0].strip()[:30]
@@ -818,6 +820,45 @@ def AdminLogout(req,onlyhead):
     currentcookie = None
     return Delegate('/adminlogin.html',req,onlyhead)
 
+def NormalizeWishes(w):
+    '''Normalizes a wishlist. First the string is split at space and commas,
+       then only those chunks are taken, that are a valid ID of some
+       participant.'''
+    w = w.split()
+    wishlist = []
+    for ww in w:
+      for www in ww.split(','):
+        if Data.people.has_key(www): wishlist.append(www)
+    return string.join(wishlist,',')
+
+def ExportByID(req,onlyhead):
+    '''Export the list of all participants, sorted by ID, giving the
+       following fields: 
+         id:lname:fname:sem:stud:wishes 
+       where wishes has been normalized into a comma separated list
+       of existing id's. Colons have been deleted.'''
+    l = Data.people.keys()
+    l.sort()
+    out = cStringIO.StringIO()
+    out.write('# ID:last name:first name:semester:studiengang:wishes\n')
+    for k in l:
+        p = Data.people[k]
+        w = NormalizeWishes(p.wishes)
+        out.write(k+':'+
+                  p.lname.replace(':','')+':'+
+                  p.fname.replace(':','')+':'+
+                  str(p.sem)+':'+
+                  p.stud.replace(':','')+':'+
+                  w+'\n')
+    st = out.getvalue()
+    out.close()
+    head = {'Content-type':'text/okuson',
+            'Content-Disposition':'attachment; filename="peoplelist.txt"',
+            'Last-modified':req.date_time_string(time.time())}
+    return (head,st)
+
+
+
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
@@ -836,6 +877,8 @@ def AdminWork(req,onlyhead):
         BuiltinWebServer.SERVER.raus = 1
         os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
         return Delegate('/admindown.html',req,onlyhead)
+    if action == 'ExportByID':
+        return ExportByID(req,onlyhead)
     if action == 'Display Sheets':
         return Adminexquery.getresult(req, onlyhead)
 
