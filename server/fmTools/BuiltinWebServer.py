@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.7 2003/11/07 16:25:41 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.8 2003/11/10 12:54:34 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -420,11 +420,12 @@ otherwise self.query is {}. self.path is the path.'''
         Utils.Error(msg,"Log:")
 
 class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
-    #def get_request(self):
-    #    """Get the request and client address from the socket.  """
-    #    s = self.socket.accept()
-    #    s[0].settimeout(30)
-    #    return s
+    def get_request(self):
+        """Get the request and client address from the socket.  """
+        s = self.socket.accept()
+        # Only for python 2.3 and higher:
+        if hasattr(s[0],"settimeout"): s[0].settimeout(30)
+        return s
 
     raus = 0
     restartcommand = ''
