@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.116 2005/04/04 10:07:29 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.117 2005/04/04 10:39:32 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -2704,7 +2704,7 @@ ExportHelper['%m'] = ('Email address',
   lambda p: p.email)
 ExportHelper['%D'] = ('''Custom person data (comma separated: 
 key1,val1,key2,val2,...)''', 
-  lambda p: LineDict(p.persondata))
+  lambda p: AsciiData.LineDict(p.persondata))
 def ExportHelper_e(p, d = ';', nr = None):
   try:
     t = p.exams
@@ -2764,10 +2764,7 @@ def ExportHelper_h(p, d = ';', nr = None):
     if nr:
       rg = [str(nr)]
     else:
-      rg = t.keys()
-      def icmp(a, b):
-        return int(a) < int(b)
-      rg.sort(icmp)
+      rg = Utils.SortNumerAlpha(t.keys())
     for i in rg:
       try:
         a = t[i]
@@ -2793,14 +2790,11 @@ def ExportHelper_v(p, d = ';', nr = None):
     if nr:
       rg = [str(nr)]
     else:
-      rg = t.keys()
-      def icmp(a, b):
-        return int(a) < int(b)
-      rg.sort(icmp)
+      rg = Utils.SortNumerAlpha(t.keys())
     for i in rg:
       try:
         a = t[i]
-        res.append(str(i)+d+locale.str(a.totalscore)+d+a.score+d)
+        res.append(str(i)+d+locale.str(a.totalscore)+d+a.scores+d)
       except:
         res.append(str(i)+d+'none'+d+'none'+d)
     res = string.join(res, '')
