@@ -1,0 +1,48 @@
+body { 
+	background-color:#ffffff;
+	color:#191970;
+	font-family: sans-serif, Helvetica, Arial, Geneva;
+        padding: 15pt;
+	}
+ 
+a:link {
+	color: #2336dd;
+	}
+a:visited {
+	color: #640a99;
+	}
+a:hover {
+        background-color: #999999;
+}
+
+p.pcenter {
+  padding-left: 0pt;
+  text-align: center;
+}
+p {
+        padding-left: 150pt;
+}
+ul {
+        padding-left: 190pt;
+}
+
+hr     {
+	width:80%;
+       }
+
+h1 {
+        text-align: center;
+        font-size: 300%;
+}
+
+h2 {
+        padding: 5pt;
+        padding-left: -100pt;
+        font-size: 150%;
+        color: #dddddd;
+        background-color: #002255;
+}
+
+
+
+        
