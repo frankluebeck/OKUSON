@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.37 2003/10/14 11:54:28 neunhoef Exp $
+##  $Id: CHANGES,v 1.38 2003/10/14 11:58:27 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -24,7 +24,10 @@ Changes from 1.0-pre3  to  1.0-pre4
   .tpl files (called .tpl.nointeractive)
 * added pseudo elements for getting radio button and check box corresponding
   to persondataX components
-* also pseudo elements for select options with persondataX values
+* new pseudo element for select options with persondataX values
+* made group 0 a valid group, so it doesn't need the groups.txt file in case
+  of just one group (but put an entry with password in groupinfo.txt to use
+  the /tutors.html interface)
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
