@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.48 2003/10/15 15:34:43 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.49 2003/10/20 09:45:58 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -157,8 +157,11 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             s.append('<tr>')
             for a in fields:
                 if hasattr(grp, a):
-                    s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
+                    if a in ['number','nrparticipants']:
+                        s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
                              str(getattr(grp, a))+'</a></td>')
+                    else:
+                        s.append('<td>'+str(getattr(grp, a))+'</td>')
             s.append('</tr>\n')
         out.write(string.join(s,''))
     def handle_MembersOfGroup(self,node,out):
