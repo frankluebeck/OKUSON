@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.44 2003/10/14 09:15:44 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.45 2003/10/14 09:28:54 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -465,6 +465,18 @@ one Person object as data.'''
         if val == known:
             res.append('checked="checked" ')
         res.append('/>')
+        out.write(string.join(res, ''));
+    def handle_PersonDataSelectOption(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+            known = str(getattr(self.p, name))
+        except:
+            return
+        res = ['<option'] 
+        if val == known:
+            res.append(' selected="selected" ')
+        res.append('>'+val+'</option>')
         out.write(string.join(res, ''));
     def handle_PossibleStudies(self,node,out):
         found = 0
