@@ -76,4 +76,7 @@ span.ergnull {
   font-weight: bold;
 }
 
-/*  $Id: OKUSONSheet.css,v 1.1 2003/09/23 08:14:40 neunhoef Exp $  */ 
+img {
+  border: 0pt;
+}
+/*  $Id: OKUSONSheet.css,v 1.2 2003/10/10 14:23:36 luebeck Exp $  */ 
