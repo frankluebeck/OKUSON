@@ -1,3 +1,7 @@
+Ideen: 
+  (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
+  generischem Drumherum hinzufügen kann.
+
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
