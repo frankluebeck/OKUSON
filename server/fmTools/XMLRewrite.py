@@ -10,7 +10,7 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.3 2003/11/07 23:25:18 luebeck Exp $'
+CVS = '$Id: XMLRewrite.py,v 1.4 2004/03/04 15:47:36 luebeck Exp $'
 
 import os, sys, types, glob, pyRXPU, cStringIO, threading, traceback
 import Utils
@@ -412,6 +412,7 @@ occurs the error is reported via "Utils.Error" and an exception is raised.
 a string for delivery. "begin" and "end" are strings which are put before
 and after the result respectively.'''
         self.filename = os.path.join(docroot,filename)
+        self.mtime = os.path.getmtime(self.filename)
         self.tree = Parse(RewriteParser, file = self.filename)
         self.handlers = handlers
         self.type = type
@@ -422,6 +423,14 @@ and after the result respectively.'''
         '''Uses the already parsed tree to produce a response. If the 
 optional argument "handlers" is None we use "self.handlers", otherwise
 the optional argument.'''
+        # check if file has changed, if yes try to parse, if successful 
+        # change the tree
+        mt = os.path.getmtime(self.filename)
+        if  mt > self.mtime:
+          new = Parse(RewriteParser, file = self.filename)
+          if new:
+            self.tree = new
+            self.mtime = mt
         if handlers == None: handlers = self.handlers
         res = ProcessXMLTree(self.tree, handlers, 
                              begin = self.begin, end = self.end)
