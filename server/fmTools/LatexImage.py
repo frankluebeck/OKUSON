@@ -8,7 +8,7 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.4 2004/03/05 15:32:50 luebeck Exp $'
+CVS = '$Id: LatexImage.py,v 1.5 2004/11/26 11:40:30 luebeck Exp $'
 
 import sys, os, types, tempfile, shutil
 import Utils
@@ -104,7 +104,7 @@ via Utils.Error.'''
       Utils.FileString(tmpdir+'/b.eps', 
                        str(-bbox[0]+1)+' '+str(-bbox[1]+1)+' translate\n')
       st = 'cd '+tmpdir+'; cat b.eps a.eps | gs -dNOPAUSE -dBATCH '+\
-           ' -sDEVICE=pnmraw -r'+str(r)+' -g'+\
+           ' -sDEVICE=pgmraw -r'+str(r)+' -g'+\
            str(int(width*r))+'x'+\
            str(int(1.0*(bbox[3]-bbox[1]+2)/72.0*r))+' '+\
            ' -dTextAlphaBits=4 -sOutputFile=a.pnm -q -';
