@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.40 2003/10/20 16:34:48 luebeck Exp $
+% $Id: manual.tex,v 1.41 2003/10/20 23:41:54 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -271,8 +271,39 @@ and reading data in and from human legible files. No external data base
 system is needed.
 \end{itemize}
 
-A remark or example of needed resources???
+\subsubsection*{Needed Resources}
 
+As an example, we give here some facts and numbers  on needed 
+resources for a big
+course during one semester (these are estimated, but based on experience
+with previous versions of the {\OKUSON} programs):
+
+\begin{description}
+\item[Server Hardware:] PC with two Pentium III (1GHz) processors, 2 GB of
+memory, 40 GB IDE hard disc. The workload of the {\OKUSON} server, even for
+a course with many participants, does not have a detectable impact on other 
+work done on that machine.
+\item[Number of participants:] 1200.
+\item[Number of submissions of solutions:] more than 20000 (this leads to 
+the by far
+largest file in the \texttt{data} subdirectory, we expect a file of about 3
+megabyte, where our sheets contain 20 interactive questions each.
+Restarting the server with rereading all these data takes about 5 seconds.
+\item[Memory needed by the server process to hold all data in memory:] a few
+hundred kilobytes, hence neglectible.
+\item[Number of page/file accesses:] a few million, even with (artificially 
+caused) several thousand accesses per minute, the machine is still usable for
+other tasks as well.
+\item[Size of \texttt{log/server.log} file:] could grow to a few hundred
+megabytes. If you are short of disc space, you can compress the files (with
+\texttt{bzip2} they can be shrinked to 3--4\% of their original size), or
+even throw older entries away.
+\item[Number of PDF sheets produced on the fly:] in average each sheet is
+requested between one and two times in  PDF format. That means that during
+the semester up to 30000 PDF sheets are requested. The server machine needs
+about 4 to 5 hours of CPU time for the corresponding calls to 
+\texttt{pdflatex} --- distributed over the whole semester.
+\end{description}
 
 \section{Download}
 
@@ -1352,6 +1383,9 @@ for possible \texttt{components}.
 participants in group with given number.
 \item[\texttt{<AvailableSheetsAsButtons/>}] row of buttons for all available
 sheets,  for use on query page for sheets.
+\item[\texttt{<AvailableResolutions/>}] a \texttt{select} environment
+showing the resolutions configured in entry \texttt{<Resolutions>} of the
+\texttt{Config.xml} file.
 \end{description}
 
 \subsection{Special Elements in Pages Containing Personal
@@ -1360,9 +1394,10 @@ Data}\label{ssec:regelts}
 There are  two pages for registration, one for the actual
 registration and one for changing the personal data, see the sample pages
 \texttt{registration.tpl} and \texttt{regchange2.tpl}. 
-Other pages with personal data are the result query pages, see the sample
+Another page with personal data is the results page, see the sample
 page \texttt{results.tpl}.
 
+\subsubsection*{Registration and Change of Data}
 
 The following registration data  for each participant are stored by the
 {\OKUSON} server: a user Id, last name, first name, the number of semesters the
@@ -1423,6 +1458,51 @@ its \texttt{selected} attribute is set if the currently stored value is
 \texttt{myvalue}. In this case the \texttt{content} attribute is optional
 and defaults to being the same as \texttt{value}.
 
+\subsubsection*{Results Page}
+
+On the results page with template \texttt{html/results.tpl} there are
+also the following elements which produce personal data:
+
+\begin{description}
+\item[\texttt{<Results/>}] this is substituted by a 
+sequence of HTML table rows, one
+for each exercise sheet. The default entries of each row are the sheet name,
+the number of points in the interactive exercises and the number of points
+in the homework exercises. This can be customized by an attribute
+\texttt{components}, for example if you don't have one of the exercise types
+on your sheets. The default corresponds to 
+
+\hspace{5mm}\texttt{<Results components="interactive,homework" />},
+
+the order of results points could be exchanged, or one of the exercise types
+can be left out. (Adjust the table header in the template appropriately.)
+\item[\texttt{<Totalscore/>}] the total sum of all points in the interactive and
+homework exercises.
+\item[\texttt{<ExamGrade nr="??"/>}, \texttt{<ExamGrades/>}] the first is
+substituted by a result string of a function given in the entry 
+\texttt{ExamGradingFunction}, which is activated by
+\texttt{ExamGradingActive}, in \texttt{Config.xml}, the function is called
+with the given exam number as argument. The second element is equivalent to
+a sequence of \texttt{ExamGrade} elements for all exams. See
+chapter~\ref{ch:ExamOrga} for more details.
+\item[\texttt{<Grade/>}] this works similar to 
+\texttt{ExamGrade} but is for the
+final grading of the course. See the configuration entries
+\texttt{GradingFunction} and \texttt{GradingActive} in the
+\texttt{Config.xml} file and chapter~\ref{ch:autograde} for more details.
+\item[\texttt{<GeneralMessages/>}] this is substituted by the content of the
+file configured in the entry \texttt{<GeneralMessageFile>} of 
+\texttt{Config.xml} (\texttt{data/generalmessage.txt} by default).
+\item[\texttt{<PrivateMessages/>}] this is substituted by lines collected 
+for the specific participant in
+the file given by the entry \texttt{MessageFile} in \texttt{Config.xml}
+(default is \texttt{data/messages.txt}). 
+The format of this file is described in~\ref{sec:messages.txt}.
+You can add and remove individual messages via the administrator menu,
+see~\ref{sendmess}.
+\end{description}
+
+
 \subsection{Special Elements for Sheet Specific Data}\label{ssec:sheetelements}
 
 There are some special elements used with the sheets in HTML format.
@@ -1461,6 +1541,16 @@ alphabetically) of the IDs of the participants.
 \item[\texttt{<GroupInfo1/>} to \texttt{<GroupInfo9/>}] further unspecified 
 data for customization.
 \end{description}
+
+\subsection{Special Elements for Administration Pages}
+
+The administration and tutor pages use templates similar to the other pages
+described so far. But since there is little need to adjust the
+administration pages (explained in chapter~\ref{ch:adminpages}), we do not
+document the helper elements here. They are almost self explaining or else 
+look in the code. If you want more functions in the admin menu, please, tell us
+about them. Maybe they are of general interest and we want to add them to
+the {\OKUSON} package.
 
 \chapter{Schedule of Events for One Course}\label{ch:semsched}
 
@@ -1583,7 +1673,7 @@ means of publishing such information is needed any more.
 \end{itemize}
 
 \chapter{Administration via the Web Interface}
-\label{adminpages}
+\label{ch:adminpages}
 
 The configuration of the {\OKUSON} system and the creation of exercises and
 sheets works with an ASCII text editor. For some other administrative tasks
@@ -1913,7 +2003,7 @@ offers one input field, where participants can basically type in IDs of
 other participants, usually separated by commas or whitespace.
 
 Secondly you can export all registered people via the administrator pages 
-(see \ref{adminpages}) using the button ``Export people for tutoring group
+(see \ref{ch:adminpages}) using the button ``Export people for tutoring group
 distribution''. You have the choice of exporting all participants together
 (option ``all together'') or separated by their course of studies. Also you
 can choose the data fields by which the output is sorted. The result
@@ -2253,7 +2343,7 @@ With the automatic grading facility you can devise nearly arbitarily
 complicated conditions for the grading decision. You have read access to
 all personal data and the whole {\OKUSON} system.
 
-Note however that is strictly forbidden to change any global data in the
+Note however that it is strictly forbidden to change any global data in the
 {\OKUSON} server. The reason for this is that the server is multi-threaded,
 every web access has its own thread and any change in global data has to
 be protected by certain locking mechanisms to avoid possible internal
@@ -2382,11 +2472,11 @@ email & email address & string \\
 \hline
 wishlist & ids of other people & string \\
 \hline
-pdata1 & personal data number 1 & string \\
+persondata1 & personal data number 1 & string \\
 \hline
 \vdots & \vdots & \vdots \\
 \hline
-pdata9 & personal data number 9 & string \\
+persondata9 & personal data number 9 & string \\
 \hline
 \end{tabular}
 \end{center}
@@ -2697,7 +2787,7 @@ server.
 If you want to use other types of IDs, do the following:
 
 \begin{itemize}
-\item Adjust the entries \texttt{<IdCheckRegExp>} and
+\item Adjust the two entries \texttt{<IdCheckRegExp>} and
 \texttt{<GuestIdRegExp>} in your \texttt{Config.xml} configuration file.
 \item Adjust all places where the word \emph{Matrikelnummer} appears in
 templates.  There is one such line in the \texttt{<PDFTemplate>} entry of
@@ -2904,7 +2994,7 @@ You may try the effect of changing the following line in
 \texttt{html/OKUSON.css}:
 
 \begin{verbatim}
-    background-color:#B0E0E6;
+      background-color:#B0E0E6;
 \end{verbatim}
 
 to
@@ -2922,16 +3012,20 @@ Or you can add a background image with a setting like:
 
 \begin{verbatim}
       background-color:#CCCCCC;
-      background-image:url(http://www.math.rwth-aachen.de/~OKUSON/badback.jpg);
+      background-image:
+        url(http://www.math.rwth-aachen.de/~OKUSON/badback.gif);
 \end{verbatim}
 
 Of course, as you can see here: Only use background images which don't
 disturb the legibility of the pages!
 
-More subtle changes would affect the table layout, fonts, relative font
-sizes and many more details.
+More subtle changes would affect  table layout, fonts, relative font
+sizes and many more details. See the 
+\href{http://www.w3c.org}{\texttt{http://www.w3c.org}} pages or some book on
+CSS if you do not know how to do this. The W3C pages also have an online 
+validation service  for CSS style sheets.
 
-As a general rule: Do not use CSS features which may not be reasonably well 
+As a general rule: Use only basic CSS features which are reasonably well 
 implemented in essentially all current browsers (some CSS settings may
 shorten the list of successful browser tests, as given in
 \texttt{html/techinfo.tpl}).
@@ -2941,6 +3035,16 @@ There are two CSS style sheet files in the {\OKUSON} sample pages,
 with changes to the latter one. In particular, the background of the table
 with the exercise texts as images should be white or very bright for good
 legibility.
+
+If you want to add some icon or some standard information on all course 
+web pages, you must edit all template files accordingly. You can use the 
+customization entries \texttt{<User1>} to \texttt{<User9>} 
+in the \texttt{Config.xml} file together with the tags \texttt{<User1/>} to
+\texttt{<User9/>} in the  template \texttt{.tpl} files. You can include HTML
+markup in the content of these elements, but note that you must use a
+\texttt{CDATA} environment or escape the markup with entities in your 
+\texttt{Config.xml} (see~\ref{ch:introXML}). 
+
 
 \section{Using {\OKUSON} with Another Language}
 

@@ -1,9 +1,3 @@
-Luecken im Manual:
-  ExamResults tag (2 Varianten)
-  welche Seiten erlauben welche Tags? --> nicht-generische aufzaehlen?
-  insbes. Tags in result page scheinen zu fehlen
-  
-Seiten fuer Tutoren schoener.
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
@@ -19,7 +13,7 @@ Für Release:
      alle sort's aendern, die IDs sortieren
   Mechanismus für Bilder in TeX
   Scheinanfertigung   --> Hilfsskript
-  Aufkleber drucken (nur Export?)    --> Hilfsskript
+  "Remove" von Leuten (nach Fehlanmeldungen)???
   Tests siehe unten
   guest ids auf Gruppeneinteilungsseite?  
 
@@ -27,12 +21,11 @@ Handbuch:
  
   > means "done"
 
-  >Die einzelnen Webseiten
   Aufbau des Programms
   verwendete Standards
   >Locking-Prinzip
   Acknowledgements?
-  "Remove" von Leuten (nach Fehlanmeldungen)???
+  ? gesammelte Liste der "festverdrahteten" .tpl Dateinamen ???
 
 Testen:
 
@@ -44,10 +37,13 @@ Testen:
 
 Ideen:
 
+  Statistik ueber Uebungsblaetter    --> Hilfsskript?
+  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
+  Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
+  Sonstige Skripte während Semester erfinden, schreiben und in 
+     Version 1.1 hinzufügen.
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
   Eingabe der Gruppennummer bei der Anmeldung
   Aenderung der Gruppennummer bei Datenaenderung
-  letzte beiden Optionen schaltbar.
-  Statistik ueber Uebungsblaetter    --> Hilfsskript?
-  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
+     letzte beiden Optionen schaltbar.
