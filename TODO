@@ -1,7 +1,17 @@
 Für letztes (3.) Prerelease:
 
-taggen
-einpacken
+Tests mit folgenden browsern:
+  galeon 1.2.7 auf Linux (mozilla 1.2.1)
+  mozilla 1.2.1 auf Linux
+  Internet Explorer 5.5 auf Windows ME
+  Internet Explorer 6.0 auf Windows ME
+    
+
+Interessant:
+  ie nach shutdown/restart kein stylesheet
+  mozilla bei open mit less kein resultat
+  opera adminlogin geht nicht!
+  
 begleitmail
 
 Für Release:

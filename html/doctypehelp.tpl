@@ -17,7 +17,7 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
-    Wir bieten die Übungsblätter in zwei verschiedenen Formaten an.
+    <p>Wir bieten die Übungsblätter in zwei verschiedenen Formaten an.</p>
 
     <dl>
       <dt>HTML</dt><dd>Die Aufgaben als Webseite. Die Lösungen der
@@ -49,5 +49,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: doctypehelp.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: doctypehelp.tpl,v 1.2 2003/10/10 20:57:29 neunhoef Exp $ -->
 
