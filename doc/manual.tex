@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.55 2004/03/05 14:31:54 luebeck Exp $
+% $Id: manual.tex,v 1.56 2004/03/05 15:36:57 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -666,6 +666,26 @@ courses with {\OKUSON} exercises. Registration, exercise sheets,
 announcements, exam results, final grades are \emph{only} available via the
 {\OKUSON} server web interface. Our experience was that  no students complain
 about this approach.
+
+\subsubsection*{Keeping the log file data small}
+
+During a course the log file \texttt{log/server.log} grows substantially.
+Therefore we provide a small script, which automatically keeps some older
+versions of the log file and deletes very old ones. It is called 
+\texttt{logrotate.py} and resides in the \texttt{scripts} directory of
+the {\OKUSON} distribution. Usually one will copy it to the log file 
+directory and install it in a crontab like
+
+{\small
+\begin{verbatim}
+PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
+17 3 * * * $HOME/okuson/log/logrotate.py $HOME/okuson/log/server.log
+\end{verbatim}
+}
+
+You can configure the number of versions to be kept and the number of
+uncompressed versions at the top of the script. It will shift the log 
+files up and delete the oldest.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
