@@ -1,0 +1,27 @@
+ Instructions to upgrade from version 1.0-fix2 to 1.0-fix3
+===========================================================
+
+From now on we recommend using Python version 2.3 or newer, since timeouts
+on network connections are only available in Python >= 2.3. The timeouts
+are used to get rid of "hanging threads", which consume a little bit of
+memory until the next server restart.
+It is absolutely safe to go on using Python 2.2, though.
+
+Installation:
+
+Unpack the archive:
+
+  tar xzvf okuson-1.0-fix3.tar.gz
+
+outside the "okuson" directory.
+
+Several program files are replaced, however your configuration, data,
+and web page templates are not changed.
+
+The following new files have to be copied manually from the
+  html.sample
+directory to the
+  html
+directory:
+
+
