@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.36 2003/10/16 07:12:03 neunhoef Exp $
+% $Id: manual.tex,v 1.37 2003/10/18 23:13:39 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -266,7 +266,12 @@ The following is \textbf{not} needed to run an {\OKUSON} server:
 server.
 \item Web server. No web server apart from the one built into {\OKUSON} is
 needed.
+\item Data storage. {\OKUSON} uses a simple and efficient way of storing 
+and reading data in and from human legible files. No external data base
+system is needed.
 \end{itemize}
+
+A remark or example of needed resources???
 
 
 \section{Download}
@@ -1400,7 +1405,8 @@ components in case these should  take only a fixed set of values:
 
 \texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />},  
 \texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />} and
-\texttt{<PersonDataSelectOption name="persondata1" value="myvalue"  content="mycontent"/>},  
+\texttt{<PersonDataSelectOption name="persondata1" value="myvalue" }\\
+\mbox{}\texttt{~~~~~~content="mycontent"/>},  
 
 The first two produce an HTML \texttt{<input>} field of type  
 radio button or check box,
@@ -2228,13 +2234,6 @@ of the person in all multiple choice exercises, the total score in all
 ...
 
 %\chapter{Finetuning the Configuration}\label{ch:config}
-\chapter{Customization Examples}
-\section{Using IDs of Different Type}
-\section{A Course Without Non-Interactive Homework Exercises}
-\section{A Course Without Interactive Exercises}
-\section{Managing Additional Personal Registration Data}
-\section{Customizing the Look and Feel of the Web Pages}
-\section{}
 \chapter{File Formats}
 \label{ch:fileformats}
 to be written
@@ -2260,6 +2259,63 @@ to be written
 \label{ch:intdata}
 %\chapter{Structure of the Program}
 \appendix
+\chapter{Customization Examples}
+\section{Using IDs of Different Type}
+
+In Aachen all students have an associated  unique 6-digit number 
+(the \emph{Matrikelnummer}) which is used all over the place. 
+Therefore, we use it for registrations and as ID's within an {\OKUSON}
+server. 
+
+If you want to use other types of IDs, do the following:
+
+\begin{itemize}
+\item Adjust the entries \texttt{<IdCheckRegExp>} and
+\texttt{<GuestIdRegExp>} in your \texttt{Config.xml} configuration file.
+\item Adjust all places where the word \emph{Matrikelnummer} appears in
+templates.  There is one such line in the \texttt{<PDFTemplate>} entry of
+\texttt{Config.xml}. And there are quite a few files in \texttt{html/*.tpl}. 
+Here, change the word \emph{Matrikelnummer} to something more appropriate
+and maybe increase the values of the \texttt{size} and \texttt{maxlength} 
+attributes of corresponding \texttt{<input\ldots} elements.
+\end{itemize}
+
+That's it.
+
+\section{A Course Without Non-Interactive Homework Exercises}
+
+If you are not going to give non-interactive exercises which are not graded
+automatically by {\OKUSON}, do the following:
+
+\begin{itemize}
+\item Just ignore all remarks about \emph{homework points} in this manual 
+and in input forms. 
+\item Adjust the \texttt{<Results\ldots} tag in the template file
+\texttt{html/results.tpl} to exclude the homework points.
+\end{itemize}
+
+\section{A Course Without Interactive Exercises}
+
+We also use {\OKUSON} for courses without interactive exercises, just to
+take advantage of the other utilities: registration, tutoring- and  exam-
+management, HTML versions of exercise sheets, \ldots
+
+In this case some things should be done a bit differently: In PDF-versions
+of the sheets the exercises should not be put into a table (and they should
+not be regenerated for each request), participants
+should not need to type a password for getting the exercise sheet, there
+should not be ID's in templates which now look the same to all participants.
+
+To achieve this, copy the files in \texttt{html} with a second extension
+\texttt{.nointeractive} over the files of the same name but without this
+extension before customizing further the web pages. 
+
+\section{Managing Additional Personal Registration Data}
+
+
+
+\section{Customizing the Look and Feel of the Web Pages}
+\section{Using {\OKUSON} with Another Language}
 \chapter{Differences Between XHTML and Other Variants of
 HTML}\label{ch:diffHTMLXHTML}
 
