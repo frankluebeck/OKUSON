@@ -9,12 +9,9 @@ begleitmail
 
 Für Release:
   delete-script fuer Benutzer, die falsch angemeldet sind.
-  Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
-     alle sort's aendern, die IDs sortieren
-  Mechanismus für Bilder in TeX
-  guest ids auf Gruppeneinteilungsseite?  
   Tests siehe unten
-
+  Korrektes runterfahren des servers
+  
 
 Testen:
 

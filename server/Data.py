@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.10 2003/10/15 00:05:12 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.11 2003/10/22 22:21:54 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -221,8 +221,11 @@ def AddToGroupStatistic(p):
     '''Adds a person to the groups statistic.'''
     global groups
     g = str(p.group)
-    if not(groups.has_key(g)): groups[g] = GroupInfo(g)
-    groups[g].people.append(p.id)
+    if not(groups.has_key(g)): 
+        groups[g] = GroupInfo(g)
+    if not(Config.conf['GuestIdRegExp'].match(p.id)):
+        # we only add "real" IDs to the group cache
+        groups[g].people.append(p.id)
 
 def MakeGroupStatistic():
     global groups

@@ -5,7 +5,7 @@
    ...
 """
 
-CVS = '$Id: Utils.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: Utils.py,v 1.2 2003/10/22 22:21:54 neunhoef Exp $'
 
 import string, sys, re, exceptions, traceback, types
 
@@ -182,3 +182,16 @@ The optional argument 'repeat' tells how many times pdflatex should be
 run on the input (to get references an so on right).
 '''
   return None
+
+def SortNumerAlpha(l):
+    'try converting entries of l to int, then sort and convert to str'
+    ll = list(l)
+    for i in range(len(ll)):
+        try:    a = int(ll[i])
+        except: a = ll[i]
+        ll[i] = a
+    ll.sort()
+    for i in range(len(ll)):
+        ll[i] = str(ll[i])
+    return ll
+        

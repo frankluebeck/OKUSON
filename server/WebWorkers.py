@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.54 2003/10/22 14:12:12 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.55 2003/10/22 22:21:54 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -124,25 +124,13 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write(str(len(Data.groups[nr].people)))
         else:
             out.write('0')
-    def sortnumeralpha(self, l):
-        'try converting entries of l to int, then sort and convert to str'
-        ll = list(l)
-        for i in range(len(ll)):
-            try:    a = int(ll[i])
-            except: a = ll[i]
-            ll[i] = a
-        ll.sort()
-        for i in range(len(ll)):
-            ll[i] = str(ll[i])
-        return ll
-        
     def handle_GroupDistribution(self,node,out):
-        l = self.sortnumeralpha(Data.people.keys())
+        l = Utils.SortNumerAlpha(Data.people.keys())
         for k in l:
             out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
                       '</td></tr>\n')
     def handle_GroupsOverview(self,node,out):
-        l = self.sortnumeralpha(Data.groups.keys())
+        l = Utils.SortNumerAlpha(Data.groups.keys())
         try:
             fields = node[1]['components'].encode('ISO-8859-1','replace')
             fields = map(lambda s: s.strip(), string.split(fields,','))
@@ -177,8 +165,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                         'Ignoring.', prefix='Warning:')
             return
         if Data.groups.has_key(nr):
-            l = list(Data.groups[nr].people)
-            l.sort()
+            l = Utils.SortNumerAlpha(Data.groups[nr].people)
             out.write(string.join(l,', ')+'.')
         else:
             Utils.Error('<MembersOfGroup /> tag requested empty group "'+
@@ -1030,8 +1017,7 @@ class EH_withGroupInfo_class(EH_Generic_class):
     def handle_GroupInfo9(self,node,out):
         out.write(str(self.grp.groupinfo9))
     def handle_GroupIDs(self,node,out):
-        l = list(self.grp.people)
-        l.sort()
+        l = Utils.SortNumerAlpha(self.grp.people)
         out.write(string.join(l, ', '))
 
 def GroupInfo(req, onlyhead):
@@ -1119,8 +1105,7 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
         out.write('<input type="hidden" name="group" value="'+
                   str(self.grp.number)+'" />\n')
     def handle_HomeworkSheetInput(self,node,out):
-        l = list(self.grp.people)
-        l.sort()   # FIXME, bessere Sortierung
+        l = Utils.SortNumerAlpha(self.grp.people)
         s = self.s
         counter = 0
         for k in l:

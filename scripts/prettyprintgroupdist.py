@@ -1,4 +1,17 @@
 #!/usr/bin/env python
+# -*- coding: ISO-8859-1 -*-
+#
+#   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
+#
+#   $Id: prettyprintgroupdist.py,v 1.2 2003/10/22 22:21:54 neunhoef Exp $
+#
+# This script is part of OKUSON.
+#
+# It takes a file coming from the export of all people, sorted by group
+# number (and by ID or by name) and generates a latex input file which
+# produces a printout of all the members of all groups.
+# This script acts as a filter, reading from stdin and writing to stdout.
+#
 
 import sys,os,string
 

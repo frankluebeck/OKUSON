@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.41 2003/10/20 23:41:54 luebeck Exp $
+% $Id: manual.tex,v 1.42 2003/10/22 22:21:54 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -849,6 +849,22 @@ configuration  file \texttt{\$OKUSONHOME/Config.xml}, see the elements
 If you just want to add the loading of some further packages or to read in
 some of your favourite personal macros, use the \texttt{<ExtraLaTeXHeader>}
 element of the configuration file.
+
+Note that if the {\LaTeX} runs need further input files like for example
+images, you have to make sure that {\LaTeX} finds them in your filesystem.
+This can for example be achieved by setting the environment variable
+\texttt{TEXINPUTS}. Note that with the standard UNIX version of {\LaTeX}
+you have to append a colon to the value of \texttt{TEXINPUTS} such that the
+usual files for {\LaTeX} are still be found, i.e.~one has to use a command
+like this before starting the server:
+
+\hspace*{5mm} \verb!export TEXINPUTS='/path/to/additional/TeX/files:'!
+\hspace*{5mm} (for \texttt{bash})
+
+or
+
+\hspace*{5mm} \verb!setenv TEXINPUTS '/path/to/additional/TeX/files:'!
+\hspace*{5mm} (for \texttt{tcsh})
 
 \subsubsection*{Remark on the PDF-version of the Exercise Sheets}
 

@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.45 2003/10/22 11:59:16 neunhoef Exp $
+##  $Id: CHANGES,v 1.46 2003/10/22 22:21:54 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -32,6 +32,9 @@ Changes from 1.0-pre4  to  1.0
 * allow group number 0 in tutor input pages
 * added some utilities to 'scripts' subdirectory
 * improved 'testsheet' for optionally using the NoTable template
+* guest IDs are no longer members of groups (in cache in GroupInfo objects)
+* sorting of IDs consistent (numerical if possible)
+* little paragraph about usage of TEXINPUTS
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
