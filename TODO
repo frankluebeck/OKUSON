@@ -81,15 +81,15 @@ M!Aufloesungs-Cookie persistent
 M!Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
  !  von vorigen Blaettern uebernommen werden.
 M!Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
-    Das Richtige Gruen machen
-    Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
-       das Richtige da war.
+ !  Das Richtige Gruen machen
+ !  Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
+ !     das Richtige da war.
 F! Overfull boxes melden beim Erzeugen von Pixelbildern.
-    (loest Problem abgeschnittener Aufgabentexte)
-    testexercises soll .log-Datei anschauen und Fehler und overfull boxes
-      richtig rausfinden.
-M Global die Anzahl der Klausuren Zaehlen
-M ExportResults mit dieser Anzahl von Klausuren bei allen
+ !  (loest Problem abgeschnittener Aufgabentexte)
+ !  testexercises soll .log-Datei anschauen und Fehler und overfull boxes
+ !    richtig rausfinden.
+M!Global die Anzahl der Klausuren Zaehlen
+M!ExportResults mit dieser Anzahl von Klausuren bei allen
 ? Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
 F!Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
 M Dokumentation der neuen Features von LAFM

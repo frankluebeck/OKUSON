@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.70 2004/03/05 15:32:49 luebeck Exp $
+##  $Id: CHANGES,v 1.71 2004/03/08 13:44:22 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -36,12 +36,12 @@ Changes from 1.0-fix3 to 1.1
 * Put a hint to "schein.py" into the manual.
 * Handle additional info to "Studiengang" better
 * Header and Footer configurable (change from Ingo)
-* Introduce a switch in Config.py to allow/disallow registration.
-* Introduce a switch in Config.py to allow/disallow exam registration.
-* Introduce a switch in Config.py to allow/disallow group choice during
+* Introduced a switch in Config.py to allow/disallow registration.
+* Introduced a switch in Config.py to allow/disallow exam registration.
+* Introduced a switch in Config.py to allow/disallow group choice during
   registration.
-* Implement group choice during registration.
-* Implement group change during semester.
+* Implemented group choice during registration.
+* Implemented group change during semester.
 * Introduce a switch in Config.py to allow/disallow group change after
   registration.
 * Make administrator menu a function (AdminMenu) to allow different behaviour
@@ -55,6 +55,19 @@ Changes from 1.0-fix3 to 1.1
 * Fixed bug with non-uniform distribution of variants in the case of
   3 variants.
 * Sort order by TotalMCScore, TotalHomeScore, and TotalScore (thanks to LAFM).
+* Logrotate script to keep logfile data small
+* Helper script to make stickers for (paper) database.
+* Implemented maximal size of tutoring groups.
+* Fixed some bugs in "schein.py" helper script.
+* Improved format of log messages (timestamps), User-Agent
+* Fixed bug with unequal distribution of variants in case of 3 variants.
+* Input field names now contain the sheet name to prevent browsers from
+  filling in answers from old sheets.
+* Display of correct solution even if participant selected "no answer"
+  after closure of sheet.
+* OKUSON now counts globally the number of exams and exports accordingly.
+* Export of additional score info from exams.
+
 
 Changes from 1.0-fix2 to 1.0-fix3
 
@@ -81,8 +94,8 @@ Changes from 1.0-fix2 to 1.0-fix3
 * Fixed a bug in the evaluation of choice questions where selecting
   no answer is the correct solution reported by Axel.
 * Fixed a bug in the statistic function for the noninteractive case.
-* Logrotate script to keep logfile data small
 
+ 
 Changes from 1.0-fix1 to 1.0-fix2
 ---------------------------------
 
