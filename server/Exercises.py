@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.26 2004/03/05 15:32:49 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.27 2004/03/08 08:22:47 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -291,14 +291,14 @@ otherwise.'''
                                 checked = 1
                             f.write(('\n      <input type="radio" name="%s" '
                                      'value="%s" %s/> %s / ') % 
-                                    ('Q'+str(counter),a,ch,a))
+                                    ('B'+self.name+'Q'+str(counter),a,ch,a))
                         if not(checked):
                             ch = 'checked="checked" '
                         else:
                             ch = ''
                         f.write(('\n      <input type="radio" name="%s" '
                                  'value="---" %s/> - ') % 
-                                ('Q'+str(counter),ch))
+                                ('B'+self.name+'Q'+str(counter),ch))
                     elif q.type == 'c':
                         checked = 0  # flag, whether something is checked
                         if sub:
@@ -311,19 +311,19 @@ otherwise.'''
                                 checked = 1
                             f.write(('\n      <input type="checkbox" '
                                      'name="%s" value="+" %s/> %s /') % 
-                                    ('Q'+str(counter)+'.'+a,ch,a))
+                                    ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
                         if (sub and '' in checkeditems) or not(sub):
                             ch = 'checked="checked" '
                         f.write(('\n      <input type="checkbox" name="%s" '
                                  'value="+" %s/> - ') % 
-                                ('Q'+str(counter),ch))
+                                ('B'+self.name+'Q'+str(counter),ch))
                     else:  # type is string:
                         if sub: ch = 'value = "'+sub[counter]+'" '
                         else: ch = 'value = "" '
                         f.write('<input size="12" maxlength="20" '
                                 'name="%s" %s/> ' %
-                                ('Q'+str(counter),ch))
+                                ('B'+self.name+'Q'+str(counter),ch))
                     if marks and closed:
                         f.write('<span class=')
                         if marks[counter] == '+':
@@ -374,7 +374,7 @@ the user.'''
                 for j,k in l:
                     q = o.list[j]    # the question object
                     if q.type == 'r':     # a radio button
-                        val = query.get('Q'+str(counter),[''])[0]
+                        val = query.get('B'+self.name+'Q'+str(counter),[''])[0]
                         if val == '---': val = ''  # we say nothing!
                         val = val[:20]   # limit size!
                         if val != '' and not(val in q.answers):
@@ -396,13 +396,14 @@ the user.'''
                             exscore -= 1
                     elif q.type == 'c':   # a choice question
                         # first get selected choice:
-                        val = query.get('Q'+str(counter),[''])[0].strip()
+                        val = query.get('B'+self.name+'Q'+str(counter),
+                                        [''])[0].strip()
                         if val == '+':    # nothing submitted
                             innerchoice = ['']
                         else:
                             innerchoice = []
                         for a in q.answers:
-                            val = query.get('Q'+str(counter)+'.'+a,
+                            val=query.get('B'+self.name+'Q'+str(counter)+'.'+a,
                                             [''])[0].strip()
                             if val == '+':
                                 innerchoice.append(a)
@@ -418,7 +419,8 @@ the user.'''
                             marks.append('-')
                             exscore -= 1
                     elif q.type == 's':   # a free form question
-                        val = query.get('Q'+str(counter),[''])[0].strip()
+                        val = query.get('B'+self.name+'Q'+str(counter),
+                                        [''])[0].strip()
                         if val == '---': val = ''  # we say nothing!
                         val = val[:20]   # limit size!
                         sub.append(val)
