@@ -5,7 +5,7 @@
        magic="2001"
        nr="0"
        first="1"
-       opento="14:00_19.10.2002">
+       opento="14:00_19.10.2003">
 
 <TEXT>Dieses Blatt ist bis auf Weiteres wieder für Demo-Zwecke
 geöffnet.</TEXT>
@@ -14,10 +14,11 @@ geöffnet.</TEXT>
 <EXERCISE key="B0_Brueche"/>
 <EXERCISE key="B0_Dreisatz"/>
 <EXERCISE key="B0_Teilbarkeit"/>
+<EXERCISE key="B0_Auswahl"/>
 <TEXT>Die folgende Aufgabe ist schriftlich zu bearbeiten.</TEXT>
 <INCLUDE file="B0_Affen.tex"/>
 <TEXT>
-Abgabe bis spätestens am Freitag, dem 19. Oktober 2001, um 14 Uhr.
+Abgabe bis spätestens am Freitag, dem 19. Oktober 2003, um 14 Uhr.
 (siehe oben!)
 Dieses Blatt brauchen Sie noch nicht abzugeben, es geht nicht in die
 Wertung ein!
