@@ -3,7 +3,7 @@
                                              to OKUSON 1.1-fix2:
 ===============================================================================
 
-$Id: UPGRADE,v 1.14 2004/10/07 12:27:34 luebeck Exp $
+$Id: UPGRADE,v 1.15 2004/10/07 12:49:39 luebeck Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -26,7 +26,7 @@ copy them from html.sample/ to html/ :
   html.sample/tutors.tpl           function to access group statistics
   html.sample/globalstatistics.tpl shows current group number
   html.sample/adminmenu.tpl        function to move participant to other group
-  html.sample/*.tpl                added small "(OKUSON 1.1-fix2)" at the end
+  html.sample/[*/]*.tpl            added small "(OKUSON 1.1-fix2)" at the end
 
 So, if you didn't apply any changes to the default .tpl files just copy
   cp -r html.sample html
@@ -38,7 +38,23 @@ you may want:
 If you applied any patches to the server programs, make sure to reapply them.
 
 Files changed in this bugfix:
+  html.sample/favicon.ico        (new)
+  CHANGES
+  TODO
+  UPGRADE
+  VERSION
+  doc/manual.pdf
+  doc/manual.tex
+  server/Config.py
+  server/Exercises.py
+  server/WebWorkers.py
+  server/fmTools/BuiltinWebServer.py
+  server/fmTools/SimpleRand.py
+  html.sample/tutors.tpl 
+  html.sample/globalstatistics.tpl
+  html.sample/adminmenu.tpl
 
+(and the foot of all html.sample/*.tpl, html.sample/*/*.tpl,  see above)  
 
 
 Have fun!
