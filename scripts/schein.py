@@ -12,7 +12,9 @@ if len(sys.argv) == 1:
 Usage: schein.py [-t DELIMITER] [-f FIELDS] [-l LECTURER]
                  [-c COURSE] [-s SEMESTER] [-d DATE] [-b BANNER]
 DELIMITER:  field delimiter for input lines
-FIELDS:     three field numbers in input lines for id, name, first name 
+FIELDS:     three field numbers in input lines for id, name, first name, resp.
+            separated by commas, field numbers are starting with 1, that is
+            the first field in the line has number 1.
 """
     sys.exit(0)
 
