@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.17 2003/10/07 15:55:44 luebeck Exp $
+##  $Id: CHANGES,v 1.18 2003/10/08 00:08:37 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -58,7 +58,11 @@ Attention: You should put the configuration option "DocumentRoot" from the
   entry GroupInfoFile in "Config.xml"!
 * added convenient deletion of private messages by administrator
 * new entry in OKUSON.css to remove border around validation icon
-
+* new optional configuration options "ScheinDecisionFunction" and
+  "ScheinDecisionActive", which allow automatic decision about who
+  gets the Schein.
+* display of Schein decision based on automatic decision via the
+  ScheinDecisionFunction in the result page.
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------
 * removed bug with redisplaying sheets including previous submissions.

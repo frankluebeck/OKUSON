@@ -38,6 +38,8 @@ Parameters = {
   "User8":                    ["STRING",0],
   "User9":                    ["STRING",0],
   "IdCheckRegExp":            ["STRING",1],
+  "ScheinDecisionFunction":   ["STRING",0],
+  "ScheinDecisionActive":     ["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -247,10 +249,25 @@ into a usable form. Some values are changed into other data types.'''
                                                   socket.inet_aton(s[pos+1:]))
         except:
             traceback.print_exc()
-            Utils.Error('Cannot parse IP range for AdministrationAccessList: '+s)
+            Utils.Error('Cannot parse IP range for AdministrationAccessList: '+
+                        s)
             FailMiserably()
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')
+    # Now parse the ScheinDecisionFunction if applicable:
+    if conf.has_key('ScheinDecisionFunction'):
+        d = {}
+        try:
+            exec conf['ScheinDecisionFunction'] in d
+            conf['ScheinDecisionFunction'] = d['ScheinDecision']
+        except:
+            etype, value, tb = sys.exc_info()
+            lines = traceback.format_exception(etype,value,tb)
+            Utils.Error('Cannot parse ScheinDecisionFunction.\n'+
+                        string.join(lines))
+            conf['ScheinDecisionFunction'] = None
+    if not(conf.has_key('ScheinDecisionActive')):
+        conf['ScheinDecisionActive'] = 0
 
 

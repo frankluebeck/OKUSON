@@ -43,6 +43,8 @@ ja von den korrigierten Zetteln.):</p>
 
     <p>Sie haben im Moment insgesamt <Totalscore /> Punkte.</p>
 
+    <ScheinDecision />
+
     <GeneralMessages />
 
     <PrivateMessages />
@@ -62,5 +64,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.4 2003/10/06 22:38:12 luebeck Exp $ -->
+     $Id: results.tpl,v 1.5 2003/10/08 00:08:37 neunhoef Exp $ -->
 

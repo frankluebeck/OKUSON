@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.19 2003/10/07 22:36:30 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.20 2003/10/08 00:08:37 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -478,12 +478,38 @@ one Person object as data.'''
         l = Exercises.SheetList()
         totalscore = 0
         for nr,name,s in l:
-            if time.time() > s.opento:   # sheet already closed 
+            if s.counts and s.IsClosed():   # sheet already closed 
                 if self.p.mcresults.has_key(name):
                     totalscore += self.p.mcresults[name].score
                 if self.p.homework.has_key(name):
                     totalscore += self.p.homework[name].totalscore
         out.write(str(totalscore))
+    def handle_ScheinDecision(self,node,out):
+        if Config.conf['ScheinDecisionActive'] == 0 or \
+           Config.conf['ScheinDecisionFunction'] == None: return
+        sl = Exercises.SheetList()
+        homescore = mcscore = 0
+        for nr,na,s in sl:
+            if s.counts and s.IsClosed():   # we count it
+                if self.p.mcresults.has_key(na):
+                    mcscore += self.p.mcresults[na].score
+                if self.p.homework.has_key(na):
+                    homescore += self.p.homework[na].totalscore
+        exams = []
+        for i in range(24):
+            if i >= len(self.p.exams) or self.p.exams[i] == None:
+                exams.append(0)
+            else:
+                exams.append(self.p.exams[i])
+        try:
+            (msg,mark) = Config.conf['ScheinDecisionFunction']  \
+                          (self.p,sl,mcscore,homescore,exams)
+            out.write('<p>\n'+msg+'</p>')
+        except:
+            etype, value, tb = sys.exc_info()
+            lines = traceback.format_exception(etype,value,tb)
+            Utils.Error('Call of ScheinDecisionFunction raised an exception, '
+                        'ID: '+self.p.id+', message:\n'+string.join(lines))
     def handle_GeneralMessages(self,node,out):
         out.write(Config.conf['GeneralMessages'])
     def handle_PrivateMessages(self,node,out):
@@ -648,14 +674,14 @@ a Person object and a Sheet object as data.'''
     def handle_SheetNr(self,node,out):
         out.write(str(self.s.nr))
     def handle_IfOpen(self,node,out):
-        if (time.time() <= self.s.opento and (self.s.openfrom == None or 
+        if (not(self.IsClosed()) and (self.s.openfrom == None or 
             time.time() >= self.s.openfrom)) or self.iamadmin:  # Sheet is open
             # Write out tree recursively:
             if node[2] != None:
                 for n in node[2]:
                     XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_IfClosed(self,node,out):
-        if time.time() > self.s.opento and not(self.iamadmin):    
+        if self.IsClosed() and not(self.iamadmin):    
             # Sheet already closed
             # Write out tree recursively:
             if node[2] != None:
@@ -814,7 +840,7 @@ submission as well as the results.'''
         return Delegate('/errors/unknownsheet.html',req,onlyhead)
 
     # Now check, whether it is still possible to submit this sheet:
-    if time.time() > s.opento and not(iamadmin):
+    if s.IsClosed() and not(iamadmin):
         return Delegate('/errors/sheetclosed.html',req,onlyhead)
 
     ok = s.AcceptSubmission(p,SeedFromId(p.id),req.query)

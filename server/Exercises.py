@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.7 2003/10/06 13:13:05 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.8 2003/10/08 00:08:37 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -108,6 +108,13 @@ class Sheet(Utils.WithNiceRepr):
         self.order = []
         self.nrquestions = []
     
+    def IsClosed(self):
+        '''This function returns 1 if the sheet is already closed now. This
+           is done by comparing the current time with the time in the opento
+           component.'''
+        if time.time() > self.opento: return 1
+        else:                         return 0
+
     def ChooserFunction(self,seed):
         '''Uses a pseudo random generator to choose which questions in which
 order in which variation is taken. seed will usually be a Matrikel number
@@ -179,8 +186,7 @@ otherwise.'''
         choice = self.ChooserFunction(seed)
 
         # are we before or after the closing date?
-        if time.time() > self.opento: closed = 1
-        else: closed = 0
+        closed = self.IsClosed()
 
         if mcresult != None:
             sub = AsciiData.TupleLine(mcresult.submission,delimiter='|')

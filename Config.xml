@@ -118,6 +118,45 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 <IdCheckRegExp>^[a-zA-Z0-9_]*$</IdCheckRegExp>
 -->
 
+<!-- The following is a Python function that can decide automatically,
+     whether a certain participant has acquired the "Schein", a certificate
+     of participation in the course. This function is considered in two
+     cases: (1) During the display of results for a participant and
+     (2) During export of results. See also the next option about how
+     to activate/deactivate this feature. 
+     The function gets two arguments p and sl, where p is a Person object
+     as described in the Data module and sl is a list for the available
+     sheets. Every entry corresponds to a sheet and is a triple: first
+     the sheet number, then the name, then the sheet object itself as
+     described in the Exercises module. -->
+<ScheinDecisionFunction>
+def ScheinDecision(p,sl,mcscore,homescore,exams):
+    '''This function decides, whether person p gets the Schein. sl is
+       a list of sheets as returned by the function SheetList in the
+       Exercises module. mcscore is the total sum of points in all
+       closed sheets with counts value equal to 1. homescore is the total
+       sum of points in the homework and exams is a list of length at 
+       least 24 with one score corresponding to each of 24 exams (indexed
+       from 0 to 23). If the participant did not take part in an exam,
+       there is a zero in the corresponding position.'''
+    if (mcscore+homescore >= 240 and 
+        (exams[0]+exams[1] >= 50 or
+         exams[2] >= 50 or
+         exams[0]+exams[2] >= 50 or
+         exams[1]+exams[2] >= 50)):
+        return ('Sie bekommen den Schein.',1)
+    else:
+        return ('Sie bekommen leider keinen Schein.',0)
+</ScheinDecisionFunction>
+
+<!-- The following entry decides, whether the automatic decision about
+     the Schein is active or not. Only if the numerical value of the
+     following entry is non-zero the Schein decision is performed via
+     the function in ScheinDecisionFunction. -->
+<ScheinDecisionActive>
+1
+</ScheinDecisionActive>
+
 
 <!-- ==================================================================== 
                           Installation section
