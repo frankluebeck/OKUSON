@@ -1,5 +1,7 @@
 \documentclass[12pt,openany,a4paper]{book}
 
+% $Id: manual.tex,v 1.18 2003/10/08 15:29:45 luebeck Exp $
+
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
 \usepackage[latin1]{inputenc}
@@ -56,6 +58,11 @@ experiences can be found in the article:
 \href{http://www.math.rwth-aachen.de:8001/~Frank.Luebeck/preprints/AufgServCARweb.pdf}{Übungsbetrieb über Webservice}, \href{http://www.fachgruppe-computeralgebra.de/CAR}{Computer Algebra Rundbrief} \textbf{31}, Oktober 2002
 \end{minipage}
 \end{center}
+
+Our technical goal was to provide a system which is based on reliable and
+easy to install software on the server side and which only assumes any
+computer with internet access, any web browser and any program for printing 
+PDF-files on the side of the participating students.
 
 \section{Contents of the {\OKUSON} Package}
 
@@ -116,9 +123,15 @@ we could get a copy.
 
 \section{Quick Installation Overview}
 
-The following describes the installation of {\OKUSON} extremely briefly.
+The following describes briefly how to get the {\OKUSON} package started on
+your system.
 Probably you want to use this section only to get an overview or as
-a reminder for later installations when you already know the process:
+a reminder for later installations when you already know the process.
+
+All steps are explained in more detail in the next few sections. If you are
+going to use {\OKUSON}  for a course, you may also want to consider the tips
+and tricks in~\ref{sec:insttips}.
+
 \begin{enumerate}
 \setlength{\parskip}{0mm}
 \item Make sure you have Python version 2.2 or later installed.
@@ -139,8 +152,10 @@ a reminder for later installations when you already know the process:
 
 \hspace*{5mm}\texttt{cp Config.xml.sample Config.xml}
 
-and edit it to adjust \texttt{AdministratorPassword}
-and \texttt{Port} (use \texttt{cryptpasswd} to encrypt your password)
+and edit it to adjust at least the \texttt{AdministratorPassword}
+(use \texttt{cryptpasswd} to encrypt your password) and maybe some 
+other obvious entries in the course section of this configuration file.
+
 \item Copy the sample web pages to the document root: 
 
 \hspace*{5mm}\verb!cp -r html.sample/* html!
@@ -154,6 +169,16 @@ and \texttt{Port} (use \texttt{cryptpasswd} to encrypt your password)
 
 \hspace*{5mm}\href{http://localhost:8000/index.html}%
 {\texttt{http://localhost:8000/index.html}}
+
+(substitute the \texttt{8000} if you have choosen another number in the
+\texttt{Port} entry of the \texttt{Config.xml} file).
+\item If things look alright, start customizing for your application:
+have another look in the course section of the \texttt{Config.xml} file,
+adjust details of the web pages (see~\ref{ch:webpages}), add information 
+on tutoring groups (if applicable, see~\ref{sec:groups}), prepare the first
+exercise sheets (see~\ref{ch:createExercisesSheets}). A more detailed
+account of tasks occurring during a semester is given in 
+chapter~\ref{ch:semsched}.
 \end{enumerate}
 
 
@@ -174,8 +199,9 @@ detail how things work or if you want to add some functionality to the
 package, you need knowledge about the language Python.
 
 \subsubsection*{Technical}
-To run the {\OKUSON} server you need a UNIX system with the following things
-installed:
+To run the {\OKUSON} server you need a UNIX system that is accessible from
+the internet (so, you may need help from an administrator if you are behind
+a firewall). The following software must be installed:
 
 \begin{itemize}
 \item \textbf{Python} version 2.2 or later (as of this writing, 2.3 is
@@ -194,7 +220,9 @@ Python extension module, which is implemented in C. We include this
 module in the {\OKUSON} distribution. However, it has to be built with your
 version of Python being available. You also need the C-compiler to compile
 the Python interpreter and libraries yourself if you do not rely on
-packages from a distribution.
+packages from a distribution. Note that your python installation must be
+fairly complete, in some Linux distributions you must install a package with
+a name like python-dev or similar.
 \item \textbf{\LaTeX}. The texts for questions are processed by {\TeX}, 
 therefore one does need a full featured installation of {\TeX/\LaTeX} 
 with PDF support. For example the teTeX-Distribution provides everything
@@ -204,7 +232,7 @@ on the Web pages delivered by {\OKUSON}.
 \item \textbf{netpbm}. A package for image conversions and manipulations,
 the program \texttt{pnmtopng} leads to particularly small files for the
 exercise text images. All Linux distributions probably have a
-\texttt{netpbm} package, for other system see
+\texttt{netpbm} package, for other systems see
 \href{http://netpbm.sourceforge.net}{http://netpbm.sourceforge.net}.
 \item A \textbf{text editor}. Input for exercises, sheets and web pages
 is generated with an ASCII text editor, which is also used to edit
@@ -392,7 +420,7 @@ If you want to stop the server, you can issue the command
 \hspace*{1cm}\texttt{stop}
 
 in the {\OKUSON} home directory.
-The servers finishes the ongoing requests and then terminates showing a few 
+The server finishes the ongoing requests and then terminates showing a few 
 log messages.
 
 There is also a script 
@@ -401,7 +429,40 @@ There is also a script
 
 that stops the server and restarts it. 
 
+\section{Further Tips and Tricks}\label{sec:insttips}
 
+In this section we mention some details of our own use of this package.
+Maybe you find some of these remarks useful.
+
+\subsubsection*{Using a Pseudo User}
+
+We always create a pseudo user as administrator of the package. This makes
+it easy to share the administration between several people without fiddling
+around with strange file access settings in private directories.
+
+We close completely (\texttt{chmod 700 ~}) the access to the pseudo users
+home directory. Note that during the semester the {\OKUSON} server collects
+and stores personal data of the participating students. So, you must be
+careful with the access to these data.
+
+\subsubsection*{Securing the Administrator Access}
+
+We always choose a very restricted setting for the machines from which 
+administrator access to an {\OKUSON} server is allowed, see the entry
+\texttt{AdministrationAccessList} in the configuration file
+\texttt{Config.xml}   ??????? hier weiter machen  ?????????
+
+Note that the administrator of an {\OKUSON} server is quite powerful:
+in all web forms of the system where a password (of a participant, a tutor or
+the administrator) is required, the
+administrator password is considered valid \emph{provided} the request is
+coming from a machine configured in 
+
+\subsubsection*{Alias for Server Machine}
+
+We create an alias for the machine running the {\OKUSON} server. 
+This allows a quick move of the whole service to another machine, in case
+the server crashes for some reason.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1041,7 +1102,7 @@ straight forward to produce versions in other languages.
 If you want German pages as well for your course,  just copy all the
 sample pages to the web directory given in your configuration file. 
 Probably  only minor adjustments will be needed for your course, see the
-next Section for more details.
+next section for more details.
 
 All sample pages are provided as template files with extension
 \texttt{.tpl}. These are well formed XML documents and almost
@@ -1070,7 +1131,7 @@ an element from its name and location. So, we are not going to describe
 everything in too much detail here, but try to give hints how to achieve likely
 adjustments of the pages.
 
-\subsection{What you can change without problem}
+\subsection{What You Can Change Without Problems}
 
 \begin{itemize}
 \item The style sheet files with \texttt{.css} extension to change colors,
@@ -1082,7 +1143,7 @@ the server: registration, change of registration data, getting the exercise
 sheets and result information.
 \end{itemize}
 
-\subsection{What you should not change}
+\subsection{What You Should Not Change}
 
 \begin{itemize}
 \item The component names in the HTML forms, these names explain the meaning
@@ -1135,9 +1196,9 @@ See~\ref{sec:groups} for more details.
 \begin{description}
 \item[\texttt{<GroupSize number="??"/>}] number of participants in group
 with given number.
-\item[\texttt{<GroupDistribution/>}] list of HTML table rows (ID, number of
+\item[\texttt{<GroupDistribution/>}] sequence of HTML table rows (ID, number of
 group), sorted numerically of alphabetically by IDs.
-\item[\texttt{<GroupsOverview components="\ldots"/>}] list of HTML table rows, 
+\item[\texttt{<GroupsOverview components="\ldots"/>}] sequence of HTML table rows, 
 one for each group. See the comment in the sample file
 \texttt{groupoverview.tpl} and~\ref{sec:groups} 
 for possible \texttt{components}.
@@ -1146,8 +1207,6 @@ participants in group with given number.
 \item[\texttt{<AvailableSheetsAsButtons/>}] row of buttons for all available
 sheets,  for use on query page for sheets.
 \end{description}
-
-
 
 \subsection{Special Elements in Pages Containing Personal Data}
 
@@ -1194,9 +1253,9 @@ which are specified in the configuration file, see the element
 \texttt{PossibleStudies} in the config file and the sample registration 
 web pages.
 
-\subsection{Special Elements for Sheet Specific Data}
+\subsection{Special Elements for Sheet Specific Data}\label{ssec:sheetelements}
 
-There are some elements used with the sheets in HTML format.
+There are some special elements used with the sheets in HTML format.
 
 \begin{description}
 \item[\texttt{<SheetNumber/>}] number of sheet.
@@ -1214,18 +1273,27 @@ of sheet in readable format (same format as explained for
 \texttt{<CurrentTime/>}). 
 \end{description}
 
+\subsection{Special Elements for Tutoring Group Specific
+Pages}\label{ssec:groupelements}
 
+All information about tutoring groups is also exported for use on web pages
+related to one such group. In~\ref{ssec:groupdata} it is explained how
+this information can be given to the {\OKUSON} server.
 
--getting sheets
-
--submitting solutions
-
--querying results
-
-
+\begin{description}
+\item[\texttt{<GroupNumber/>}] the number of the group.
+\item[\texttt{<GroupTutor/>}] the name  of the tutor.
+\item[\texttt{<GroupPlace/>}] place where the group meets.
+\item[\texttt{<GroupTime/>}] time when  the group meets.
+\item[\texttt{<GroupEmailTutor/>}] the email address of the tutor.
+\item[\texttt{<GroupIDs/>}] a comma separated sorted list (numerically or
+alphabetically) of the IDs of the participants.
+\item[\texttt{<GroupInfo1/>} to \texttt{<GroupInfo9/>}] further unspecified 
+data for customization.
+\end{description}
 
 \chapter{Security and Backup}\label{ch:security}
-\chapter{Schedule of Events for one Course}
+\chapter{Schedule of Events for one Course}\label{ch:semsched}
 \chapter{Administration via the Web Interface}
 
 \label{adminpages}

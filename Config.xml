@@ -37,8 +37,16 @@
 
 <!-- The following is the encrypted administrator password. Please use the
      "cryptpasswd" utility in the OKUSON home directory to encrypt some 
-     password. This password is used to do administrative jobs in OKUSON
-     via the web interface. The default setting is secret, please change! -->
+     password. 
+     
+     This password gives very powerful access to the OKUSON server, so
+     choose it carefully: 
+     It can be used as super-password in all web forms which ask for a 
+     password (of any course participant, tutor or the administrator) 
+     and is considered valid if the request is coming from a machine 
+     as configured in AdministrationAccessList below.
+     
+     The default setting is secret, so you must change it! -->
 <AdministratorPassword>
 GrurqtDBINB7o
 </AdministratorPassword>
@@ -166,15 +174,16 @@ def Grade(p,sl,mcscore,homescore,exams):
 </AccessList>
 
 <!-- The following is a list of IP ranges of hosts that may connect to the
-     server for the administration pages. The default is to deny all hosts 
-     access accept the localhost. The notation of an IP range is a pair
-     of strings separated by '/'. The first entry is an IPv4 address
+     server for administration. The first line below means to deny access 
+     from all hosts except the localhost.  The notation of an IP range is 
+     a pair of strings separated by '/'. The first entry is an IPv4 address
      of a subnet in dotted quad string notation and the second the
      corresponding netmask in the same notation. Note that this setting
      even denies access to the localhost if one uses the hostname instead
      of "localhost" in the URL! -->
 <AdministrationAccessList>
 <Range>127.0.0.0/255.0.0.0</Range>
+<!-- you probably want to remove or adjust this line! -->
 <Range>137.226.152.0/255.255.255.128</Range>
 </AdministrationAccessList>
 
