@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.42 2003/10/13 15:42:28 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.43 2003/10/13 18:41:58 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -811,7 +811,7 @@ def QuerySheet(req,onlyhead):
                     resolution = Config.conf['Resolutions'][0]
                 else:
                     addheader = [('Set-Cookie',
-                       'OKUSONResolution='+str(resolution)+'Path:/')]
+                       'OKUSONResolution='+str(resolution)+';Path:/')]
             except: 
                 resolution = Config.conf['Resolutions'][0]
                
