@@ -17,7 +17,7 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
-    <h3><OKUSONServerStatus /></h3>
+    <h3><ServerStatus /></h3>
 
     <p>Bitte geben Sie das Administratorpasswort ein, um sich einzuloggen.
     Beachten Sie, dass der Einloggvorgang darin besteht, dass in Ihrem
@@ -46,5 +46,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminlogin.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
+     $Id: adminlogin.tpl,v 1.3 2003/10/06 21:36:03 neunhoef Exp $ -->
 

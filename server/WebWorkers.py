@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.15 2003/10/06 16:34:23 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.16 2003/10/06 21:36:03 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -40,6 +40,9 @@ ValidatorIconText = '''<a href="http://validator.w3.org/check/referer">
 
 Site = BuiltinWebServer.Site
 
+# The following is a random integer, once the administrator is logged in:
+currentcookie = None
+
 # Helper for installing dynamic pages:
 # There are two different sorts of pages:
 # 1) Pages without input which are generated from templates by filling
@@ -48,7 +51,6 @@ Site = BuiltinWebServer.Site
 #    and sends out a page of the first kind.
 PPXML = XMLRewrite.PreparsedXMLWebResponse
 FunWR = BuiltinWebServer.FunctionWebResponse
-
 
 #############################################################################
 #
@@ -142,20 +144,23 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         else:
             Utils.Error('<MembersOfGroup /> tag requested empty group "'+
                         str(nr)+'".',prefix='Warning:')
-    def handle_OKUSONLoginStatus(self,node,out):
+    def handle_LoginStatus(self,node,out):
         if currentcookie != None:
             out.write('There is somebody logged in. '
                       '<a href="/AdminLogout">Logout</a>\n')
         else:
-            out.write('Nobody logged in. Administratorpassword:\n'
-                      '<input type="password" size="16" maxlength="16" '
-                      'name="passwd" value="" /> or \n'
+            out.write('Nobody logged in. Please enter administrator password '
+                      'next to the button you use or '
                       '<a href="/adminlogin.html">login here.</a>\n')
-    def handle_OKUSONServerStatus(self,node,out):
+    def handle_ServerStatus(self,node,out):
         if currentcookie != None:
             out.write('There is somebody logged in. ')
         else:
             out.write('Nobody logged in. ')
+    def handle_AdminPasswdField(self,node,out):
+        if currentcookie == None:
+            out.write('<input type="password" size="16" maxlength="16" '
+                      'name="passwd" value="" />\n')
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
        for nr,name,s in l:
@@ -857,8 +862,6 @@ Site['/GroupInfo'] = FunWR(GroupInfo)
 #######################################################################
 # The following is for the administrator's pages:
 
-currentcookie = None
-
 def AuthenticateAdmin(req,onlyhead):
     '''Check password for admin. Return -1 for failure and 0 otherwise.'''
     global currentcookie
@@ -906,6 +909,24 @@ def AdminLogout(req,onlyhead):
     currentcookie = None
     return Delegate('/adminlogin.html',req,onlyhead)
 
+def Restart(req,onlyhead):
+    '''If administrator can authorize, the server is restarted.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    BuiltinWebServer.SERVER.raus = 1
+    BuiltinWebServer.SERVER.restartcommand = \
+          os.path.join(Config.home,'server/Server.py')
+    os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
+    return Delegate('/adminrestarted.html',req,onlyhead)
+    
+def Shutdown(req,onlyhead):
+    '''If administrator can authorize, the server is shut down.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    BuiltinWebServer.SERVER.raus = 1
+    os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
+    return Delegate('/admindown.html',req,onlyhead)
+    
 def NormalizeWishes(w):
     '''Normalizes a wishlist. First the string is split at space and commas,
        then only those chunks are taken, that are a valid ID of some
@@ -923,18 +944,64 @@ def Protect(st):
        export files.'''
     return st.replace(':','').replace('\n',' ')
 
+# Some sort functions:
+
+def CmpByName(a,b):
+    v = cmp(Data.people[a].lname,Data.people[b].lname)
+    if v: return v
+    return cmp(Data.people[a].fname,Data.people[b].fname)
+
+def CmpByStudiengang(a,b):
+    v = cmp(Data.people[a].stud,Data.people[b].stud)
+    if v: return v
+    return cmp(a,b)
+
+def CmpBySemester(a,b):
+    v = cmp(Data.people[a].sem,Data.people[b].sem)
+    if v: return v
+    return cmp(a,b)
+
+def CmpByLengthOfWishlist(a,b):
+    v = cmp(len(Data.people[a].wishes),len(Data.people[b].wishes))
+    if v: return v
+    return cmp(a,b)
+
+def CmpByGroupAndName(a,b):
+    v = cmp(Data.people[a].group,Data.people[b].group)
+    if v: return v
+    return CmpByName(a,b)
+
+def CmpByGroupAndID(a,b):
+    v = cmp(Data.people[a].group,Data.people[b].group)
+    if v: return v
+    return cmp(a,b)
+
+sorttable = {'ID': cmp, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
+             'semester': CmpBySemester, 
+             'length of wishlist': CmpByLengthOfWishlist,
+             'group and ID': CmpByGroupAndID, 
+             'group and name': CmpByGroupAndName}
+
 def ExportPeopleForExerciseClasses(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
          id:lname:fname:sem:stud:wishes 
        where wishes has been normalized into a comma separated list
        of existing id's. Colons have been deleted.'''
-    meth = req.query.get('exportexclass','all together')[0]
+    global sorttable
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    meth = req.query.get('together',['all together'])[0]
     l = Data.people.keys()
-    l.sort()
+    sortedby = req.query.get('sortedby',[''])[0]
     out = cStringIO.StringIO()
     out.write('# ID:last name:first name:semester:studiengang:wishes\n')
     def writegroup(l,out):
+        global sorttable
+        if sorttable.has_key(sortedby):
+            l.sort(sorttable[sortedby])
+        else:
+            l.sort()
         for k in l:
             p = Data.people[k]
             w = NormalizeWishes(p.wishes)
@@ -970,8 +1037,15 @@ def ExportPeople(req,onlyhead):
     '''Export the list of all participants, sorted by ID with all their
        personal data plus their group number (may be 0). 
        Colons have been deleted and newlines replaced by spaces.'''
+    global sorttable
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
     l = Data.people.keys()
-    l.sort()
+    sortedby = req.query.get('sortedby',[''])[0]
+    if sorttable.has_key(sortedby):
+        l.sort(sorttable[sortedby])
+    else:
+        l.sort()
     out = cStringIO.StringIO()
     out.write('# All Participants:\n')
     out.write('# ID:name:fname:semester:stud:passwd:email:wishes:' 
@@ -994,11 +1068,19 @@ def ExportPeople(req,onlyhead):
             'Last-modified':req.date_time_string(time.time())}
     return (head,st)
 
+def DisplaySheets(req,onlyhead):
+    '''Allow the administrator after authentication to see future sheets.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    return Adminexquery.getresult(req, onlyhead)
+    
 def SendMessage(req,onlyhead):
     '''Take the message from the entry field and send it to participant with
        the given id. This means that this message will appear on the result
        page of the participant.'''
-    msgid = req.query.get('msgid','')[0]
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    msgid = req.query.get('msgid',[''])[0]
     if not(Config.conf['IdCheckRegExp'].match(msgid)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -1007,7 +1089,7 @@ def SendMessage(req,onlyhead):
         return Delegate('/errors/idunknown.html',req,onlyhead)
         
     # Now get the text:
-    msgtext = req.query.get('msgtext','')[0]
+    msgtext = req.query.get('msgtext',[''])[0]
 
     line = AsciiData.LineTuple( (msgid,msgtext) )
     Data.Lock.acquire()
@@ -1028,29 +1110,10 @@ def SendMessage(req,onlyhead):
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
-    action = req.query.get('Action','')[0].strip()
+    action = req.query.get('Action',[''])[0].strip()
     if action == 'PID':
         return ({'Content-type': 'text/plain'}, str(BuiltinWebServer.PID))
-    if AuthenticateAdmin(req,onlyhead) < 0:
-        return Delegate('/errors/notloggedin.html',req,onlyhead)
-    if action == 'Restart':
-        BuiltinWebServer.SERVER.raus = 1
-        BuiltinWebServer.SERVER.restartcommand = \
-              os.path.join(Config.home,'server/Server.py')
-        os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
-        return Delegate('/adminrestarted.html',req,onlyhead)
-    if action == 'Shutdown':
-        BuiltinWebServer.SERVER.raus = 1
-        os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
-        return Delegate('/admindown.html',req,onlyhead)
-    if action == 'Export people for exercise classes':
-        return ExportPeopleForExerciseClasses(req,onlyhead)
-    if action == 'Export people':
-        return ExportPeople(req,onlyhead)
-    if action == 'Display Sheets':
-        return Adminexquery.getresult(req, onlyhead)
-    if action == 'Send message':
-        return SendMessage(req,onlyhead)
+    return Delegate('/errors/nothingtosee.html',req,onlyhead)
 
 BuiltinWebServer.SiteLock.acquire()
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
@@ -1065,6 +1128,19 @@ Site['/AdminLogout'] = FunWR(AdminLogout)
 Site['/AdminLogout'].access_list = Config.conf['AdministrationAccessList']
 Site['/AdminWork'] = FunWR(AdminWork)
 Site['/AdminWork'].access_list = Config.conf['AdministrationAccessList']
+Site['/Restart'] = FunWR(Restart)
+Site['/Restart'].access_list = Config.conf['AdministrationAccessList']
+Site['/Shutdown'] = FunWR(Shutdown)
+Site['/Shutdown'].access_list = Config.conf['AdministrationAccessList']
+Site['/ExportPeopleForExerciseClasses'] = FunWR(ExportPeopleForExerciseClasses)
+Site['/ExportPeopleForExerciseClasses'].access_list = \
+        Config.conf['AdministrationAccessList']
+Site['/ExportPeople'] = FunWR(ExportPeople)
+Site['/ExportPeople'].access_list = Config.conf['AdministrationAccessList']
+Site['/DisplaySheets'] = FunWR(DisplaySheets)
+Site['/DisplaySheets'].access_list = Config.conf['AdministrationAccessList']
+Site['/SendMessage'] = FunWR(SendMessage)
+Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
 
 
 # We register all the other .tpl files in our tree with EH_Generic handlers:

@@ -3,14 +3,16 @@ Mechanismus für Bilder in TeX
 
 UTILITIES zur Administration:
   Datenexport: Gruppen, Ergebnisse, Scheindaten, Scheine
+  Klausuranmeldungen
+  Datenstruktur bei Homework aendern.
+  Hiwi-Modus bzw. Hiwi-Seiten
   automatische Scheinermittlung
   Scheinanfertigung
   Aufkleber drucken (nur Export?)
+  Resubmit
+
   Statistik ueber Uebungsblaetter
   Statistik ueber Resultate
-  Klausuranmeldungen
-  Hiwi-Modus bzw. Hiwi-Seiten
-  Resubmit
 
   ??? Validierungsskript für XML und XHTML Dateien. On the fly Validierung
       von XHTML.

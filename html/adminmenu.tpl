@@ -17,40 +17,64 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
-    <form action="/AdminWork" method="post">
-      <p><OKUSONLoginStatus /></p>
+    <p><LoginStatus /></p>
 
-      <table>
-       <tr><th align="left">Control of Server:</th><th></th></tr>
-       <tr><td>Restart server:</td>
-           <td><input type="submit" name="Action" value="Restart" /></td></tr>
-       <tr><td>Shutdown server:</td>
-           <td><input type="submit" name="Action" value="Shutdown" /></td></tr>
-       <tr><th align="left">Export of Data:</th><th></th></tr>
-       <tr><td>Export people for exercise classes distribution:
-                 <select name="exportexclass">
-                   <option selected="selected">all together</option>
-                   <option>by Studiengang</option>
-                 </select></td>
-           <td><input type="submit" name="Action" 
-                      value="Export people for exercise classes" /></td></tr>
-       <tr><td>Export people:</td>
-           <td><input type="submit" name="Action" value="Export people" /></td>
-           </tr>
-       <tr><th align="left">
-           Special Access for Administrators:</th><th></th></tr>
-       <tr><td>Display available and future sheets:</td>
-           <td><input type="submit" name="Action" value="Display Sheets" /></td>
-           </tr>
-       <tr><td>Send message to
-               <input size="8" maxlength="6" name="msgid" value="" /></td>
-           <td><input type="submit" name="Action" value="Send message" /></td>
-           </tr>
-       <tr><td colspan="2">
-           <input size="80" maxlength="240" name="msgtext" value="" /></td>
-           </tr>
-      </table>
-    </form>
+    <h3>Control of Server:</h3>
+
+    <form action="/Restart" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Restart server </p></form>
+
+    <form action="/Shutdown" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Shutdown server </p></form>
+
+    <h3>Export of Data:</h3>
+
+    <form action="/ExportPeopleForExerciseClasses" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Export people for exercise class distribution
+      <select name="together">
+        <option selected="selected">all together</option>
+        <option>by Studiengang</option>
+      </select> sorted by
+      <select name="sortedby">
+        <option selected="selected">ID</option>
+        <option>name</option>
+        <option>Studiengang</option>
+        <option>semester</option>
+        <option>length of wishlist</option>
+        <option>group and ID</option>
+        <option>group and name</option>
+      </select>
+    </p></form>
+
+    <form action="/ExportPeople" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Export people, sorted by 
+      <select name="sortedby">
+        <option selected="selected">ID</option>
+        <option>name</option>
+        <option>Studiengang</option>
+        <option>semester</option>
+        <option>length of wishlist</option>
+        <option>group and ID</option>
+        <option>group and name</option>
+      </select>
+    </p></form>
+         
+    <h3>Special Access for Administrators:</h3>
+
+    <form action="/DisplaySheets" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Display available and future sheets</p></form>
+         
+    <form action="/SendMessage" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Send message 
+    <input size="60" maxlength="240" name="msgtext" value="" />
+    to <input size="8" maxlength="6" name="msgid" value="" />
+    </p></form>
      
     <hr />
 
@@ -67,5 +91,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.6 2003/10/05 22:48:32 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.7 2003/10/06 21:36:03 neunhoef Exp $ -->
 
