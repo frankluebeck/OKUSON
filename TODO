@@ -1,9 +1,15 @@
+Luecken im Manual:
+  ExamResults tag (2 Varianten)
+  welche Seiten erlauben welche Tags? --> nicht-generische aufzaehlen?
+  insbes. Tags in result page scheinen zu fehlen
+  
+
+
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
   opera adminlogin --> geht nicht mit "Location" header!
   netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
-  Lynx: adminlogin geht nicht, da Cookie unter Pfad /AdminLogin
 
 begleitmail
 
@@ -16,42 +22,19 @@ Für Release:
   Statistik ueber Uebungsblaetter    --> Hilfsskript?
   Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
   Tests siehe unten
-  Dokumentation von automatischem Grading
-  Dokumentation von automatischem ExamGrading
   
 
 Handbuch:
  
   > means "done"
 
-  Datenformate (auch intern)
-  >Standardablaeufe
-  >Zeitplan
-  >Bedienung
   >Die einzelnen Webseiten
-  >Templates: Moegliche Ersetzungen
   Die Konfiguration
-  >Schnittstellen
   Aufbau des Programms
   verwendete Standards
-  Anhaenge-Prinzip
-  Locking-Prinzip
-  Erwähnen, dass keine Datenbanken benötigt werden (im file format Kapitel)?
+  >Locking-Prinzip
   Acknowledgements?
-  automatische Scheinermittlung
   "Remove" von Leuten (nach Fehlanmeldungen)???
-
-noch dokumentieren:
-  >export of results
-  >concept of guest IDs, configuration option GuestIdRegExp
-  >tutor pages
-  >concept of superuser password, only from admin enabled client machines
-  registration for exams
-  >export of registrations for exams
-  automatic Grading
-  >handling of messages, including revocation
-  >handling of groups
-  >resubmit
 
 Testen:
 
@@ -65,5 +48,4 @@ Ideen:
 
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
-  Funktion zur Berechnung einer Note fuer eine Klausur
 

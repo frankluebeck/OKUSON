@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.38 2003/10/19 20:17:37 neunhoef Exp $
+% $Id: manual.tex,v 1.39 2003/10/20 00:13:40 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2339,6 +2339,16 @@ However, we see certain applications (mainly data import) to access
 the files described in this chapter, therefore it is worthwhile to
 document the format.
 
+Note that the fundamental idea of data management in the {\OKUSON} system
+is, that data is read in at server startup from the files in the
+\texttt{data} directory. The data is then stored in internal data
+structures. As mentioned above, when more than one line in a file
+corresponds to the same ID, the last one counts. During the runtime of the
+server the data is kept in memory and on disc. Every single change is first
+appended to the data files on disc and then entered into the data
+structures in memory, such that consistency even after a server breakdown 
+is guaranteed.
+
 \section{\texttt{data/people.txt}}
 \label{sec:people.txt}
 
@@ -2362,26 +2372,318 @@ lname & Last name   & string \\
 \hline
 fname & First name  & string \\
 \hline
+semester & Number of semester & non-negative integer \\
+\hline
+studies & Studiengang & string \\
+\hline
+passwd & encrypted password & string as from crypt \\
+\hline
+email & email address & string \\
+\hline
+wishlist & ids of other people & string \\
+\hline
+pdata1 & personal data number 1 & string \\
+\hline
+\vdots & \vdots & \vdots \\
+\hline
+pdata9 & personal data number 9 & string \\
+\hline
 \end{tabular}
 \end{center}
 
 \section{\texttt{data/groups.txt}}
 \label{sec:groups.txt}
-to be written
-\section{\texttt{data/generalmessage.txt}}
-\label{sec:generalmessage.txt}
-to be written
-\section{\texttt{data/messages.txt}}
-\label{sec:messages.txt}
-to be written
+
+The general comments about file formats at the beginning of this chapter
+apply also to \texttt{data/groups.txt}. The delimiter character for this
+file is a colon ``:''. 
+
+Each line of the file corresponds to the group membership data of one
+participant and contains the following data fields (in the third column
+some comments about the data type are displayed):
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Name of field & Description & Data type \\
+\hline
+\hline
+id & Identification & string \\
+\hline
+nr & Number of group the person is in & non-negative integer \\
+\hline
+\end{tabular}
+\end{center}
+
+
 \section{\texttt{data/groupinfo.txt}}
 \label{sec:groupinfo.txt}
-to be written
+
+Note that usually you will have to edit this file by hand at the beginning
+of your course to set up the information about your tutoring groups. 
+Therefore it is particularly important to document the format of this file.
+
+The general comments about file formats at the beginning of this chapter
+apply also to \texttt{data/groupinfo.txt}. The delimiter character for this
+file is a colon ``:''. Remember to quote possible colons ``:'' by
+``\verb!\d!'' for example in time values like ``17:30''!
+
+Each line of the file corresponds to the group data of one
+tutoring group and contains the following data fields (in the third column
+some comments about the data type are displayed):
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Name of field & Description & Data type \\
+\hline
+\hline
+nr & Number of group & non-negative integer \\
+\hline
+passwd & Password for this group & string \\
+\hline
+tutor & Name of tutor & string \\
+\hline
+place & Place of group session & string \\
+\hline
+time & Time of group session (remember ``\verb!\d!'' for ``\verb!:!''!) 
+     & string \\
+\hline
+email & Email address of tutor & string \\
+\hline
+groupinfo1 & Additional group info number 1 & string \\
+\hline
+\vdots & \vdots & \vdots \\
+\hline
+groupinfo9 & Additional group info number 9 & string \\
+\hline
+\end{tabular}
+\end{center}
+
+Note that in the case of this file the group number is the identifying
+field such that if more than one line with the same group number appears,
+only the latest counts.
+
 \section{\texttt{data/exams.txt}}
 \label{sec:exams.txt}
-to be written
+
+Note that after an exercise you will have to supply the content of this
+file from outside the {\OKUSON} system. Usually you will have to type in
+the data from the external grading procedure of the exam. Therefore it
+is particularly important to document the format of this file.
+
+The general comments about file formats at the beginning of this chapter
+apply also to \texttt{data/exams.txt}. The delimiter character for this
+file is a colon ``:''. 
+
+Each line of the file corresponds to the exam information of one
+participant for one exam and contains the following data fields (in the
+third column some comments about the data type are displayed):
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Name of field & Description & Data type \\
+\hline
+\hline
+id & Identification & string \\
+\hline
+examnr & Number of exam (zero based) & non-negative integer \\
+\hline
+totalscore & Total score of participant & non-negative integer \\
+\hline
+maxscore & Maximal score in this exam & non-negative integer \\
+\hline
+separatescore & A string to store scores from parts of the exam & string \\
+\hline
+\end{tabular}
+\end{center}
+
+The last field can be used for arbitrary purposes. Especially the automatic
+grading facilities of course have access to this information. The second
+last field is not used within the {\OKUSON} system as of this writing.
+
+\section{\texttt{data/messages.txt}}
+\label{sec:messages.txt}
+
+The general comments about file formats at the beginning of this chapter
+apply also to \texttt{data/messages.txt}. There is however one exception,
+namely that all lines corresponding to a certain ID count, not only the
+latest. Messages are therefore never deleted but only ``revoked'': If
+a message is repeated with a dollar sign ``\$'' prepended, it will no
+longer be displayed on the result page of the participant. 
+
+The delimiter character for this file is a colon ``:''.
+
+Each line of the file corresponds to one personal message for one
+participant and contains the following data fields (in the third column
+some comments about the data type are displayed):
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Name of field & Description & Data type \\
+\hline
+\hline
+id & Identification & string \\
+\hline
+msg & Personal message & string \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\section{\texttt{data/generalmessage.txt}}
+\label{sec:generalmessage.txt}
+
+The format of this file is an exception. Its content is put into the
+result page instead of a \texttt{<GeneralMessages />} element in the
+template for the result page. The content of this file is copied one to
+one without any change. Therefore you have to put a valid XHTML~1.0 subtree
+into this file using the standard ISO-8859-1 ASCII encoding.
+
+
 \chapter{Internal Data Structures}
 \label{ch:intdata}
+
+\section{Overview and Introduction}
+
+This chapter is written to be read along with the files \texttt{Data.py}
+and \texttt{Exercises.py} of the {\OKUSON} server's source code.
+Knowing the internal data structures of the {\OKUSON} server requires 
+a certain knowledge of the Python language, which we will assume throughout
+this chapter.
+
+Having said this, we no longer have to explain certain things: For example,
+the names and types of components of objects in a certain class can readily
+be read off the well-documented source code. Also the behaviour and syntax
+for the basic Python objects like strings, integers, floats, lists,
+and dictionaries will not be explained here. Therefore we concentrate
+on the general structure and on the questions like ``What is where in
+the source code?''.
+
+All data structures regarding people and tutoring groups are collected in
+the server's \texttt{Data} module and reside therefore in the file
+\texttt{server/Data.py}. In this file one also finds the implementation
+of the reading process from files into the memory data structures.
+This process will not be explained here, as it uses a very generic
+tool from the \texttt{fmTools} library, which will be documented elsewhere.
+
+All data structures regarding exercises and sheets are collected in the
+\texttt{Exercises} module and reside therefore in the file
+\texttt{server/Exercises.py}. In this file one also finds the
+implementation of the reading and parsing process from files into the 
+memory data structures. This process will also not be explained here, as it
+basically boils down to using the XML parser \texttt{pyRXP} to get a
+memory representation of the XML tree, which is then recursively translated
+into the in-memory structures described here. Additionally, the file
+\texttt{server/Exercises.py} contains methods for \texttt{Exercise} and
+\texttt{Sheet} objects to offer services via the web.
+
+For this chapter here, we will not describe the latter processes but only
+document the data structures. The main idea of this chapter is to help
+the user to write the automatic grading functions he has to supply, because
+they need conventient read access to the internal data structures.
+
+\section{Data of Participants}
+
+The data structures for the personal data of participants are organized
+as follows: Every participant has an ID, which can be an arbitrary string.
+There is a dictionary ``\texttt{people}'' in the \texttt{Data} module,
+which stores for any known participant under his ID one object from the
+class \texttt{Person}.
+
+Every \texttt{Person} object has an entry \texttt{mcresults}, which is a
+dictionary where under each sheet name (see section \ref{dataex}) there
+can be stored an object from the class \texttt{MCResult}. Note that it
+is not an inconsistency, if there is nothing bound in \texttt{mcresults}
+under a valid sheet name! Therefore one always has check whether there
+is some data before accessing it!
+
+Further, every \texttt{Person} object has an entry \texttt{homework},
+which is a dictionary where for each sheet name (see section
+\ref{dataex}) there can be stored an object from the class
+\texttt{Homework}. Note that also here it is not an inconsistency, if
+there is nothing bound in \texttt{homework} a valud sheet name!
+
+Every \texttt{Person} object has an entry \texttt{exams}, which is a list.
+This list has a certain length and at each position (zero based!) there may
+either be the value \texttt{None} or an object from the class
+\texttt{Exam}. Note that lists in Python must not have holes, such that
+it is necessary to have the possibility of the value \texttt{None}. Also
+the length of the list is variable, therefore one cannot be sure that
+it always has the same length for all participants, so please check in
+your code! 
+
+Note that the object of type \texttt{Exam} is created at the
+time the participant registers for the first time for the exam in question
+and is never destroyed afterwards. Even if the participant deregisters,
+this only means that the \texttt{registration} component of the
+\texttt{Exam} object is set to zero. A \texttt{totalscore} of $-1$
+indicates, that the participant did not (yet) participate in the exam.
+
+The personal messages of a person are just stored as a list of strings
+in the \texttt{messages} component of the \texttt{Person} object. Revoked
+messages are no longer stored in memory.
+
+
+\section{Data of Groups}
+
+The identification of groups works via their number. There is a global
+dictionary \texttt{groups} in the \texttt{Data} module, where for each
+group there is stored an object from the class \texttt{GroupInfo} under
+the (string) value of its number. Numbers are non-negative integers.
+
+The group number $0$ plays a special r\^ole, because it is the group where
+people show up automatically, if the administrator does not distribute them
+explicitly. This can be handy, if there is only one group for a small
+course. The component \texttt{people} of the \texttt{GroupsInfo} object
+is updated automatically, when a person registers with the system for the
+first time.
+
+
+\section{Data of Exercises and Sheets}
+\label{dataex}
+
+All data for exercises and sheets is collected in the \texttt{Exercises}
+module in the {\OKUSON} server and resides therefore in the file
+\texttt{server/Exercises.py}.
+
+There are the classes \texttt{Sheet}, \texttt{Exercises},
+\texttt{Question}, and \texttt{TeXText}. A sheet consists of exercises,
+an exercises of questions, and the ``innermost'' parts of the whole
+system are simple strings and \TeX-texts, which are texts or formulae, which
+are typed in in {\TeX} input and can be rendered into a PDF file or as
+image in a web page.
+
+There is a global list \texttt{AllSheets} where all known sheet
+objects are stored in some random order. One should not access this list
+directly, but use instead the function \texttt{SheetList} in the same
+module, which returns a properly sorted list of triples, where each triple
+corresponds to one sheet and consists of the sheet number, the sheet name,
+and the sheet object itself.
+
+The basic incredients of a sheet are stored in the \texttt{list} component,
+which is a list containing \texttt{TeXText}s for the texts between
+exercises and for non-interactive exercises, and \texttt{Exercise} objects
+for the multiple choice exercises.
+
+All exercises (multiple choice and non-interactive ones) are stored under
+their name in the global dictionary \texttt{AllExercises}. Usually one
+will not have to access this variable, as one usually will access the
+exercises via the sheets they are contained in.
+
+The basic incredients of an interactive exercise are objects of type
+\texttt{Question}, which in turn contain probably several variants
+with possibly different correct solutions.
+
+The fundamental method for the personalization of sheets is the method
+\texttt{ChooserFunction} of the class \texttt{Sheet}. It uses a numerical
+seed as seed for a pseudo random process and returns the choice of actual
+variants the corresponding participant gets. Note that the submissions and
+marks stored in the \texttt{Data} module only make sense together with this
+information and the information about the available sheets.
+
 %\chapter{Structure of the Program}
 \appendix
 \chapter{Customization Examples}

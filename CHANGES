@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.41 2003/10/15 21:31:47 neunhoef Exp $
+##  $Id: CHANGES,v 1.42 2003/10/20 00:13:40 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -19,6 +19,11 @@ Changes from 1.0-pre4  to  1.0
   for exams.
 * added 'Content-Disposition' header line for PDF sheets
 * fixed nasty bug in scripts/distribute.py
+* documentation of external data formats as far as the user is concerned
+* documentation of internal data formats as far as necessary for automatic
+  grading functions and for overview
+* documentation of automatic grading
+* documentation of handling of exams
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
