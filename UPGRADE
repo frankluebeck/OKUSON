@@ -1,9 +1,11 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON 1.1-fix1 
-                                             to OKUSON 1.1-fix2:
+ This file describes the upgrade procedure from OKUSON 1.1-fix1 or 1.1-fix2 
+                                             to OKUSON 1.1-fix3:
 ===============================================================================
 
-$Id: UPGRADE,v 1.16 2004/10/07 13:50:23 luebeck Exp $
+NOTE: DO NOT USE 1.1-fix2 !!!  (Some pages do not work in this version) 
+
+$Id: UPGRADE,v 1.17 2004/10/12 03:07:38 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -11,7 +13,7 @@ restart the server:
   cd okuson
   ./stop
   cd ..
-  tar xzvf okuson-1.1-fix2.tar.gz
+  tar xzvf okuson-1.1-fix3.tar.gz
   cd okuson
   ./start
 
@@ -20,6 +22,8 @@ Unpacking the archive does *not* overwrite the following customizable files:
   Config.xml
   data/*.txt
 
+The following between the lines applies only to the case coming from 1.1-fix1):
+-------------------------------------------------------------------------------
 There are a few small changes in the web page templates, maybe you want to
 copy them from html.sample/ to html/ :
   html.sample/favicon.ico          (new) a default address line icon
@@ -34,10 +38,11 @@ Otherwise, if you didn't touch the defaults of the first four files,
 you may want:
   cp html.sample/{tutors.tpl,globalstatistics.tpl,adminmenu.tpl} html
   cp html.sample/favicon.ico html
+-------------------------------------------------------------------------------
 
 If you applied any patches to the server programs, make sure to reapply them.
 
-Files changed in this bugfix:
+Files changed in bugfix 1.1-fix2:
   html.sample/favicon.ico        (new)
   CHANGES
   TODO
@@ -53,8 +58,11 @@ Files changed in this bugfix:
   html.sample/tutors.tpl 
   html.sample/globalstatistics.tpl
   html.sample/adminmenu.tpl
+  (and the foot of all html.sample/*.tpl, html.sample/*/*.tpl,  see above)  
 
-(and the foot of all html.sample/*.tpl, html.sample/*/*.tpl,  see above)  
+Files changed in bugfix 1.1-fix3:
+  server/WebWorkers.py
+  html.sample/edithomeworkperson.tpl
 
 
 Have fun!
