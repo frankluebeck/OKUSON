@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.45 2003/10/14 09:28:54 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.46 2003/10/14 15:36:07 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -471,12 +471,16 @@ one Person object as data.'''
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
             known = str(getattr(self.p, name))
+            if node[1].has_key('content'):
+                cont = node[1]['content'].encode('ISO-8859-1','replace')
+            else:
+                cont = val
         except:
             return
-        res = ['<option'] 
+        res = ['<option value="'+val+'" '] 
         if val == known:
             res.append(' selected="selected" ')
-        res.append('>'+val+'</option>')
+        res.append('>'+cont+'</option>')
         out.write(string.join(res, ''));
     def handle_PossibleStudies(self,node,out):
         found = 0
