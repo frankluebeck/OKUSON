@@ -1,18 +1,6 @@
 Für letztes (3.) Prerelease:
 
-Tests mit folgenden browsern:
-  galeon 1.2.7 auf Linux (mozilla 1.2.1)
-  mozilla 1.2.1 auf Linux
-  Internet Explorer 5.5 auf Windows ME
-  Internet Explorer 6.0 auf Windows ME
-  Opera 6.1 Build 271 auf Linux  
-  Netscape 7.1 auf Windows
-  Konqueror 3.1.4 auf Linux
-  Netscape 4.8 auf Linux
-  Netscape 6.2.1 auf Linux
-  Lynx 2.8.4rel.1 auf Linux 
-
-Interessant:
+Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
   opera adminlogin --> geht nicht mit "Location" header!

@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.2 2003/10/09 15:24:14 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.3 2003/10/12 11:32:33 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -276,7 +276,6 @@ class WebServerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 We know that - if applicable - the query data is in self.query, 
 otherwise self.query is {}. self.path is the path.'''
         
-
         # do we know this path in 'Site'?
         SiteLock.acquire()
         inSite = Site.has_key(self.path)
@@ -312,27 +311,17 @@ otherwise self.query is {}. self.path is the path.'''
         if res == None or type(res[0]) != types.DictType:
             self.send_error(404,"Not found")
             return
-        #print self.headers
-        #print "Sent for ",self.path,"onlyhead=",onlyhead
-        #print res[0]
-        if res[0].has_key('Location'):
-          self.send_response(301)
-        else:
-          self.send_response(200)
-        self.send_header('Accept-Ranges', 'bytes')
-        for a in res[0].keys():
-            self.send_header(a, res[0][a])
-            #print "Send header:",a,':',res[0][a]
-        self.end_headers()
-        if onlyhead:
-            return
        
-        # on the fly validation
+        # on the fly validation:
         if ValidateHTMLAsXHTML and res[0]['Content-type'] == 'text/html':
             import XMLRewrite, pyRXPU, tempfile
             if type(res[1]) != types.StringType:
                 try:
-                    res[1] = Utils.StringFile(res[1])
+                    # das geht so nicht:
+                    #res[1] = Utils.StringFile(res[1])
+                    dummy = res[1]
+                    res[1] = dummy.read()
+                    dummy.close()
                 except:
                     res[1] = ''
             Utils.Error('Validating '+str(self.path), prefix='Check: ')
@@ -345,6 +334,18 @@ otherwise self.query is {}. self.path is the path.'''
                 res = (res[0], res[1])
             if not t:
                 Utils.Error('Validation: NO SUCCESS!')
+
+        # Now send the header:
+        if res[0].has_key('Location'):
+          self.send_response(301)
+        else:
+          self.send_response(200)
+        self.send_header('Accept-Ranges', 'bytes')
+        for a in res[0].keys():
+            self.send_header(a, res[0][a])
+        self.end_headers()
+        if onlyhead:
+            return
 
         # send content away 
         if type(res[1]) == types.StringType:

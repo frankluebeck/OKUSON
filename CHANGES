@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.32 2003/10/10 20:57:29 neunhoef Exp $
+##  $Id: CHANGES,v 1.33 2003/10/12 11:32:33 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -16,6 +16,9 @@ Changes from 1.0-pre3  to  1.0
 
 * remove sending of "Location" header at administrator login to please opera
 * fixed validity bug in /doctypehelp.tpl
+* added correction of "Content-length" header in NoValidFunction after
+  removal of validation icon, this fixes a nasty behaviour with opera
+
 
 
 Changes from 1.0-pre2  to  1.0-pre3

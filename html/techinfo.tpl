@@ -56,13 +56,13 @@
       <dd> Alle Dateien dieses Systems wurden mit <em>dem</em> Editor 
            geschrieben.
       </dd>
-      <dt> <strong>Getestet mit:</strong> </dt>
+      <dt> <strong>Erfolgreich getestet mit:</strong> </dt>
       <dd> Galeon 1.2.7 auf Linux (mozilla 1.2.1), Mozilla 1.2.1 auf Linux,
            Internet Explorer 5.5 auf Windows, Internet Explorer 6.0 auf 
            Windows, Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows,
            Konqueror 3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1
            auf Linux, Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows,
-           W3M 0.3 auf Linux.
+           W3M 0.3 auf Linux, Netscape 7.01 auf Linux.
       </dd>
     </dl>
 
@@ -81,5 +81,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.3 2003/10/10 21:55:42 neunhoef Exp $ -->
+     $Id: techinfo.tpl,v 1.4 2003/10/12 11:32:33 neunhoef Exp $ -->
 

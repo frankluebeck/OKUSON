@@ -127,8 +127,11 @@ def NoValidFunction(req, res, e):
     Utils.FileString(os.path.join(tmp, fn), res[1])
     Utils.Error('Saved in dir '+tmp, prefix = 'See: ')
     Utils.FileString(os.path.join(tmp, 'message'), str(e))
-    # Remove ValidatorIcon
+    # Remove ValidatorIcon:
     res[1] = string.replace(res[1], WebWorkers.ValidatorIconText, '')
+    # Adjust Content-length:
+    res[0]['Content-length'] = str(len(res[1]))
+
 BuiltinWebServer.NoValidFunction = NoValidFunction
 Utils.Error('Preparsing all web page templates...',prefix='Info: ')
 import WebWorkers           # this initializes the web services
