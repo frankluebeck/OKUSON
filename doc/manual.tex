@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.42 2003/10/22 22:21:54 neunhoef Exp $
+% $Id: manual.tex,v 1.43 2003/10/27 16:04:00 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -25,8 +25,9 @@
 \chapter*{}
 \section*{Copyright and License}
 
-This software package is freely distributed under the terms of the GNU Public
-License, see chapter~\ref{ch:GPL} for the details of that license.
+This software package may be freely distributed under the terms of the
+GNU Public License, see chapter~\ref{ch:GPL} for the details of that
+license.
 
 \copyright\  (2003) Frank Lübeck and Max Neunhöffer
 
@@ -39,14 +40,14 @@ web. It grew out of programs written and used by the authors since several
 semesters, when we had to organize exercise sessions accompanying beginners
 courses in mathematics. Some of these courses had more than 1000 students.
 
-The main purposes of the package are
+The main purposes of this package are
 \begin{itemize}
 \item to enable the use of exercises which allow a mechanical check (multiple 
 choice, yes-no questions, questions with easy to parse answers like numbers)
 \item to automatize the management of the participants: registration for the
 exercise course and exams, delivery of the exercise sheets via the web, 
 collecting the  solutions of exercises as mentioned above via the web,
-grading of these solutions, \ldots
+grading of these solutions, etc.
 \end{itemize}
 
 A more detailed account of our motivation and the description of some
@@ -68,44 +69,47 @@ PDF-files on the side of the participating students.
 
 In the archive of this package you find:
 \begin{itemize}
-\item a collection of program modules for the scripting language
+\item A collection of program modules for the scripting language
 \href{http://www.python.org}{Python};
-some are generic tools, for example for reading and writing certain kinds of
-data files, a builtin web server, handling of different types of template files,
-\ldots, and some are specialized code for this package.
+some are generic tools, for example for reading and writing certain
+kinds of data files, handling of different types of template files,
+a built-in web server, etc., and some specialized code for this
+package.
 \item 
-a copy of the  XML parser \href{http://www.reportlab.com/xml/pyrxp.html}{pyRXP} by Richard Tobin at the Language
-Technology Group, Edinburgh, for use with Python.
+A copy of the XML parser \texttt{RXP} by Richard Tobin at
+the Language Technology Group, Edinburgh and its wrapper
+\href{http://www.reportlab.com/xml/pyrxp.html}{pyRXP} for use with
+Python.
 \item
-a complete set of sample web pages (in German) which are probably not
+A complete set of sample web pages (in German) which are probably not
 difficult to customize for other courses in other places. (The text on these
 pages is the only language dependent part, such that an adjustment of this
-package to other languages would be straight forward.)
+package to other languages would be straightforward.)
 \item 
-a detailed documentation and usage guide.
+A detailed documentation and user guide.
 \item
-example exercises and exercise sheets.
+Example exercises and exercise sheets.
 \item 
-checking utilities for {\OKUSON} exercises and sheets.
+Checking utilities for {\OKUSON} exercises and sheets.
 \end{itemize}
 
 \section{How to Use this Manual}
 
 \begin{itemize}
-\item get started by reading and following chapter~\ref{ch:inst}, then you
+\item Get started by reading and following chapter~\ref{ch:inst}, then you
 already have a running server.
-\item look at some of the examples of exercises and browse
+\item Look at some of the examples of exercises and browse
 chapters~\ref{ch:introXML} and~\ref{ch:createExercisesSheets} to
 learn how to create the exercises and sheets for the service. 
-\item chapter~\ref{ch:webpages} describes the customization of the web
+\item Chapter~\ref{ch:webpages} describes the customization of the web
 pages, so read this if you need to adjust some details. 
-\item consider some of the remarks in~\ref{sec:insttips} to make your 
+\item Consider some of the remarks in~\ref{sec:insttips} to make your 
 installation more
 secure and robust. Then you are ready to publish the web site for your
 course.
-\item the next few chapters describe some administrative tasks when the course
-is running and the corresponding tools  in {\OKUSON}.
-\item in the end there are some chapters on more techical aspects of the
+\item The next few chapters describe some administrative tasks and the
+corresponding tools in {\OKUSON} when the course is running.
+\item In the end there are some chapters on more techical aspects of the
 package. These are mainly interesting if you want to add some functionality
 to the package.
 \end{itemize}
@@ -114,7 +118,7 @@ to the package.
 
 We are interested  in all comments, suggestions,  extensions concerning this
 package. Please, tell  us if you are  using the package for  some course. If
-you create exercises and sheets in  {\OKUSON} format we would be greatful if
+you create exercises and sheets in  {\OKUSON} format we would be grateful if
 we could get a copy.
 
 
@@ -124,13 +128,13 @@ we could get a copy.
 
 \section{Quick Installation Overview}
 
-The following describes briefly how to get the {\OKUSON} package started on
+The following describes briefly how to get the {\OKUSON} package installed on
 your system.
 Probably you want to use this section only to get an overview or as
 a reminder for later installations when you already know the process.
 
-All steps are explained in more detail in the next few sections. If you are
-going to use {\OKUSON}  for a course, you may also want to consider the tips
+All steps are explained in more detail in the next few sections. When you are
+actually using {\OKUSON} for a course, you may also want to consider the tips
 and tricks in~\ref{sec:insttips}.
 
 \begin{enumerate}
@@ -167,12 +171,12 @@ other obvious entries in the course section of this configuration file.
 \item Start server with: 
 
 \hspace*{5mm}\texttt{start}
-\item Test server by pointing browser to 
+\item Test server by pointing your browser to 
 
 \hspace*{5mm}\href{http://localhost:8000/index.html}%
 {\texttt{http://localhost:8000/index.html}}
 
-(substitute the \texttt{8000} if you have choosen another number in the
+(substitute the \texttt{8000} if you have chosen another number in the
 \texttt{Port} entry of the \texttt{Config.xml} file).
 \item If things look alright, start customizing for your application:
 have another look in the course section of the \texttt{Config.xml} file,
@@ -181,6 +185,9 @@ on tutoring groups (if applicable, see~\ref{sec:groups}), prepare the first
 exercise sheets (see~\ref{ch:createExercisesSheets}). A more detailed
 account of tasks occurring during a semester is given in 
 chapter~\ref{ch:semsched}.
+\item \textbf{Note}, that during the semester the {\OKUSON} server collects
+and stores personal data of the participating students. So you \textbf{must}
+be careful with the access to this data.
 \end{enumerate}
 
 
@@ -190,7 +197,7 @@ chapter~\ref{ch:semsched}.
 To use the {\OKUSON} package as an administrator you need a working
 knowledge of the following things:
 \begin{itemize}
-\item Editing of ASCII files with a text editor.
+\item Editing ASCII files with a text editor.
 \item Installing and starting programs under UNIX.
 \item Writing HTML.
 \item Writing {\LaTeX} code for exercises.
@@ -217,20 +224,18 @@ your distribution. However, you can also download the source from
 \href{http://www.python.org}{\texttt{http://www.python.org}} 
 and install it without having root
 privileges.
-\item A \textbf{C-compiler}. {\OKUSON} uses an XML parser coming as an 
+\item A \textbf{C-compiler}. {\OKUSON} uses an XML parser coming as a
 Python extension module, which is implemented in C. We include this
 module in the {\OKUSON} distribution. However, it has to be built with your
-version of Python being available. You also need the C-compiler to compile
-the Python interpreter and libraries yourself if you do not rely on
-packages from a distribution. Note that your python installation must be
+version of Python being available. Note that your Python installation must be
 fairly complete, in some Linux distributions you must install a package with
 a name like python-dev or similar.
 \item \textbf{\LaTeX}. The texts for questions are processed by {\TeX}, 
 therefore one does need a full featured installation of {\TeX/\LaTeX} 
-with PDF support. For example the teTeX-Distribution provides everything
+with PDF support. For example the teTeX-distribution provides everything
 necessary.
 \item \textbf{ghostscript}. Exercise texts are translated to images for use
-on the Web pages delivered by {\OKUSON}.
+on the web pages delivered by {\OKUSON}.
 \item \textbf{netpbm}. A package for image conversions and manipulations,
 the program \texttt{pnmtopng} leads to particularly small files for the
 exercise text images. All Linux distributions probably have a
@@ -246,7 +251,7 @@ software packages are needed:
 \begin{itemize}
 \item A \textbf{web browser}. Not only the user access but also a great
 deal of administrative tasks are done via the web interface, using
-{\OKUSON}'s builtin web server. {\OKUSON} is tested with a wide range
+{\OKUSON}'s built-in web server. {\OKUSON} is tested with a wide range
 of web browsers, including Mozilla and friends, Opera, Netscape, Lynx,
 w3m, and even Internet Explorer.
 \item A \textbf{PDF viewer} like \texttt{xpdf} or \texttt{acroread}. 
@@ -266,8 +271,8 @@ The following is \textbf{not} needed to run an {\OKUSON} server:
 server.
 \item Web server. No web server apart from the one built into {\OKUSON} is
 needed.
-\item Data storage. {\OKUSON} uses a simple and efficient way of storing 
-and reading data in and from human legible files. No external data base
+\item Data base. {\OKUSON} uses a simple and efficient way of storing
+data in and reading from human legible files. No external data base
 system is needed.
 \end{itemize}
 
@@ -275,7 +280,7 @@ system is needed.
 
 As an example, we give here some facts and numbers  on needed 
 resources for a big
-course during one semester (these are estimated, but based on experience
+course during one semester (these are estimates, based on experience
 with previous versions of the {\OKUSON} programs):
 
 \begin{description}
@@ -297,7 +302,7 @@ other tasks as well.
 \item[Size of \texttt{log/server.log} file:] could grow to a few hundred
 megabytes. If you are short of disc space, you can compress the files (with
 \texttt{bzip2} they can be shrinked to 3--4\% of their original size), or
-even throw older entries away.
+even throw away older entries.
 \item[Number of PDF sheets produced on the fly:] in average each sheet is
 requested between one and two times in  PDF format. That means that during
 the semester up to 30000 PDF sheets are requested. The server machine needs
@@ -320,7 +325,8 @@ the filesystem that is convenient by the following command:
 
 This command creates a directory \texttt{okuson} in the current working
 directory, under which the full distribution resides. This directory
-will be called ``the {\OKUSON} home directory'' in the sequel.
+will be called ``the {\OKUSON} home directory'' or short ``\verb!$OKUSONHOME!''
+in the sequel.
 
 The next step is to compile the \texttt{pyRXP} extension module.
 
@@ -349,7 +355,7 @@ messages in the output.
 \section{Configuration}
 
 In the  {\OKUSON} home  directory (the  directory \texttt{okuson}  which was
-created during  extraction of  the archive)  there is a  file with  the name
+created during  extraction of  the archive)  there is a  file named
 \texttt{Config.xml.sample}. It is a sample file for the file 
 \texttt{Config.xml}, which is the  central  place  for configuration  of  the
 {\OKUSON} server. In the beginning, you should copy the sample file to
@@ -365,7 +371,11 @@ comments.
 For a start and to get an impression adjust the first few entries in 
 this file, say \texttt{CourseName}, \texttt{AdministratorPassword}, 
 \texttt{Semester}, \texttt{Lecturer}, \texttt{Feedback} and maybe
-\texttt{Port}.
+\texttt{Port}. 
+
+Note that if you have several courses running at the same time and want
+to use the same machine for all those {\OKUSON} servers, you need a
+different port for each instance of the server.
 
 Note that the administrator password is stored encrypted, use the script
 \texttt{cryptpasswd} in the {\OKUSON} home directory  to find an encryption 
@@ -393,12 +403,12 @@ of your password.
 
 \section{Getting started}
 
-{\OKUSON} has a builtin web server and does nearly all its user
+{\OKUSON} has a built-in web server and does nearly all its user
 interaction via a  web interface.
 
 The package contains a set of sample web pages (in German) and to get 
 started just copy them into the subdirectory \texttt{html} (which is the
-document root of the builtin web server in the default configuration). 
+document root of the built-in web server in the default configuration). 
 This is done with the following command, issued from the {\OKUSON} home
 directory:
 
@@ -480,7 +490,7 @@ play around with your changes before they are published to the outside world
 by the server (and the server is more efficient, because it caches and
 preparses everything it needs during startup).
 
-\section{Tips and Tricks: Security, Backup, \ldots}\label{sec:insttips}
+\section{Tips and Tricks: Security, Backup, etc.}\label{sec:insttips}
 
 In this section we mention some details of our own use of this package.
 Maybe you find some of these remarks useful.
@@ -492,9 +502,9 @@ it easy to share the administration between several people without fiddling
 around with strange file access settings in private directories.
 
 We close completely (\verb+chmod 700 ~+) the access to the pseudo users
-home directory. Note that during the semester the {\OKUSON} server collects
-and stores personal data of the participating students. So, you must be
-careful with the access to these data.
+home directory. \textbf{Note} that during the semester the {\OKUSON}
+server collects and stores personal data of the participating students.
+So, you \textbf{must} be careful with the access to this data.
 
 \subsubsection*{Securing the Administrator Access}
 \label{AdministrationAccessList}
@@ -589,15 +599,21 @@ the {\OKUSON} service is as short as possible. For this we use an entry
 in the GNU \texttt{crontab} of the pseudo user on the server machine like
 
 \begin{verbatim}
-   @reboot  /my/okuson/dir/server/Server.py &
+   @reboot  /MYOKUSONDIR/server/Server.py &
 \end{verbatim}
 
+where \texttt{MYOKUSONDIR} has to be replaced by the full absolute path to the
+{\OKUSON} home directory.
 
 \subsubsection*{Alias for Server Machine}
 
-We create an alias for the machine running the {\OKUSON} server. 
-This allows a quick move of the whole service to another machine, in case
-the server crashes for some reason.
+We create an alias for the machine running the {\OKUSON} server. This means
+putting an extra entry with an additional name in the domain name server (DNS).
+One usually needs root privileges to do this.
+
+The advantage of the alias name is that it allows a quick move of the
+whole service to another machine, in case the server crashes for some
+reason.
 
 \subsubsection*{\emph{Paperless} Courses}
 
@@ -624,7 +640,7 @@ The {\OKUSON} package uses XML in several places:
 \item the files containing the interactive exercises (\texttt{yyy.auf}) -
 but the exercise texts are written in {\LaTeX}, a much more complicated
 markup language
-\item the delivered Web pages are written with XHTML markup and the
+\item the delivered web pages are written with XHTML markup and the
 templates for these pages are written with an XML markup  
 \end{itemize}
 
@@ -687,11 +703,11 @@ The \emph{name} of an element, here \texttt{A}, is case sensitive, that is
 There always must be a begin and end tag. A begin tag can contain further
 information as in \texttt{<A xattr="val of xattr">} above. 
 This extra information is called an \emph{attribute}, where
-\texttt{xattr} is the \emph{name} of the attribute and \texttt{val of xattr}
-is the \emph{value} of the attribute. An attribute must always have a value
-and the specification of the value must be enclosed either in double
-quotes (\texttt{"}) or in single quotes (\texttt{'}). The enclosing quotes
-are not allowed within the value.
+\texttt{xattr} is the \emph{name} of the attribute and ``\texttt{val of
+xattr}'' is the \emph{value} of the attribute. An attribute must always
+have a value and the specification of the value must be enclosed either
+in double quotes (\texttt{"}) or in single quotes (\texttt{'}). The
+enclosing quotes are not allowed within the value.
 
 Contents of elements can themselves contain strings and/or other elements. But
 elements must always be properly nested, as in the line 
@@ -753,9 +769,10 @@ documents  and translate it to some internal data structure are called
 \emph{XML-parser}. 
 
 XML documents that follow the formal rules explained 
-in~\ref{sec:XMLbasics} and so can
-be parsed are called \emph{well formed XML documents}. This does not imply
-that a documents makes any sense. 
+in~\ref{sec:XMLbasics} 
+are called \emph{well formed XML documents}. This means, that they can
+be parsed successfully, however, this does not imply
+that they make any sense. 
 
 As mentioned above the \texttt{DOCTYPE} entry of an XML file can point to a
 document type definition. This defines element  names and gives restrictions
@@ -788,7 +805,7 @@ sensible message for removing the problem is printed.
 
 The {\OKUSON} package delivers exercises via the web. There are two types of
 exercises, \emph{text  exercises} for which written  solutions are necessary
-and \emph{interactive  exercises} whose  solutions are  submitted via  a Web
+and \emph{interactive  exercises} whose  solutions are  submitted via  a web
 interface  and  which are  automatically  graded  by the  {\OKUSON}  server.
 The  interactive exercises  depend on  the  participant, they  consist of  a
 (pseudo-)random  ordering and  choice of  variants of  some questions.  Such
@@ -832,13 +849,20 @@ be given (in \LaTeX-format).
 \subsubsection*{Which {\LaTeX} Macros?}
 
 In the standard setup of {\OKUSON} the following packages and macros are 
-loaded when \texttt{latex} is called: \texttt{inputenc}, with parameter
+loaded when \texttt{latex} is called: 
+
+\begin{itemize}
+\item \texttt{inputenc}, with parameter
 \texttt{latin1} which allows to use German umlauts and other western
-European accented characters in the {\LaTeX} code; \texttt{graphicx} for
-including images in exercises; \texttt{amssymb} which provides many
-mathematical symbols; and finally macros \verb+\Z+, \verb+\N+, \verb+\Q+, 
+European accented characters in the {\LaTeX} code
+\item \texttt{graphicx} for
+including images in exercises 
+\item  \texttt{amssymb} which provides many
+mathematical symbols, and finally 
+\item macros \verb+\Z+, \verb+\N+, \verb+\Q+, 
 \verb+\R+, \verb+\C+, \verb+\F+ as
 abbreviations for \verb+\mathbb{Z}+, and so on. 
+\end{itemize}
 
 The {\LaTeX} templates used for producing the images of exercise texts for
 the web pages and for producing the exercise sheets in PDF-format can be
@@ -880,7 +904,7 @@ seems to be quite robust with the setup mentioned above. We had reports that
 sheets could not be compiled by {\LaTeX} with exercises using certain
 environments from additionally loaded packages. While these are probably
 bugs in one or some of the involved packages, it is difficult to find a
-general strategy to avoid them. As one general rule, when something goes
+general strategy to avoid them. As a general rule, when something goes
 wrong, try to enclose critical blocks by additional markup, e.g.,
 enclose with \texttt{\{\ldots\}} or put text in some boxes.
 
@@ -981,8 +1005,10 @@ which are separated by \verb+|+-characters. Leading and trailing whitespace
 in each possibility is removed (so that \texttt{>Yes|No<} and \texttt{>  Yes |
 No <} are interpreted the same).
 \item[\texttt{"c"}] (multiple choice) this is for questions where several
-possible answers are given, and some subset of them is correct. The syntax
-for the content in this case is the same as for \texttt{"r"}.
+possible answers are given, and some subset of them is correct. This means
+that one has to select \textbf{exactly} the right subset to score a 
+point. The syntax for the content in this case is the same as for
+\texttt{"r"}.
 \item[\texttt{"s"}] (string) this is for question where the answer is
 expected as a string (that has to be typed into an input field). In this
 case the content of the \texttt{ANSWERS} element should be empty.
@@ -1026,8 +1052,8 @@ It is possible to put several exercises as above into one document. In that
 case the document should look like
 
 \begin{verbatim}
-<?xml version=``1.0'' encoding=``ISO-8859-1''?>
-<!DOCTYPE EXERCISES SYSTEM ``exercise.dtd''>
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISES SYSTEM "exercise.dtd">
 
 <EXERCISES>
 
@@ -1084,9 +1110,10 @@ exercise text from a \texttt{.tex} file.
 \section{Specifying Sheets}\label{sec:Sheets}
 
 For exercise sheets in {\OKUSON} there is another XML document type which we
-will also explain by looking at an example. Interactive exercises are referred
-to by the value of their \texttt{key} attribute.
-And text exercises are identified by their file names.
+will also explain by looking at an example. Files of this type must have
+\texttt{.bla} as their extension. In these files, interactive exercises
+are referred to by the value of their \texttt{key} attribute, and text
+exercises are identified by their file names.
 
 \subsection*{Example of an Exercise Sheet document}
 
@@ -1103,7 +1130,7 @@ And text exercises are identified by their file names.
        opento="14:00_20.10.2003">
 
 <TEXT>The first exercise is interactive. You must send the 
-solution via the Web interface.</TEXT>
+solution via the web interface.</TEXT>
 
 <EXERCISE key="Example1" prefix="" nrquestions="2" order="p" />
 
@@ -1146,12 +1173,13 @@ the range $00..23$, \texttt{dd} the day of the month in the range $1..31$,
 \texttt{MM} the month in the range $1..12$ and \texttt{yyyy} the year. This
 time is interpretet as local time on the machine running the {\OKUSON}
 server.
-\item[\texttt{openfrom}] this is an optional entry with the same syntax as 
+\item[\texttt{openfrom}] (optional, default is that the sheet is open
+immediately) entry with the same syntax as
 \texttt{opento}. If it is set to a time in the future then participants of
 the course cannot get the sheet or submit solutions for it (But the
 administrator can, so you can check and test a sheet before the course
 participants can see it.) 
-\item[\texttt{maxhomescore}] this is an optional entry specifying the 
+\item[\texttt{maxhomescore}] (optional, default empty) entry specifying the 
 maximal number of points a participant can achieve in his written homework
 exercises on this sheet. Up to now this is not used in the rest of the
 system.
@@ -1170,7 +1198,7 @@ given prefix. (This allows the use of several exercise directories, which
 may contain exercises with the same keys.)
 \item[\texttt{nrquestions}] (optional, the default is the number of
 questions available in the exercise) the number of questions from this 
-exercise which should be pseudo-randomly choosen for each 
+exercise which should be pseudo-randomly chosen for each 
 sheet (there can be more questions in the exercise).
 \item[\texttt{order}] (optional, default value is \texttt{"p"}) the value
 can be either \texttt{"p"} which means that the pseudo-random choice for the
@@ -1187,12 +1215,12 @@ same meaning and default as for \texttt{EXERCISE} elements.
 The \texttt{TEXT} elements contain {\LaTeX} code of text which is included
 in the exercise sheets before, between or after the specified exercises.
 
-\subsection*{Specifying Several Sheets in One Document}
+\subsection*{Specifying Several Sheets in one File}
 
 On can put several \texttt{SHEET} elements in one \texttt{.bla} file, but
-these must be enclosed a \texttt{SHEETS} begin and end tag, and the
-\texttt{DOCTYPE} declaration must tell that there is one \texttt{SHEETS}
-element in the document.
+these must be enclosed in a \texttt{SHEETS} begin and end tag, and the
+\texttt{DOCTYPE} declaration must specify that a \texttt{SHEETS}
+element is the top level element in the document.
 
 \begin{verbatim}
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -1218,7 +1246,7 @@ questions in all variants, and containing a list of solutions of all
 interactive exercises. The layout of the exercises is exactly as it should
 look in the PDF versions of the exercise sheets of the course participants.
 
-It maybe useful to check the individual exercises first with
+It may be useful to check the individual exercises first with
 \texttt{testexercise}, see~\ref{ssec:checkexercise}.
 
 The syntax for this utility is
@@ -1247,11 +1275,11 @@ fulfill your wishes.
 
 \section{General Format of the Web Pages}
 
-The  web   pages  delivered  by   the  {\OKUSON}  server  should   be  valid
-with  respect  to   a  specification  from  the  W3C   consortium  which  is
-called   \texttt{XHTML  1.0   Strict}. These are  combined  with   \texttt{CSS
-2.0}   style  sheets   which  are   also  specified   by  that   consortium,
-details can be found in~\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}.  
+The web pages delivered by the {\OKUSON} server should be valid with
+respect to a specification from the W3C consortium which is called
+\texttt{XHTML 1.0 Strict}. These are combined with \texttt{CSS 2.0}
+style sheets which are also specified by that consortium, details can be
+found in~\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}.
 
 Furthermore, we avoid the use of client side programs like \texttt{java} or
 \texttt{javascript}, plugins or other features of web browsers which 
@@ -1262,9 +1290,9 @@ several advantages:
 \begin{itemize}
 \item Participants of the course need very little prerequisites, which are
 nowadays available on essentially any computer. 
-\item Strictly following some official standard guarantees a predictable and
-good appearance of the pages on all current web browsers and all
-operating systems.
+\item Strictly following some official standard should guarantee a
+predictable and good appearance of the pages on all current web browsers
+and all operating systems.
 \item Having the page layout information (fonts, font-sizes, colors, border
 sizes, \ldots) in style sheet files makes it easy to give all pages a
 uniform appearance and to change this appearance for all pages at once.
@@ -1277,10 +1305,10 @@ processing.
 \item There are  developments like MathML which will allow in the future to
 include mathematical formulae directly in web pages (currently, we use
 images for that). Also, a systematic processing of XML documents on the client 
-side is already possible in new Web browsers. Such extensions will only work 
+side is already possible in new web browsers. Such extensions will only work 
 in combination with HTML pages which are strictly conform with some official
 specification.
-\item We can include in our builtin web server an automatic check of the
+\item We can include in our built-in web server an automatic check of the
 validity of all delivered web pages. (Non valid pages are still delivered,
 but they are saved in temporary files for debugging and the validator 
 icon is removed.)
@@ -1290,7 +1318,7 @@ The {\OKUSON} package comes with a complete set of sample web pages, they
 are in the subdirectory \verb+html.sample+. Of course, the text of web 
 pages is language dependent. Our sample pages are
 written in German since we use the package in Aachen. But it should be
-straight forward to produce versions in other languages.
+straightforward to produce versions in other languages.
 
 If you want German pages as well for your course,  just copy all the
 sample pages to the web directory given in your configuration file. 
@@ -1303,7 +1331,7 @@ All sample pages are provided as template files with extension
 
 The interface between the web pages and the {\OKUSON} server is described by
 the meaning of these extra tags and by the names and meaning of input 
-variables which are used in input forms for the course participants and for
+fields which are used in input forms for the course participants and for
 the administrator. 
 
 \section{How to Customize the Web Pages}
@@ -1680,7 +1708,7 @@ file \texttt{data/messages.txt} (see \ref{sec:messages.txt}).
 to produce certificates of successful participations.
 \end{itemize}
 
-\section{At all times}
+\section{At all Times}
 
 \begin{itemize}
 \item You can at all times use the {\OKUSON} system to publish current
@@ -3064,7 +3092,7 @@ markup in the content of these elements, but note that you must use a
 
 \section{Using {\OKUSON} with Another Language}
 
-As mentioned in the Web page chapter~\ref{ch:webpages} the {\OKUSON} system
+As mentioned in the web page chapter~\ref{ch:webpages} the {\OKUSON} system
 can be adjusted to another language by translating the visible texts in all
 sample web pages (the \texttt{html.sample/\ldots tpl} files). 
 
@@ -3107,7 +3135,7 @@ which can be used for validating (or finding problems with) XHTML documents.
 But actually, all of our {\OKUSON} web pages are generated dynamically from
 \texttt{.tpl} template  files, which cannot be validated directly.  Therefore,
 we have included an on-the-fly XHTML-validation of HTML pages in the
-{\OKUSON} builtin web server. It does not refuse the delivery of non-valid
+{\OKUSON} built-in web server. It does not refuse the delivery of non-valid
 pages, but removes in that case the validator icon which may have been 
 put in the document via the \texttt{<ValidatorIcon/>} tag.
 

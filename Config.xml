@@ -206,10 +206,11 @@ def Grade(p,examnr):
      ==================================================================== -->
 
 <!-- The following is a list of IP ranges of hosts that may connect to the
-     server. The default is to allow  access from all hosts. The notation of 
-     an IP range is a pair of strings separated by '/'. The first entry is an 
-     IPv4 address of a subnet in dotted quad string notation and the second
-     the corresponding netmask in the same notation: -->
+     server (use one Range element for each range in the list). The
+     default is to allow access from all hosts. The notation of an IP
+     range is a pair of strings separated by '/'. The first entry is an
+     IPv4 address of a subnet in dotted quad string notation and the
+     second the corresponding netmask in the same notation: -->
 <AccessList>
 <Range>0.0.0.0/0.0.0.0</Range>
 </AccessList>
