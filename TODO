@@ -1,5 +1,4 @@
-Fragen:  - Header und Footer nur sinnvoll, wenn sie in den .tpl's vorkommen???
-         - handle_ExamRegStatus  enthält deutschen Text !???
+Fragen:  - handle_ExamRegStatus  enthält deutschen Text !???
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
@@ -13,14 +12,6 @@ Für Release:
   Tests siehe unten
   Korrektes runterfahren des servers?
   
-
-Testen:
-
-  persondata? and User? in config ausprobieren
-  Alle Fehlermeldungen einmal sehen.
-  Normalen Betrieb eines Semesters simulieren.
-  Alle Moeglichkeiten bei den Sheets ausprobieren.
-  Dateiheader checken.
 
 Vor naechstem Release:
 
@@ -99,7 +90,7 @@ M Dokumentation der neuen Features von LAFM
   <IfExamRegistered nr="1"> </IfExamRegistered>
     --> statt <ExamRegStatus />
     --> In Kommentaren Beispiele zur Benutzung in templates
-  Header und Footer in alle Seiten
+M!Header und Footer in alle Seiten
 M neue Randoms nochmal testen  
 M!Skript fuer selektieren und sortieren (allgemein)
 
