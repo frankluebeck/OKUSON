@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.73 2003/12/01 14:45:55 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.74 2004/02/20 10:46:13 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1967,9 +1967,11 @@ def ExportResults(req,onlyhead):
                     if p.homework.has_key(na):
                         homescore += p.homework[na].totalscore
             exams = []
+            exams1 = []
             for i in range(len(p.exams)):
                 if p.exams[i] == None or p.exams[i].totalscore < 0:
                     exams.append('-;0')
+                    exams1.append(0)
                 else:
                     if Config.conf['ExamGradingActive'] == 0 or \
                        Config.conf['ExamGradingFunction'] == None:
@@ -1986,11 +1988,12 @@ def ExportResults(req,onlyhead):
                                string.join(lines))
                             (msg,grade) = ('',0)
                     exams.append(str(p.exams[i].totalscore)+';'+str(grade))
+                    exams1.append(p.exams[i].totalscore)
             if Config.conf['GradingActive'] and \
                Config.conf['GradingFunction'] != None:
                 try:
                     (msg,grade) = Config.conf['GradingFunction']  \
-                                   (p,sl,mcscore,homescore,exams)
+                                   (p,sl,mcscore,homescore,exams1)
                 except:
                     etype, value, tb = sys.exc_info()
                     lines = traceback.format_exception(etype,value,tb)
