@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+# -*- coding: ISO-8859-1 -*-
+#
+#   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
+#
+#   $Id: start,v 1.3 2003/10/03 00:07:00 luebeck Exp $
+'''Start the OKUSON server and show logfile line until service is started.'''
 
 import sys,os,time
 

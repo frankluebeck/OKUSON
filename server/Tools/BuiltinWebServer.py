@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.3 2003/09/26 21:35:05 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.4 2003/10/03 00:07:00 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -238,7 +238,9 @@ access_list = [(socket.inet_aton('0.0.0.0'),socket.inet_aton('0.0.0.0'))]
 
 
 # Here is the RequestHandler class:
-
+# If this is set then text/html results are sent through an XHTML
+# validation.
+ValidateHTMLAsXHTML = 0
 class WebServerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     '''A RequestHandler class for our generic web server.'''
 
@@ -318,6 +320,20 @@ otherwise self.query is {}. self.path is the path.'''
         self.end_headers()
         if onlyhead:
             return
+       
+        # on the fly validation
+        if ValidateHTMLAsXHTML and res[0]['Content-type'] == 'text/html':
+            import XMLRewrite
+            if type(res[1]) != types.StringType:
+                try:
+                    res[1] = Utils.StringFile(res[1])
+                except:
+                    res[1] = ''
+                Utils.Error('Validating '+str(req.path))
+                if not XMLRewrite.ValidatingParser(res[1]):
+                    Utils.Error('NO SUCCESS!')
+
+        # send content away 
         if type(res[1]) == types.StringType:
             self.wfile.write(res[1])
             #print "Sent:\n",res[1]

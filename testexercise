@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# -*- coding: ISO-8859-1 -*-
+#
+#   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
+#
+#   $Id: testexercise,v 1.2 2003/10/03 00:07:00 luebeck Exp $
+'''Test exercise files (.tex and .auf), produce images corresponding
+to layout in OKUSON configuration.'''
 
 import sys,os,time
 

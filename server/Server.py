@@ -98,6 +98,9 @@ Data.MakeGroupStatistic()
 
 
 # Start our web server:
+# (switching XHTML validation of html files on.) 
+from Tools import BuiltinWebServer
+BuiltinWebServer.ValidateHTMLAsXHTML = 1
 
 import WebWorkers           # this initializes the web services
 WebWorkers.RegisterAllTpl()

@@ -10,11 +10,61 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: XMLRewrite.py,v 1.2 2003/10/03 00:07:00 luebeck Exp $'
 
-import os, types, pyRXPU, cStringIO
+import os, types, glob, pyRXPU, cStringIO
 import Utils
 
+
+# Here is a dictionary of .dtd and .ent file names as keys and a
+# corresponding system path as values. By default we use files in 
+# the 'dtds' subdirectory.
+DTD_ENT_FILES = {}
+
+def find_dtd_ent_locate():
+  '''Find all .dtd and .ent files on local machine via 'locate'.'''
+  global DTD_ENT_FILES
+  l = commands.getstatusoutput('locate "*.dtd"  "*.ent"')[1].split()
+  for a in l:
+    DTD_ENT_FILES[os.path.basename(a)] = a
+
+def find_dtd_ent_file(fname):
+  '''Read file where each line is the full path to a .dtd or .ent file 
+on the local machine.'''
+  global DTD_ENT_FILES
+  s = Utils.StringFile(fname).split()
+  for a in s:
+    b = a.strip()
+    if len(b) > 0:
+      DTD_ENT_FILES[os.path.basename(b)] = b
+
+def find_dtd_ent_default():
+  '''Cache paths to .dtd and .ent files in 'dtds' subdirectory.''' 
+  global DTD_ENT_FILES
+  try: 
+    path = os.path.dirname(os.path.abspath(__file__))
+    s = glob.glob(os.path.join(path, 'dtds/*.ent')) + \
+        glob.glob(os.path.join(path, 'dtds/*.dtd'))
+    for a in s:
+      DTD_ENT_FILES[os.path.basename(a)] = a
+  except:
+    pass
+
+# call the default by default (distributed with XHTML and OKUSON DTDs)
+find_dtd_ent_default()
+
+def eoCBfun(url):
+  '''A translator of .dtd or .ent URL's in DOCTYPE declarations to
+paths to local files, if available in DTD_ENT_FILES.
+
+Store frequently needed DTD's in the 'dtds' subdirectory, or call
+'find_dtd_ent_locate' (make sure there are no outdated versions on your
+system) or 'find_dtd_ent_file'.
+'''
+  bname = os.path.basename(url)
+  if DTD_ENT_FILES.has_key(bname) and os.path.exists(DTD_ENT_FILES[bname]):
+    return DTD_ENT_FILES[bname]
+  return url
 
 # This is a list of flags which allows to write back a file almost identical
 # to the input. Text before the first (header) and after the last tag
@@ -36,8 +86,8 @@ RewriteParserFlags = {
   'TrustSDD': 0,
   'ReturnList': 1}
 
-# Create a parser with above flags, see the pyRXP documentation for an
-# explanation of the format of the output of this parser 
+# Create a parser for rewriting with above flags, see the pyRXP documentation 
+# for an  explanation of the format of the output of this parser 
 # (we append the a section from that doc at the end of this file)
 Parser = pyRXPU.Parser()
 for k in RewriteParserFlags.keys():
@@ -51,6 +101,73 @@ def ParseFile(fname, reporterror = Utils.Error):
   except pyRXPU.error, e:
       reporterror("XML parser error:\n\n"+str(e))
       raise
+  return t
+
+# And another list for use for validation with fully resolved of entities
+# and info on processing instructions and comments.
+ValidatingParserFlags = {
+    'NormaliseAttributeValues': 1,
+    'WarnOnRedefinitions': 1,
+    'ExpandCharacterEntities': 1,
+    'CaseInsensitive': 0,
+    'XMLLessThan': 0,
+    'IgnoreEntities': 0,
+    'MergePCData': 1,
+    'ErrorOnUnquotedAttributeValues': 1,
+    'XMLPredefinedEntities': 1,
+    'ReturnCDATASectionsAsTuples': 0,
+    'MaintainElementStack': 1,
+    'ErrorOnUndefinedElements': 1,
+    'AllowUndeclaredNSAttributes': 0,
+    'XMLExternalIDs': 1,
+    'IgnorePlacementErrors': 0,
+    'XMLMiscWFErrors': 1,
+    'ReturnList': 1,
+    'ErrorOnValidityErrors': 1,
+    'AllowMultipleElements': 0,
+    'XMLNamespaces': 0,
+    'ProcessDTD': 1,
+    'ErrorOnBadCharacterEntities': 1,
+    'ReturnComments': 1,
+    'XMLStrictWFErrors': 1,
+    'ExpandEmpty': 0,
+    'NoNoDTDWarning': 0,
+    'XMLSyntax': 1,
+    'ReturnDefaultedAttributes': 1,
+    'ReturnProcessingInstructions': 1,
+    'ErrorOnUndefinedAttributes': 1,
+    'TrustSDD': 1,
+    'MakeMutableTree': 0,
+    'SimpleErrorFormat': 0,
+    'ReturnNamespaceAttributes': 0,
+    'RelaxedAny': 0,
+    'Validate': 1,
+    'XMLSpace': 0,
+    'ExpandGeneralEntities': 1,
+    'ErrorOnUndefinedEntities': 1}
+
+
+# Create a validating parser with above flags, see the pyRXP documentation 
+# for an explanation of the format of the output of this parser 
+# (we append the a section from that doc at the end of this file)
+ValidatingParser = pyRXPU.Parser(eoCB = eoCBfun)
+for k in ValidatingParserFlags.keys():
+  setattr(ValidatingParser, k, ValidatingParserFlags[k])
+
+# call parser with file name
+def ValidateXMLFile(fname, reporterror = Utils.Error):
+  global lastpe
+  s = Utils.StringFile(fname, reporterror=reporterror)
+  t = None
+  try:
+      t = ValidatingParser(s, srcName = fname)
+  except pyRXPU.error, e:
+      lines = str(e).split('\n')
+      for l in lines:
+          if l[:12] != "Parse Failed":
+               Utils.Error(l, prefix = '')
+      Utils.Error('No success! Correct shown error and try again.', prefix='')
+      return None
   return t
 
 
