@@ -27,10 +27,6 @@ M!Scheinanfertigung   --> Hilfsskript dokumentieren
 F!Beim Einlesen von Webtemplates filename und timestamp speichern und 
      beim Seitenabruf checken, ob neueres da, im Zweifel einlesen.
      Bei Fehlern altes halten
-F Person-Data-Seiten generisch mit weiterer Endung 
-     (etwa .tplpers, oder proc.inst.) 
-     entsprechend mit sheets, results
-     ==> Benutzer kann beliebige Seiten neu machen.
 F! beliebige Anzahl persondata fuer Benutzer konfigurierbar
 !     --> "persondata" ist dictionary im Person object
 !         Diese dict-Daten werden in einen String verpackt in person.dat
@@ -103,3 +99,7 @@ Spaeter:
   Aufbau des Programms mit Erklaerung Locking dokumentieren
   alle Werte aus einem query speichern statt nur erster?
   Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+  Person-Data-Seiten generisch mit weiterer Endung 
+       (etwa .tplpers, oder proc.inst.) 
+       entsprechend mit sheets, results
+       ==> Benutzer kann beliebige Seiten neu machen.

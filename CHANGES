@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.72 2004/03/09 13:33:23 neunhoef Exp $
+##  $Id: CHANGES,v 1.73 2004/03/09 14:22:13 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.0-fix3 to 1.1
 
+* Generic and easy to extend export function in admin menue via format string, 
+  accompanied by a script 'scripts/sortselect.py' for sorting and filtering.
 * 'testexercise' now displays 'Overfull \hbox'es from LaTeX log file.
 * New switch <IndividualSheets> in Config.xml and <If[No]IndividualSheets>
   for .tpl files. (Switch defaults to 1, if set to 0,  no password is needed 
