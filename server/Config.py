@@ -282,6 +282,12 @@ into a usable form. Some values are changed into other data types.'''
             Utils.Error('Cannot parse IP range for AdministrationAccessList: '+
                         s)
             FailMiserably()
+    # Give a default for Header:
+    if not(conf.has_key('Header')):
+        conf['Header'] = ''
+    # Give a default for Footer:
+    if not(conf.has_key('Footer')):
+        conf['Footer'] = ''
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')
