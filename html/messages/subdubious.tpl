@@ -50,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: subdubios.tpl,v 1.1 2005/04/02 20:40:23 neunhoef Exp $ -->
+     $Id: subdubious.tpl,v 1.1 2005/04/04 11:10:43 neunhoef Exp $ -->
 
