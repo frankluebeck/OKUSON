@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.7 2004/03/05 08:24:34 luebeck Exp $'
+CVS = '$Id: AsciiData.py,v 1.8 2004/03/05 08:40:51 luebeck Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -83,7 +83,10 @@ with the delimiter argument.
 def DictLine(l,delimiter = ','):
     '''Returns a dictionary, reverses LineDict.
 '''
+    if len(l) == 0: return {}
     t = TupleLine(l, delimiter)
+    if len(t) % 2 == 1:
+        t.append('')
     res = {}
     for i in xrange(0, len(t), 2):
         res[t[i]] = t[i+1]
