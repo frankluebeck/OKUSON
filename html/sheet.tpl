@@ -29,8 +29,10 @@
     </p>
 
     <form action="/SubmitSheet" method="post">
+     <div>
      <HiddenIdOfPerson />
      <HiddenNameOfSheet />
+     </div>
      <WebSheetTable />
      <IfOpen>
       <p>Passwort:
@@ -59,5 +61,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: sheet.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: sheet.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
 

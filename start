@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: start,v 1.3 2003/10/03 00:07:00 luebeck Exp $
+#   $Id: start,v 1.4 2003/10/04 23:03:08 luebeck Exp $
 '''Start the OKUSON server and show logfile line until service is started.'''
 
 import sys,os,time
@@ -44,5 +44,7 @@ while 1:
             elif l == 'Aborting.\n':
                 sys.stdout.write(l)
                 sys.exit(0)
+            else:
+                sys.stdout.write(l)
     time.sleep(0.5)
 

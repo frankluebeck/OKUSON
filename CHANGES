@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.6 2003/10/01 22:46:48 luebeck Exp $
+##  $Id: CHANGES,v 1.7 2003/10/04 23:03:08 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -28,6 +28,14 @@ Changes from 1.0-pre2  to  1.0-pre3
   access to not yet open sheets.
 * sensible messages for 'start' when server already running and for 'stop'
   when no server is running.
+* introduced on the fly validation of delivered XHTML pages to the 
+  BuiltinWebServer, in OKUSON's Server nonvalid files are written to 
+  temporary directories and in that case the validator icon is removed.
+  Corrected a few errors detected by this in html.sample directory:
+    adminlogin.tpl, generalinfo.tpl, results.tpl, sheet.tpl
+* improved the <Results > element used in html/results.tpl, now the
+  consideration of each of the interactive resp. homework exercises can 
+  can be switched off.
 
 
 Changes from 1.0-pre1  to  1.0-pre2

@@ -91,6 +91,7 @@ Nachholklausur geben (Termin steht noch nicht fest).</p>
 <p>Auswertung der Klausur: Es wird in jedem der zwei Klausurteile sowie in
 der Nachholklausur jeweils 50 Punkte geben. Die Klausur gilt als bestanden,
 falls mindestens eine der folgenden Bedingungen erfüllt wird.
+</p>
 <ul>
 <li>Sie haben in den beiden Klausurteilen zusammen mindestens 50 Punkte (und
 brauchen damit die Nachholklausur nicht mitschreiben).</li>
@@ -100,7 +101,6 @@ brauchen damit die Nachholklausur nicht mitschreiben).</li>
 <li>Sie haben in der Nachholklausur und <strong>einem</strong> der
 vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
 </ul>
-</p>
     <hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
@@ -116,5 +116,5 @@ vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: generalinfo.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: generalinfo.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
 

@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.4 2003/10/03 00:07:00 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.5 2003/10/04 23:03:08 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -239,8 +239,14 @@ access_list = [(socket.inet_aton('0.0.0.0'),socket.inet_aton('0.0.0.0'))]
 
 # Here is the RequestHandler class:
 # If this is set then text/html results are sent through an XHTML
-# validation.
+# validation. If a result is not valid, the function NoValidFunction
+# is called with the request, the result (header dict, content as string) 
+# and the exception e from the parser.
 ValidateHTMLAsXHTML = 0
+def NoValidFunction(req, res, e):
+    # default behaviour is to write an error message
+    Utils.Error(str(e))
+
 class WebServerRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     '''A RequestHandler class for our generic web server.'''
 
@@ -323,15 +329,22 @@ otherwise self.query is {}. self.path is the path.'''
        
         # on the fly validation
         if ValidateHTMLAsXHTML and res[0]['Content-type'] == 'text/html':
-            import XMLRewrite
+            import XMLRewrite, pyRXPU, tempfile
             if type(res[1]) != types.StringType:
                 try:
                     res[1] = Utils.StringFile(res[1])
                 except:
                     res[1] = ''
-                Utils.Error('Validating '+str(req.path))
-                if not XMLRewrite.ValidatingParser(res[1]):
-                    Utils.Error('NO SUCCESS!')
+            Utils.Error('Validating '+str(self.path), prefix='Check: ')
+            t = None
+            try:
+                t = XMLRewrite.ValidatingParser(res[1])
+            except pyRXPU.error, e:
+                res = [res[0], res[1]]
+                NoValidFunction(self, res, e)
+                res = (res[0], res[1])
+            if not t:
+                Utils.Error('Validation: NO SUCCESS!')
 
         # send content away 
         if type(res[1]) == types.StringType:

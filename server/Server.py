@@ -5,7 +5,7 @@
 
 '''This is the main executable for the OKUSON server.'''
 
-import os,sys,time,tempfile,traceback,locale,signal
+import os,sys,string,time,tempfile,traceback,locale,signal
 
 import Config         # this automatically determines our home dir
                       # but does not read the configuration file
@@ -101,6 +101,18 @@ Data.MakeGroupStatistic()
 # (switching XHTML validation of html files on.) 
 from Tools import BuiltinWebServer
 BuiltinWebServer.ValidateHTMLAsXHTML = 1
+def NoValidFunction(req, res, e):
+    # We save the result in a temporary directory as well as the exception
+    # message. Then we remove the ValidatorIcon. 
+    tmp = tempfile.mktemp()
+    os.mkdir(tmp)
+    fn = 'novalid_'+os.path.basename(req.path)
+    Utils.FileString(os.path.join(tmp, fn), res[1])
+    Utils.Error('Saved in dir '+tmp, prefix = 'See: ')
+    Utils.FileString(os.path.join(tmp, 'message'), str(e))
+    # Remove ValidatorIcon
+    res[1] = string.replace(res[1], WebWorkers.ValidatorIconText, '')
+BuiltinWebServer.NoValidFunction = NoValidFunction
 
 import WebWorkers           # this initializes the web services
 WebWorkers.RegisterAllTpl()

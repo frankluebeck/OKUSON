@@ -25,11 +25,11 @@
     Ansonsten bleibt Ihnen nichts übrig, als bei jedem einzelnen Schritt
     das Administratorpasswort einzugeben.</p>
 
-    <p><form action="/AdminLogin" method="post">
-     Administratorpasswort:
+    <form action="/AdminLogin" method="post">
+     <p>Administratorpasswort:
      <input type="password" size="16" maxlength="16" name="passwd" value="" />
      <input type="submit" name="action" value="Login" />
-    </form></p>
+    </p></form>
      
     <hr />
 
@@ -46,5 +46,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminlogin.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: adminlogin.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
 

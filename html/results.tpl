@@ -26,14 +26,17 @@ schriftlichen Aufgaben werden nicht regelm‰ﬂig erfasst, die wissen Sie
 ja von den korrigierten Zetteln.):</p>
 
     <table>
-    <tr><th>‹bungsblatt</th><th>Multiple-Choice-Teil</th>
-        <th>Schriftlicher Teil</th></tr>
-
+<!-- Adjust header and <Results> attributes -->
+    <tr><th>‹bungsblatt</th><th>Interaktive Aufgaben</th>
+        <th>Schriftliche Aufgaben</th></tr>
+<!-- Specify "false" as value if you don't want corresponding info.
+     Attributes are optional and default to "true".  
+    <Results interactive="true" homework="false" /> -->
     <Results />
 
     </table>
 
-    <br />
+    <p><br /></p>
 
     <p>Sie haben im Moment insgesamt <Totalscore /> Punkte.</p>
 
@@ -56,5 +59,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank L¸beck and Max Neunhˆffer
-     $Id: results.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
 

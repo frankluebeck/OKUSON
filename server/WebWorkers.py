@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.7 2003/10/01 15:47:56 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.8 2003/10/04 23:03:08 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -31,6 +31,10 @@ XMLRewrite.PreparsedXMLWebResponse.begin = \
 
 '''
 
+ValidatorIconText = '''<a href="http://validator.w3.org/check/referer">
+<img src="/images/valid-xhtml10.png" alt="Valid XHTML 1.0!" 
+     height="31" width="88" /></a>
+'''
 # Make the main site dictionary available here:
 
 Site = BuiltinWebServer.Site
@@ -84,10 +88,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         for opt in Config.conf['PossibleStudies']:
             out.write('  <option>'+opt+'</option>\n')
     def handle_ValidatorIcon(self,node,out):
-        out.write('''<a href="http://validator.w3.org/check/referer">
-<img src="/images/valid-xhtml10.png" alt="Valid XHTML 1.0!" 
-     height="31" width="88" /></a>
-''')
+        out.write(ValidatorIconText)
     def handle_GroupSize(self,node,out):
         if node[1] == None or not(node[1].has_key('number')):
             Utils.Error('Found <GroupSize /> tag without "number" attribute. '
@@ -140,6 +141,11 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                       '<input type="password" size="16" maxlength="16" '
                       'name="passwd" value="" /> or \n'
                       '<a href="/adminlogin.html">login here.</a>\n')
+    def handle_OKUSONServerStatus(self,node,out):
+        if currentcookie != None:
+            out.write('There is somebody logged in. ')
+        else:
+            out.write('Nobody logged in. ')
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
        for nr,name,s in l:
@@ -389,6 +395,22 @@ one Person object as data.'''
         out.write('<input size="30" maxlength="80" name="wishes" value="'+
                   CleanQuotes(self.p.wishes)+'" />')
     def handle_Results(self,node,out):
+        # Check attributes if interactive and/or homework exercises are
+        # considered (not given attributes mean 'true').
+        if node[1] and node[1].has_key('interactive'):
+            if node[1]['interactive'] != 'false':
+                ia = 1
+            else:
+                ia = 0
+        else:
+            ia = 1
+        if node[1] and node[1].has_key('homework'):
+            if node[1]['homework'] != 'false':
+                hw = 1
+            else:
+                hw = 0
+        else:
+            hw = 1
         l = Exercises.SheetList()
         for nr,name,s in l:
             if time.time() > s.opento:   # sheet already closed 
@@ -400,10 +422,12 @@ one Person object as data.'''
                     homescore = str(self.p.homework[name].totalscore)
                 else:
                     homescore = '?'
-                out.write('<tr><td align="center">%s</td>'
-                          '<td align="center">%s</td>'
-                          '<td align="center">%s</td></tr>\n' %
-                          (name,mcscore,homescore))
+                out.write('<tr><td align="center">'+name+'</td>')
+                if ia:
+                    out.write('<td align="center">'+mcscore+'</td>')
+                if hw:
+                    out.write('<td align="center">'+homescore+'</td>')
+                out.write('</tr>\n')  
     def handle_Totalscore(self,node,out):
         l = Exercises.SheetList()
         totalscore = 0
@@ -730,10 +754,10 @@ submission as well as the results.'''
     i = 0
     while i < len(l) and l[i][1] != sheetname: 
         i += 1
+    s = l[i][2]   # the sheet in question
     if i >= len(l) or (not(iamadmin) and s.openfrom and 
                        time.time() < s.openfrom):
         return Delegate('/errors/unknownsheet.html',req,onlyhead)
-    s = l[i][2]   # the sheet in question
 
     # Now check, whether it is still possible to submit this sheet:
     if time.time() > s.opento and not(iamadmin):
