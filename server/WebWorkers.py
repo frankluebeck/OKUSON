@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.21 2003/10/08 09:29:30 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.22 2003/10/08 14:16:15 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -51,6 +51,10 @@ currentcookie = None
 #    and sends out a page of the first kind.
 PPXML = XMLRewrite.PreparsedXMLWebResponse
 FunWR = BuiltinWebServer.FunctionWebResponse
+
+# This allows access to the Site dictionary, see at the end of the file
+# for the corresponding release statement:
+BuiltinWebServer.SiteLock.acquire()
 
 #############################################################################
 #
@@ -342,6 +346,8 @@ and either send an error message or a report.'''
     # At last write out a sensible response:
     return Delegate('/messages/regsuccess.html',req,onlyhead)
 
+Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
+
 class EH_withPersData_class(EH_Generic_class):
     '''This class exists to produce handlers that can fill in personal data
 into a web sheet. It has some additional non-generic methods and holds
@@ -543,6 +549,7 @@ there and send a form to display and change the saved data.'''
     currentHandler = EH_withPersData_class(p)
     return Delegate('/regchange2.html',req,onlyhead,currentHandler)
 
+Site['/QueryRegChange'] = FunWR(QueryRegChange)
 
 def SubmitRegChange(req,onlyhead):
     '''This function is called when a user submits a registration. It will
@@ -650,6 +657,7 @@ and either send an error message or a report.'''
     # At last write out a sensible response:
     return Delegate('/messages/regchsuccess.html',req,onlyhead)
 
+Site['/SubmitRegChange'] = FunWR(SubmitRegChange)
 
 class EH_withPersSheet_class(EH_withPersData_class):
     '''This class exists to produce handlers that can fill in personal data
@@ -692,8 +700,6 @@ a Person object and a Sheet object as data.'''
                                  self.p.mcresults[self.s.name])
         else:
             self.s.WebSheetTable(self.r,SeedFromId(self.p.id),out,None)
-    def handle_Timestamp(self,node,out):
-        out.write(time.ctime())
     def handle_OpenTo(self,node,out):
         out.write(LocalTimeString(self.s.opento))
     def handle_OpenFrom(self,node,out):
@@ -802,6 +808,7 @@ def QuerySheet(req,onlyhead):
     else:
         return Delegate('/errors/invalidformat.html', req, onlyhead)
 
+Site['/QuerySheet'] = FunWR(QuerySheet)
 
 def SubmitSheet(req,onlyhead):
     '''This function accepts a submission for a sheet. It checks the
@@ -845,6 +852,8 @@ submission as well as the results.'''
         handler.iamadmin = iamadmin
         return Delegate('/messages/subsuccess.html',req,onlyhead,handler)
 
+Site['/SubmitSheet'] = FunWR(SubmitSheet)
+
 def QueryResults(req,onlyhead):
     '''This function is called when a user asks to see his results.
 It will work on the submitted form data, check whether a registration is
@@ -866,6 +875,7 @@ there and send a form to display and change the saved data.'''
     currentHandler = EH_withPersData_class(p)
     return Delegate('/results.html',req,onlyhead,currentHandler)
 
+Site['/QueryResults'] = FunWR(QueryResults)
 
 #######################################################################
 # This is for tutoring group specific pages:
@@ -920,6 +930,57 @@ def GroupInfo(req, onlyhead):
     
 Site['/GroupInfo'] = FunWR(GroupInfo)
 
+def ExamRegistration(req, onlyhead):
+    # First check whether the id is valid:
+    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    if not(Config.conf['IdCheckRegExp'].match(id)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(id)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[id]
+    iamadmin = Authenticate(p,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    # Now check whether we have registration or un-registration:
+    if req.query.get('anoderab',['an'])[0] == 'an':
+        anmeld = 1
+    else:
+        anmeld = 0
+
+    # Check number of exam:
+    try:
+        examnr = int(req.query.get('examnr',['0'])[0])
+        if examnr < 0: examnr = 0
+        elif examnr >= 24: examnr = 0
+    except:
+        examnr = 0
+
+    # Now put information into database:
+    timestamp = int(time.time())
+    line = AsciiData.LineTuple( (id,str(examnr),str(anmeld),str(timestamp)) )
+    Data.Lock.acquire()
+    try:
+        Data.examregdesc.AppendLine(line)
+    except:
+        Data.Lock.release()
+        Utils.Error('Failed to register person for exam:\n'+line)
+        return Delegate('/errors/fatal.html',req,onlyhead)
+    while len(p.exams) < examnr+1: p.exams.append(None)
+    if p.exams[examnr] == None:
+        p.exams[examnr] = Data.Exam()
+    p.exams[examnr].timestamp = timestamp
+    p.exams[examnr].registration = anmeld
+    Data.Lock.release()
+
+    # At last write out a sensible response:
+    return Delegate('/messages/examregsucc.html',req,onlyhead)
+
+Site['/ExamRegistration'] = FunWR(ExamRegistration)
+
 #######################################################################
 # The following is for the administrator's pages:
 
@@ -958,17 +1019,16 @@ def AdminLogin(req,onlyhead):
     header['Location'] = '/adminmenu.html'
     return (header,content)
 
-# The following was just for testing purposes:
-#def AdminTest(req,onlyhead):
-#    if AuthenticateAdmin(req,onlyhead) < 0:
-#        return Delegate('/errors/notloggedin.html',req,onlyhead)
-#    else:
-#        return Delegate('/adminmenu.html',req,onlyhead)
+Site['/AdminLogin'] = FunWR(AdminLogin)
+Site['/AdminLogin'].access_list = Config.conf['AdministrationAccessList']
 
 def AdminLogout(req,onlyhead):
     global currentcookie
     currentcookie = None
     return Delegate('/adminlogin.html',req,onlyhead)
+
+Site['/AdminLogout'] = FunWR(AdminLogout)
+Site['/AdminLogout'].access_list = Config.conf['AdministrationAccessList']
 
 def Restart(req,onlyhead):
     '''If administrator can authorize, the server is restarted.'''
@@ -980,6 +1040,9 @@ def Restart(req,onlyhead):
     os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
     return Delegate('/adminrestarted.html',req,onlyhead)
     
+Site['/Restart'] = FunWR(Restart)
+Site['/Restart'].access_list = Config.conf['AdministrationAccessList']
+
 def Shutdown(req,onlyhead):
     '''If administrator can authorize, the server is shut down.'''
     if AuthenticateAdmin(req,onlyhead) < 0:
@@ -988,6 +1051,9 @@ def Shutdown(req,onlyhead):
     os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
     return Delegate('/admindown.html',req,onlyhead)
     
+Site['/Shutdown'] = FunWR(Shutdown)
+Site['/Shutdown'].access_list = Config.conf['AdministrationAccessList']
+
 def NormalizeWishes(w):
     '''Normalizes a wishlist. First the string is split at space and commas,
        then only those chunks are taken, that are a valid ID of some
@@ -1094,6 +1160,10 @@ def ExportPeopleForGroups(req,onlyhead):
         'Last-modified':req.date_time_string(time.time())}
     return (head,st)
 
+Site['/ExportPeopleForGroups'] = FunWR(ExportPeopleForGroups)
+Site['/ExportPeopleForGroups'].access_list = \
+        Config.conf['AdministrationAccessList']
+
 def ExportPeople(req,onlyhead):
     '''Export the list of all participants, sorted by ID with all their
        personal data plus their group number (may be 0). 
@@ -1108,7 +1178,7 @@ def ExportPeople(req,onlyhead):
     else:
         l.sort()
     out = cStringIO.StringIO()
-    out.write('# All Participants:\n')
+    out.write('# All participants:\n')
     out.write('# ID:name:fname:semester:stud:passwd:email:wishes:' 
               'pdata1:...:pdata9:group\n')
     out.write('# Time and date of export: '+LocalTimeString()+'\n')
@@ -1129,12 +1199,60 @@ def ExportPeople(req,onlyhead):
             'Last-modified':req.date_time_string(time.time())}
     return (head,st)
 
+Site['/ExportPeople'] = FunWR(ExportPeople)
+Site['/ExportPeople'].access_list = Config.conf['AdministrationAccessList']
+
+def ExportExamParticipants(req,onlyhead):
+    '''Export list of participants for exam.'''
+    global sorttable
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+
+    examnr = req.query.get('examnr',['0'])[0]
+    try:
+        examnr = int(examnr)
+        if examnr < 0: examnr = 0
+        elif examnr >= 24: examnr = 0
+    except:
+        examnr = 0
+        
+    l = Data.people.keys()
+    sortedby = req.query.get('sortedby',[''])[0]
+    if sorttable.has_key(sortedby):
+        l.sort(sorttable[sortedby])
+    else:
+        l.sort()
+
+    out = cStringIO.StringIO()
+    out.write('# All participants of exam number '+str(examnr)+':\n')
+    out.write('# ID:name:fname:timestamp\n')
+    out.write('# Time and date of export: '+LocalTimeString()+'\n')
+    for k in l:
+        p = Data.people[k]
+        if len(p.exams) > examnr and p.exams[examnr] != None and \
+           p.exams[examnr].registration == 1:
+            out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                      LocalTimeString(p.exams[examnr].timestamp)+'\n')
+    st = out.getvalue()
+    out.close()
+    head = {'Content-type':'text/okuson',
+            'Content-Disposition':'attachment; filename="examlist.txt"',
+            'Last-modified':req.date_time_string(time.time())}
+    return (head,st)
+
+Site['/ExportExamParticipants'] = FunWR(ExportExamParticipants)
+Site['/ExportExamParticipants'].access_list = \
+      Config.conf['AdministrationAccessList']
+
 def DisplaySheets(req,onlyhead):
     '''Allow the administrator after authentication to see future sheets.'''
     if AuthenticateAdmin(req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     return Adminexquery.getresult(req, onlyhead)
     
+Site['/DisplaySheets'] = FunWR(DisplaySheets)
+Site['/DisplaySheets'].access_list = Config.conf['AdministrationAccessList']
+
 def SendMessage(req,onlyhead):
     '''Take the message from the entry field and send it to participant with
        the given id. This means that this message will appear on the result
@@ -1168,6 +1286,9 @@ def SendMessage(req,onlyhead):
     Data.Lock.release()
     return Delegate('/adminmenu.html',req,onlyhead)
 
+Site['/SendMessage'] = FunWR(SendMessage)
+Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
+
 def DeleteMessages(req,onlyhead):
     '''Show all private messages of a given participant and allow to delete
        some of them.'''
@@ -1184,6 +1305,9 @@ def DeleteMessages(req,onlyhead):
     p = Data.people[msgid]
     currentHandler = EH_withPersData_class(p)
     return Delegate('/showmessages.html',req,onlyhead,currentHandler)
+
+Site['/DeleteMessages'] = FunWR(DeleteMessages)
+Site['/DeleteMessages'].access_list = Config.conf['AdministrationAccessList']
 
 def DeleteMessagesDowork(req,onlyhead):
     '''Called from the display of messages of one person.'''
@@ -1217,6 +1341,10 @@ def DeleteMessagesDowork(req,onlyhead):
     return Delegate('/adminmenu.html',req,onlyhead)
 
 
+Site['/DeleteMessagesDowork'] = FunWR(DeleteMessagesDowork)
+Site['/DeleteMessagesDowork'].access_list = \
+        Config.conf['AdministrationAccessList']
+
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
@@ -1225,37 +1353,8 @@ def AdminWork(req,onlyhead):
         return ({'Content-type': 'text/plain'}, str(BuiltinWebServer.PID))
     return Delegate('/errors/nothingtosee.html',req,onlyhead)
 
-BuiltinWebServer.SiteLock.acquire()
-Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
-Site['/QueryRegChange'] = FunWR(QueryRegChange)
-Site['/SubmitRegChange'] = FunWR(SubmitRegChange)
-Site['/QuerySheet'] = FunWR(QuerySheet)
-Site['/SubmitSheet'] = FunWR(SubmitSheet)
-Site['/QueryResults'] = FunWR(QueryResults)
-Site['/AdminLogin'] = FunWR(AdminLogin)
-Site['/AdminLogin'].access_list = Config.conf['AdministrationAccessList']
-Site['/AdminLogout'] = FunWR(AdminLogout)
-Site['/AdminLogout'].access_list = Config.conf['AdministrationAccessList']
 Site['/AdminWork'] = FunWR(AdminWork)
 Site['/AdminWork'].access_list = Config.conf['AdministrationAccessList']
-Site['/Restart'] = FunWR(Restart)
-Site['/Restart'].access_list = Config.conf['AdministrationAccessList']
-Site['/Shutdown'] = FunWR(Shutdown)
-Site['/Shutdown'].access_list = Config.conf['AdministrationAccessList']
-Site['/ExportPeopleForGroups'] = FunWR(ExportPeopleForGroups)
-Site['/ExportPeopleForGroups'].access_list = \
-        Config.conf['AdministrationAccessList']
-Site['/ExportPeople'] = FunWR(ExportPeople)
-Site['/ExportPeople'].access_list = Config.conf['AdministrationAccessList']
-Site['/DisplaySheets'] = FunWR(DisplaySheets)
-Site['/DisplaySheets'].access_list = Config.conf['AdministrationAccessList']
-Site['/SendMessage'] = FunWR(SendMessage)
-Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
-Site['/DeleteMessages'] = FunWR(DeleteMessages)
-Site['/DeleteMessages'].access_list = Config.conf['AdministrationAccessList']
-Site['/DeleteMessagesDowork'] = FunWR(DeleteMessagesDowork)
-Site['/DeleteMessagesDowork'].access_list = \
-        Config.conf['AdministrationAccessList']
 
 
 # We register all the other .tpl files in our tree with EH_Generic handlers:
@@ -1278,9 +1377,14 @@ def visitor(arg,dirname,names):
                     Utils.Error('Loading of '+ourpath+'.tpl was not '
                                 'successful!')
 
+# Release the lock:
+BuiltinWebServer.SiteLock.release()
+
+
 Adminexquery = None
 def RegisterAllTpl():
     global Adminexquery
+    BuiltinWebServer.SiteLock.acquire()
     os.path.walk(DocRoot,visitor,None)
     # Mark the administrator's pages:
     Site['/adminlogin.html'].access_list=Config.conf['AdministrationAccessList']
@@ -1296,9 +1400,9 @@ def RegisterAllTpl():
     for r in Config.conf['Resolutions']:
         Site['/images/dpi'+str(r)] = Site['/index.html']
         Site['/images/dpi'+str(r)+'/'] = Site['/index.html']
+    BuiltinWebServer.SiteLock.release()
 
 
-BuiltinWebServer.SiteLock.release()
 BuiltinWebServer.WebResponse.access_list = Config.conf['AccessList']
 BuiltinWebServer.access_list = Config.conf['AccessList']
 

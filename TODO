@@ -12,9 +12,6 @@ UTILITIES zur Administration:
   Statistik ueber Uebungsblaetter
   Statistik ueber Resultate
 
-  ??? Validierungsskript für XML und XHTML Dateien. On the fly Validierung
-      von XHTML.
-     --> eigentlich erledigt durch automatische Validierung vor Auslieferung
   ???Visitor-IDs getrennt, die nicht in Statistik eingehen
      --> eigentlich nicht notwendig
 

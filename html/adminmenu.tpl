@@ -63,6 +63,22 @@
       </select>
     </p></form>
          
+    <form action="/ExportExamParticipants" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Export participants of exam number
+    <input size="4" maxlength="2" name="examnr" value="" />
+    sorted by
+      <select name="sortedby">
+        <option selected="selected">ID</option>
+        <option>name</option>
+        <option>Studiengang</option>
+        <option>semester</option>
+        <option>length of wishlist</option>
+        <option>group and ID</option>
+        <option>group and name</option>
+      </select>
+    </p></form>
+
     <h3>Special Access for Administrators:</h3>
 
     <form action="/DisplaySheets" method="post">
@@ -97,5 +113,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.9 2003/10/08 09:29:30 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.10 2003/10/08 14:16:15 neunhoef Exp $ -->
 

@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.6 2003/10/06 22:44:18 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.7 2003/10/08 14:16:15 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -137,11 +137,11 @@ homeworkdesc = AsciiData.FileDescription(Config.conf['HomeworkFile'],people,
 
 class Exam(Utils.WithNiceRepr):
     '''Objects in this class store exam information.'''
-    registration = 1          # if true, person has registered for exam
-    totalscore = 0            # totalscore
-    maxscore = 0              # maximal score
-    scores = ""               # scores for separate parts of exam
-
+    registration = 1    # if true, person has registered for exam
+    totalscore = 0      # totalscore
+    maxscore = 0        # maximal score
+    scores = ""         # scores for separate parts of exam
+    timestamp = 0       # timestamp of registration, in seconds since 1970
 
 examregdesc = AsciiData.FileDescription(Config.conf['ExamRegistrationFile'],
                                         people,
@@ -149,7 +149,8 @@ examregdesc = AsciiData.FileDescription(Config.conf['ExamRegistrationFile'],
     "STORE", 0, "id",           "STRING",
     "ENTER", 0, "exams",        "VECT",
     "ENTER", 1, "KEY",          Exam,
-    "STORE", 2, "registration", "INT" ) )
+    "STORE", 2, "registration", "INT",
+    "STORE", 3, "timestamp",    "INT" ) )
 
 examdesc = AsciiData.FileDescription(Config.conf['ExamFile'],people,
   ( "ENTER", 0, "KEY",          Person,

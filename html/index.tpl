@@ -62,6 +62,17 @@
 
     </ul>
 
+    <!-- activate when needed:
+    <h3>Sonstiges</h3>
+    <ul>
+   
+      <li>
+        <a href="examregistration.html">Klausuranmeldung</a>
+      </li>
+
+    </ul>
+    -->
+
     <hr />
 
     <p class="foot">Bei Fragen wenden Sie sich bitte an: <br />
@@ -77,5 +88,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.2 2003/10/06 22:38:12 luebeck Exp $ -->
+     $Id: index.tpl,v 1.3 2003/10/08 14:16:15 neunhoef Exp $ -->
 
