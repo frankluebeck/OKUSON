@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.82 2004/10/05 22:31:47 luebeck Exp $
+##  $Id: CHANGES,v 1.83 2004/10/06 10:55:21 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,10 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix1 to 1.1-fix2
 
+* Amended the manual with respect of TEXT elements in EXERCISE elements:
+  Only a prefix and a postfix to all questions are considered, not TEXTs
+  between questions, even for the case order="f". (Sorry Axel!)
+  The behaviour of OKUSON was not changed, only the documentation changed.
 * Added a warning that OKUSON is not running with the non-official version
   2.3+ of python shipped with Suse Linux 9.0.
 * Fixed the handling of LaTeX texts in exercises to fix a bug reported

@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.65 2004/10/05 22:31:47 luebeck Exp $
+% $Id: manual.tex,v 1.66 2004/10/06 10:55:21 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1222,9 +1222,14 @@ explanations include the rules given in the document type definition.
 The \texttt{EXERCISE} element  marks one exercise. Its content is a sequence
 of \texttt{ANSWERS}, \texttt{TEXT} and \texttt{QUESTION} elements. 
 
-\texttt{TEXT} elements are used for text appearing before (and maybe between 
-or after) the actual questions of the exercise. Their content consists of
-{\LaTeX} code.
+\texttt{TEXT} elements are used for text appearing before
+the actual questions of the exercise. Their content consists of
+{\LaTeX} code. \texttt{TEXT} elements are considered only, if they are in
+the first or last position within the \texttt{EXERCISE} element. A possible
+first \texttt{TEXT} element is used as prefix before all questions of this
+exercise and a possible last \texttt{TEXT} element is used as a postfix
+after all questions of this exercise. All other \texttt{TEXT} elements are
+silently ignored. This behaviour might be changed in future versions.
 
 There can be at most one \texttt{ANSWERS} element. If it is there it
 describes a default for the answers to all questions of this exercise.

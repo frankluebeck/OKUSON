@@ -7,7 +7,7 @@ Interessante Ergebnisse des Browser-Checks:
 Jetzt:
  >M Versionsnummer als Tag  ==>  auf default-website anzeigen
  >M Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
-  M Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
+ >M Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
       im Widerspruch zur Doku ignoriert)
   M Cross-Site-Scripting problem?
  >M Fehler berichtet von Daniel: Whitespace bei .tex am Ende wird entfernt,
@@ -28,3 +28,6 @@ Spaeter:
   Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
     (Anfrage von Christoph Schweigert)
   Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
+  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
+    vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
+    OKUSON fuer den interaktiven Betrieb klar zu machen?
