@@ -2,8 +2,3 @@
 # Format:  id:examnr:1:time
 # Note: exam numbers are zero based and must not be negative
 #       time is in seconds since 1.1.1970
-214199:0:1:1065621702
-214199:0:1:1065621777
-214199:0:0:1065621789
-214199:0:1:1065622436
-214199:0:0:1065622455

@@ -1,8 +1,8 @@
 Für letztes (3.) Prerelease:
 
 UTILITIES zur Administration:
-  Datenexport: Ergebnisse, Scheindaten, Scheine
   Resubmit als Button im Admin Menu
+
   Template fuer Fall ohne MC
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
@@ -12,13 +12,17 @@ Fragen:
    Bei Homework mehr Angaben als Punktzahl?
    maxscore?
       --> beides nicht ermittelbar, bislang ungenutzt
+   Wenn man jemals fuer eine Klausur angemeldet war, dann erscheint
+     im Export auch ein Ergebnis und nicht "nicht mitgeschrieben -", ist das
+     OK?
 
 Für Release:
   Mechanismus für Bilder in TeX
-  Scheinanfertigung
-  Aufkleber drucken (nur Export?)
-  Statistik ueber Uebungsblaetter
-  Statistik ueber Resultate
+  Scheinanfertigung   --> Hilfsskript
+  Aufkleber drucken (nur Export?)    --> Hilfsskript
+  Statistik ueber Uebungsblaetter    --> Hilfsskript?
+  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
+  Tests siehe unten
 
 Handbuch:
 
@@ -37,6 +41,17 @@ Handbuch:
   Erwähnen, dass keine Datenbanken benötigt werden (im file format Kapitel)?
   Acknowledgements?
   automatische Scheinermittlung
+
+noch dokumentieren:
+  export of results
+  concept of guest IDs, configuration option GuestIdRegExp
+  tutor pages
+  concept of superuser password, only from admin enabled client machines
+  registration for exams
+  export of registrations for exams
+  automatic Grading
+  handling of messages, including revocation
+  handling of groups
 
 Testen:
 

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.25 2003/10/08 22:23:10 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.26 2003/10/08 23:00:23 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -485,7 +485,7 @@ one Person object as data.'''
             fields = ['interactive', 'homework']
         l = Exercises.SheetList()
         for nr,name,s in l:
-            if time.time() > s.opento:   # sheet already closed 
+            if s.IsClosed():   # sheet already closed 
                 if self.p.mcresults.has_key(name):
                     mcscore = str(self.p.mcresults[name].score)
                 else:
@@ -526,7 +526,7 @@ one Person object as data.'''
             if i >= len(self.p.exams) or self.p.exams[i] == None:
                 exams.append(0)
             else:
-                exams.append(self.p.exams[i])
+                exams.append(self.p.exams[i].totalscore)
         try:
             (msg,grade) = Config.conf['GradingFunction']  \
                            (self.p,sl,mcscore,homescore,exams)
@@ -1530,6 +1530,83 @@ def ExportExamParticipants(req,onlyhead):
 Site['/ExportExamParticipants'] = FunWR(ExportExamParticipants)
 Site['/ExportExamParticipants'].access_list = \
       Config.conf['AdministrationAccessList']
+
+
+def ExportResults(req,onlyhead):
+    '''Exports all results of all participants, including MC, homework and
+       exams.'''
+    global sorttable
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    l = Data.people.keys()
+    sortedby = req.query.get('sortedby',[''])[0]
+    if sorttable.has_key(sortedby):
+        l.sort(sorttable[sortedby])
+    else:
+        l.sort(CmpByID)
+    out = cStringIO.StringIO()
+    out.write('# All results of all participants:\n')
+    out.write('# ID:name:fname:group:totalmc:totalhome:total:gradetext:grade:'
+              'examscores{:sheetname;mcscore;homescore}\n')
+    out.write('# Time and date of export: '+LocalTimeString()+'\n')
+    sl = Exercises.SheetList()
+    for k in l:
+        # Exclude guest IDs:
+        if not(Config.conf['GuestIdRegExp'].match(k)):
+            p = Data.people[k]
+            # Calculate total points:
+            mcscore = homescore = 0
+            for nr,na,s in sl:
+                if s.counts and s.IsClosed():   # sheet already closed
+                    if p.mcresults.has_key(na):
+                        mcscore += p.mcresults[na].score
+                    if p.homework.has_key(na):
+                        homescore += p.homework[na].totalscore
+            exams = []
+            for i in range(len(p.exams)):
+                if p.exams[i] == None:
+                    exams.append('-')
+                else:
+                    exams.append(str(p.exams[i].totalscore))
+            if Config.conf['GradingActive'] and \
+               Config.conf['GradingFunction'] != None:
+                try:
+                    (msg,grade) = Config.conf['GradingFunction']  \
+                                   (p,sl,mcscore,homescore,exams)
+                except:
+                    etype, value, tb = sys.exc_info()
+                    lines = traceback.format_exception(etype,value,tb)
+                    Utils.Error('Call of GradingFunction raised an exception, '
+                                'ID: '+p.id+', message:\n'+string.join(lines))
+                    msg = ''
+                    grade = 0
+            else:
+                msg = ''
+                grade = 0
+            exams = string.join(map(str,exams),';')
+            out.write( p.id+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                       str(p.group)+':'+str(mcscore)+':'+str(homescore)+':'+
+                       str(mcscore+homescore)+':'+Protect(msg)+':'+
+                       str(grade)+':'+exams )
+            for nr,na,s in sl:
+                if s.counts and s.IsClosed():   # sheet already closed
+                    out.write(':'+s.name+';')
+                    if p.mcresults.has_key(na):
+                        out.write(str(p.mcresults[na].score))
+                    out.write(';')
+                    if p.homework.has_key(na):
+                        out.write(str(p.homework[na].totalscore))
+            out.write('\n')
+    st = out.getvalue()
+    out.close()
+    head = {'Content-type':'text/okuson',
+            'Content-Disposition':'attachment; filename="results.txt"',
+            'Last-modified':req.date_time_string(time.time())}
+    return (head,st)
+
+Site['/ExportResults'] = FunWR(ExportResults)
+Site['/ExportResults'].access_list = Config.conf['AdministrationAccessList']
+
 
 def DisplaySheets(req,onlyhead):
     '''Allow the administrator after authentication to see future sheets.'''
