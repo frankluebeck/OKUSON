@@ -17,8 +17,6 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
-    <h3><OKUSONServerStatus /></h3>
-
     <form action="/AdminWork" method="post">
       <p><OKUSONLoginStatus /></p>
 
@@ -31,8 +29,13 @@
      </p>
      <p>Shutdown server: <input type="submit" name="Action" value="Shutdown" />
      </p>
-     <p>Export people for exercises classes distribution, sorted by ID:
-        <input type="submit" name="Action" value="ExportByID" />
+     <p>Export people for exercise classes distribution:
+        <select name="exportexclass">
+          <option selected="selected">all together</option>
+          <option>by Studiengang</option>
+        </select>
+        <input type="submit" name="Action" 
+               value="Export people for exercise classes" />
      </p>
      <p>Display available and future sheets: 
         <input type="submit" name="Action" value="Display Sheets" />
@@ -54,5 +57,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.3 2003/10/01 15:47:56 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.4 2003/10/05 14:03:35 neunhoef Exp $ -->
 

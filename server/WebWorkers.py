@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.9 2003/10/04 23:36:57 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.10 2003/10/05 14:03:35 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -110,7 +110,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         l.sort()
         for k in l:
             out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
-                      '</td></th>\n')
+                      '</td></tr>\n')
     def handle_MembersOfGroup(self,node,out):
         if node[1] == None or not(node[1].has_key('number')):
             Utils.Error('Found <MemberOfGroups /> tag without "number" '
@@ -853,25 +853,46 @@ def NormalizeWishes(w):
         if Data.people.has_key(www): wishlist.append(www)
     return string.join(wishlist,',')
 
-def ExportByID(req,onlyhead):
+def ExportPeopleForExerciseClasses(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
          id:lname:fname:sem:stud:wishes 
        where wishes has been normalized into a comma separated list
        of existing id's. Colons have been deleted.'''
+    meth = req.query.get('exportexclass','all together')[0]
     l = Data.people.keys()
     l.sort()
     out = cStringIO.StringIO()
     out.write('# ID:last name:first name:semester:studiengang:wishes\n')
-    for k in l:
-        p = Data.people[k]
-        w = NormalizeWishes(p.wishes)
-        out.write(k+':'+
-                  p.lname.replace(':','')+':'+
-                  p.fname.replace(':','')+':'+
-                  str(p.sem)+':'+
-                  p.stud.replace(':','')+':'+
-                  w+'\n')
+    def writegroup(l,out):
+        for k in l:
+            p = Data.people[k]
+            w = NormalizeWishes(p.wishes)
+            out.write(k+':'+
+                      p.lname.replace(':','')+':'+
+                      p.fname.replace(':','')+':'+
+                      str(p.sem)+':'+
+                      p.stud.replace(':','')+':'+
+                      w+'\n')
+    if meth == 'all together':
+        writegroup(l,out)
+    else:
+        # Go through all Studiengangs:
+        done = {}
+        for i in range(len(l)):
+            p = Data.people[l[i]]
+            if not(done.has_key(p.stud)):
+                # we have not done this Studiengang, so do it:
+                ll = [l[i]]
+                for j in range(i+1,len(l)):
+                    pp = Data.people[l[j]]
+                    if pp.stud == p.stud:
+                        ll.append(l[j])
+                out.write('# New Studiengang: '+p.stud+'\n')
+                writegroup(ll,out)
+                out.write('\n')
+                done[p.stud] = 1
+
     st = out.getvalue()
     out.close()
     head = {'Content-type':'text/okuson',
@@ -899,8 +920,8 @@ def AdminWork(req,onlyhead):
         BuiltinWebServer.SERVER.raus = 1
         os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
         return Delegate('/admindown.html',req,onlyhead)
-    if action == 'ExportByID':
-        return ExportByID(req,onlyhead)
+    if action == 'Export people for exercise classes':
+        return ExportPeopleForExerciseClasses(req,onlyhead)
     if action == 'Display Sheets':
         return Adminexquery.getresult(req, onlyhead)
 
