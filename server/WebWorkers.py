@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.72 2003/11/24 09:56:03 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.73 2003/12/01 14:45:55 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -639,7 +639,7 @@ one Person object as data.'''
             nr = 0
         if nr < 0 or nr >= len(self.p.exams): return
         try:
-            (msg,grade) = Config.conf('ExamGradingFunction')(self.p,i)
+            (msg,grade) = Config.conf['ExamGradingFunction'](self.p,nr)
             out.write('<p>\n'+msg+'</p>\n')
         except:
             etype, value, tb = sys.exc_info()
