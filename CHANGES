@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.50 2003/10/24 22:30:42 luebeck Exp $
+##  $Id: CHANGES,v 1.51 2003/10/27 11:53:23 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -47,6 +47,8 @@ Changes from 1.0-pre4  to  1.0
   and sheet number (before the standard webserver line)
 * the builtin webserver now waits some maximal number of seconds on
   terminating threads (set via BuiltinWebServer.TERMWAIT, default 3 sec)
+* with 'testsheet' the questions of interactive exercises are now separated
+  by a thin empty line
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
