@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.85 2004/03/05 13:25:03 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.86 2004/03/05 13:31:27 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -442,7 +442,7 @@ and either send an error message or a report.'''
                                  wishes,
                                  AsciiData.LineDict(persondata) ) )
     # Construct data line with group information:
-    groupline = AsciiData.LineTuple( (id,groupnr) )
+    groupline = AsciiData.LineTuple( (id,str(groupnr)) )
 
     # Create a new Person object:
     p = Data.Person()
@@ -862,7 +862,7 @@ and either send an error message or a report.'''
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
                                  AsciiData.LineDict(persondata) ) )
-    groupline = AsciiData.LineTuple( (id,groupnr) )
+    groupline = AsciiData.LineTuple( (id,str(groupnr)) )
 
     # Note: Between the moment we looked up our person and stored it in
     # 'p' there might have been some change in the database, because we
