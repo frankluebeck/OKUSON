@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.65 2003/11/16 14:07:43 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.66 2003/11/16 14:09:55 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -819,7 +819,8 @@ a Person object and a Sheet object as data.'''
         numberOfPeople, numberOfSubmissions, statistics = self.s.Statistics()
         out.write('<table class="statistics">\n')
         out.write('<tr><th>Ex</th><th>Qu</th><th>Var</th>'
-            + '<th colspan="2">Seen By</th><th colspan="2">Tried By</th><th colspan="2">Solved By</th></tr>')
+            + '<th colspan="2">Seen By</th><th colspan="2">Tried By</th>'
+              '<th colspan="2">Solved By</th></tr>')
         exnr_old, qnr_old, vnr, presented, tried, solved = statistics[0]
         for exnr, qnr, vnr, presented, tried, solved in statistics:
             out.write('<tr')
@@ -833,17 +834,20 @@ a Person object and a Sheet object as data.'''
             out.write('>')
             out.write('<td>%d</td><td>%d</td><td>%d</td>' % (exnr,qnr,vnr))
             if numberOfPeople > 0:
-                out.write('<td>%d</td><td>%.2f%%</td>' % (presented, (float(100*presented)/float(numberOfPeople))))
+                out.write('<td>%d</td><td>%.2f%%</td>' % (presented, 
+                              (float(100*presented)/float(numberOfPeople))))
             else:
                 out.write('<td>%d</td><td></td>' % presented )
             if presented > 0:
                 pc = float(tried)/float(presented)
-                out.write('<td>%d</td><td %s>%.2f%%</td>' % (tried, ClassFromFraction(pc) ,100.0*pc))
+                out.write('<td>%d</td><td %s>%.2f%%</td>' % 
+                          (tried, ClassFromFraction(pc) ,100.0*pc))
             else:
                 out.write('<td>%d</td><td>0 %%</td>' % tried)
             if tried > 0:
                 pc = float(solved)/float(tried)
-                out.write('<td>%d</td><td %s>%.2f%%</td>' % (solved, ClassFromFraction(pc), 100*pc ))
+                out.write('<td>%d</td><td %s>%.2f%%</td>' % 
+                               (solved, ClassFromFraction(pc), 100*pc ))
             else:
                 out.write('<td>%d</td><td>0</td>' % solved)
             out.write('</tr>\n')
@@ -857,7 +861,8 @@ a Person object and a Sheet object as data.'''
             l = Utils.SortNumerAlpha(Data.groups.keys())
             for grp in l:
                 numHw, avHw, medHw, highHw, listHw, \
-                numMc, avMc, medMc, highMc, listMc = Data.GlobalStatistics(self.s.name, grp)
+                numMc, avMc, medMc, highMc, listMc = \
+                     Data.GlobalStatistics(self.s.name, grp)
                 hwStr += '<h4>Group: %s</h4>\n' % grp                
                 hwStr += '<p>Median: %.2f, Average: %.2f </p>' % (medHw, avHw)
                 hwStr += DistributionTable(numHw, listHw)
@@ -868,7 +873,7 @@ a Person object and a Sheet object as data.'''
             out.write(mcStr)
 
 def ClassFromFraction(pc):
-    # pc should be a float. Meaningfull results only with 0<=pc<=1
+    # pc should be a float. Meaningful results only with 0<=pc<=1
     # Returns string with CSS-"class"-statement, corresponding to pc
     # col0 - col100 with stepwidth 5
     try:
