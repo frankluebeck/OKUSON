@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.30 2003/10/09 15:24:14 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.31 2003/10/09 21:33:33 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -596,8 +596,8 @@ and either send an error message or a report.'''
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
     # Now check whether the two new passwords are identical:
-    pw1 = req.query.get('pw1',[''])[0].strip()[:16]
-    pw2 = req.query.get('pw2',[''])[0].strip()[:16]
+    pw1 = req.query.get('pw1',['1'])[0].strip()[:16]
+    pw2 = req.query.get('pw2',['2'])[0].strip()[:16]
     if pw1 != '' or pw2 != '':
         if pw1 != pw2:
             return Delegate('/errors/diffpasswd.html',req,onlyhead)
