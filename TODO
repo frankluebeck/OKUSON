@@ -1,14 +1,11 @@
 Für letztes (3.) Prerelease:
 
-upgrade script nochmal testen
-UPGRADE instructions finetunen
-changes_to_html weg
-manual schleifen, insbesondere Adminmenu fertig machen.
 taggen
 einpacken
 begleitmail
 
 Für Release:
+  Klausur-Ergebnisausgabe (plus Zusatzstring)
   Template fuer Fall ohne MC
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
@@ -18,18 +15,19 @@ Für Release:
   Statistik ueber Uebungsblaetter    --> Hilfsskript?
   Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
   Tests siehe unten
-  Klausur-Ergebnisausgabe (plus Zusatzstring)
 
 Handbuch:
+ 
+  > means "done"
 
   Datenformate (auch intern)
-  Standardablaeufe
-  Zeitplan
-  Bedienung
-  Die einzelnen Webseiten
-  Templates: Moegliche Ersetzungen
+  >Standardablaeufe
+  >Zeitplan
+  >Bedienung
+  >Die einzelnen Webseiten
+  >Templates: Moegliche Ersetzungen
   Die Konfiguration
-  Schnittstellen
+  >Schnittstellen
   Aufbau des Programms
   verwendete Standards
   Anhaenge-Prinzip
@@ -39,16 +37,16 @@ Handbuch:
   automatische Scheinermittlung
 
 noch dokumentieren:
-  export of results
-  concept of guest IDs, configuration option GuestIdRegExp
-  tutor pages
-  concept of superuser password, only from admin enabled client machines
+  >export of results
+  >concept of guest IDs, configuration option GuestIdRegExp
+  >tutor pages
+  >concept of superuser password, only from admin enabled client machines
   registration for exams
-  export of registrations for exams
+  >export of registrations for exams
   automatic Grading
-  handling of messages, including revocation
-  handling of groups
-  resubmit
+  >handling of messages, including revocation
+  >handling of groups
+  >resubmit
 
 Testen:
 
@@ -57,6 +55,7 @@ Testen:
   Normalen Betrieb eines Semesters simulieren.
   Alle Moeglichkeiten bei den Sheets ausprobieren.
   Dateiheader checken.
+  Verschiedene Browser.
 
 Ideen:
 

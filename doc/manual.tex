@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.27 2003/10/10 12:53:58 neunhoef Exp $
+% $Id: manual.tex,v 1.28 2003/10/10 18:28:49 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -461,7 +461,7 @@ and stores personal data of the participating students. So, you must be
 careful with the access to these data.
 
 \subsubsection*{Securing the Administrator Access}
-
+\label{AdministrationAccessList}
 We always choose a very restricted setting for the machines from which 
 administrator access to an {\OKUSON} server is allowed, see the entry
 \texttt{AdministrationAccessList} in the configuration file
@@ -1435,6 +1435,123 @@ data for customization.
 \end{description}
 
 \chapter{Schedule of Events for One Course}\label{ch:semsched}
+
+In this chapter we go through the complete schedule for one course as
+we imagine it and describe the actions one has to perform during the various
+stages with respect to {\OKUSON}. Of course, you will have to adapt this
+to your specific situation. We hope however, that this chapter also gives
+a good overview over and a reference for the facilities of the {\OKUSON}
+system, because it also contains a lot of references to various sections
+of this manual.
+
+We proceed chronologically and divide roughly into the following stages:
+before the semester, at the begin of the semester, during the semester
+and after the semester.
+
+\section{Before the Semester}
+
+\begin{itemize}
+\item \textbf{Installing {\OKUSON}.} See chapter \ref{ch:inst}. Here one
+typically adjusts the configuration options for the course. After this
+step, the pages are ready for registration. One can already create the
+pages with bibliography and general information about the course.
+\item \textbf{Creating exercises.} It can be reasonable to prepare some
+exercises already in this early stage. One should not underestimate the
+time that is needed to invent decent multiple choice exercises and enough
+variants. If no exercises are available from earlier courses we calculate
+one day per week for two people to create the exercises for one sheet.
+
+It also cannot hurt to get used to the way exercises and sheets are entered
+into {\OKUSON}.
+
+It has proven sensible to have a sheet number $0$ which does not count in
+the end for the grade and which is available already at registration time,
+such that the participants can practice to use the system before the 
+actual exercises begin.
+\end{itemize}
+
+\section{At the Beginning of the Semester}
+
+\begin{itemize}
+\item \textbf{Registration of participants.} Once you tell the students
+the URL of the {\OKUSON} server, they can register. Obviously, you want
+to give them a few days for this purpose, before you distribute the
+registered participants into small tutoring groups.
+\item \textbf{Distribution of participants into tutoring groups.} See
+chapter \ref{ch:managepeople}. 
+\item \textbf{Setup of group information.} About at the same time than
+the previous step you want to edit \texttt{data/groupinfo.txt} to set
+up the information about your small tutoring groups. You can enter the
+names of the tutors and the time and place of their sessions. Also every
+tutor gets a password at this stage.
+\item \textbf{Publishing of distribution into tutoring groups.} From the
+moment you enter the distribution data into \texttt{data/groups.txt}
+and restart the {\OKUSON} server, the distribution is automatically
+published via the web pages. Note that the information you entered in
+the previous step is shown on the automatically generated pages.
+\end{itemize}
+
+\section{During the Semester}
+
+\begin{itemize}
+\item \textbf{Create new exercise sheets.} Of course, you will create
+further exercise sheets during the semester. Note that you can use the
+attributes \texttt{openfrom} and \texttt{opento} to prepare the sheets
+beforehand and let them appear automatically at a given time on the web
+pages and let them be closed at another time. One recent idea is not to
+publish the exact closing time to avoid a ``rush hour'' immediately before
+it.
+\item \textbf{Let participants query their results.} The participants will
+query their results on a regular basis. Please note that there is the 
+possibility to put up individual messages on the result pages via the
+administrator menu (see section \ref{sendmess}) and to delete them
+later.
+\item \textbf{Tutors enter homework results.} There is a page especially
+for the tutors to type in the results of the participants in their 
+tutoring group, such that they appear on the result page. See section
+\ref{sec:tutpage}.
+\item \textbf{Exams during the course.} Especially for beginner's courses
+it seems to be a good practice to organize a written exam at some stage
+during the semester. The {\OKUSON} server can help you to organize this
+by handling the registration of participants for such exams, see
+\ref{ch:ExamOrga}.
+\end{itemize}
+
+\section{After the Semester}
+
+\begin{itemize}
+\item \textbf{Exam at the end of the semester.} The {\OKUSON} server can
+help to organize the registration of participants of exams at the end of the
+semester, see \ref{ch:ExamOrga}.
+\item \textbf{Automatic grading.} At this stage one can activate the 
+automatic grading function to produce output for the result pages of
+the participants, for example stating whether they get a certificate 
+about successful participation in the course or not. Note that to use
+this one has to learn a little bit of Python programming to customize
+the automatic grading function to your needs. One also has to learn
+a little bit about the internal data structures of {\OKUSON}, see
+chapter \ref{ch:intdata}. You can also choose not to use this feature,
+see the next step.
+\item \textbf{Export of results for further processing.} Now that all
+data about results is collected one can export these via the administrator
+menu (see \ref{sec:expresults}). The idea of this step is to be able to
+do statistical evaluations on this data. However, it is also possible to
+use external tools or scripts on this exported data for example to decide
+about grading by your own criteria. You can then import the result of these
+external tools in form of private messages to participants via the
+file \texttt{data/messages.txt} (see \ref{sec:messages.txt}).
+\item \textbf{Producing of certificates.} One can use the export of results
+to produce certificates of successful participations.
+\end{itemize}
+
+\section{At all times}
+
+\begin{itemize}
+\item You can at all times use the {\OKUSON} system to publish current
+information about the course. Our experience shows that usually no other
+means of publishing such information is needed any more.
+\end{itemize}
+
 \chapter{Administration via the Web Interface}
 \label{adminpages}
 
@@ -1525,7 +1642,7 @@ data of all registered participants into a single ASCII file.
 In the file exported there is --- after some comment
 lines beginning with a \#-character --- for every participant one line.
 This line comes in the same format as the file \texttt{data/people.txt}
-(see \ref{people.txt}), \textbf{except} that there is an additional
+(see \ref{sec:people.txt}), \textbf{except} that there is an additional
 field, namely the number of the group in which the person is.
 
 This means, that there are three reasons, why you should \textbf{not} copy
@@ -1534,7 +1651,7 @@ Apart from making no sense at all, you have to remove the last data field
 with the group, and, what is probably worse, all colons and newlines that
 may be contained in personal data fields are deleted or replaced by a 
 space respectively, whereas in \texttt{data/people.txt} special precautions
-are taken to store such data (see \ref{commonformat}).
+are taken to store such data (see chapter \ref{ch:fileformats}).
 
 So the fields in \texttt{peoplelist.txt} are separated by colons and
 arranged in the following order:
@@ -1597,10 +1714,11 @@ information about the registration situation for exams. Therefore the
 exported data is restricted to ID, name, first name and the time stamp 
 of the registration. The file format is as follows: For every participant
 there is one line that contains the abovementioned fields, separated by
-colons. See chapter \ref{ExamOrga} for a description of how to
+colons. See chapter \ref{ch:ExamOrga} for a description of how to
 organize exams conveniently.
 
 \subsection{Export results} 
+\label{sec:expresults}
 
 This export facility produces information
 about all the results of the participants, including multiple choice
@@ -1643,12 +1761,13 @@ sheets (which have not yet reached their \texttt{openfrom} date) are
 accessible.
 
 \subsection{Send message} 
+\label{sendmess}
 
 With this option one can send an individual message to a certain
 participant. This message will appear on the page where the participant
 queries his results. More than one message is possible. All messages
 are stored in the file \texttt{data/messages.txt}. The format of this
-file is described in section \ref{formatmessages.txt}.
+file is described in section \ref{sec:messages.txt}.
 
 This messaging system can also be used to automatically produce individual
 messages for all participants. In this case it is probably better not to
@@ -1915,6 +2034,7 @@ some of these entries. Note also that entries are separated by colons, within
 the entries you can encode a colon by typing \verb+\d+ instead.
 
 \section{Input of Homework Results by Tutors}
+\label{sec:tutpage}
 
 There is a web page \texttt{/tutors.html} where tutors can request input
 forms for homework exercise results, either for a particular member of the
@@ -1929,6 +2049,7 @@ grading or statistics.
 
 
 \chapter{Managing Exams}
+\label{ch:ExamOrga}
 
 Unfortunately, we have no idea how {\OKUSON} can help with checking and
 grading written exam exercises.
@@ -1949,8 +2070,29 @@ importing exam results in the {\OKUSON} server, displaying the results.
 \section{Managing Additional Personal Registration Data}
 \section{Customizing the Look and Feel of the Web Pages}
 \section{}
-%\chapter{File Formats}
-%\chapter{Internal Data Structures}
+\chapter{File Formats}
+\label{ch:fileformats}
+to be written
+\section{\texttt{data/people.txt}}
+\label{sec:people.txt}
+to be written
+\section{\texttt{data/groups.txt}}
+\label{sec:groups.txt}
+to be written
+\section{\texttt{data/generalmessage.txt}}
+\label{sec:generalmessage.txt}
+to be written
+\section{\texttt{data/messages.txt}}
+\label{sec:messages.txt}
+to be written
+\section{\texttt{data/groupinfo.txt}}
+\label{sec:groupinfo.txt}
+to be written
+\section{\texttt{data/exams.txt}}
+\label{sec:exams.txt}
+to be written
+\chapter{Internal Data Structures}
+\label{ch:intdata}
 %\chapter{Structure of the Program}
 \appendix
 \chapter{Differences Between XHTML and Other Variants of
