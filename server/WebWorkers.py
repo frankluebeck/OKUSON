@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.97 2004/03/09 13:23:06 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.98 2004/03/09 13:30:12 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -757,13 +757,12 @@ one Person object as data.'''
             exam = int(examnr)
         except:
             return
-        teilnahme = 0
-        if exam < len(self.p.exams) and self.p.exams[exam] != None:
-            if self.p.exams[exam].registration:
-                # Write out recursively:
-                if node[2] != None:
-                    for n in node[2]:
-                        XMLRewrite.XMLTreeRecursion(n,self,out)
+        if exam < len(self.p.exams) and self.p.exams[exam] != None and \
+           self.p.exams[exam].registration:
+            # Write out recursively:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_IfNotExamRegistered(self,node,out):
         if node[1].has_key('nr'):
             examnr = node[1]['nr'].encode('ISO-8859-1', 'replace')
@@ -771,13 +770,12 @@ one Person object as data.'''
             exam = int(examnr)
         except:
             return
-        teilnahme = 0
-        if exam < len(self.p.exams) and self.p.exams[exam] != None:
-            if not(self.p.exams[exam].registration):
-                # Write out recursively:
-                if node[2] != None:
-                    for n in node[2]:
-                        XMLRewrite.XMLTreeRecursion(n,self,out)
+        if exam >= len(self.p.exams) or self.p.exams[exam] == None or \
+           not(self.p.exams[exam].registration):
+            # Write out recursively:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_Grade(self,node,out):
         if Config.conf['GradingActive'] == 0 or \
            Config.conf['GradingFunction'] == None: return
