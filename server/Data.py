@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.20 2004/03/05 13:27:15 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.21 2004/03/08 13:37:52 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -146,6 +146,8 @@ homeworkdesc = AsciiData.FileDescription(Config.conf['HomeworkFile'],people,
 
 class Exam(Utils.WithNiceRepr):
     '''Objects in this class store exam information.'''
+    maxexamnumber = 0   # this is a class variable, which keeps the
+                        # largest number of exam occuring plus 1 (zero-based)
     registration = 1    # if true, person has registered for exam
     totalscore = -1     # totalscore
     maxscore = 0        # maximal score
@@ -169,6 +171,18 @@ examdesc = AsciiData.FileDescription(Config.conf['ExamFile'],people,
     "STORE", 2, "totalscore",   "INT",
     "STORE", 3, "maxscore",     "INT",
     "STORE", 4, "scores",       "STRING" ) )
+
+def countexams():
+    '''This function looks through all people and counts, how many exams
+       there are. It sets the class variable Exam.maxexamnumber.'''
+    for k,p in people.iteritems():
+        if len(p.exams) > Exam.maxexamnumber:
+            Exam.maxexamnumber = len(p.exams)
+    # Note: There is one place, where Exam.maxexamnumber may change during
+    #       the runtime of the server. That is when the first person registers
+    #       for a new exam. Therefore there is code in that place to handle
+    #       this case!
+        
 
 groupdesc = AsciiData.FileDescription(Config.conf['GroupFile'],people,
   ( "ENTER", 0, "KEY",          Person,

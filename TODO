@@ -80,7 +80,7 @@ M!  Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
 M!Aufloesungs-Cookie persistent
 M!Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
  !  von vorigen Blaettern uebernommen werden.
-M Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
+M!Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
     Das Richtige Gruen machen
     Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
        das Richtige da war.

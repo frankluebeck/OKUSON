@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.89 2004/03/08 07:55:34 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.90 2004/03/08 13:37:52 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -688,7 +688,7 @@ one Person object as data.'''
     def handle_ExamGrades(self,node,out):
         if Config.conf['ExamGradingActive'] == 0 or \
            Config.conf['ExamGradingFunction'] == None: return
-        for i in range(len(self.p.exams)):
+        for i in xrange(len(self.p.exams)):
             if self.p.exams[i] != None and self.p.exams[i].totalscore >= 0:
                 try:
                     (msg,grade) = Config.conf['ExamGradingFunction'](self.p,i)
@@ -751,7 +751,7 @@ one Person object as data.'''
                    self.p.homework[na].totalscore != -1:
                     homescore += self.p.homework[na].totalscore
         exams = []
-        for i in range(24):
+        for i in xrange(Data.Exam.maxexamnumber):
             if i >= len(self.p.exams) or self.p.exams[i] == None:
                 exams.append(0)
             else:
@@ -1819,7 +1819,9 @@ def ExamRegistration(req, onlyhead):
     try:
         examnr = int(req.query.get('examnr',['0'])[0])
         if examnr < 0: examnr = 0
-        elif examnr >= 24: examnr = 0
+        elif examnr >= 999: examnr = 0
+        # This limit probably will never hurt, it is just here to avoid 
+        # one special denial-of-service-attack.
     except:
         examnr = 0
 
@@ -1839,6 +1841,8 @@ def ExamRegistration(req, onlyhead):
         p.exams[examnr] = Data.Exam()
     p.exams[examnr].timestamp = timestamp
     p.exams[examnr].registration = anmeld
+    if Data.Exam.maxexamnumber < examnr+1:
+        Data.Exam.maxexamnumber = examnr+1
     Data.Lock.release()
 
     # At last write out a sensible response:
@@ -2411,7 +2415,7 @@ def ExportExamParticipants(req,onlyhead):
     try:
         examnr = int(examnr)
         if examnr < 0: examnr = 0
-        elif examnr >= 24: examnr = 0
+        elif examnr >= Data.Exam.maxexamnumber: examnr = 0
     except:
         examnr = 0
         
@@ -2619,9 +2623,10 @@ def ExportResults(req,onlyhead):
                         homescore += p.homework[na].totalscore
             exams = []
             exams1 = []
-            for i in range(len(p.exams)):
-                if p.exams[i] == None or p.exams[i].totalscore < 0:
-                    exams.append('-;0')
+            for i in xrange(Data.Exam.maxexamnumber):
+                if i >= len(p.exams) or p.exams[i] == None or \
+                   p.exams[i].totalscore < 0:
+                    exams.append('-;0;-')
                     exams1.append(0)
                 else:
                     if Config.conf['ExamGradingActive'] == 0 or \
@@ -2629,8 +2634,7 @@ def ExportResults(req,onlyhead):
                         (msg,grade) = ('',0)
                     else:
                         try:
-                            (msg,grade) = Config.conf['ExamGradingFunction'] \
-                                       (p,i)
+                            (msg,grade)=Config.conf['ExamGradingFunction'](p,i)
                         except:
                             etype, value, tb = sys.exc_info()
                             lines = traceback.format_exception(etype,value,tb)
@@ -2639,7 +2643,8 @@ def ExportResults(req,onlyhead):
                                'an exception, ID: '+p.id+', message:\n'+
                                string.join(lines))
                             (msg,grade) = ('',0)
-                    exams.append(str(p.exams[i].totalscore)+';'+str(grade))
+                    exams.append(str(p.exams[i].totalscore)+';'+str(grade)+';'+
+                                     p.exams[i].scores)
                     exams1.append(p.exams[i].totalscore)
             if Config.conf['GradingActive'] and \
                Config.conf['GradingFunction'] != None:

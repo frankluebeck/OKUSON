@@ -98,6 +98,8 @@ try:
     Data.examregdesc.LoadFile()
     Utils.Error('Reading exam result data...',prefix='Info: ')
     Data.examdesc.LoadFile()
+    Utils.Error('Counting exams...',prefix='Info: ')
+    Data.countexams()    # this counts, how many exams there are
     Utils.Error('Reading group data...',prefix='Info: ')
     Data.groupdesc.LoadFile()
     Utils.Error('Reading message data...',prefix='Info: ')
