@@ -1,6 +1,4 @@
 #!/bin/sh
-cp index.html okuson.css badback.gif ../INSTALL ../CHANGES /usr/local/www-homes/OKUSON
-cp ../doc/manual.pdf /usr/local/www-homes/OKUSON/okuson-`cat ../VERSION`.pdf
+cp index.html okuson.css badback.gif ../INSTALL ../CHANGES ../okuson-*.tar.gz ../okuson-*.pdf /usr/local/www-homes/OKUSON
 
-echo "Check that /usr/local/www-homes/OKUSON contains okuson."`cat ../VERSION`".tar.gz"
 

@@ -1,19 +1,21 @@
 Small HOWTO for releasing versions.
 
 0) Change VERSION file.
-1) Tag the whole tree with:
-   cvs tag -F tag-1r1
+1) Maybe adjust UPGRADE file.
+2) Tag the whole tree with:
+   cvs tag -F tag-1r1       (or tag-1r1f2)
            ^ This forces tags even to files which are already tagged with
              this tag!
-2) Export the whole tree (somewhere else) with:
+3) Export the whole tree (somewhere else) with:
    cvs -d :pserver:neunhoef@antares.math.rwth-aachen.de:2401/home/antares/neunhoef/cvsrepository export -r tag-1r1 okuson
    (this generates a directory "okuson" in the current directory).
-3) Go to this new directory:
+4) Go to this new directory:
    cd okuson
-4) Make archive:
+5) Make archive:
    ./makeArchive
    (the exported tree is modified substantially!)
-   You find ../okuson-1.1.pdf and ../okuson-1.1.tar.gz .
-5) Copy those to the checked out okuson directory.
-   Use website/cptowww to update the web site.
-6) If applicable write an UPGRADE file.
+   You find ../okuson-1.*.pdf and ../okuson-1.*.tar.gz .
+6) Copy those to  a checked out okuson directory.
+   Use 'cd website; cptowww' to update the web site.
+7) Inform interested user.
+
