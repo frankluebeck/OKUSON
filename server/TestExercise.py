@@ -5,7 +5,7 @@
 
 '''This is the script to check OKUSON exercises.'''
 
-import sys,os,time,tempfile,getopt
+import sys,os,time,tempfile,shutil,getopt
 
 tmp = getopt.getopt(sys.argv[1:], 'v:h')
 opt = {}
@@ -63,7 +63,8 @@ def handletext(t):
   if os.path.exists('tmptestimages/100dpi/'+t.md5sum+'.png'):
     os.system('/bin/sh -c \''+opt['-v']+' tmptestimages/100dpi/*.png\'')
     # remove temp dir
-    os.system('rm -rf tmptestimages')
+    shutil.rmtree('tmptestimages')
+    #os.system('rm -rf tmptestimages')
   else:
     os.system('/bin/sh -c \'less +"/^l\." tmptestimages/@*/a.log\'')
 

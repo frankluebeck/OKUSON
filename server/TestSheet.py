@@ -5,7 +5,7 @@
 
 '''This is the script to check OKUSON sheets.'''
 
-import sys,os,time,tempfile,locale,getopt
+import sys,os,time,tempfile,locale,shutil,getopt
 
 tmp = getopt.getopt(sys.argv[1:], 'o:t:h')
 opt = {}
@@ -113,6 +113,7 @@ for a in files:
       if pdf:
         Utils.FileString(fname+'_'+sheet.name+'.pdf',pdf)    
         print 'Wrote PDF file to '+fname+'_'+sheet.name+'.pdf'
-        os.system('rm -rf tmpsheettest')    
+        shutil.rmtree('tmpsheettest')
+        #os.system('rm -rf tmpsheettest')    
 
 

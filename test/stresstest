@@ -2,7 +2,7 @@
 
 import os,sys,httplib, random
 
-srv = 'localhost:8000'
+srv = 'gemma:8000'
 urllist = [ [srv, '/', 0],
     [srv, '/exquery.html', 0],
     [srv, '/QuerySheet?id=214199&passwd=unbekannt&sheet=0', 0],
@@ -57,7 +57,7 @@ def getpage(host, path):
    f.close()
    return data
 
-for i in range(100):
+for i in range(20):
   #a = random.choice(urllist)
   #a = urllist[2]
  for a in urllist:

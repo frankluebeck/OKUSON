@@ -8,7 +8,7 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.2 2003/10/09 15:24:14 luebeck Exp $'
+CVS = '$Id: LatexImage.py,v 1.3 2003/10/10 14:02:30 luebeck Exp $'
 
 import sys, os, types, tempfile, shutil
 import Utils
@@ -122,7 +122,8 @@ via Utils.Error.'''
 
   # if everything went OK:
   try:
-      os.system('rm -rf '+tmpdir)
+      shutil.rmtree(tmpdir)
+      #os.system('rm -rf '+tmpdir)
   except:
       pass   # we ignore problems here
 
@@ -165,7 +166,8 @@ file to a PDF file with pdflatex. '''
       
   if res:
       try:
-          os.system('rm -rf '+tmpdir)
+          shutil.rmtree(tmpdir)
+          #os.system('rm -rf '+tmpdir)
       except:
           pass   # we ignore problems here
       return res
