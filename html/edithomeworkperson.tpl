@@ -19,7 +19,8 @@
 
     <p><strong>Gruppe:</strong> <GroupNumber /> &nbsp; &nbsp; &nbsp;
        <strong>Tutor:</strong> <GroupTutor /> &nbsp; &nbsp; &nbsp;
-       <strong>Matrikelnummer:</strong> <IdOfPerson /></p>
+       <strong>Matrikelnummer:</strong> <IdOfPerson />&nbsp; &nbsp; &nbsp;
+       <strong>Name:</strong>: <FirstName/>  <LastName/>   </p>
 
     <form action="/SubmitHomeworkPerson" method="post">
     <div><HiddenNumberOfGroup /><HiddenIdOfPerson /></div>
@@ -50,5 +51,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkperson.tpl,v 1.4 2003/10/20 22:57:54 neunhoef Exp $ -->
+     $Id: edithomeworkperson.tpl,v 1.5 2003/10/29 16:31:36 luebeck Exp $ -->
 
