@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.62 2004/05/02 12:29:10 neunhoef Exp $
+% $Id: manual.tex,v 1.63 2004/05/02 12:45:51 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1813,9 +1813,9 @@ There are some special elements used with the sheets in HTML format.
 \begin{description}
 \item[\texttt{<SheetNumber/>}] number of sheet.
 \item[\texttt{<SheetName/>}] name of sheet.
-\item[\texttt{<IfOpen>\ldots</IfOpen>}] content only included if sheet is still open (or if administrator overruled with his password).
+\item[\texttt{<IfOpen>\ldots</IfOpen>}] content only included if sheet is still open (or if the administrator overruled with his password).
 \item[\texttt{<IfClosed>\ldots</IfClosed>}] content only included 
-if sheet is no longer open.
+if sheet is no longer open (and administrator did not overrule).
 \item[\texttt{<HiddenIdOfPerson/>} and \texttt{<HiddenNameOfSheet/>}] 
 hidden input fields for submission form.
 \item[\texttt{<WebSheetTable/>}] the actual table rows for the sheet, 

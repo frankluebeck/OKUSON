@@ -2,7 +2,7 @@
  This file describes the upgrade procedure from okuson 1.1 to okuson 1.1-fix1:
 ===============================================================================
 
-$Id: UPGRADE,v 1.12 2004/05/02 12:29:10 neunhoef Exp $
+$Id: UPGRADE,v 1.13 2004/05/02 12:45:51 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -32,6 +32,7 @@ Files changed in this bugfix:
     scripts/numbergroups.py
     scripts/prettyprintgroupdist.py
     server/WebWorkers.py
+    xmlvalidate
     CHANGES
     TODO
     UPGRADE
