@@ -1,20 +1,23 @@
-Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
+F Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
 
 Ideen: 
   - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
-     generischem Drumherum hinzufügen kann.
+     generischem Drumherum hinzufügen kann.   (besser 'mixer' o.ä,
+     im Vorschlag nicht sinnvoll, da kaputtes HTML im Ergebnis).
   - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
-    <input type="file" ...>.)
-  - die persondata Einträge sollten auch exportiert werden können
+    <input type="file" ...>.) (nicht dringend, besser per Email Stud<->Hiwi
+    regeln)
+F  - die persondata Einträge sollten auch exportiert werden können
     (warum hat das noch niemand vermisst?)
-  - Einige fest eingebaute Größen durch Einträge in der Config.xml
+M  - Einige fest eingebaute Größen durch Einträge in der Config.xml
     festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
     (z.Z. 2 mal fest in Exercises.py eingebaut).
-  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
+M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
     Sollte von überall zugreifbar sein. (Mathias Künzer)
-  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
+M  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
     zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
-
+   (vielleicht 3te Variante der Antwort mit Hinweis.)
+   
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
@@ -24,7 +27,9 @@ Interessante Ergebnisse des Browser-Checks:
 
 Spaeter: 
 
-  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
+M  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
+    (mit adm password)
+    
   Webinterface fuer Config.xml-Edit
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
@@ -34,28 +39,29 @@ Spaeter:
        (etwa .tplpers, oder proc.inst.) 
        entsprechend mit sheets, results
        ==> Benutzer kann beliebige Seiten neu machen.
-  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
-    (Anfrage von Christoph Schweigert)
+M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
+    (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
+
   Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
-  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
+   später vielleicht, mit Texteingabefeld?
+   
+M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
     vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
     OKUSON fuer den interaktiven Betrieb klar zu machen?
-  Ergaenzung von Marc --> okuson-folder
-  in BuiltinWebServer.py haben wir
-               'avi'  : 'video/x-msvideo',
-               'rm'   : 'application/vnd.rn-realmedia',
-  schein.py besser erklaeren, ev. Beispiel
+     (evtl. Seite mit Antworten zurückgeben?)
+
+M  Ergaenzung von Marc --> okuson-folder
+  
+M  schein.py besser erklaeren, ev. Beispiel
 
 Matthias:
 
-Tutoren koennen von zu Hause Statistik nicht anschauen
-ShowGlobalStatisticsForGroup tut nicht
-Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
-ShowExerciseStatistics for Sheet (admin)
-Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
-Export fuer Zusatztext zum Hausaufgabenergebnis
+F ShowGlobalStatisticsForGroup tut nicht
+M  Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
+M ShowExerciseStatistics for Sheet (admin)
+M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
+F Export fuer Zusatztext zum Hausaufgabenergebnis
 
-Marc:
-
-  unzulaessige Eingaben von Formularen (fehlerhafte Browser)
-    --> Warnung?
+F Group 0 in <GroupsOverview per Attr. ausblendbar.
+  Außerdem hätte ich noch gerne in den components-Optionen               
+  dieser Tabelle die Möglichkeit, auch die Raumkapazität anzeigen zu lassen, 
