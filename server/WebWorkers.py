@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.3 2003/09/23 16:16:12 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.4 2003/09/26 21:35:05 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal
 
@@ -15,6 +15,8 @@ from Tools import BuiltinWebServer, XMLRewrite, Utils, AsciiData, SimpleTemplate
 
 def LocalTimeString(t = time.time()):
   return time.strftime("%c", time.localtime(t))
+
+LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # First we set our document root:
 DocRoot = BuiltinWebServer.DocRoot = os.path.join(Config.home,'html')
@@ -230,7 +232,7 @@ and either send an error message or a report.'''
     persondata9 = req.query.get('persondata9',[''])[0].strip()[:256]
 
     # Construct data line with encrypted password:
-    salt = random.choice(string.letters) + random.choice(string.letters)
+    salt = random.choice(LETTERS) + random.choice(LETTERS)
     passwd = crypt.crypt(pw1,salt)
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
@@ -802,9 +804,11 @@ def AdminLogout(req,onlyhead):
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
+    action = req.query.get('Action','')[0].strip()
+    if action == 'PID':
+        return ({'Content-type': 'text/plain'}, str(BuiltinWebServer.PID))
     if AuthenticateAdmin(req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
-    action = req.query.get('Action','')[0].strip()
     if action == 'Restart':
         BuiltinWebServer.SERVER.raus = 1
         BuiltinWebServer.SERVER.restartcommand = \

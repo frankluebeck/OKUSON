@@ -1,9 +1,4 @@
-#!/usr/bin/env python
+#!/bin/sh
 
-import sys,os,time
-
-homedir = os.path.abspath(sys.path[0])
-os.environ["OKUSONHOME"] = homedir
-
-realprog = os.path.join(homedir,"server/Restart.py")
-os.execl(realprog,realprog)
+./stop
+./start

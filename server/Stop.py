@@ -21,31 +21,21 @@ Config.ReadConfig()
 Config.PostProcessing()    # some postprocessing of configuration data
 
 
-# Now we know the port we are running on, so we only need the
-# administrator password to have a go...
-
-print "Please enter the administrator password to stop OKUSON server:"
-p = getpass.getpass("Administrator password: ")
-
-pid = os.fork()
-if pid == 0:
-    time.sleep(0.1)   # Let the parent get hold of the log file
-    # Now send the request:
-    u = urllib.urlopen('http://localhost:'+str(Config.conf['Port'])+
-                       '/AdminWork?Action=Shutdown&passwd='+p)
-    u.close()
-    sys.exit(0)  # Terminate this child process
-
-# Set an alarm in 5 seconds:
-def raus(a,b):
-    print "\nWrong password! Server not terminating!"
-    sys.exit(0)
-signal.signal(signal.SIGALRM,raus)
-signal.alarm(5)
-
 f = file("log/server.log","r")
 f.seek(0,2)     # seek to end of file
 p = f.tell()
+
+pid = os.fork()
+if pid == 0:
+    time.sleep(0.5)   # Let the parent get hold of the log file
+    # Now send the request:
+    u = urllib.urlopen('http://localhost:'+str(Config.conf['Port'])+
+                           '/AdminWork?Action=PID')
+    spid = u.read()
+    u.close()
+    os.kill(int(spid), signal.SIGUSR1)
+    print 'Sent server with PID '+spid+' a USR1 signal.'
+    sys.exit(0)  # Terminate this child process
 
 while 1:
     f.seek(0,2)
@@ -55,7 +45,8 @@ while 1:
         s = f.readlines()
         p = f.tell()
         for l in s:
-            if l.find("passwd=") < 0: sys.stdout.write(l)
+            sys.stdout.write(l)
+            sys.stdout.flush()
             if l[-15:] == 'Terminating...\n':
                 sys.exit(0)
             elif l == 'Aborting.\n':

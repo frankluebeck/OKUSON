@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.2 2003/09/23 08:42:54 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.3 2003/09/26 21:35:05 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -28,6 +28,8 @@ Site = {}
 # for the threading we need a lock to protect assignments to 'Site'
 SiteLock = threading.Lock()
 
+# can be delivered for killing
+PID = os.getpid()
 
 # The document root for the fallback to the filesystem:
 DocRoot = '.'  # default is current dir of server, should not end in slash,
@@ -232,7 +234,7 @@ def check_address(ipranges,ipadr):
     return 0
 
 # Global access_list for pages not registered in Site:
-access_list = [(socket.inet_aton('127.0.0.0'),socket.inet_aton('255.0.0.0'))]
+access_list = [(socket.inet_aton('0.0.0.0'),socket.inet_aton('0.0.0.0'))]
 
 
 # Here is the RequestHandler class:
@@ -384,12 +386,12 @@ class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
     allow_reuse_address = 1
     request_queue_size = 5
 
+SERVER = None
 
 def sigusr1handler(sig,sta):
     '''Signal handler for SIGUSR1.'''
-    pass
+    SERVER.raus = 1
 
-SERVER = None
 def StartServer(port = 8000):
     '''Starts the server.'''
     global SERVER

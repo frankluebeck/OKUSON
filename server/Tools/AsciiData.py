@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: AsciiData.py,v 1.2 2003/09/26 21:35:05 luebeck Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -52,7 +52,7 @@ delimiter. A trailing newline is discarded. For each substring the
 encoding from the function LineTuple is reversed. The list of decoded
 substrings is returned.
 '''
-    if l[-1] == '\n': l = l[:-1]
+    if (len(l) > 0 and l[-1] == '\n'): l = l[:-1]
     ll = l.split(delimiter)
     for i in range(len(ll)):
         s = ll[i].replace('\\d',delimiter)

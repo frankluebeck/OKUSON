@@ -5,7 +5,7 @@
 
 '''This is the main executable for the OKUSON server.'''
 
-import os,sys,time,tempfile,traceback,locale
+import os,sys,time,tempfile,traceback,locale,signal
 
 import Config         # this automatically determines our home dir
                       # but does not read the configuration file
