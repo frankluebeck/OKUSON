@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.5 2003/10/24 22:30:42 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.6 2003/11/03 21:46:08 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -387,10 +387,13 @@ otherwise self.query is {}. self.path is the path.'''
 
         # The following throws away two extra bytes sent by IE, if we would
         # not do this, POSTs from IE would not work: [see bug #427345]
-        while select.select([self.rfile], [], [], 0)[0]:
-            if not self.rfile.read(1):
-                break
-                
+        try:
+            while select.select([self.rfile], [], [], 0)[0]:
+                if not self.rfile.read(1):
+                    break
+        except:
+            Utils.Error("Select hack raised exception.",prefix="Warning")
+        
         self.query = cgi.parse_qs(x)
         self.do_WORK()
 
@@ -415,15 +418,22 @@ otherwise self.query is {}. self.path is the path.'''
         Utils.Error(msg,"Log:")
 
 class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
+    def get_request(self):
+        """Get the request and client address from the socket.  """
+        s = self.socket.accept()
+        s[0].settimeout(30)
+        return s
+
     raus = 0
     restartcommand = ''
     allow_reuse_address = 1
     request_queue_size = 5
+    daemon_threads = 1
 
 SERVER = None
 
 # number of seconds we are willing to wait for threads to terminate:
-TERMWAIT = 3
+TERMWAIT = 5
 
 def sigusr1handler(sig,sta):
     '''Signal handler for SIGUSR1.'''

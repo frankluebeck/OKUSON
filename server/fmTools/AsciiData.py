@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.5 2003/11/02 13:31:19 neunhoef Exp $'
+CVS = '$Id: AsciiData.py,v 1.6 2003/11/03 21:46:08 neunhoef Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -257,7 +257,14 @@ as described above.
                 # Store it, depending on node type:
                 #print "Storing",v,"into",tos,f
                 if tost == "DICT":
-                    tos[f] = v
+                    if type(f) == types.IntType:
+                        if f < 0 or f >= len(ll):
+                            msg='Error: Too few fields ( <'+str(f)+')\nLine:'+l
+                            reporterror(msg)
+                            raise DataError, msg
+                        tos[ll[f]] = v
+                    else:
+                        tos[f] = v
                 elif tost == "VECT":
                     if f == "NEXT":
                         i = len(tos)
