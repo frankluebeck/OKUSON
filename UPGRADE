@@ -15,13 +15,44 @@ Unpack the archive:
 
 outside the "okuson" directory.
 
-Several program files are replaced, however your configuration, data,
-and web page templates are not changed.
+You have to recompile the pyRXP parser, since a bug has been fixed within
+pyRXP. You do this by the following commands:
 
-The following new files have to be copied manually from the
-  html.sample
-directory to the
-  html
-directory:
+  cd okuson/server
+  ./makepyRXP
+  cd ..
+  
+Several program files are replaced, however your configuration file, the
+data files, and the web page templates are not changed automatically.
 
+The following new files have to be copied manually from the "html.sample"
+directory to the "html" directory (do the following from the "okuson" dir):
 
+  cp html.sample/OKUSONStatistics.css html
+  cp html.sample/exercisestatistics.tpl html
+  cp html.sample/globalstatistics.tpl html
+  cp html.sample/globalstatisticspergroup.tpl html
+and:
+  cp html.sample/images/red.png html/images
+
+The following modified files have to be copied manually from the "html.sample"
+directory to the "html" directory to use the new statistic functions:
+
+  cp html.sample/adminmenu.tpl html
+  
+The following modified files have to be copied manually from the "html.sample"
+directory to the "html" directory to use the new display of maximal possible
+scores (beware, you could possibly have edited "results.tpl" yourself):
+
+  cp html.sample/results.tpl html
+  cp html.sample/results.tpl.nointeractive html
+     (copy this to "html.sample/results.tpl" if you do not use MC exercises)
+
+You can use the new utility script "showdiffsintemplates" to display the
+files in your html directory, which differ from those in the distribution's
+html.sample directory:
+
+  scripts/shopwdiffsintemplates -q
+or
+  scripts/shopwdiffsintemplates 
+  
