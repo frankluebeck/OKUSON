@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.47 2003/11/16 14:37:50 neunhoef Exp $
+% $Id: manual.tex,v 1.48 2003/11/16 20:39:19 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1704,8 +1704,22 @@ on your sheets. The default corresponds to
 
 the order of results points could be exchanged, or one of the exercise types
 can be left out. (Adjust the table header in the template appropriately.)
-\item[\texttt{<Totalscore/>}] the total sum of all points in the interactive and
+
+There are two more options \texttt{withMaxMCScore} and
+\texttt{withMaxHomeScore} which lead to the display of the maximal possible
+score after the score in brackets.
+\item[\texttt{<TotalScore/>}] the total sum of all points in the interactive and
 homework exercises.
+\item[\texttt{<MaxTotalScore/>}] the total sum of all maximal possible 
+points in the interactive and homework exercises.
+\item[\texttt{<TotalMCScore/>}] the total sum of all points 
+in the interactive exercises.
+\item[\texttt{<MaxTotalMCScore/>}] the total sum of all maximal possible points 
+in the interactive exercises.
+\item[\texttt{<TotalHomeScore/>}] the total sum of all points 
+in the homework exercises.
+\item[\texttt{<MaxTotalHomeScore/>}] the total sum of all maximal possible 
+points in the homework exercises.
 \item[\texttt{<ExamGrade nr="??"/>}, \texttt{<ExamGrades/>}] the first is
 substituted by a result string of a function given in the entry 
 \texttt{ExamGradingFunction}, which is activated by

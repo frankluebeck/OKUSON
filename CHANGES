@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.57 2003/11/16 19:58:15 neunhoef Exp $
+##  $Id: CHANGES,v 1.58 2003/11/16 20:41:22 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -29,6 +29,9 @@ Changes from 1.0-fix2 to 1.0-fix3
   them. 
 * New script "showdiffsintemplates" to do what it says.
 * Small layout change in "regchange2.tpl".
+* Small layout change in display of maximal points to avoid German words
+  in code.
+* Documentation of new tags.
 
 Changes from 1.0-fix1 to 1.0-fix2
 ---------------------------------
