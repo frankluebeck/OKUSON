@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.44 2003/10/28 16:18:09 neunhoef Exp $
+% $Id: manual.tex,v 1.45 2003/11/02 13:31:19 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2505,6 +2505,9 @@ replace & every carriage return & by \verb!\r! \\
 only between fields and that backslashes are followed only by one of the
 characters ``cdenr''. Therefore, arbitrary string values can be put into
 data fields within one line.
+\item There is one exception for the empty list: It is stored as the special
+value ``\verb+\0+'' (a backslash followed by a zero) to distinguish it from
+the list containing exactly one empty string.
 \item In every file one of the fields is the ID that identifies the person 
 to which the data belongs.
 \item There is the following principle: New data is \textbf{always appended}

@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.4 2003/10/24 22:30:42 luebeck Exp $'
+CVS = '$Id: AsciiData.py,v 1.5 2003/11/02 13:31:19 neunhoef Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -41,7 +41,12 @@ encoded string.
         ss = ss.replace('\r','\\r')
         # now there are only backslashes in ss followed by c, d, e, n, or r
         l.append(ss)
-    return string.join(l,delimiter)
+    if len(l) == 0:   # an "Extra-Wurst" for the empty list, to distinguish
+                      # it from the list with exactly one empty string!
+                      # Note that this value cannot appear otherwise!
+        return '\\0'
+    else:
+        return string.join(l,delimiter)
 
 def TupleLine(l,delimiter = ':'):
     '''The first argument l must be a string in which the character
@@ -53,6 +58,7 @@ encoding from the function LineTuple is reversed. The list of decoded
 substrings is returned.
 '''
     if (len(l) > 0 and l[-1] == '\n'): l = l[:-1]
+    if l == '\\0': return []   # Handle "Extra-Wurst" from above
     ll = l.split(delimiter)
     for i in range(len(ll)):
         s = ll[i].replace('\\d',delimiter)

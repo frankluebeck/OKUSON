@@ -45,7 +45,8 @@ Ideen:
   Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
   Template files generischer
   Anmeldung fuer exams schaltbar?
+  Anmeldung schaltbar
+  log-Datei nicht ins Archiv, dafuer beim Start abchecken
   Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
     Dateien, Browser Info speichern(?), Action Info in separate Datei mit
     lesbaren timestamps.
-
