@@ -853,6 +853,7 @@ And text exercises are identified by their file names.
        nr="0"
        name="0"
        first="1"
+       openfrom="12:00_01.09.2003"
        opento="14:00_20.10.2003">
 
 <TEXT>The first exercise is interactive. You must send the 
@@ -899,6 +900,11 @@ the range $00..23$, \texttt{dd} the day of the month in the range $1..31$,
 \texttt{MM} the month in the range $1..12$ and \texttt{yyyy} the year. This
 time is interpretet as local time on the machine running the {\OKUSON}
 server.
+\item[\texttt{openfrom}] this is an optional entry with the same syntax as 
+\texttt{opento}. If it is set to a time in the future then participants of
+the course cannot get the sheet or submit solutions for it (But the
+administrator can, so you can check and test a sheet before the course
+participants can see it.) 
 \end{description}
 
 The content of a \texttt{SHEET} element is a sequence of any number of 

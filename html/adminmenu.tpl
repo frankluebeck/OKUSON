@@ -31,6 +31,8 @@
      </p>
      <p>Shutdown server: <input type="submit" name="Action" value="Shutdown" />
      </p>
+     <p>Display available and future sheets: <input type="submit" name="Action" value="Display Sheets" />
+     </p>
     </form>
      
     <hr />
@@ -48,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.2 2003/10/01 15:46:27 luebeck Exp $ -->
 

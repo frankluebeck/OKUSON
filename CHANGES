@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.3 2003/10/01 10:44:44 luebeck Exp $
+##  $Id: CHANGES,v 1.4 2003/10/01 15:46:26 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -24,7 +24,9 @@ Otherwise:
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
 * removed bug with double use of <Semester/>.
-
+* introduced the 'openfrom' attribute for sheets, including admin
+  access to not yet open sheets.
+??????  if attr not there no sheet !!!
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

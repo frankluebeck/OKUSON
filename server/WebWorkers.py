@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.5 2003/09/30 15:39:37 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.6 2003/10/01 15:46:27 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal
 
@@ -44,6 +44,7 @@ Site = BuiltinWebServer.Site
 # handlers that are used throughout all our dynamic pages:
 #
 class EH_Generic_class(XMLRewrite.XMLElementHandlers):
+    iamadmin = 0
     def handle_CourseName(self,node,out):
         out.write(Config.conf['CourseName']+'\n')
     def handle_Semester(self,node,out):
@@ -140,11 +141,17 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                       'name="passwd" value="" /> or \n'
                       '<a href="/adminlogin.html">login here.</a>\n')
     def handle_AvailableSheetsAsButtons(self,node,out):
-        l = Exercises.SheetList()
-        for nr,name,s in l:
-            if len(name) == 1:
-              name = ' '+name
-            out.write('<input type="submit" name="sheet" value="'+name+'" />\n')
+       l = Exercises.SheetList()
+       for nr,name,s in l:
+           if len(name) == 1:
+             name = ' '+name
+           if s.openfrom and time.time() < s.openfrom:
+               if self.iamadmin:
+                   out.write('(<input type="submit" name="sheet" value="'
+                             +name+'" /> not yet open)\n')
+           else:
+               out.write('<input type="submit" name="sheet" value="'
+                         +name+'" />\n')
     def handle_AvailableResolutions(self,node,out):
         out.write('<option selected="selected">Standard</option>\n')
         for r in Config.conf['Resolutions']:
@@ -557,7 +564,8 @@ a Person object and a Sheet object as data.'''
     def handle_SheetNr(self,node,out):
         out.write(str(self.s.nr))
     def handle_IfOpen(self,node,out):
-        if time.time() <= self.s.opento or self.iamadmin:   # Sheet still open
+        if (time.time() <= self.s.opento and (self.s.openfrom == None or 
+            time.time() >= self.s.openfrom)) or self.iamadmin:  # Sheet is open
             # Write out tree recursively:
             if node[2] != None:
                 for n in node[2]:
@@ -584,6 +592,9 @@ a Person object and a Sheet object as data.'''
         out.write(time.ctime())
     def handle_OpenTo(self,node,out):
         out.write(LocalTimeString(self.s.opento))
+    def handle_OpenFrom(self,node,out):
+        if self.s.openfrom:
+            out.write(LocalTimeString(self.s.openfrom))
     def handle_CurrentTime(self,node,out):
         out.write(LocalTimeString())
 
@@ -616,7 +627,8 @@ def QuerySheet(req,onlyhead):
     i = 0
     while i < len(l) and l[i][1] != sheetname: 
         i += 1
-    if i >= len(l):
+    if i >= len(l) or (not(iamadmin) and l[i][2].openfrom and 
+                       time.time() < l[i][2].openfrom):
         return Delegate('/errors/unknownsheet.html',req,onlyhead)
     sheet = l[i]
     if format == 'HTML':
@@ -668,6 +680,10 @@ def QuerySheet(req,onlyhead):
           except:
             values['PersonData'+ii] = ''
         values['OpenTo'] = LocalTimeString(sheet[2].opento)
+        if sheet[2].openfrom:
+            values['OpenFrom'] = LocalTimeString(sheet[2].openfrom)
+        else:
+            values['OpenFrom'] = ''
         values['CurrentTime'] = LocalTimeString()
 
         # finally the actual exercises as longtable environment
@@ -712,7 +728,8 @@ submission as well as the results.'''
     i = 0
     while i < len(l) and l[i][1] != sheetname: 
         i += 1
-    if i >= len(l):
+    if i >= len(l) or (not(iamadmin) and s.openfrom and 
+                       time.time() < s.openfrom):
         return Delegate('/errors/unknownsheet.html',req,onlyhead)
     s = l[i][2]   # the sheet in question
 
@@ -819,6 +836,8 @@ def AdminWork(req,onlyhead):
         BuiltinWebServer.SERVER.raus = 1
         os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
         return Delegate('/admindown.html',req,onlyhead)
+    if action == 'Display Sheets':
+        return Adminexquery.getresult(req, onlyhead)
 
 # Install the dynamic pages:
 # There are two different sorts of pages:
@@ -864,11 +883,17 @@ def visitor(arg,dirname,names):
                     Utils.Error('Loading of '+ourpath+'.tpl was not '
                                 'successful!')
 
+Adminexquery = None
 def RegisterAllTpl():
+    global Adminexquery
     os.path.walk(DocRoot,visitor,None)
     # Mark the administrator's pages:
     Site['/adminlogin.html'].access_list=Config.conf['AdministrationAccessList']
     Site['/adminmenu.html'].access_list=Config.conf['AdministrationAccessList']
+    # Reinstall exquery.html for admin - includes not yet open sheets
+    eh = EH_Generic_class()
+    eh.iamadmin = 1
+    Adminexquery = PPXML(DocRoot,'exquery.tpl',eh)
     # Copy the index file to hide things:
     Site['/messages'] = Site['/errors'] = Site['/'] = Site['/index.html']
     Site['/messages/'] = Site['/errors/'] = Site['/index.html']

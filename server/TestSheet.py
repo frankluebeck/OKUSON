@@ -84,6 +84,10 @@ for a in files:
     for a in ['CourseName', 'Semester', 'Lecturer']:
       values[a] = Config.conf[a]
     values['OpenTo'] = LocalTimeString(sheet.opento)
+    if sheet.openfrom:
+      values['OpenFrom'] = LocalTimeString(sheet.openfrom)
+    else:
+      values['OpenFrom'] = ''
     values['CurrentTime'] = LocalTimeString()
     # we add a further page with the solutions
     sol = sheet.AllSolutions().strip()

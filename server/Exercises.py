@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.3 2003/09/23 15:02:49 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.4 2003/10/01 15:46:27 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -86,6 +86,7 @@ def CleanString(s):
 
 
 class Sheet(Utils.WithNiceRepr):
+    openfrom = None  # time when sheet is published (None == -infinity)
     opento = 0       # time until sheet is open in secs since epoche
     counts = 1       # if non-zero, the sheet counts for the Schein
     nr = 0           # a number for sorting the sheets of this course
@@ -879,6 +880,17 @@ def MakeSheet(t):
                     opento+' at '+Utils.StrPos(t[3])+
                     '\nWill stay open forever.',prefix='Warning:')
         sh.opento = 0
+
+    openfrom = t[1]['openfrom'].encode('ISO-8859-1','replace')
+    try:
+        x = list(time.strptime(openfrom,"%H:%M_%d.%m.%Y"))
+        x[8] = -1  # dst flag
+        sh.openfrom = time.mktime(x)
+    except ValueError:
+        Utils.Error('Value of "openfrom" attribite is unparsable: '+
+                    openfrom+' at '+Utils.StrPos(t[3])+
+                    '\nAssuming -infinity.',prefix='Warning:')
+        sh.openfrom = None
 
     counter = sh.first
     for a in t[2]:
