@@ -1,0 +1,277 @@
+%%  Folien für OKUSON Vortrag                        Frank Lübeck
+%%  $Id: okusonFolien.tex,v 1.1 2004/06/28 21:19:10 luebeck Exp $
+
+
+\documentclass[blue,condense]{beamer}
+%\beamertemplatetransparentcovered
+\beamertemplatetransparentcovereddynamic
+\usepackage{beamerthemeshadow}
+\usepackage[german]{babel}
+\usepackage[latin1]{inputenc}
+\def\OKUSON{{\sffamily\textbf{OKUSON}}}
+\newcommand{\myemph}[1]{{\color{red}#1}}
+
+\begin{document}
+
+\title[{\OKUSON\hspace{3mm} \ttfamily http://www.math.rwth-aachen.de/\~{}OKUSON}]{\OKUSON - ein System zur Organisation des Übungsbetriebs zu großen
+Vorlesungen}
+\author{Frank Lübeck\\
+(Lehrstuhl D für Mathematik, RWTH Aachen)}
+\date{Hannover, 29.6.2004}
+
+\frame{\titlepage
+
+{\OKUSON} ist ein gemeinsames Projekt mit Max Neunhöffer.
+}
+
+\section{Überblick}
+\frame{\tableofcontents}
+
+
+\section{Motivation}
+\frame{
+{\large\textbf{Situation}}
+\begin{itemize}
+\item<1->
+Anfängervorlesung mit über 1000 Studierenden
+\item<2->
+Wöchentliche Übungen mit Tutorien, 3 Klausuren
+\item<3->
+Etwa 20 Tutoren
+\end{itemize}
+
+\begin{itemize}
+\item<4->[$\Rightarrow$] \glqq Klassischer Übungsbetrieb\grqq\ mit 4 schriftlichen 
+Aufgaben/Woche nicht mehr möglich
+\item<5->[$\Rightarrow$] Großer Verwaltungsaufwand
+\end{itemize}
+}
+
+\frame{
+{\large\textbf{Idee}}
+\begin{itemize}
+\item<2-> Teil der Aufgaben soll \glqq mechanisch\grqq\  zu korrigieren sein
+(Multiple Choice, Abfrage von Rechenergebnissen)
+\item<3-> Um Abschreiben zu erschweren, sollen \myemph{individuelle}
+Aufgabenblätter ausgegeben werden (aus Pool von Aufgaben zusammengesetzt)
+\item<4-> Hierzu soll die Verwaltung der Übungen über eine Webseite erfolgen:
+\begin{itemize}
+\item<5-> Anmeldung
+\item<6-> Abholung der Übungsblätter
+\item<7-> Abgabe der Multiple-Choice Aufgaben
+\item<8-> Punktestand, Klausurergebnisse abfragen
+\end{itemize}
+\item<9-> Die Verwaltung soll möglichst automatisiert werden:
+\begin{itemize}
+\item<10-> Teilnehmer-, Punktestand-Verwaltung
+\item<11-> Auswertung der Multiple-Choice Aufgaben
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+{\large\textbf{Vorteile}}
+\begin{itemize}
+\item<1-> Tutoren werden entlastet, sie haben noch 2 statt 4 Aufgaben 
+pro Teilnehmer und Woche zu korrigieren
+\item<2-> Verwaltung wird entlastet: Übungsgruppeneinteilung, kein Drucken
+von Aufgabenblättern, Punkteverwaltung, Scheinerstellung
+\end{itemize}
+
+\uncover<3->{\large\textbf{Nachteil (nur zu Beginn)}}
+\begin{itemize}
+\item<4-> Es müssen gute Ja/Nein, Multiple-Choice und Rechenaufgaben erfunden
+werden, die mechanisch korrigiert werden können.
+\end{itemize}
+
+
+}
+
+\section{Nutzung aus Teilnehmersicht}
+\frame{
+\large\textbf{Nutzung aus Teilnehmersicht}
+
+Zur Teilnahme an Übungen, die mit \OKUSON\ verwaltet werden, wird benötigt:
+\begin{itemize}
+\item<2-> Internet-Anschluss
+\item<3-> (graphik-fähiger) Webbrowser
+\item<4-> Evtl. Möglichkeit zum Ausdrucken von PDF-Dateien
+\end{itemize}
+
+\uncover<5->{Insbesondere werden \myemph{kein} bestimmtes Betriebssystem, 
+\myemph{keine} Browser-Plugins und
+\myemph{keine} weitere externe Software benötigt.\\[2mm] }
+
+\uncover<6->{\large\textbf{Ein Beispiel}
+
+$\ldots$
+}
+}
+
+\frame{
+{\large\textbf{Aufgabentypen zur automatischen Auswertung}}
+\begin{itemize}
+\item<2-> \textbf{Single-Choice-Aufgaben:} Auswahl von Antworten, von denen
+genau eine richtig ist
+\item<3-> \textbf{Multiple-Choice-Aufgaben:} Auswahl von Antworten, von
+denen die Teilmenge der richtigen zu finden ist
+\item<4-> \textbf{Aufgaben mit einer eindeutigen, kurzen
+Ergebniszeichenkette:} Etwa eine Zahl, die Ergebnis einer Rechnung ist, oder
+ein Wort
+\end{itemize}
+
+\uncover<5->{{\large\textbf{Auswertung}}
+
+Korrekt bewertete Antworten geben \myemph{einen Punkt}, falsche Antworten 
+\myemph{einen Minuspunkt} und nicht beantwortete Fragen \myemph{Null
+Punkte}. (Raten nützt nichts!)}
+}
+
+\section{Installation und Nutzung aus Veranstaltersicht}
+\frame{
+\large\textbf{Technische Voraussetzungen}
+\begin{itemize}
+\item<2-> UNIX/Linux System mit Internet-Anschluss
+\item<3-> Installierte Software: Python, C-Compiler, (pdf)-\LaTeX,
+ghostscript, netpbm, Texteditor, Webbrowser, PDF-Viewer  
+(auf Linux-System meist alles vorhanden oder leicht zu installieren)
+\end{itemize}
+
+\uncover<4->{\large\textbf{Persönliche Voraussetzungen}}
+\begin{itemize}
+\item<5-> Installation und Start von Programmen
+\item<6-> \LaTeX\ für Aufgabentexte
+\item<7-> HTML Grundkenntnisse zum Editieren (Anpassen) von Webseiten
+\end{itemize}
+}
+
+\frame{
+{\large\textbf{Installation (ganz kurz)}}
+\begin{itemize}
+\item<2-> \OKUSON-Archiv von \\
+{}\hspace{1cm}\texttt{http://www.math.rwth-aachen.de/\~{}OKUSON}\\
+kopieren und auspacken
+\item<3-> Konfigurations-Datei editieren, mindestens: Passwort, Vorlesungstitel,
+Dozentenname, Semester, Kontaktadresse
+\item<4-> \OKUSON-Server starten
+\end{itemize}
+}
+
+\frame{
+\uncover<1->{\large\textbf{Dokumentation und Lizenz}}
+\begin{itemize}
+\item<2-> Das \OKUSON-Archiv enthält eine ausführliche Dokumentation
+(englisch). Erlaubt (hoffentlich) schnellen Einstieg und dient als
+Referenzhandbuch.
+\item<3-> \OKUSON\ enthält vollständigen dokumentierten Quellcode. 
+%Für Programmierer ist es nicht sehr schwer, das System zu erweitern. 
+\item<4-> \OKUSON\ ist \myemph{frei}, Copyright haben die Autoren, Nutzung
+unter \myemph{GNU Public license}.
+\item<5-> Die Autoren können leider keinen \glqq technischen Support\grqq\
+bieten. Natürlich bemühen wir uns, auf Fragen zu antworten, Fehler zügig zu
+beheben und Anregungen für Verbesserungen aufzugreifen.
+\end{itemize}
+
+}
+
+\frame{
+\uncover<1->{\large\textbf{Anpassung an lokale Gegebenheiten}}
+\begin{itemize}
+\item<2-> Über fortgeschrittenere Einträge der Konfigurationsdatei 
+(mögliche Benutzer-IDs, spezielle \TeX-Makros, Funktion zur Notenberechnung,
+Dateinamen für Daten,
+$\ldots$)
+\item<3-> Durch Anpassen der Webseiten:  
+XHTML-Dateien mit  zusätzlichen Elementen, die dynamisch 
+vom \OKUSON-Server ersetzt werden (Vorlesungsname, Personen-,
+Übungsblatt-Daten, $\ldots$)
+\item<4-> Neue Funktionalität durch Erweiterung der Programme
+(wenn Programmierkenntnisse vorhanden)
+\end{itemize}
+}
+
+\frame{
+{\large\textbf{Eingabe von Aufgabenblättern}}\\[2mm]
+
+\uncover<2->{
+Mittels einer Datei in einer einfachen und dokumentierten XML-Syntax
+(meist Ausfüllen einer Vorlage): Blattnummer, Abgabedatum, Verweise auf
+Aufgaben, Zwischentexte.\\ (Beispiel $\ldots$)\\[4mm]
+}
+
+\uncover<3->{\large\textbf{Eingabe von Aufgaben}}\\[2mm]
+
+\uncover<4->{\textbf{\glqq Klassische\grqq\  schriftliche Aufgaben:} Text in \LaTeX
+}
+\uncover<5->{\textbf{Multiple-Choice Aufgaben:} auch in Dateien mit
+einfacher XML-Syntax, die eigentlichen Aufgabentexte in \LaTeX\\
+(Beispiel $\ldots$)
+}
+}
+
+
+\frame{
+{\large\textbf{Verwaltung der Daten}}
+\begin{itemize}
+\item<2-> Alle Daten des Systems werden in Zeilen lesbarer Textdateien
+abgespeichert
+\item<3-> Bequemer Zugriff auf die meisten Daten über eine
+Administrator-Webseite: Server-Neustart, Datenexport, Statistiken
+\\
+(Beispiel $\ldots$)
+\item<4-> Administrator hat auch - teilweise erweiterten - Zugriff auf alle
+persönlichen Daten
+\end{itemize}
+}
+
+\section{Praktische Erfahrungen}
+\frame{
+{\large\textbf{Praktische Erfahrungen}}
+\begin{itemize}
+\item<2-> Vorgänger-Versionen  von uns seit drei Jahren benutzt
+\item<3-> \OKUSON\ selbst jetzt im zweiten Semester (z.Z. für etwa
+10 Vorlesungen an der RWTH)
+\item<4-> Praktisch keine technischen Probleme
+\item<5-> Keinen Widerstand gegen  \glqq nur Web\grqq-Betrieb
+\item<6-> Es gibt gute \glqq automatisch korrigierbare\grqq\ Aufgaben für
+Mathematik Anfängervorlesungen 
+\item<7-> Gute Resonanz, geringe Abbrecherquote bei den Übungen
+\end{itemize}
+
+
+}
+
+%%  \frame
+%%  {
+%%  \beamerboxesdeclarecolorscheme{alert}{blue}{blue!10!averagebackgroundcolor}
+%%  \begin{beamerboxesrounded}[scheme=alert,shadow=true]{}
+%%    \uncover<1>{This line is inserted only on slide 1.}
+%%  
+%%    \uncover<2>{This line is inserted only on slide 2.}
+%%    
+%%    \uncover<2->{\alert<3>{This line is  on slide 3.}}
+%%    
+%%    \uncover<4>{Ende.}
+%%  \end{beamerboxesrounded}
+%%  }
+%%  
+%%  \defverbatim\algorithmA{
+%%  \begin{verbatim}
+%%  int main (void)
+%%  {
+%%    cout << "Hello world." << endl;
+%%    return 0;
+%%  }
+%%  \end{verbatim}
+%%  }
+%%  
+%%  \frame
+%%  {
+%%    Our algorithm:
+%%    \alert<1>{\algorithmA}
+%%    \uncover<2>{Note the return value.}
+%%  }
+
+
+\end{document}
+
