@@ -13,6 +13,8 @@ Jetzt:
   F Statistik fuer Tutoren zugaenglich (wie schwierig?)
   F Hinweis, dass man beliebige PDF's per Webserver ausliefern lassen kann.
   F Hinweis auf Python 2.3+ in Suse 9.0 ins Handbuch/Website
+  M Fehler berichtet von Daniel: Whitespace bei .tex am Ende wird entfernt,
+    dadurch machen Kommentare am Ende Aerger
 
 Spaeter: 
 
