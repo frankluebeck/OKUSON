@@ -7,6 +7,9 @@ Ideen:
     <input type="file" ...>.)
   - die persondata Einträge sollten auch exportiert werden können
     (warum hat das noch niemand vermisst?)
+  - Einige fest eingebaute Größen durch Einträge in der Config.xml
+    festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
+    (z.Z. 2 mal fest in Exercises.py eingebaut).
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
