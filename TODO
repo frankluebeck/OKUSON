@@ -44,8 +44,6 @@ M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
 
 M  Ergaenzung von Marc --> okuson-folder
   
-M  schein.py besser erklaeren, ev. Beispiel
-
 Matthias:
 
 F ShowGlobalStatisticsForGroup tut nicht
@@ -71,4 +69,6 @@ M  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
     
 M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
     Sollte von überall zugreifbar sein. (Mathias Künzer)
+
+M  schein.py besser erklaeren, ev. Beispiel
 
