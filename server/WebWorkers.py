@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.79 2004/03/04 13:26:17 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.80 2004/03/04 13:41:42 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -396,6 +396,10 @@ def SubmitRegistration(req,onlyhead):
     '''This function is called when a user submits a registration. It will
 work on the submitted form data, register the new participant if possible
 and either send an error message or a report.'''
+    # Very first check whether registration is allowed:
+    if Config.conf['RegistrationPossible'] == 0:
+        return Delegate('/errors/regnotallowed.html',req,onlyhead)
+
     # First check whether the id is valid:
     id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
