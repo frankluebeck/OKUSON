@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.13 2003/10/23 10:58:33 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.14 2003/10/27 11:51:47 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -140,6 +140,7 @@ a sheet for one certain student is needed.'''
                         if isinstance(q,Question):
                             l.append(j)
                     for k in range(len(l)):
+                        ll.append([None,None])
                         for kk in range(o.list[l[k]].nrvariants):
                             ll.append([l[k], kk])
                     result.append(ll)
@@ -593,6 +594,9 @@ of the sheet with seed "seed" and returns the result as a string.
                 
                 # Now we write out the questions:
                 for j,k in l:
+                    if (j,k) == (None,None):
+                        f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n & ')
+                        continue;
                     q = o.list[j]
                     f.write(('\\begin{minipage}[t]{'+woq+\
                       '}%s\\vspace{1mm}\\end{minipage} & ') \
