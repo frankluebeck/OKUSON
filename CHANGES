@@ -1,0 +1,32 @@
+/*  CHANGES                                                     OKUSON package
+/*                                               Frank Lübeck / Max Neunhöffer
+/*
+/*  $Id: CHANGES,v 1.1 2003/09/29 09:29:20 luebeck Exp $
+
+
+This file documents the changes between released versions of OKUSON.
+
+How to apply an update of OKUSON to earlier releases:
+-----------------------------------------------------
+
+In case that you have customized only those file which you have copies from
+sample files (Config.xml.sample -> Config.xml, html.sample/* -> html, 
+data/empty/* -> data):
+  Just unpack the newer archive in the same location where you have unpacked
+  an earlier version. 
+
+Otherwise:
+  Save files which you have changed and which are not mentioned above.
+  Unpack the newer archive. Reapply your changes. (Actually, you may tell
+  us which files you want to change, maybe this can be avoided by improving
+  the files in the distribution.)
+
+
+Changes from 1.0-pre1  to  1.0-pre2
+-----------------------------------
+* removed bug with redisplaying sheets including previous submissions.
+* the ./stop and ./restart scripts no longer need the administrator
+  password (thereby removing a problem with passwords containing '&'
+  characters)
+* changed default for access of BuiltinWebServer: from all hosts
+
