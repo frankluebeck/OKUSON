@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.28 2003/10/10 18:28:49 neunhoef Exp $
+% $Id: manual.tex,v 1.29 2003/10/10 18:38:42 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1624,7 +1624,13 @@ home directory.
 The following options are for data exports. They all send a file with
 content type ``\texttt{text/okuson}'' and your browser probably will
 ask you to save the file, because it does not know what to do with this
-content type. In all cases we send sensible default names along.
+content type. In all cases we send sensible default names along. 
+
+\textbf{Attention:} If you choose in your browser some helper application
+to view these exports, it may very well be that the exported files are
+written into some global temporary directory like \texttt{/tmp}. It is
+of course your responsibility to ensure proper data protection for this
+at least potentially critical personal data!
 
 \subsection{Export people for tutoring group distribution} 
 
