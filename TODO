@@ -10,6 +10,8 @@ Ideen:
   - Einige fest eingebaute Größen durch Einträge in der Config.xml
     festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
     (z.Z. 2 mal fest in Exercises.py eingebaut).
+  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
+    Sollte von überall zugreifbar sein. (Mathias Künzer)
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
