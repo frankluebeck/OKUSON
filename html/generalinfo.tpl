@@ -42,7 +42,7 @@ Aufgaben besprochen und einige schriftliche Lösungen vorgestellt.</p>
 <h3>Anmeldung zu den Übungen</h3>
 
 <p>Die  Anmeldung  erfolgt  über   diese  Vorlesungs-Webseiten.  Die  genaue
-Gruppeneinteilung  erfolgt  am  ???,  den  ??.??.????,  und  wird  auch
+Gruppeneinteilung  erfolgt  am  ???,  dem  ??.??.????,  und  wird  auch
 über  diese Webseiten  bekanntgegeben. Bitte,  melden Sie  sich deshalb  bis
 <strong>Montag, den ??.??.????</strong> für die Übungen an. </p>
 
@@ -122,5 +122,5 @@ vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: generalinfo.tpl,v 1.3 2003/10/10 00:18:50 luebeck Exp $ -->
+     $Id: generalinfo.tpl,v 1.4 2003/10/12 12:25:24 neunhoef Exp $ -->
 
