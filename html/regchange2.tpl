@@ -98,12 +98,11 @@ Ihr Passwort nicht ändern wollen.
       <td>Einteilungswunsch:</td>
       <td> <WishesField /> </td>
     </tr>
-
-    <tr>
-      <td> </td>
-      <td> <input type="submit" name="Action" value="Abschicken" /> </td>
-    </tr>
   </table>
+
+  <p>Passwort: <input type="password" size="16" maxlength="16" name="passwd"
+                value="" />
+     <input type="submit" name="Action" value="Abschicken" /> </p>
 
   <p>Bitte geben Sie unter "Einteilungswunsch" die Matrikelnummern
   der Kommilitoninnen/Kommilitonen ein, mit denen Sie zusammen in eine
@@ -126,5 +125,5 @@ Ihr Passwort nicht ändern wollen.
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange2.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: regchange2.tpl,v 1.2 2003/11/16 19:56:56 neunhoef Exp $ -->
 

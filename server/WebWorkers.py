@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.67 2003/11/16 19:05:27 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.68 2003/11/16 19:56:56 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1220,7 +1220,8 @@ def DistributionTable(num, list):
         except:
             scalefactor = 1
         for i in range(len(list)):
-            row1 += '<td><img src="/images/red.png" alt="" width="10px" height="' + str(list[i] * scalefactor) + 'px" /></td>'
+            row1 += '<td><img src="/images/red.png" alt="" width="10px" '\
+                    'height="' + str(list[i] * scalefactor) + 'px" /></td>'
             row2 += '<td>%d</td>' % list[i]
             try:
                 row3 += '<td>%d</td>' % (100*float(list[i]) / float(num))
@@ -1231,7 +1232,8 @@ def DistributionTable(num, list):
         row2 += '<td class="summary">Sum: %d</td>' % num
         row3 += '<td class="summary">%</td>'
         row4 += '<td class="summary"></td>'
-        exStr +=   row1 +'</tr>\n' + row2 + '</tr>\n' + row3 + '</tr>\n' + row4 +'</tr>\n' 
+        exStr +=   row1 +'</tr>\n' + row2 + '</tr>\n' + row3 + '</tr>\n' + \
+                   row4 +'</tr>\n' 
         exStr += '</table>\n\n' 
     return exStr
     

@@ -109,7 +109,7 @@
 
     <form action="/ShowGlobalStatisticsPerGroup" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Global Statistics, seperated per Group, for sheet
+    Show Global Statistics, separated per Group, for sheet
     <AvailableSheetsAsButtons />
     </p>
     </form>
@@ -155,5 +155,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.15 2003/11/16 14:08:58 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.16 2003/11/16 19:56:56 neunhoef Exp $ -->
 
