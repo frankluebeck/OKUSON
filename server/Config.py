@@ -38,6 +38,7 @@ Parameters = {
   "User8":                    ["STRING",0],
   "User9":                    ["STRING",0],
   "IdCheckRegExp":            ["STRING",1],
+  "GuestIdRegExp":            ["STRING",0],
   "GradingFunction":          ["STRING",0],
   "GradingActive":            ["INT",0],
 
@@ -211,6 +212,17 @@ into a usable form. Some values are changed into other data types.'''
         conf['IdCheckRegExp'] = re.compile(conf['IdCheckRegExp'])
     except:
         Utils.Error('Regular expression in "IdCheckRegExp" cannot be '
+                    'compiled.')
+        etype, value, tb = sys.exc_info()
+        lines = traceback.format_exception(etype,value,tb)
+        Utils.Error(string.join(lines),prefix="")
+        FailMiserably()
+    if not(conf.has_key('GuestIdRegExp')):
+        conf['GuestIdRegExp'] = '^$'   # matches only the empty string
+    try:
+        conf['GuestIdRegExp'] = re.compile(conf['GuestIdRegExp'])
+    except:
+        Utils.Error('Regular expression in "GuestIdRegExp" cannot be '
                     'compiled.')
         etype, value, tb = sys.exc_info()
         lines = traceback.format_exception(etype,value,tb)

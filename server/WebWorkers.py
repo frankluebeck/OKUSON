@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.24 2003/10/08 21:53:10 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.25 2003/10/08 22:23:10 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -175,9 +175,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         if Data.groups.has_key(nr):
             l = list(Data.groups[nr].people)
             l.sort()
-            for k in l[:-1]:
-                out.write(k+', ')
-            out.write(l[-1]+'.')
+            out.write(string.join(l,', ')+'.')
         else:
             Utils.Error('<MembersOfGroup /> tag requested empty group "'+
                         str(nr)+'".',prefix='Warning:')
@@ -249,7 +247,30 @@ def Authenticate(p,req,onlyhead):
         iamadmin = 1
     else:
         iamadmin = 0
-    if passwd != p.passwd and not(iamadmin):
+    # We authenticate everybody for guest IDs:
+    if passwd != p.passwd and not(iamadmin) and \
+       not(Config.conf['GuestIdRegExp'].match(p.id)):
+        return -1
+    else:
+        return iamadmin
+
+def AuthenticateTutor(g,req,onlyhead):
+    '''Checks password in the request. Administrator password is also 
+       accepted. Return value is 1 if authentication was with admin
+       password and 0 otherwise. In case of a failure we return -1.'''
+    # Check whether password is correct:
+    pw = req.query.get('passwd',['1'])[0].strip()[:16]
+    salt = g.passwd[:2]
+    passwd = crypt.crypt(pw,salt)
+    # Check admin password:
+    passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
+    if passwdadmin == Config.conf['AdministratorPassword'] and \
+       BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
+                                      req.client_address[0]):
+        iamadmin = 1
+    else:
+        iamadmin = 0
+    if passwd != g.passwd and not(iamadmin):
         return -1
     else:
         return iamadmin
@@ -259,7 +280,7 @@ def SubmitRegistration(req,onlyhead):
 work on the submitted form data, register the new participant if possible
 and either send an error message or a report.'''
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -538,7 +559,7 @@ def QueryRegChange(req,onlyhead):
 It will work on the submitted form data, check whether a registration is
 there and send a form to display and change the saved data.'''
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -561,7 +582,7 @@ def SubmitRegChange(req,onlyhead):
 work on the submitted form data, register the new participant if possible
 and either send an error message or a report.'''
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -719,7 +740,7 @@ def SeedFromId(id):
 
 def QuerySheet(req,onlyhead):
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -821,7 +842,7 @@ input, gives appropriate warning and error messages and stores the
 submission as well as the results.'''
 
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -864,7 +885,7 @@ def QueryResults(req,onlyhead):
 It will work on the submitted form data, check whether a registration is
 there and send a form to display and change the saved data.'''
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -937,7 +958,7 @@ Site['/GroupInfo'] = FunWR(GroupInfo)
 
 def ExamRegistration(req, onlyhead):
     # First check whether the id is valid:
-    id = req.query.get('id',['100000'])[0].strip()   # our default id
+    id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):
         return Delegate('/errors/invalidid.html',req,onlyhead)
 
@@ -1056,9 +1077,7 @@ def TutorRequest(req,onlyhead):
 
     g = Data.groups[str(groupnr)]
     # Now verify the password for this group:
-    # We use the function for people, this is possible because g as a
-    # data field "passwd".
-    iamadmin = Authenticate(g,req,onlyhead)
+    iamadmin = AuthenticateTutor(g,req,onlyhead)
     if iamadmin < 0:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
@@ -1132,9 +1151,7 @@ def SubmitHomeworkSheet(req,onlyhead):
 
     g = Data.groups[str(groupnr)]
     # Now verify the password for this group:
-    # We use the function for people, this is possible because g as a
-    # data field "passwd".
-    iamadmin = Authenticate(g,req,onlyhead)
+    iamadmin = AuthenticateTutor(g,req,onlyhead)
     if iamadmin < 0:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
@@ -1192,7 +1209,7 @@ def SubmitHomeworkPerson(req,onlyhead):
     # Now verify the password for this group:
     # We use the function for people, this is possible because g as a
     # data field "passwd".
-    iamadmin = Authenticate(g,req,onlyhead)
+    iamadmin = AuthenticateTutor(g,req,onlyhead)
     if iamadmin < 0:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
@@ -1235,6 +1252,7 @@ def SubmitHomeworkPerson(req,onlyhead):
     return Delegate('/tutors.html',req,onlyhead)
 
 Site['/SubmitHomeworkPerson'] = FunWR(SubmitHomeworkPerson)
+
 
 #######################################################################
 # The following is for the administrator's pages:
@@ -1328,6 +1346,14 @@ def Protect(st):
 
 # Some sort functions:
 
+def CmpByID(a,b):
+    try:
+        an = int(a)
+        bn = int(b)
+        return cmp(an,bn)
+    except:
+        return cmp(a,b)
+
 def CmpByName(a,b):
     v = cmp(Data.people[a].lname,Data.people[b].lname)
     if v: return v
@@ -1356,9 +1382,9 @@ def CmpByGroupAndName(a,b):
 def CmpByGroupAndID(a,b):
     v = cmp(Data.people[a].group,Data.people[b].group)
     if v: return v
-    return cmp(a,b)
+    return CmpByID(a,b)
 
-sorttable = {'ID': cmp, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
+sorttable = {'ID': CmpByID, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
              'semester': CmpBySemester, 
              'length of wishlist': CmpByLengthOfWishlist,
              'group and ID': CmpByGroupAndID, 
@@ -1383,12 +1409,14 @@ def ExportPeopleForGroups(req,onlyhead):
         if sorttable.has_key(sortedby):
             l.sort(sorttable[sortedby])
         else:
-            l.sort()
+            l.sort(CmpByID)
         for k in l:
-            p = Data.people[k]
-            w = NormalizeWishes(p.wishes)
-            out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                      str(p.sem)+':'+Protect(p.stud)+':'+w+'\n')
+            # Exclude guest IDs:
+            if not(Config.conf['GuestIdRegExp'].match(k)):
+                p = Data.people[k]
+                w = NormalizeWishes(p.wishes)
+                out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                          str(p.sem)+':'+Protect(p.stud)+':'+w+'\n')
     if meth == 'all together':
         writegroup(l,out)
     else:
@@ -1431,22 +1459,24 @@ def ExportPeople(req,onlyhead):
     if sorttable.has_key(sortedby):
         l.sort(sorttable[sortedby])
     else:
-        l.sort()
+        l.sort(CmpByID)
     out = cStringIO.StringIO()
     out.write('# All participants:\n')
     out.write('# ID:name:fname:semester:stud:passwd:email:wishes:' 
               'pdata1:...:pdata9:group\n')
     out.write('# Time and date of export: '+LocalTimeString()+'\n')
     for k in l:
-        p = Data.people[k]
-        out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                  str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+p.email+':'+
-                  Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
-                  Protect(p.persondata2)+':'+Protect(p.persondata3)+':'+
-                  Protect(p.persondata4)+':'+Protect(p.persondata5)+':'+
-                  Protect(p.persondata6)+':'+Protect(p.persondata7)+':'+
-                  Protect(p.persondata8)+':'+Protect(p.persondata9)+':'+
-                  str(p.group)+'\n')
+        # Exclude guest IDs:
+        if not(Config.conf['GuestIdRegExp'].match(k)):
+            p = Data.people[k]
+            out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                      str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+p.email+
+                      ':'+Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
+                      Protect(p.persondata2)+':'+Protect(p.persondata3)+':'+
+                      Protect(p.persondata4)+':'+Protect(p.persondata5)+':'+
+                      Protect(p.persondata6)+':'+Protect(p.persondata7)+':'+
+                      Protect(p.persondata8)+':'+Protect(p.persondata9)+':'+
+                      str(p.group)+'\n')
     st = out.getvalue()
     out.close()
     head = {'Content-type':'text/okuson',
@@ -1476,18 +1506,20 @@ def ExportExamParticipants(req,onlyhead):
     if sorttable.has_key(sortedby):
         l.sort(sorttable[sortedby])
     else:
-        l.sort()
+        l.sort(CmpByID)
 
     out = cStringIO.StringIO()
     out.write('# All participants of exam number '+str(examnr)+':\n')
     out.write('# ID:name:fname:timestamp\n')
     out.write('# Time and date of export: '+LocalTimeString()+'\n')
     for k in l:
-        p = Data.people[k]
-        if len(p.exams) > examnr and p.exams[examnr] != None and \
-           p.exams[examnr].registration == 1:
-            out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                      LocalTimeString(p.exams[examnr].timestamp)+'\n')
+        # Exclude guest IDs:
+        if not(Config.conf['GuestIdRegExp'].match(k)):
+            p = Data.people[k]
+            if len(p.exams) > examnr and p.exams[examnr] != None and \
+               p.exams[examnr].registration == 1:
+                out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                          LocalTimeString(p.exams[examnr].timestamp)+'\n')
     st = out.getvalue()
     out.close()
     head = {'Content-type':'text/okuson',

@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.5 2003/10/08 09:29:30 neunhoef Exp $ -->
+<!-- $Id: config.dtd,v 1.6 2003/10/08 22:23:10 neunhoef Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -29,6 +29,7 @@
 <!ELEMENT User8 (#PCDATA)>
 <!ELEMENT User9 (#PCDATA)>
 <!ELEMENT IdCheckRegExp (#PCDATA)>
+<!ELEMENT GuestIdRegExp (#PCDATA)>
 <!ELEMENT GradingFunction (#PCDATA)>
 <!ELEMENT GradingActive (#PCDATA)>
 

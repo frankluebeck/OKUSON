@@ -114,6 +114,7 @@ indicate that the free form field counts which is also available. -->
 <ExtraLaTeXHeader>
 </ExtraLaTeXHeader>
 
+
 <!-- The following regular expression is used to validate id's. As we use
 Matrikel numbers usually we insist on numbers. For those not familiar with
 regular expressions the following means that an id must start with a
@@ -125,6 +126,13 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 
 <IdCheckRegExp>^[a-zA-Z0-9_]*$</IdCheckRegExp>
 -->
+
+
+<!-- The following regular expression is used to check, whether an id is
+     a guest id. Guest IDs have the following properties: They are excluded
+     during export functions. One can authenticate with any password. -->
+<GuestIdRegExp>^100000$</GuestIdRegExp>
+
 
 <!-- The following is a Python function that can automatically decide
      about the grading of a certain participant. This function is

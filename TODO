@@ -1,8 +1,6 @@
 Für letztes (3.) Prerelease:
 
 UTILITIES zur Administration:
-  ???Visitor-IDs getrennt, die nicht in Statistik eingehen
-      --> keine Passwort-Aenderung
   Datenexport: Ergebnisse, Scheindaten, Scheine
   Resubmit als Button im Admin Menu
   Template fuer Fall ohne MC
@@ -13,6 +11,7 @@ Fragen:
 
    Bei Homework mehr Angaben als Punktzahl?
    maxscore?
+      --> beides nicht ermittelbar, bislang ungenutzt
 
 Für Release:
   Mechanismus für Bilder in TeX
