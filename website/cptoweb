@@ -1,4 +1,4 @@
 #!/bin/sh
-cp index.html okuson.css badback.gif ../INSTALL ../CHANGES ../okuson-*.tar.gz ../okuson-*.pdf /usr/local/www-homes/OKUSON
+cp index.html okuson.css badback.gif ../INSTALL ../CHANGES ../UPGRADE ../okuson-*.tar.gz ../okuson-*.pdf /usr/local/www-homes/OKUSON
 
 
