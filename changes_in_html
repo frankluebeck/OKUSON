@@ -1,0 +1,58 @@
+Changed:
+
+adminlogin.tpl
+adminmenu.tpl
+generalinfo.tpl
+index.tpl
+messages/subsuccess.tpl
+OKUSON.css
+results.tpl
+sheet.tpl
+
+New:
+
+edithomeworkperson.tpl
+edithomeworksheet.tpl
+errors/admunknownsheet.tpl
+errors/badgroupnr.tpl
+errors/idnotingroup.tpl
+errors/tutunknownsheet.tpl
+errors/unknowngroup.tpl
+examregistration.tpl
+groupinfo.tpl
+groupoverview.tpl
+messages/examregsucc.tpl
+messages/resubsuccess.tpl
+showmessages.tpl
+tutors.tpl
+
+Away:
+
+exercisesclasses.tpl
+group1.tpl
+
+
+Configuration:
+
+Comments have changed.
+
+Values of options changed:
+
+AdministrationAccessList
+PDFTemplate (!)
+
+New Options:
+
+GuestIdRegExp
+GradingFunction
+GradingActive
+DocumentRoot
+GroupInfoFile
+
+
+Data files:
+
+data/examregistrations.txt
+data/homework.txt
+data/groupinfo.txt   (new)
+
