@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.11 2003/10/13 15:21:26 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.12 2003/10/13 21:57:45 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -643,8 +643,7 @@ of the sheet with seed "seed" and returns the result as a string.
             o = self.list[i]
             if isinstance(o,TeXText):
                 if self.exnr[i]:   # a conventional exercise
-                    f.write(('\n\n\\textbf{(%d)}\hspace{5mm}%s\n\n') \
-                      % (self.exnr[i],string.strip(o.text)))
+                    f.write(('\n\n\\begin{exercise}{%d}\n%s\n\\end{exercise}\n\n') % (self.exnr[i],string.strip(o.text)))
                 else:           # a TEXT
                     f.write(string.strip(o.text))
             elif isinstance(o,Exercise):

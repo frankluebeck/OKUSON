@@ -390,6 +390,8 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 
 (%ExtraLaTeXHeader%)
 
+\newenvironment{exercise}[1]{\textbf{Aufgabe #1.}\hspace{5mm}}{\medskip}
+
 \begin{document}
 \pagestyle{empty}
 \begin{center}{\Large
@@ -397,9 +399,6 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 {\large (%CourseName%), (%Lecturer%), (%Semester%)}
 \end{center}
 
-Abgabezeitpunkt: (%OpenTo%) 
-
-Dieses Blatt wurde erstellt: (%CurrentTime%)
 
 (%ExercisesNoTable%)
 
