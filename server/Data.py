@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.2 2003/09/29 22:30:54 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -86,7 +86,16 @@ peopledesc = AsciiData.FileDescription(Config.conf['RegistrationFile'],people,
     "STORE", 4, "stud",   "STRING",
     "STORE", 5, "passwd", "STRING",
     "STORE", 6, "email",  "STRING",
-    "STORE", 7, "wishes", "STRING" ) )
+    "STORE", 7, "wishes", "STRING",
+    "STORE", 8, "persondata1", "STRING",
+    "STORE", 9, "persondata2", "STRING",
+    "STORE", 10, "persondata3", "STRING",
+    "STORE", 11, "persondata4", "STRING",
+    "STORE", 12, "persondata5", "STRING",
+    "STORE", 13, "persondata6", "STRING",
+    "STORE", 14, "persondata7", "STRING",
+    "STORE", 15, "persondata8", "STRING",
+    "STORE", 16, "persondata9", "STRING"  ) )
 
 
 class MCResult(Utils.WithNiceRepr):

@@ -361,11 +361,11 @@ has accumulated data!
 
 \section{Starting and Stopping the Server}
 
-\noindent You can now try out the {\OKUSON} server by typing 
+You can now try out the {\OKUSON} server by typing 
 
 \hspace*{1cm}\texttt{start}
 
-\noindent in the {\OKUSON} home directory. (Be patient, the first time you
+in the {\OKUSON} home directory. (Be patient, the first time you
 call this some images of exercise texts are generated before the server can
 start serving.) If everything went well, you
 see some log messages, concluding with
@@ -376,24 +376,31 @@ Otherwise, you have to read through the log messages and identify error
 messages, which start with ``\texttt{Error:}''. You also find the complete
 log file under \texttt{log/server.log} in the {\OKUSON} home directory.
 
-\noindent If the server was started up successfully, you can test it by
+If the server was started up successfully, you can test it by
 pointing your browser to the following URL:
 
 \hspace*{1cm}\href{http://localhost:8000/index.html}%
 {\texttt{http://localhost:8000/index.html}}
 
-\noindent where the main menu for students should appear. Note that the
+where the main menu for students should appear. Note that the
 ``\texttt{:8000}'' in this URL tells the browser to contact the
 {\OKUSON} server on port $8000$. Therefore this has of course to be
 changed according to the network port you chose during configuration.
 
-\noindent If you want to stop the server, you can issue the command
+If you want to stop the server, you can issue the command
 
 \hspace*{1cm}\texttt{stop}
 
-\noindent in the {\OKUSON} home directory. You are asked for the
-administator password. If you entered it correctly, then the server
-terminates and you see a few log messages.
+in the {\OKUSON} home directory.
+The servers finishes the ongoing requests and then terminates showing a few 
+log messages.
+
+There is also a script 
+
+\hspace*{1cm}\texttt{restart}
+
+that stops the server and restarts it. 
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -992,7 +999,7 @@ several advantages:
 \item Participants of the course need very little prerequisites, which are
 nowadays available on essentially any computer. 
 \item Strictly following some official standard guarantees a predictable and
-good appearance of the pages on all web browsers and all
+good appearance of the pages on all current web browsers and all
 operating systems.
 \item Having the page layout information (fonts, font-sizes, colors, border
 sizes, \ldots) in style sheet files makes it easy to give all pages a
@@ -1012,7 +1019,7 @@ specification.
 \end{itemize}
 
 The {\OKUSON} package comes with a complete set of sample web pages, they
-are in the subdirectory \verb+html_sample+. Of course, the text of web 
+are in the subdirectory \verb+html.sample+. Of course, the text of web 
 pages is language dependent. Our sample pages are
 written in German since we use the package in Aachen. But it should be
 straight forward to produce versions in other languages.
@@ -1075,7 +1082,8 @@ file names make sure that you change links to these pages accordingly.
 
 \subsection{Globally Defined Elements for Use in All Web Pages}
 
-The following elements appear on almost all templates. They are substituted 
+The following elements appear in almost all \texttt{.tpl} template files. 
+They are substituted 
 by the content of the elements of the same name in your configuration file:
 
 \texttt{<CourseName/>}, \texttt{<Semester/>}, \texttt{<Lecturer/>},
@@ -1090,11 +1098,14 @@ For customization you can use elements \texttt{<User1>}, \ldots,
 and include their content in the web pages via tags \texttt{<User1/>}, 
 \ldots, \texttt{<User9/>}.
 
-\subsection{Special Elements in the Registration Pages}
+\subsection{Special Elements in Pages Containing Personal Data}
 
-For registration there are basically two pages, one for the actual
+There are basically two pages for registration, one for the actual
 registration and one for changing the personal data, see the sample pages
 \texttt{registration.tpl} and \texttt{regchange2.tpl}. 
+Other pages with personal data are the result query pages, see the sample
+page \texttt{results.tpl}.
+
 
 The following registration data  for each participant are stored by the
 {\OKUSON} server: a user Id, last name, first name, the number of semesters the
