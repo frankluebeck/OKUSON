@@ -5,7 +5,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage{times}
 \usepackage[a4paper]{geometry}
-\usepackage{hyperref}
+\usepackage[colorlinks=true]{hyperref}
 
 % avoid overfull hboxes because of long typewriter font strings
 \tolerance=200
@@ -23,7 +23,7 @@
 \section*{Copyright and License}
 
 This software package is freely distributed under the terms of the GNU Public
-License, see Chapter~\ref{ch:GPL} for the details of that license.
+License, see chapter~\ref{ch:GPL} for the details of that license.
 
 \copyright\  (2003) Frank Lübeck and Max Neunhöffer
 
@@ -202,10 +202,10 @@ the real one with the command:
 
 \hspace*{1cm}\texttt{cp Config.xml.sample Config.xml}
 
-This file is  an XML file (see  section \ref{ch:introXML}
+This file is  an XML file (see  section~\ref{ch:introXML}
 for a short introduction) that can be edited conveniently with an ASCII text
 editor.  It tries  to  explain  itself via  embedded  comments.  For a  full
-description of the available configuration options see section \ref{config}.
+description of the available configuration options see section~\ref{config}.
 
 For the moment, you only need to edit two configuration options:
 
@@ -344,7 +344,7 @@ the main concepts of the markup.
 
 <MainElt>
 
-<A xattr="val of xattr"> abc <B yattr='contains " quotes'> </B> </A> 
+<A xattr="val of xattr">abc<B yattr='contains " quotes'> </B> </A> 
 
 <EmptyElt />
 
@@ -491,15 +491,15 @@ this Chapter.
 \section{Generalities on the Exercise and Sheet Files}
 
 The directories containing exercises and sheets for an {\OKUSON} server must
-be given  in the  configuration  file \texttt{<OKUSONHOME>/Config.xml},
+be given  in the  configuration  file \texttt{\$OKUSONHOME/Config.xml},
 see the \texttt{<ExerciseDirectories>} and \texttt{<SheetDirectories>}
 elements. Each directory is given as a \texttt{DIR} element whose content
 has the form \texttt{path/to/dir} or \texttt{path/to/dir|prefix}, the prefix
 is used to distinguish exercises with the same name from different
 directories, see~\ref{sec:Sheets}.
 
-The default directories are \texttt{<OKUSONHOME>/exercises} and
-\texttt{<OKUSONHOME>/sheets}, but you can change these and also use 
+The default directories are \texttt{\$OKUSONHOME/exercises} and
+\texttt{\$OKUSONHOME/sheets}, but you can change these and also use 
 several directories for each or merge them into a single directory.
 
 There are three types of files recognized by {\OKUSON} which are
@@ -530,7 +530,7 @@ abbreviations for \verb+\mathbb{Z}+, and so on.
 The {\LaTeX} templates used for producing the images of exercise texts for
 the web pages and for producing the exercise sheets in PDF-format can be
 found (and adjusted, if you know what you are doing) in the {\OKUSON}
-configuration  file \texttt{<OKUSONHOME>/Config.xml}, see the elements
+configuration  file \texttt{\$OKUSONHOME/Config.xml}, see the elements
 \texttt{<LaTeXTemplate>} and \texttt{<PDFTemplate>}.
 
 If you just want to add the loading of some further packages or to read in
@@ -546,7 +546,7 @@ itself in that file.
 
 We explain the format of an \texttt{.auf} file by an example that contains
 all possible constructs. In practice one may copy the template file
-\texttt{<OKUSONHOME>/exercises/empty.auf.template} and fill in the exercise
+\texttt{\$OKUSONHOME/exercises/empty.auf.template} and fill in the exercise
 texts.
 
 \subsection*{An Example File \texttt{example.auf}}
@@ -594,7 +594,7 @@ Mark the number(s) which are not integers.
 <VARIANT solution="30">
 What is $3d+c$ (canceled down)?
 </VARIANT>
-<VARIANT solutionregexp="4\|9\|14">
+<VARIANT solutionregexp="^4$|^9$|^14$">
 Give an integer which is the sum of two of the numbers $a, b, c, d$.
 </VARIANT>
 </QUESTION>
@@ -663,7 +663,10 @@ attribute and be a subset of the answers given in the relevant
 \texttt{solution} attribute as list of possible answer strings separated by 
 \verb+|+-characters (usually just one string), or it can be given in the 
 \texttt{solutionregexp} attribute as a regular expression such that an
-answer is correct if and only if it matches this regular expression.
+answer is correct if and only if it matches this regular expression. To be
+precise: the given expression must follow the syntax documented in the
+\texttt{re}-module of \texttt{python}, the matching is done with the
+\texttt{search} method of regular expression objects in that module.
 In any case in the solutions and submitted answers leading and trailing
 whitespace will be deleted before the comparison.
 \end{description}
@@ -701,7 +704,7 @@ The script assumes that you have the pager program
 \texttt{less} and the image viewer program \texttt{xloadimage} installed on
 your computer. The  script is called as follows:
 
-\verb+          <OKUSONHOME>/testexercise file1 file2 ...+
+\verb+          $OKUSONHOME/testexercise file1 file2 ...+
 
 where \texttt{file1}, \texttt{file2} are exercise files with either
 \texttt{.tex} or \texttt{.auf} extension. 
@@ -748,8 +751,8 @@ And text exercises are identified by their file names.
        first="1"
        opento="14:00_20.10.2003">
 
-<TEXT>The first exercise is interactive. You must send the solution 
-via the Web interface.</TEXT>
+<TEXT>The first exercise is interactive. You must send the 
+solution via the Web interface.</TEXT>
 
 <EXERCISE key="Example1" prefix="" nrquestions="2" order="p" />
 
@@ -860,7 +863,7 @@ It maybe useful to check the individual exercises first with
 
 The syntax for this utility is
 
-\verb+          <OKUSONHOME>/testsheet file1.bla file2.bla ...+
+\verb+          $OKUSONHOME/testsheet file1.bla file2.bla ...+
 
 For a sheet in \texttt{<file>.bla} with name \texttt{<name>} a {\LaTeX} 
 file \verb+<file>_<name>.tex+ and a PDF file \verb+<file>_<name>.pdf+ 
@@ -872,7 +875,7 @@ solutions for the interactive exercises.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{Creating the Web Pages}\label{creawebpages}
+\chapter{The Web Pages}\label{creawebpages}
 
 \section{General Format of the Web Pages}
 
@@ -899,7 +902,7 @@ sizes, \ldots) in style sheet files makes it easy to give all pages a
 uniform appearance and to change this appearance for all pages at once.
 \item Using the XML variant of the released HTML specifications allows to use 
 standard tools for processing and checking such files (see
-Chapter~\ref{ch:introXML}).  Actually, most pages delivered by an {\OKUSON}
+chapter~\ref{ch:introXML}).  Actually, most pages delivered by an {\OKUSON}
 server are dynamically created from templates on demand. The templates are
 also well formed XML documents, which allow an efficient preparsing and
 processing.
@@ -917,9 +920,10 @@ pages is language dependent. Our sample pages are
 written in German since we use the package in Aachen. But it should be
 straight forward to produce versions in other languages.
 
-If you want German pages as well, you probably just need to copy all the
+If you want German pages as well for your course,  just copy all the
 sample pages to the web directory given in your configuration file. 
-It is then not difficult to adjust some details.
+Probably  only minor adjustments will be needed for your course, see the
+next Section for more details.
 
 All sample pages are provided as template files with extension
 \texttt{.tpl}. These are well formed XML documents and almost
@@ -928,13 +932,110 @@ All sample pages are provided as template files with extension
 The interface between the web pages and the {\OKUSON} server is described by
 the meaning of these extra tags and by the names and meaning of input 
 variables which are used in input forms for the course participants and for
-the administrator. These are explained in the next Sections.
+the administrator. 
 
-\section{Interfaces Between Web Pages and the {\OKUSON} Server}
+\section{How to Customize the Web Pages}
 
--general variables <CourseName />, \ldots
+All web pages delivered by the  {\OKUSON} server are created by filling
+template files (with extension \texttt{.tpl}) dynamically.
 
--registration (first and change)
+The placeholders in  the \texttt{.tpl}-files are easy to detect: While all
+element names in XHTML are written with lower case letters, the 
+{\OKUSON} placeholders are XML elements whose names start with  capital
+letters.
+
+There are placeholder elements with a simple global substitution text, and
+others which denote some text that depends on a sheet number or on personal
+data of a course participant. If you browse through the template files
+distributed with {\OKUSON} you can probably often guess the meaning of such
+an element from its name and location. So, we are not going to describe
+everything in great detail here, but try to give hints how to achieve likely
+adjustments of the pages.
+
+\subsection{What you can change without problem}
+
+\begin{itemize}
+\item The style sheet files with \texttt{.css} extension to change colors,
+fonts, font sizes, margins, \ldots
+\item All texts in the pages.
+\item In particular the top page \texttt{index.html} could be 
+redesigned, but you clearly want to include  links to the main functions of
+the server: registration, change of registration data, getting the exercise
+sheets and result information.
+\end{itemize}
+
+\subsection{What you should not change}
+
+\begin{itemize}
+\item The component names in the HTML forms, these names explain the meaning
+of the input data to the {\OKUSON} server. But you can take out or add some
+components in these forms as explained below.
+\item The names of the template files. In particular those in the
+\texttt{errors} and \texttt{messages} directories, these files are used by
+the {\OKUSON} server for error and success messages. If you change other
+file names make sure that you change links to these pages accordingly.
+\end{itemize}
+
+\subsection{Globally Defined Elements for Use in All Web Pages}
+
+The following elements appear on almost all templates. They are substituted 
+by the content of the elements of the same name in your configuration file:
+
+\texttt{<CourseName/>}, \texttt{<Semester/>}, \texttt{<Lecturer/>},
+and \texttt{<Feedback/>}.
+
+Furthermore there is \texttt{<ValidatorIcon />} which includes an image in
+the \texttt{images} directory with a link to the validating service of the
+W3C consortium.
+
+For customization you can use elements \texttt{<User1>}, \ldots,
+\texttt{<User9>} in the configuration file \texttt{\$OKUSONHOME/Config.xml} 
+and include their content in the web pages via tags \texttt{<User1/>}, 
+\ldots, \texttt{<User9/>}.
+
+\subsection{Special Elements in the Registration Pages}
+
+For registration there are basically two pages, one for the actual
+registration and one for changing the personal data, see the sample pages
+\texttt{registration.tpl} and \texttt{regchange2.tpl}. 
+
+The following registration data  for each participant are stored by the
+{\OKUSON} server: a user Id, last name, first name, the number of semesters the
+participant has studied, (main) topic of studies, password (has to be given
+two times), email address, wishlist of other Ids for distribution into
+tutoring groups and nine further fields for customization.
+
+Each of these fields is connected with three names used in the web pages.
+The first is a name of the input field in the registration form, the second
+is an XML element name of a placeholder for the input field code with the
+known value as default (for changing the registration data) and the third is
+an XML element name of a placeholder for the value itself.
+
+Here is a table giving these names.
+
+\begin{tabular}{lccc}
+description&form input name& input element placeholder&value placeholder\\
+\hline
+user id&id&\texttt{<HiddenIdField/>}&\texttt{<IdOfPerson/>}\\
+last name&lname&\texttt{<LastNameField/>}&\texttt{<LastName/>}\\
+first name&fname&\texttt{<FirstNameField/>}&\texttt{<FirstName/>}\\
+semester&sem&\texttt{<SemesterField/>}&\texttt{<Semester/>}\\
+main topic&stud&\texttt{<TopicField/>}&\texttt{<Topic/>}\\
+password&passwd and passwd2&-&-\\
+email&email&\texttt{<EmailField/>}&\texttt{<Email/>}\\
+wishlist&wishes&\texttt{<WishesField/>}&\texttt{<Wishes/>}\\
+person data 1&persondata1&\texttt{<PersonData1Field/>}&\texttt{<PersonData1/>}\\
+\ldots&\ldots&\ldots&\ldots\\
+person data 9&persondata9&\texttt{<PersonData9Field/>}&\texttt{<PersonData9/>}
+\end{tabular}
+
+Concerning the main topic of studies, one can suggest some common entries
+which are specified in the configuration file, see the element
+\texttt{PossibleStudies} in the config file and the sample registration 
+web pages.
+
+
+
 
 -getting sheets
 
