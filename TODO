@@ -5,77 +5,20 @@ Ideen:
   - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
     <input type="file" ...>.) (nicht dringend, besser per Email Stud<->Hiwi
     regeln)
-Interessante Ergebnisse des Browser-Checks:
-  ie nach shutdown/restart kein stylesheet
-  mozilla bei open mit less kein resultat
-  opera adminlogin --> geht nicht mit "Location" header!
-  netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
-
 
 Spaeter: 
 
-  Webinterface fuer Config.xml-Edit
-  ISO-8859-1 konfigurierbar?
-     Problem dabei: TeX muss analog konfiguriert werden.
-  Aufbau des Programms mit Erklaerung Locking dokumentieren
-  alle Werte aus einem query speichern statt nur erster?
-  Person-Data-Seiten generisch mit weiterer Endung 
+  - Webinterface fuer Config.xml-Edit
+  - ISO-8859-1 konfigurierbar?
+    Problem dabei: TeX muss analog konfiguriert werden.
+  - Aufbau des Programms mit Erklaerung Locking dokumentieren
+  - alle Werte aus einem query speichern statt nur erster?
+  - Person-Data-Seiten generisch mit weiterer Endung 
        (etwa .tplpers, oder proc.inst.) 
        entsprechend mit sheets, results
        ==> Benutzer kann beliebige Seiten neu machen.
-M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
-  Richtig, das machen wir auch jetzt nicht.
-  Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
-
-  Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
-   später vielleicht, mit Texteingabefeld?
+  - Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
+    Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
+  - Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
+    später vielleicht, mit Texteingabefeld?
    
-Matthias:
-
-M  Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
-
-Done :
-
-M  - Einige fest eingebaute Größen durch Einträge in der Config.xml
-    festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
-    (z.Z. 2 mal fest in Exercises.py eingebaut).
-
-M  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
-    (mit adm password)
-   Dokumentiert im Config.xml-File
-    
-M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
-    Sollte von überall zugreifbar sein. (Mathias Künzer)
-
-M  schein.py besser erklaeren, ev. Beispiel
-
-M  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
-    zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
-   (vielleicht 3te Variante der Antwort mit Hinweis.)
-   
-M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
-    vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
-    OKUSON fuer den interaktiven Betrieb klar zu machen?
-     (evtl. Seite mit Antworten zurückgeben?)
-
-M  Ergaenzung von Marc --> okuson-folder
-  
-M ShowExerciseStatistics for Sheet (admin)
-  --> scheint mir zu gehen???
-
-M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
-    (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
-
-F  - die persondata Einträge sollten auch exportiert werden können
-    (warum hat das noch niemand vermisst?)
-
-F ShowGlobalStatisticsForGroup tut nicht
-
-F Export fuer Zusatztext zum Hausaufgabenergebnis
-
-F Group 0 in <GroupsOverview per Attr. ausblendbar.
-  Außerdem hätte ich noch gerne in den components-Optionen               
-  dieser Tabelle die Möglichkeit, auch die Raumkapazität anzeigen zu lassen, 
-
-F Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
-
