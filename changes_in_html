@@ -1,5 +1,13 @@
-#!/bin/bash
-cp --parents html.sample/{adminlogin.tpl,adminmenu.tpl,generalinfo.tpl,index.tpl,messages/subsuccess.tpl,OKUSON.css,results.tpl,sheet.tpl,edithomeworkperson.tpl,edithomeworksheet.tpl,errors/admunknownsheet.tpl,errors/badgroupnr.tpl,errors/idnotingroup.tpl,errors/tutunknownsheet.tpl,errors/unknowngroup.tpl,examregistration.tpl,groupinfo.tpl,groupoverview.tpl,messages/examregsucc.tpl,messages/resubsuccess.tpl,showmessages.tpl,tutors.tpl} html
+#!/bin/sh
+cd html.sample
+cp --parents adminlogin.tpl adminmenu.tpl generalinfo.tpl \
+    index.tpl messages/subsuccess.tpl OKUSON.css results.tpl sheet.tpl \
+    edithomeworkperson.tpl edithomeworksheet.tpl errors/admunknownsheet.tpl \
+    errors/badgroupnr.tpl errors/idnotingroup.tpl errors/tutunknownsheet.tpl \
+    errors/unknowngroup.tpl examregistration.tpl groupinfo.tpl \
+    groupoverview.tpl messages/examregsucc.tpl messages/resubsuccess.tpl \
+    showmessages.tpl tutors.tpl html
+cd ..
 rm html/exercisesclasses.tpl html/group1.tpl
 
 exit 0
