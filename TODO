@@ -84,10 +84,10 @@ M!ExportResults mit dieser Anzahl von Klausuren bei allen
 ? Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
 F!Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
 M Dokumentation der neuen Features von LAFM
-  Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
-  Dokumentation von maxhomescore und starhomescore
-  AvailableIds dokumentieren?
-  <IfExamRegistered nr="1"> </IfExamRegistered>
+? Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+M Dokumentation von maxhomescore und starhomescore
+M AvailableIds dokumentieren?
+M <IfExamRegistered nr="1"> </IfExamRegistered>
     --> statt <ExamRegStatus />
     --> In Kommentaren Beispiele zur Benutzung in templates
 M!Header und Footer in alle Seiten
