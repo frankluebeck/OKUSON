@@ -20,26 +20,29 @@
     <form action="/AdminWork" method="post">
       <p><OKUSONLoginStatus /></p>
 
-     <!--<p>
-     Text:
-     <input size="16" maxlength="16" name="Eingabe" value="" />
-     <input type="submit" name="Hallo" value="Max" />
-      </p>-->
-     <p>Restart server: <input type="submit" name="Action" value="Restart" />
-     </p>
-     <p>Shutdown server: <input type="submit" name="Action" value="Shutdown" />
-     </p>
-     <p>Export people for exercise classes distribution:
-        <select name="exportexclass">
-          <option selected="selected">all together</option>
-          <option>by Studiengang</option>
-        </select>
-        <input type="submit" name="Action" 
-               value="Export people for exercise classes" />
-     </p>
-     <p>Display available and future sheets: 
-        <input type="submit" name="Action" value="Display Sheets" />
-     </p>
+      <table>
+       <tr><th align="left">Control of Server:</th><th></th></tr>
+       <tr><td>Restart server:</td>
+           <td><input type="submit" name="Action" value="Restart" /></td></tr>
+       <tr><td>Shutdown server:</td>
+           <td><input type="submit" name="Action" value="Shutdown" /></td></tr>
+       <tr><th align="left">Export of Data:</th><th></th></tr>
+       <tr><td>Export people for exercise classes distribution:
+                 <select name="exportexclass">
+                   <option selected="selected">all together</option>
+                   <option>by Studiengang</option>
+                 </select></td>
+           <td><input type="submit" name="Action" 
+                      value="Export people for exercise classes" /></td></tr>
+       <tr><td>Export people:</td>
+           <td><input type="submit" name="Action" value="Export people" /></td>
+           </tr>
+       <tr><th align="left">
+           Special Access for Administrators:</th><th></th></tr>
+       <tr><td>Display available and future sheets:</td>
+           <td><input type="submit" name="Action" value="Display Sheets" /></td>
+           </tr>
+      </table>
     </form>
      
     <hr />
@@ -57,5 +60,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.4 2003/10/05 14:03:35 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.5 2003/10/05 22:22:57 neunhoef Exp $ -->
 

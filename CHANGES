@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.11 2003/10/05 21:16:03 neunhoef Exp $
+##  $Id: CHANGES,v 1.12 2003/10/05 22:22:57 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -28,7 +28,7 @@ Attention: You have to put the configuration option "DocumentRoot" from the
 
 * removed bug with double use of <Semester/>.
 * introduced the 'openfrom' attribute for sheets, including admin
-  access to not yet open sheets.
+  access to not yet open sheets via administrator menu.
 * sensible messages for 'start' when server already running and for 'stop'
   when no server is running.
 * introduced on the fly validation of delivered XHTML pages to the 
@@ -47,6 +47,7 @@ Attention: You have to put the configuration option "DocumentRoot" from the
 * distribution into exercise classes should now be ready for usage
 * added configuration option 'DocumentRoot', this changes "Config.xml"!
 * added a few sanity checks at startup 
+* added export facility for people including group membership, documented
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.11 2003/10/05 21:16:03 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.12 2003/10/05 22:22:57 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -854,6 +854,12 @@ def NormalizeWishes(w):
         if Data.people.has_key(www): wishlist.append(www)
     return string.join(wishlist,',')
 
+def Protect(st):
+    '''Protects a string by deleting all colons and substituting spaces
+       for newlines. Necessary for export purposes to avoid malformed
+       export files.'''
+    return st.replace(':','').replace('\n',' ')
+
 def ExportPeopleForExerciseClasses(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
@@ -869,12 +875,8 @@ def ExportPeopleForExerciseClasses(req,onlyhead):
         for k in l:
             p = Data.people[k]
             w = NormalizeWishes(p.wishes)
-            out.write(k+':'+
-                      p.lname.replace(':','')+':'+
-                      p.fname.replace(':','')+':'+
-                      str(p.sem)+':'+
-                      p.stud.replace(':','')+':'+
-                      w+'\n')
+            out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                      str(p.sem)+':'+Protect(p.stud)+':'+w+'\n')
     if meth == 'all together':
         writegroup(l,out)
     else:
@@ -897,11 +899,37 @@ def ExportPeopleForExerciseClasses(req,onlyhead):
     st = out.getvalue()
     out.close()
     head = {'Content-type':'text/okuson',
+        'Content-Disposition':'attachment; filename="peoplelistforgroups.txt"',
+        'Last-modified':req.date_time_string(time.time())}
+    return (head,st)
+
+def ExportPeople(req,onlyhead):
+    '''Export the list of all participants, sorted by ID with all their
+       personal data plus their group number (may be 0). 
+       Colons have been deleted and newlines replaced by spaces.'''
+    l = Data.people.keys()
+    l.sort()
+    out = cStringIO.StringIO()
+    out.write('# All Participants:\n')
+    out.write('# ID:name:fname:semester:stud:passwd:email:wishes:' 
+              'pdata1:...:pdata9:group\n')
+    out.write('# Time and date of export: '+LocalTimeString()+'\n')
+    for k in l:
+        p = Data.people[k]
+        out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
+                  str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+p.email+':'+
+                  Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
+                  Protect(p.persondata2)+':'+Protect(p.persondata3)+':'+
+                  Protect(p.persondata4)+':'+Protect(p.persondata5)+':'+
+                  Protect(p.persondata6)+':'+Protect(p.persondata7)+':'+
+                  Protect(p.persondata8)+':'+Protect(p.persondata9)+':'+
+                  str(p.group)+'\n')
+    st = out.getvalue()
+    out.close()
+    head = {'Content-type':'text/okuson',
             'Content-Disposition':'attachment; filename="peoplelist.txt"',
             'Last-modified':req.date_time_string(time.time())}
     return (head,st)
-
-
 
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
@@ -923,6 +951,8 @@ def AdminWork(req,onlyhead):
         return Delegate('/admindown.html',req,onlyhead)
     if action == 'Export people for exercise classes':
         return ExportPeopleForExerciseClasses(req,onlyhead)
+    if action == 'Export people':
+        return ExportPeople(req,onlyhead)
     if action == 'Display Sheets':
         return Adminexquery.getresult(req, onlyhead)
 

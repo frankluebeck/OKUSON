@@ -2,9 +2,6 @@
 Mechanismus für Bilder in TeX
 
 UTILITIES zur Administration:
-  automatische Validierung vor Auslieferung
-  ???Visitor-IDs getrennt, die nicht in Statistik eingehen
-  Sanity-Checks wie checken auf tmp verzeichnis usw.
   Datenexport: Personen, Gruppen, Ergebnisse, Scheindaten, Scheine
   automatische Scheinermittlung
   Messageeingabe
@@ -18,7 +15,10 @@ UTILITIES zur Administration:
   Resubmit
 
   ??? Validierungsskript für XML und XHTML Dateien. On the fly Validierung
-  von XHTML.
+      von XHTML.
+     --> eigentlich erledigt durch automatische Validierung vor Auslieferung
+  ???Visitor-IDs getrennt, die nicht in Statistik eingehen
+     --> eigentlich nicht notwendig
 
 Handbuch:
 
@@ -47,7 +47,7 @@ Testen:
 
 Ideen:
 
-  DocRoot konfigurierbar
   ISO-8859-1 konfigurierbar?
+     Problem dabei: TeX muss analog konfiguriert werden.
 
 
