@@ -18,7 +18,7 @@
 
     <p> <b>Achtung: Ihr Browser hat einige eigentlich unmögliche Daten 
         übermittelt! Diese wurden ignoriert.</b> Der Rest Ihrer Abgabe
-        verlief erfolgreicht.</p>
+        verlief erfolgreich.</p>
 
     <p> Ihre Abgabe für Blatt <SheetName /> wurde erfolgreich registriert 
         (<CurrentTime />).</p>
@@ -50,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: subdubious.tpl,v 1.1 2005/04/04 11:10:43 neunhoef Exp $ -->
+     $Id: subdubious.tpl,v 1.2 2005/04/04 11:29:54 neunhoef Exp $ -->
 
