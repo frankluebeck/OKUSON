@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.2 2003/09/23 08:42:54 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -93,7 +93,7 @@ def AddSpecialExtension(ext, spext, initfun):
 # being the network's netmask. See 'verify_request' in the BuiltinWebServer
 # class for details.
 class WebResponse:
-  access_list = [(socket.inet_aton('127.0.0.0'),socket.inet_aton('255.0.0.0'))]
+  access_list = [(socket.inet_aton('0.0.0.0'),socket.inet_aton('0.0.0.0'))]
   def getresult(self, req, onlyhead = 0):
     pass
 

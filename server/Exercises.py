@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.2 2003/09/23 08:42:54 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -711,7 +711,7 @@ def MakeQuestion(t, defansw):
                   raise Utils.UtilsError
               sol = a[1]['solutionregexp'].encode('ISO-8859-1','replace')
               try:
-                  solre = re.compile('^'+sol+'$')
+                  solre = re.compile(sol)
               except:
                   Utils.Error('Cannot compile regular expression: '+sol+'\nat '+
                        Utils.StrPos(a[3]))
