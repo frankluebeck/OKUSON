@@ -7,6 +7,8 @@ cd pyRXP
 python setup.py build_ext
 cp "`find build -name pyRXP.so`" ..
 cp "`find build -name pyRXPU.so`" ..
+cd ..
+rm -rf pyRXP
 
 echo
 echo
