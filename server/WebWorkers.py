@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.18 2003/10/06 22:44:18 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.19 2003/10/07 22:36:30 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -99,6 +99,8 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_PossibleStudies(self,node,out):
         for opt in Config.conf['PossibleStudies']:
             out.write('  <option>'+opt+'</option>\n')
+    def handle_CurrentTime(self,node,out):
+        out.write(LocalTimeString())
     def handle_ValidatorIcon(self,node,out):
         out.write(ValidatorIconText)
     def handle_GroupSize(self,node,out):
@@ -677,8 +679,6 @@ a Person object and a Sheet object as data.'''
     def handle_OpenFrom(self,node,out):
         if self.s.openfrom:
             out.write(LocalTimeString(self.s.openfrom))
-    def handle_CurrentTime(self,node,out):
-        out.write(LocalTimeString())
 
 
 

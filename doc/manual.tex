@@ -987,6 +987,14 @@ solutions for the interactive exercises.
 
 \chapter{The Web Pages}\label{ch:webpages}
 
+We hope that the customization of the {\OKUSON} package for your 
+application is possible by changing the basic entries in the
+\texttt{Config.xml} file and by adjusting the template files for the web
+pages delivered by the {\OKUSON} server. In this chapter we describe how the
+web pages work. If you need further changes, please tell the {\OKUSON}
+authors - maybe there are sensible generic extensions of the package which
+fulfill your wishes.
+
 \section{General Format of the Web Pages}
 
 The  web   pages  delivered  by   the  {\OKUSON}  server  should   be  valid
@@ -1059,7 +1067,7 @@ others which denote some text that depends on a sheet number or on personal
 data of a course participant. If you browse through the template files
 distributed with {\OKUSON} you can probably often guess the meaning of such
 an element from its name and location. So, we are not going to describe
-everything in great detail here, but try to give hints how to achieve likely
+everything in too much detail here, but try to give hints how to achieve likely
 adjustments of the pages.
 
 \subsection{What you can change without problem}
@@ -1080,10 +1088,14 @@ sheets and result information.
 \item The component names in the HTML forms, these names explain the meaning
 of the input data to the {\OKUSON} server. But you can take out or add some
 components in these forms as explained below.
-\item The names of the template files. In particular those in the
+\item The names of many template files. In particular those in the
 \texttt{errors} and \texttt{messages} directories, these files are used by
-the {\OKUSON} server for error and success messages. If you change other
-file names make sure that you change links to these pages accordingly.
+the {\OKUSON} server for error and success messages, as well as some others
+which are used for the output of  internal functions in the server
+(\texttt{sheet}, \texttt{result}, \texttt{reg\ldots}, \texttt{group\ldots},
+\texttt{admin\ldots}, \texttt{exquery}).
+If you change other file names make sure that you change links to these 
+pages accordingly.
 \end{itemize}
 
 \subsection{Globally Defined Elements for Use in All Web Pages}
@@ -1095,18 +1107,51 @@ by the content of the elements of the same name in your configuration file:
 \texttt{<CourseName/>}, \texttt{<Semester/>}, \texttt{<Lecturer/>},
 and \texttt{<Feedback/>}.
 
-Furthermore there is \texttt{<ValidatorIcon />} which includes an image in
-the \texttt{images} directory with a link to the validating service of the
-W3C consortium.
-
 For customization you can use elements \texttt{<User1>}, \ldots,
 \texttt{<User9>} in the configuration file \texttt{\$OKUSONHOME/Config.xml} 
 and include their content in the web pages via tags \texttt{<User1/>}, 
 \ldots, \texttt{<User9/>}.
 
+Furthermore the following elements are generally useful:
+\begin{description}
+\item[\texttt{<ValidatorIcon/>}] which includes an image in
+the \texttt{images} directory with a link to the validating service of the
+W3C consortium (it is only included if a page \emph{is} actually valid).
+\item[\texttt{<CurrentTime/>}] which is substituted by a string describing
+the local time of the delivery of a page. To get this string in a local
+layout set the environment variable \verb+LC_ALL+ of the user starting the
+{\OKUSON} server appropriately (say \verb+de_DE+ for German, see the
+\texttt{man} page of \texttt{locale} on your system, often \texttt{locale
+-a} lists the available settings).
+\end{description}
+
+A few other elements are available on all pages, but they are only sensible in
+a special context, we list them shortly, see the sample web pages how they
+are used. The elements with \texttt{Group} as part of their name correspond
+to a distribution of the course participants into smaller groups for
+tutoring. If you do not have such groups, ignore these elements.
+See~\ref{sec:groups} for more details.
+
+\begin{description}
+\item[\texttt{<GroupSize number="??"/>}] number of participants in group
+with given number.
+\item[\texttt{<GroupDistribution/>}] list of HTML table rows (ID, number of
+group), sorted numerically of alphabetically by IDs.
+\item[\texttt{<GroupsOverview components="\ldots"/>}] list of HTML table rows, 
+one for each group. See the comment in the sample file
+\texttt{groupoverview.tpl} and~\ref{sec:groups} 
+for possible \texttt{components}.
+\item[\texttt{<MembersOfGroup number="??"/>}] comma separated list of IDs of 
+participants in group with given number.
+\item[\texttt{<AvailableSheetsAsButtons/>}] row of buttons for all available
+sheets,  for use on query page for sheets.
+\end{description}
+
+
+
 \subsection{Special Elements in Pages Containing Personal Data}
 
-There are basically two pages for registration, one for the actual
+There are  two pages for registration, one for the actual
 registration and one for changing the personal data, see the sample pages
 \texttt{registration.tpl} and \texttt{regchange2.tpl}. 
 Other pages with personal data are the result query pages, see the sample
@@ -1116,7 +1161,8 @@ page \texttt{results.tpl}.
 The following registration data  for each participant are stored by the
 {\OKUSON} server: a user Id, last name, first name, the number of semesters the
 participant has studied, (main) topic of studies, password (has to be given
-two times), email address, wishlist of other Ids for distribution into
+two times when it is first specified or changed), 
+email address, wishlist of other Ids for distribution into
 tutoring groups and nine further fields for customization.
 
 Each of these fields is connected with three names used in the web pages.
@@ -1148,6 +1194,25 @@ which are specified in the configuration file, see the element
 \texttt{PossibleStudies} in the config file and the sample registration 
 web pages.
 
+\subsection{Special Elements for Sheet Specific Data}
+
+There are some elements used with the sheets in HTML format.
+
+\begin{description}
+\item[\texttt{<SheetNumber/>}] number of sheet.
+\item[\texttt{<SheetName/>}] name of sheet.
+\item[\texttt{<IfOpen>\ldots</IfOpen>}] content only included if sheet is still open.
+\item[\texttt{<IfClosed>\ldots</IfClosed>}] content only included 
+if sheet is no longer open.
+\item[\texttt{<HiddenIdOfPerson/>} and \texttt{<HiddenNameOfSheet/>}] 
+hidden input fields for submission form.
+\item[\texttt{<WebSheetTable/>}] the actual table rows for the sheet, 
+entries are images with exercise texts, includes input fields for submission of
+interactive exercises.
+\item[\texttt{<OpenTo/>} and \texttt{<OpenFrom/>}] closing and opening times
+of sheet in readable format (same format as explained for  
+\texttt{<CurrentTime/>}). 
+\end{description}
 
 
 
@@ -1165,7 +1230,7 @@ web pages.
 
 \label{adminpages}
 
-\chapter{Managing Participants}
+\chapter{Managing Participants}\label{ch:managepeople}
 
 \section{Registration of Participants}
 
@@ -1174,7 +1239,8 @@ any interaction with you. Note that later during the course it is still
 possible to register new participants, because experience shows, that there
 is already the occasional late bloomer.
 
-\section{Distributing Participants into smaller Exercise Classes}
+\section{Distributing Participants into smaller Exercise
+Classes}\label{sec:groups}
 
 Usually one wants to distribute all the participants into much smaller
 exercises classes, for example to give them the opportunity to present
