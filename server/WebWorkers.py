@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.52 2003/10/20 22:57:54 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.53 2003/10/22 11:59:16 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1268,7 +1268,7 @@ def SubmitHomeworkSheet(req,onlyhead):
         groupnr = int(groupnr)
     except:
         groupnr = 0
-    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+    if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
         return Delegate('/errors/badgroupnr.html',req,onlyhead)
 
     g = Data.groups[str(groupnr)]
@@ -1326,7 +1326,7 @@ def SubmitHomeworkPerson(req,onlyhead):
         groupnr = int(groupnr)
     except:
         groupnr = 0
-    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+    if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
         return Delegate('/errors/badgroupnr.html',req,onlyhead)
 
     g = Data.groups[str(groupnr)]

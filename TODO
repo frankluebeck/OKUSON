@@ -12,20 +12,9 @@ Für Release:
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
   Mechanismus für Bilder in TeX
-  Scheinanfertigung   --> Hilfsskript
-  "Remove" von Leuten (nach Fehlanmeldungen)???
-  Tests siehe unten
   guest ids auf Gruppeneinteilungsseite?  
+  Tests siehe unten
 
-Handbuch:
- 
-  > means "done"
-
-  Aufbau des Programms
-  verwendete Standards
-  >Locking-Prinzip
-  Acknowledgements?
-  ? gesammelte Liste der "festverdrahteten" .tpl Dateinamen ???
 
 Testen:
 
@@ -47,3 +36,13 @@ Ideen:
   Eingabe der Gruppennummer bei der Anmeldung
   Aenderung der Gruppennummer bei Datenaenderung
      letzte beiden Optionen schaltbar.
+  Scheinanfertigung   --> Hilfsskript
+  Aufbau des Programms mit Erklaerung Locking dokumentieren
+  Beim Einlesen von Webtemplates filename und timestamp speichern und 
+     beim Seitenabruf checken, ob neueres da, im Zweifel einlesen.
+  Person-Data-Seiten generisch mit weiterer Endung (etwa .tplpers) 
+     entsprechend mit sheets, results
+     ==> Benutzer kann beliebige Seiten neu machen.
+  beliebige Anzahl persondata fuer Benutzer konfigurierbar
+  alle Werte aus einem query speichern statt nur erster?
+  wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen

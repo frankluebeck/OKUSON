@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.44 2003/10/21 13:18:07 luebeck Exp $
+##  $Id: CHANGES,v 1.45 2003/10/22 11:59:16 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -28,9 +28,10 @@ Changes from 1.0-pre4  to  1.0
 * added an example of needed resources
 * chapter with customization examples
 * made tutors page more user friendly
+* cleanup pyRXP directory after build
+* allow group number 0 in tutor input pages
 * added some utilities to 'scripts' subdirectory
 * improved 'testsheet' for optionally using the NoTable template
-
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
