@@ -26,7 +26,7 @@
     <p><input type="submit" name="Action" value="Delete marked" />
        <AdminPasswdField /></p></form>
 
-    <p><a href="/adminmenu.html">Back to administrator menu</a></p>
+    <p><a href="/AdminMenu">Back to administrator menu</a></p>
 
     <hr />
 
@@ -43,5 +43,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: showmessages.tpl,v 1.1 2003/10/06 22:45:18 neunhoef Exp $ -->
+     $Id: showmessages.tpl,v 1.2 2004/03/03 15:36:39 neunhoef Exp $ -->
 

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.76 2004/03/03 14:35:16 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.77 2004/03/03 15:36:39 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -343,9 +343,9 @@ def Authenticate(p,req,onlyhead):
        password or login (documented by cookie) and 0 otherwise. In case
        of a failure we return -1.'''
     global currentcookie
+    pw = req.query.get('passwd',['1'])[0].strip()[:16]
     if p != None:    # We use p == None for a check for administrator
         # Check whether password is correct:
-        pw = req.query.get('passwd',['1'])[0].strip()[:16]
         salt = p.passwd[:2]
         passwd = crypt.crypt(pw,salt)
         # First authenticate regular users with their password:
@@ -365,7 +365,7 @@ def Authenticate(p,req,onlyhead):
        BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
                                       req.client_address[0]):
         return 1     # Administrator
-    if not(Config.conf['GuestIdRegExp'].match(p.id)):
+    if p == None or not(Config.conf['GuestIdRegExp'].match(p.id)):
         return -1    # Failure
     else:
         return 0     # Guest authentication
@@ -2145,7 +2145,9 @@ def AdminLogin(req,onlyhead):
 
     random.seed(time.time())
     currentcookie = str(random.randrange(10000000))
-    (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
+    handler = EH_Generic_class()
+    handler.iamadmin = 1
+    (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead,handler)
     header['Set-Cookie'] = 'OKUSON='+currentcookie+ \
          ';Path=/;Max-Age=3600;Version=1'
          # Max-Age is one hour
@@ -2164,6 +2166,20 @@ def AdminLogout(req,onlyhead):
 
 Site['/AdminLogout'] = FunWR(AdminLogout)
 Site['/AdminLogout'].access_list = Config.conf['AdministrationAccessList']
+
+def AdminMenu(req,onlyhead):
+    '''Make this menu a script because it should behave differently, according
+       to our login status.'''
+    iamadmin = Authenticate(None,req,onlyhead)
+    if iamadmin > 0:   # we are authenticated:
+        handler = EH_Generic_class()
+        handler.iamadmin = 1
+        return Delegate('/adminmenu.html',req,onlyhead,handler)
+    else:
+        return Delegate('/adminmenu.html',req,onlyhead)
+
+Site['/AdminMenu'] = FunWR(AdminMenu)
+Site['/AdminMenu'].access_list = Config.conf['AdministrationAccessList']
 
 def Restart(req,onlyhead):
     '''If administrator can authorize, the server is restarted.'''
@@ -2430,6 +2446,7 @@ def ShowExerciseStatistics(req,onlyhead):
     if i < len(sl):
         s = sl[i][2]
         handler = EH_withPersSheet_class(None,s,Config.conf['Resolutions'][0])
+        handler.iamadmin = 1
         return Delegate('/exercisestatistics.html', req, onlyhead, handler)
     else:
         return Delegate('/errors/unknownsheet.html', req, onlyhead)
@@ -2692,7 +2709,7 @@ def SendMessage(req,onlyhead):
     # Put new message into database in memory:
     Data.people[msgid].messages.append(msgtext)
     Data.Lock.release()
-    return Delegate('/adminmenu.html',req,onlyhead)
+    return Delegate('/AdminMenu',req,onlyhead)
 
 Site['/SendMessage'] = FunWR(SendMessage)
 Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
@@ -2746,7 +2763,7 @@ def DeleteMessagesDowork(req,onlyhead):
             Data.Lock.release()
         i -= 1
     
-    return Delegate('/adminmenu.html',req,onlyhead)
+    return Delegate('/AdminMenu',req,onlyhead)
 
 
 Site['/DeleteMessagesDowork'] = FunWR(DeleteMessagesDowork)
