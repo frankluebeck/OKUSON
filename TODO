@@ -27,37 +27,70 @@ Ideen:
   Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
   Sonstige Skripte während Semester erfinden, schreiben und in 
      Version 1.1 hinzufügen.
-  ISO-8859-1 konfigurierbar?
-     Problem dabei: TeX muss analog konfiguriert werden.
   Eingabe der Gruppennummer bei der Anmeldung
   Aenderung der Gruppennummer bei Datenaenderung
      letzte beiden Optionen schaltbar.
-  Scheinanfertigung   --> Hilfsskript
-  Aufbau des Programms mit Erklaerung Locking dokumentieren
+  Hoechstzahl der Mitglieder einer Gruppe (schaltbar)
+  Scheinanfertigung   --> Hilfsskript dokumentieren
   Beim Einlesen von Webtemplates filename und timestamp speichern und 
      beim Seitenabruf checken, ob neueres da, im Zweifel einlesen.
-  Person-Data-Seiten generisch mit weiterer Endung (etwa .tplpers) 
+     Bei Fehlern altes halten
+  Person-Data-Seiten generisch mit weiterer Endung 
+     (etwa .tplpers, oder proc.inst.) 
      entsprechend mit sheets, results
      ==> Benutzer kann beliebige Seiten neu machen.
   beliebige Anzahl persondata fuer Benutzer konfigurierbar
-  alle Werte aus einem query speichern statt nur erster?
+     --> "persondata" ist dictionary im Person object
+         Diese dict-Daten werden in einen String verpackt in person.dat
+     --> "groupinfo" genauso
   wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
   Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
-  Template files generischer
   Anmeldung fuer exams schaltbar?
   Anmeldung schaltbar
   log-Datei nicht ins Archiv, dafuer beim Start abchecken
   Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
     Dateien, Browser Info speichern(?), Action Info in separate Datei mit
     lesbaren timestamps.
+    Genauer: z.B. Browser-Info dazubauen (WebServerRequestHandler.log_message)
+             ebendort: GET requests in andere Datei (wird gross)
+             Timestamps fuer andere Meldungen nach "QuerySheet: " z.B.
+    Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
   Dezimalkomma schaltbar
+        >>> locale.format("%2.1f",1.1)
+        '1.1'
+        >>> locale.setlocale(locale.LC_ALL, '')
+        'de_DE.ISO-8859-1'
+        >>> locale.format("%2.1f",1.1)
+        '1,1'
+        >>> locale.str(1.12)
+        '1.12'
+        >>> locale.atof("1,1")
+        11.0
+        >>> locale.setlocale(locale.LC_ALL, '')
+        'de_DE.ISO-8859-1'
+        >>> locale.atof("1,1")
+        1.1000000000000001
+     Punktzahlen alle mit locale....  verarbeiten : fertig
   Totalscore obsolet (jetzt TotalScore)
   pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
   Aufloesungs-Cookie persistent
   Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
     von vorigen Blaettern uebernommen werden.
   Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
+    Das Richtige Gruen machen
+    Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
+       das Richtige da war.
   Overfull boxes melden beim Erzeugen von Pixelbildern.
     (loest Problem abgeschnittener Aufgabentexte)
+    testexercises soll .log-Datei anschauen und Fehler und overfull boxes
+      richtig rausfinden.
   Global die Anzahl der Klausuren Zaehlen
   ExportResults mit dieser Anzahl von Klausuren bei allen
+  Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
+
+Spaeter: 
+
+  ISO-8859-1 konfigurierbar?
+     Problem dabei: TeX muss analog konfiguriert werden.
+  Aufbau des Programms mit Erklaerung Locking dokumentieren
+  alle Werte aus einem query speichern statt nur erster?
