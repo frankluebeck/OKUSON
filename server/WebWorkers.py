@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.95 2004/03/09 02:07:57 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.96 2004/03/09 10:47:30 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -310,7 +310,17 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                 out.write(str(maxtotalmcscore + score))
             else:
                 out.write(str(maxtotalmcscore) + ' + ?')
-
+    def handle_ExportFormatOptions(self,node,out):
+        keys = ExportHelper.keys()
+        ord = ['%i','%n','%f','%s','%g','%a','%p','%c','%h','%C','%H','%T']
+        for k in ord:
+          keys.remove(k)
+        keys = ord + keys
+        out.write('\n<table>\n');
+        for k in keys:
+          out.write('<tr><th style="vertical-align: top;">'+\
+                    k+'</th><td>'+ExportHelper[k][0]+'</td></tr>\n')
+        out.write('</table>\n');
 
 EH_Generic = EH_Generic_class()
 
@@ -2312,6 +2322,24 @@ sorttable = {'ID': CmpByID, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
              'total homework score': CmpByTotalHomeScore,
              'total score': CmpByTotalScore}
 
+def ExportCustom(req,onlyhead):
+    if Authenticate(None,req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    format = req.query.get('expformat',['%i:%n:%f:%s:%a:%g:%C:%H:%T'])[0]
+    pformat = ParsedExportFormat(format)
+    res = ['# '+format]
+    for k in Data.people.keys():
+        p = Data.people[k]
+        res.append(ExportLine(p, pformat))
+    res = string.join(res,'\n')
+    head = {'Content-type':'text/okuson',
+        'Content-Disposition':'attachment; filename="custompeopleexport.txt"',
+        'Last-modified':req.date_time_string(time.time())}
+    return (head, res)
+Site['/ExportCustom'] = FunWR(ExportCustom)
+Site['/ExportCustom'].access_list = \
+        Config.conf['AdministrationAccessList']
+    
 def ExportPeopleForGroups(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
@@ -2577,7 +2605,7 @@ ExportHelper['%n'] = ('Last name',
 ExportHelper['%f'] = ('First name', 
   lambda p: p.fname)
 ExportHelper['%s'] = ('Semester', 
-  lambda p: p.sem)
+  lambda p: str(p.sem))
 ExportHelper['%a'] = ('Field of studies', 
   lambda p: p.stud)
 ExportHelper['%g'] = ('Tutoring group', 
@@ -2609,8 +2637,8 @@ def ExportHelper_e(p, d = ';', nr = None):
   except:
     return 'no exams'
 ExportHelper['%e'] = ('''Exams as concatenation of pairs "nr;score" with ";"s
-as delimiters, with %<d><nr>e use <d> instead of ";" as delimiter 
-(must be non-alpha-numeric) and/or include only exam number <nr>.''',
+as delimiters, with %[d][nr]e use [d] instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only exam number [nr].''',
   ExportHelper_e)
 def ExportHelper_c(p, d = ';', nr = None):
   try:
@@ -2635,8 +2663,8 @@ def ExportHelper_c(p, d = ';', nr = None):
     return 'no mcresults'
 ExportHelper['%c'] = ('''Results of interactive exercises as concatenation 
 of pairs "sheet nr;score" with ";"s
-as delimiters, with %<d><nr>c use <d> instead of ";" as delimiter 
-(must be non-alpha-numeric) and/or include only sheet number <nr>.''',
+as delimiters, with %[d][nr]c use [d] instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only sheet number [nr].''',
   ExportHelper_c)
 def ExportHelper_h(p, d = ';', nr = None):
   try:
@@ -2661,8 +2689,8 @@ def ExportHelper_h(p, d = ';', nr = None):
     return 'no homework results'
 ExportHelper['%h'] = ('''Results of homework exercises as concatenation 
 of pairs "sheet nr;score" with ";"s
-as delimiters, with %<d><nr>h use <d> instead of ";" as delimiter 
-(must be non-alpha-numeric) and/or include only sheet number <nr>.''',
+as delimiters, with %[d][nr]h use [d] instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only sheet number [nr].''',
   ExportHelper_h)
 ExportHelper['%C'] = ('''Total score for interactive exercises (all sheets
 which count)''',
@@ -2672,7 +2700,56 @@ count)''',
   lambda p: str(p.TotalHomeScore()) )
 ExportHelper['%T'] = ('Total score for all sheets which count',
   lambda p: str(p.TotalScore()) )
-
+def ExportHelper_Grade(p):
+    if not (Config.conf['GradingActive'] and \
+            Config.conf['GradingFunction'] != None):
+         return ('no grade','no grade')
+    try:
+        sl = Exercises.SheetList()
+        mcscore = p.TotalMCScore()
+        homescore = p.TotalHomeScore()
+        exams = []
+        exams1 = []
+        for i in xrange(Data.Exam.maxexamnumber):
+            if i >= len(p.exams) or p.exams[i] == None or \
+               p.exams[i].totalscore < 0:
+                exams.append('-;0;-')
+                exams1.append(0)
+            else:
+                if Config.conf['ExamGradingActive'] == 0 or \
+                   Config.conf['ExamGradingFunction'] == None:
+                    (msg,grade) = ('',0)
+                else:
+                    try:
+                        (msg,grade)=Config.conf['ExamGradingFunction'](p,i)
+                    except:
+                        etype, value, tb = sys.exc_info()
+                        lines = traceback.format_exception(etype,value,tb)
+                        Utils.Error('['+LocalTimeString()+
+                           '] Call of ExamGradingFunction raised '
+                           'an exception, ID: '+p.id+', message:\n'+
+                           string.join(lines))
+                        (msg,grade) = ('',0)
+                exams.append(str(p.exams[i].totalscore)+';'+str(grade)+';'+
+                                 p.exams[i].scores)
+                exams1.append(p.exams[i].totalscore)
+        (msg,grade) = Config.conf['GradingFunction']  \
+                       (p,sl,mcscore,homescore,exams1)
+    except:
+        etype, value, tb = sys.exc_info()
+        lines = traceback.format_exception(etype,value,tb)
+        Utils.Error('['+LocalTimeString()+
+                '] Call of GradingFunction raised an exception, '
+                'ID: '+p.id+', message:\n'+string.join(lines))
+        msg = 'no grade'
+        grade = 'no grade'
+    return (msg, grade)
+ExportHelper['%M'] = ('Grading message (gives "no grade" if not available)',
+  lambda p: ExportHelper_Grade(p)[0] )
+ExportHelper['%G'] = ('Grade (gives "no grade" if not available)',
+  lambda p: ExportHelper_Grade(p)[1] )
+     
+# parse a format string for custom export for use with 'ExportLine' below
 def ParsedExportFormat(s):
   res = []
   pos = 0
@@ -2721,6 +2798,8 @@ def ParsedExportFormat(s):
   res.append(s[pos:])
   return res
 
+# export line, 'p' is a Person instance and 'parse' a result of
+# ParsedExportFormat
 def ExportLine(p, parse):
   res = []
   for a in parse:
@@ -2734,7 +2813,6 @@ def ExportLine(p, parse):
       res.append(a[0](p, d = a[1]))
     else:
       res.append(a[0](p, d = a[1], nr = a[2]))
-  res.append('\n')
   return string.join(res, '')
 
 def ShowDetailedScoreTable(req,onlyhead):

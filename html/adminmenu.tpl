@@ -20,7 +20,13 @@
 
     <p><LoginStatus /></p>
 
-    <h3>Control of Server:</h3>
+    <p>[<a href="#contr">Server Control</a>]&nbsp;[<a href="#acc">Special
+    Access</a>]&nbsp;[<a href="#stat">Statistics</a>]&nbsp;[<a
+    href="#exp">Data Export</a>]&nbsp;</p>
+    
+<hr />
+
+    <h3>Control of Server:<a name="contr" /></h3>
 
     <form action="/Restart" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
@@ -30,7 +36,110 @@
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Shutdown server </p></form>
 
-    <h3>Export of Data:</h3>
+<hr />
+    
+    <h3>Special Access for Administrators:<a name="acc" /></h3>
+
+    <form action="/DisplaySheets" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Display available and future sheets</p></form>
+         
+    <form action="/SendMessage" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Send message 
+    <input size="60" maxlength="240" name="msgtext" value="" />
+    to <input size="8" maxlength="6" name="msgid" value="" />
+    </p></form>
+     
+    <form action="/DeleteMessages" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Delete messages of
+    <input size="8" maxlength="6" name="msgid" value="" />
+    </p></form>
+
+    <form action="/Resubmit" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Reevaluate participants' answers for sheet
+    <input size="6" maxlength="4" name="sheet" value="" />
+    </p></form>
+
+    <hr />
+
+    <h3>Statistics:<a name="stat" /></h3>
+
+    <form action="/ShowExerciseStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Exercise Statistics for sheet
+    <AvailableSheetsAsButtons />
+    </p>
+    </form>
+
+    <form action="/ShowGlobalStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Global Statistics (for group
+    <input  name="group" size="4" maxlength="4" />)
+    </p>
+    </form>
+
+    <form action="/ShowGlobalStatisticsPerGroup" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Global Statistics, separated per Group, for sheet
+    <AvailableSheetsAsButtons />
+    </p>
+    </form>
+
+    <form action="/ShowCumulatedScoreStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Cumulated Score Statistics for
+      <select name="exerciseCategory">
+        <option selected="selected" value="all">MC and Homework</option>
+        <option value="mc">MC only</option>
+        <option value="homework">Homework only</option>
+      </select>
+    for group
+    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)<br />
+    Who should be included in the cumulated statistics for a set of sheets?<br />
+    <input type="radio" name="includeAll" value="no" checked="checked" />
+    Only people who returned the last sheet of the considered set of sheets.<br />
+    <input type="radio" name="includeAll" value="yes" />
+    All people who ever returned any sheet of the considered set of sheets.
+    </p>
+    </form>
+
+    <form action="/ShowDetailedScoreTable" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Detailed Score Table for
+      <select name="exerciseCategory">
+        <option  value="all" selected="selected">MC and Homework</option>
+        <option value="mc">MC only</option>
+        <option value="homework">Homework only</option>
+      </select>
+    for group
+    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)
+    sorted by  
+      <select name="sortBy">
+        <option value="ID" selected="selected">ID</option>
+        <option value="name">name</option>
+        <option value="total score">total score</option>
+        <option value="total MC score">total MC score</option>
+        <option value="total homework score">total homework score</option>
+      </select>
+    </p>
+    </form>
+    
+<hr />
+
+    <h3>Export of Data:<a name="exp" /></h3>
+
+    <form action="/ExportCustom" method="post">
+    <p>Use the following format options for a customized export file.</p>
+    
+    <ExportFormatOptions/>
+    <p><input type="submit" name="Action" value="Go" />
+        Format string: <input size="50" maxlength="100" name="expformat"
+        value="%i:%n:%f:%s:%a:%g:%C:%H:%T" />
+    </p>
+    </form>
 
     <form action="/ExportPeopleForGroups" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
@@ -94,96 +203,7 @@
       </select>
     </p></form>
 
-
-    <h3>Statistics:</h3>
-
-    <form action="/ShowExerciseStatistics" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Exercise Statistics for sheet
-    <AvailableSheetsAsButtons />
-    </p>
-    </form>
-
-    <form action="/ShowGlobalStatistics" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Global Statistics (for group
-    <input  name="group" size="4" maxlength="4" />)
-    </p>
-    </form>
-
-    <form action="/ShowGlobalStatisticsPerGroup" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Global Statistics, separated per Group, for sheet
-    <AvailableSheetsAsButtons />
-    </p>
-    </form>
-
-    <form action="/ShowCumulatedScoreStatistics" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Cumulated Score Statistics for
-      <select name="exerciseCategory">
-        <option selected="selected" value="all">MC and Homework</option>
-        <option value="mc">MC only</option>
-        <option value="homework">Homework only</option>
-      </select>
-    for group
-    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)<br />
-    Who should be included in the cumulated statistics for a set of sheets?<br />
-    <input type="radio" name="includeAll" value="no" checked="true" />
-    Only people who returned the last sheet of the considered set of sheets.<br />
-    <input type="radio" name="includeAll" value="yes" />
-    All people who ever returned any sheet of the considered set of sheets.
-    </p>
-    </form>
-
-    <form action="/ShowDetailedScoreTable" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Show Detailed Score Table for
-      <select name="exerciseCategory">
-        <option  value="all" selected="selected">MC and Homework</option>
-        <option value="mc">MC only</option>
-        <option value="homework">Homework only</option>
-      </select>
-    for group
-    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)
-    sorted by  
-      <select name="sortBy">
-        <option value="ID" selected="selected">ID</option>
-        <option value="name">name</option>
-        <option value="total score">total score</option>
-        <option value="total MC score">total MC score</option>
-        <option value="total homework score">total homework score</option>
-      </select>
-    </p>
-    </form>
-    
-    
-    <h3>Special Access for Administrators:</h3>
-
-    <form action="/DisplaySheets" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Display available and future sheets</p></form>
-         
-    <form action="/SendMessage" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Send message 
-    <input size="60" maxlength="240" name="msgtext" value="" />
-    to <input size="8" maxlength="6" name="msgid" value="" />
-    </p></form>
-     
-    <form action="/DeleteMessages" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Delete messages of
-    <input size="8" maxlength="6" name="msgid" value="" />
-    </p></form>
-
-    <form action="/Resubmit" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Reevaluate participants' answers for sheet
-    <input size="6" maxlength="4" name="sheet" value="" />
-    </p></form>
-
-    <hr />
+<hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
 
@@ -199,5 +219,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.19 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.20 2004/03/09 10:47:30 luebeck Exp $ -->
 
