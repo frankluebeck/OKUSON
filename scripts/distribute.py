@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: distribute.py,v 1.3 2003/10/09 12:02:30 neunhoef Exp $
+#   $Id: distribute.py,v 1.4 2003/10/15 21:31:04 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
@@ -85,7 +85,7 @@ wishes.'''
             if id(groups[k]) != id(groups[k2]):   # different groups up to now
                 groups[k].extend(groups[k2][1:])
                 groups[k][0] += groups[k2][0]   # add lengths
-                for k3 in groups[k2]: groups[k3] = groups[k]
+                for k3 in groups[k2][1:]: groups[k3] = groups[k]
     # We now have to collect the different groups:
     grouplist = []
     ids = {}
