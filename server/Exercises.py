@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.36 2005/04/03 21:38:58 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.37 2005/04/04 11:29:36 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -627,7 +627,7 @@ of the sheet with seed "seed" and returns the result as a string.
                   % string.strip(CleanStringTeXComments(o.text)))
             elif type(o) == types.TupleType and isinstance(o[0],TeXText):
                 # a conventional exercise:
-                if self.IsClosed:
+                if self.IsClosed():
                     o = o[1]
                 else:
                     o = o[0]
