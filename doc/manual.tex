@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.69 2005/04/03 21:38:58 neunhoef Exp $
+% $Id: manual.tex,v 1.70 2005/04/04 10:07:29 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1027,6 +1027,27 @@ We provide for both types of documents templates which you can just copy and
 fill in. Although these are almost self explaining we describe the details in
 this chapter.
 
+\section{Scoring the solutions}
+
+The scores for the interactive exercises which are graded by the {\OKUSON}
+server, are computed as follows:
+
+\begin{itemize}
+\item each correct answer gives $+1$ point
+\item no answer to a question gives $0$ points
+\item each wrong answer gives $-1$ points
+\item each exercise gives at least $0$ points (in particular, negative points 
+are not merged with positive points from other exercises)
+\end{itemize}
+
+(With these rules participants are encouraged to give no answer instead of a
+wrong one whenever they are not sure.)
+
+If you combine interactive exercise with other homework exercises, then
+adjust the scores for the latter such that you get the intended relation
+between the two types of exercises. Partial points (in decimal notation for 
+{\OKUSON}) can be given. 
+
 \section{Generalities on the Exercise and Sheet Files}
 
 The directories containing exercises and sheets for an {\OKUSON} server must
@@ -1695,10 +1716,14 @@ See~\ref{sec:groups} for more details.
 with given number.
 \item[\texttt{<GroupDistribution/>}] sequence of HTML table rows (ID, number of
 group), sorted numerically or alphabetically by IDs.
-\item[\texttt{<GroupsOverview components="\ldots"/>}] sequence of HTML table rows, 
-one for each group. See the comment in the sample file
+\item[\texttt{<GroupsOverview components="\ldots" nodisplay="\ldots"/>}] 
+sequence of HTML table rows, one for each group. See the comment in the 
+sample file
 \texttt{groupoverview.tpl} and~\ref{sec:groups} 
-for possible \texttt{components}.
+for possible \texttt{components}. The optional attribute \texttt{nodisplay}
+must be a comma separated list of group numbers. The given groups are left
+out of the display. For examples \texttt{nodisplay="0"} can be used to
+suppress the default group~\texttt{0} in the overview.
 \item[\texttt{<MembersOfGroup number="??"/>}] comma separated list of IDs of 
 participants in group with given number.
 \item[\texttt{<AvailableSheetsAsButtons/>}] row of buttons for all available
@@ -2140,23 +2165,7 @@ email address (possibly empty) \\
 \hline
 wishlist as typed in \\
 \hline
-personal data \#1 \\
-\hline
-personal data \#2 \\
-\hline
-personal data \#3 \\
-\hline
-personal data \#4 \\
-\hline
-personal data \#5 \\
-\hline
-personal data \#6 \\
-\hline
-personal data \#7 \\
-\hline
-personal data \#8 \\
-\hline
-personal data \#9 \\
+custom personal data \\
 \hline
 group number ($0$ if not in any group) \\
 \hline
@@ -2454,12 +2463,12 @@ sequence of entries separated by colons \texttt{:}. The entries are
 interpreted in the following ordering:
 
 \begin{description}
-\item[nr] number of the group, a positive number.
+\item[number] number of the group, a positive number.
 \item[passwd] encrypted password for the tutors input access.
 \item[tutor] name of tutor.
 \item[place] place of group meeting.
 \item[time]  time of group meeting.
-\item[email] email address of tutor.
+\item[emailtutor] email address of tutor.
 \item[maxsize] maximal number of participants in group.
 \item[groupdata] additional entries for customization.
 \end{description}

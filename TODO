@@ -1,5 +1,3 @@
-F Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
-
 Ideen: 
   - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
      generischem Drumherum hinzufügen kann.   (besser 'mixer' o.ä,
@@ -7,8 +5,6 @@ Ideen:
   - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
     <input type="file" ...>.) (nicht dringend, besser per Email Stud<->Hiwi
     regeln)
-F  - die persondata Einträge sollten auch exportiert werden können
-    (warum hat das noch niemand vermisst?)
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
@@ -36,14 +32,7 @@ M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
    
 Matthias:
 
-F ShowGlobalStatisticsForGroup tut nicht
 M  Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
-F Export fuer Zusatztext zum Hausaufgabenergebnis
-
-F Group 0 in <GroupsOverview per Attr. ausblendbar.
-  Außerdem hätte ich noch gerne in den components-Optionen               
-  dieser Tabelle die Möglichkeit, auch die Raumkapazität anzeigen zu lassen, 
-
 
 Done :
 
@@ -76,4 +65,17 @@ M ShowExerciseStatistics for Sheet (admin)
 
 M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
     (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
+
+F  - die persondata Einträge sollten auch exportiert werden können
+    (warum hat das noch niemand vermisst?)
+
+F ShowGlobalStatisticsForGroup tut nicht
+
+F Export fuer Zusatztext zum Hausaufgabenergebnis
+
+F Group 0 in <GroupsOverview per Attr. ausblendbar.
+  Außerdem hätte ich noch gerne in den components-Optionen               
+  dieser Tabelle die Möglichkeit, auch die Raumkapazität anzeigen zu lassen, 
+
+F Fix: Bewertungsschema der MC Aufgaben auch im Handbuch erklären!!!
 

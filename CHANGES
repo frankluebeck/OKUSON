@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.93 2005/04/03 21:38:58 neunhoef Exp $
+##  $Id: CHANGES,v 1.94 2005/04/04 10:07:29 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,14 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to ???
 
+* Explained the scoring of interactive exercises in the manual (was only in
+  sample web page before).
+* Two corrections in the documentation of <GroupsOverview />.
+* New attribute 'nodisplay' for <GroupsOverview />, for example to exclude
+  the default group "0" from the listing.
+* Custom export of person data: added format switch for including the 
+  custom data; added variant of homework export which includes the stored 
+  details (scores for the individual exercises).
 * New feature of example solutions to written exercises, which are displayed
   with the written exercises as soon as the sheet is closed. See Manual 
   section 5.2.
@@ -26,7 +34,8 @@ Changes from 1.1-fix3 to ???
   are ignored as before this change.
 * Improved the help text of the "schein.py" script.
 * Fix "Show Global Statistics for group" in administrator menu, allow
-  access for tutors not only from administrators hosts.
+  access for tutors not only from administrators hosts, and allow
+  administrator access after login.
 * Allow registration if the first password is the administrator password,
   even if registration is switched off.
 * New configuration option "MaxStringInputLength" to give the maximal length

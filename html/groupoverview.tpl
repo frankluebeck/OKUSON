@@ -30,11 +30,16 @@
          <th>Hörsaal</th>
          <th>Tutor</th>
          <th>Teilnehmerzahl</th></tr>
-     <!-- customize with attribute 'components', default is
+     <!-- Customize with attribute 'components', default is
        components="number,place,tutor,nrparticipants"
-       other possible components : time, emailtutor, groupinfo.xxx 
+       other possible components : time, emailtutor, maxsize, groupdata.xxx 
      <GroupsOverview components="number,place,tutor,nrparticipants"/>
-    --> <GroupsOverview/>
+
+     Use attribute 'nodisplay' to skip certain groups separated by commas. 
+     For example the default group '0' can be left out with
+     <GroupsOverview nodisplay='0'/>
+    --> 
+    <GroupsOverview/>
 
     </table>
 
@@ -69,5 +74,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupoverview.tpl,v 1.5 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id: groupoverview.tpl,v 1.6 2005/04/04 10:07:29 luebeck Exp $ -->
 

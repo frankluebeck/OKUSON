@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.115 2005/04/02 21:10:48 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.116 2005/04/04 10:07:29 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -133,7 +133,14 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         except:
             # default
             fields = ['number', 'place', 'tutor', 'nrparticipants']
-            
+        try:
+            nodisplay = node[1]['nodisplay'].encode('ISO-8859-1','replace')
+            nodisplay = map(lambda s: s.strip(), string.split(nodisplay,','))
+        except:
+            # default is to show all
+            nodisplay = []
+        for nr in nodisplay:
+            l.remove(nr)
         s = []
         for nr in l:
             grp = Data.groups[nr]
@@ -390,6 +397,7 @@ def AuthenticateTutor(g,req,onlyhead):
     '''Checks password in the request. Administrator password is also 
        accepted. Return value is 1 if authentication was with admin
        password and 0 otherwise. In case of a failure we return -1.'''
+    global currentcookie
     # Check whether password is correct:
     pw = req.query.get('passwd',['1'])[0].strip()[:16]
     salt = g.passwd[:2]
@@ -481,7 +489,7 @@ and either send an error message or a report.'''
     # additional, not further specified, personal data for customization
     # (each can store up to 256 characters). The names are of form
     # 'persondata.keyval' and the value is stored in the p.persondata
-    # dictionary und key keyval.
+    # dictionary under key keyval.
     pdkeys = filter(lambda k: len(k) > 10 and k[:11] == 'persondata.', 
                     req.query.keys())
     persondata = {}
@@ -2484,7 +2492,7 @@ def ExportPeople(req,onlyhead):
     out = cStringIO.StringIO()
     out.write('# All participants:\n')
     out.write('# ID:name:fname:semester:stud:passwd:email:wishes:' 
-              'pdata1:...:pdata9:group\n')
+              'persondata:group\n')
     out.write('# Time and date of export: '+LocalTimeString()+'\n')
     for k in l:
         # Exclude guest IDs:
@@ -2635,7 +2643,7 @@ def ShowGlobalStatistics(req,onlyhead):
 
     g = Data.groups[str(groupnr)]
     # Now verify the password for this group:
-    # We use the function for people, this is possible because g as a
+    # We use the function for people, this is possible because g has a
     # data field "passwd".
     if AuthenticateTutor(g,req,onlyhead) < 0:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
@@ -2694,6 +2702,9 @@ ExportHelper['%w'] = ('Wishlist for group distribution',
   lambda p: p.wishes)
 ExportHelper['%m'] = ('Email address', 
   lambda p: p.email)
+ExportHelper['%D'] = ('''Custom person data (comma separated: 
+key1,val1,key2,val2,...)''', 
+  lambda p: LineDict(p.persondata))
 def ExportHelper_e(p, d = ';', nr = None):
   try:
     t = p.exams
@@ -2754,7 +2765,9 @@ def ExportHelper_h(p, d = ';', nr = None):
       rg = [str(nr)]
     else:
       rg = t.keys()
-      rg.sort()
+      def icmp(a, b):
+        return int(a) < int(b)
+      rg.sort(icmp)
     for i in rg:
       try:
         a = t[i]
@@ -2773,6 +2786,33 @@ of pairs "sheet nr;score" with ";"s
 as delimiters, with %[d][nr]h use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only sheet number [nr].''',
   ExportHelper_h)
+def ExportHelper_v(p, d = ';', nr = None):
+  try:
+    t = p.homework
+    res = ['']
+    if nr:
+      rg = [str(nr)]
+    else:
+      rg = t.keys()
+      def icmp(a, b):
+        return int(a) < int(b)
+      rg.sort(icmp)
+    for i in rg:
+      try:
+        a = t[i]
+        res.append(str(i)+d+locale.str(a.totalscore)+d+a.score+d)
+      except:
+        res.append(str(i)+d+'none'+d+'none'+d)
+    res = string.join(res, '')
+    if res[-1] == d:
+      res = res[:-1]
+    return res
+  except:
+    return 'no homework results'
+ExportHelper['%v'] = ('''Same as %h, but there are triples 
+"sheet nr;score;details" per exercise (details can be used for the results
+of single exercises)''',
+  ExportHelper_v)
 ExportHelper['%C'] = ('''Total score for interactive exercises (all sheets
 which count)''',
   lambda p: locale.str(p.TotalMCScore()) )
