@@ -9,7 +9,7 @@
      within this exercise. Can also be given individually for each question. 
      Attribute 'type' can be: "r" - radio buttons, "c" - multiple choice,
                               "s" - string                                  -->
-<ANSWERS type="?"> ?? ?? </ANSWERS>
+<ANSWERS type="?"> ?? | ?? </ANSWERS>
 
 <!-- An introductory  text appearing before the questions of the exercise.  -->
 <TEXT>

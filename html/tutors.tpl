@@ -32,13 +32,13 @@
          <input type="password" size="16" maxlength="16" name="pw2" value="" />
       </p>
       <p>Bitte Eingabeseite für Blatt Nummer:
-         <input size="4" maxlength="2" name="sheet" value="" />
+         <!--<input size="4" maxlength="2" name="sheet" value="" />-->
+         <AvailableSheetsAsButtons />
       </p>
       <p><strong> oder </strong></p>
       <p>Bitte Eingabeseite für Teilnehmer mit Matrikelnummer:
          <input size="8" maxlength="6" name="id" value="" />
-      </p>
-      <p><input type="submit" name="Action" value="Los" />
+         <input type="submit" name="Action" value="Los" />
       </p>
     </form>
                
@@ -57,5 +57,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: tutors.tpl,v 1.1 2003/10/08 20:36:38 neunhoef Exp $ -->
+     $Id: tutors.tpl,v 1.2 2003/10/28 16:18:09 neunhoef Exp $ -->
 

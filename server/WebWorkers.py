@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.60 2003/10/27 09:12:07 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.61 2003/10/28 16:18:09 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1227,7 +1227,7 @@ def TutorRequest(req,onlyhead):
         Data.Lock.release()
     
     # Now password is changed (or not), decide about input request:
-    sheet = req.query.get('sheet',[''])[0]
+    sheet = req.query.get('sheet',[''])[0].strip()
     if sheet != '':
         sl = Exercises.SheetList()
         i = 0

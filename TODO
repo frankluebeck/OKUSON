@@ -42,3 +42,7 @@ Ideen:
   beliebige Anzahl persondata fuer Benutzer konfigurierbar
   alle Werte aus einem query speichern statt nur erster?
   wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
+  Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
+  Template files generischer
+  Anmeldung fuer exams schaltbar?
+

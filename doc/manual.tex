@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.43 2003/10/27 16:04:00 neunhoef Exp $
+% $Id: manual.tex,v 1.44 2003/10/28 16:18:09 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -43,7 +43,11 @@ courses in mathematics. Some of these courses had more than 1000 students.
 The main purposes of this package are
 \begin{itemize}
 \item to enable the use of exercises which allow a mechanical check (multiple 
-choice, yes-no questions, questions with easy to parse answers like numbers)
+choice, yes-no questions, questions with easy to parse answers like numbers).
+\item to allow giving \textbf{individual} exercise sheets to participants
+by providing variants of questions and letting the system choose an
+individual selection depending on the participant by a pseudo-random
+process.
 \item to automatize the management of the participants: registration for the
 exercise course and exams, delivery of the exercise sheets via the web, 
 collecting the  solutions of exercises as mentioned above via the web,
@@ -278,16 +282,19 @@ system is needed.
 
 \subsubsection*{Needed Resources}
 
-As an example, we give here some facts and numbers  on needed 
-resources for a big
-course during one semester (these are estimates, based on experience
-with previous versions of the {\OKUSON} programs):
+As an example, we give here some facts and numbers on our use of the
+{\OKUSON} system for a big course during one semester (these are
+estimates, based on experience with previous versions of the {\OKUSON}
+programs):
 
 \begin{description}
-\item[Server Hardware:] PC with two Pentium III (1GHz) processors, 2 GB of
-memory, 40 GB IDE hard disc. The workload of the {\OKUSON} server, even for
-a course with many participants, does not have a detectable impact on other 
-work done on that machine.
+\item[Server Hardware:] We use a PC with two Pentium III (1GHz)
+processors, 2 GB of memory, 40 GB IDE hard disc. However, any recent
+PC with say at least 256 MB of memory and 100 MB of free disc space
+and a reasonable connection to the internet could do the job as well.
+The workload of the {\OKUSON} server, even for a course with many
+participants, does not have a detectable impact on other work done on
+our machine. This holds as well for CPU time as for memory usage.
 \item[Number of participants:] 1200.
 \item[Number of submissions of solutions:] more than 20000 (this leads to 
 the by far
@@ -431,7 +438,7 @@ In chapter~\ref{ch:webpages} we explain how to customize these web pages for
 your course.
 
 An {\OKUSON} server collects data about participants of your course,
-submitted solutions of exercises, tutoring groups, \ldots Such data are
+submitted solutions of exercises, tutoring groups, etc. Such data are
 stored in the subdirectory \texttt{data}. 
 For a start you need empty versions of the data files. This can be achieved 
 by the following commands:
@@ -439,7 +446,7 @@ by the following commands:
 \hspace*{1cm}\verb!cd data ; cp empty/* . ; cd ..!
 
 This copies the empty versions of the data files to the
-real versions. Please do not do this later, when your server already
+real versions. Please do not do this later when your server already
 has accumulated data!
 
 \section{Starting and Stopping the Server}
@@ -467,7 +474,7 @@ pointing your browser to the following URL:
 
 where the main menu for students should appear. Note that the
 ``\texttt{:8000}'' in this URL tells the browser to contact the
-{\OKUSON} server on port $8000$. Therefore this has of course to be
+{\OKUSON} server on port $8000$. Therefore this of course has to be
 changed according to the network port you chose during configuration.
 
 If you want to stop the server, you can issue the command
@@ -495,6 +502,15 @@ preparses everything it needs during startup).
 In this section we mention some details of our own use of this package.
 Maybe you find some of these remarks useful.
 
+\subsubsection*{Setting the Locale}
+
+We set the locale for the server correctly, such that date and time
+strings are displayed according to the local standards. This is
+achieved by setting the \verb+LC_ALL+ environment
+variable to appropriately (for example \verb+de_DE+ for German, see the
+\texttt{man} page of \texttt{locale} on your system, usually ``\texttt{locale
+-a}'' lists the available settings).
+ 
 \subsubsection*{Using a Pseudo User}
 
 We always create a pseudo user as administrator of the package. This makes
@@ -519,8 +535,8 @@ the administrator) is required, the
 administrator password is considered valid \emph{provided} the request is
 coming from a machine with administrator access. As administrator you can
 see sheets which are not yet open, submit solutions to closed sheets, change
-a user password, get any users sheets and results and use the /adminmenu.html 
-functions.
+a user password, get any user's sheets and results and use the 
+\texttt{/adminmenu.html} functions.
 
 \subsubsection*{Make Sure Your Server Uses the Correct Time}
 
@@ -539,7 +555,7 @@ Since the data collected by an {\OKUSON} server can be relevant for grades
 it is important to have a good backup system for them.  
 
 We use a machine different from the one running the {\OKUSON} server for
-this. It has the GNU version of the \texttt{cron} program installed and 
+this. It has Paul Vixie's version of the \texttt{cron} program installed and 
 we define (as the {\OKUSON} pseudo user) \texttt{crontab} entries like:
 
 \begin{verbatim}
@@ -596,7 +612,7 @@ possible crash or data corruption of the original server.
 Usually, our server machines are never rebooted. But in case that happens
 for some reason (e.g., a power failure) it is desirable that the downtime of
 the {\OKUSON} service is as short as possible. For this we use an entry
-in the GNU \texttt{crontab} of the pseudo user on the server machine like
+in the \texttt{crontab} of the pseudo user on the server machine like
 
 \begin{verbatim}
    @reboot  /MYOKUSONDIR/server/Server.py &
@@ -623,14 +639,140 @@ announcements, exam results, final grades are \emph{only} available via the
 {\OKUSON} server web interface. Our experience was that  no students complain
 about this approach.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Schedule of Events for One Course}\label{ch:semsched}
+
+In this chapter we go through the complete schedule for one course as
+we imagine it and describe the actions one has to perform during the various
+stages with respect to {\OKUSON}. Of course, you will have to adapt this
+to your specific situation. We hope however, that this chapter also gives
+a good overview over and a reference for the facilities of the {\OKUSON}
+system, because it also contains a lot of references to various sections
+of this manual.
+
+We proceed chronologically and divide roughly into the following stages:
+before the semester, at the begin of the semester, during the semester
+and after the semester.
+
+\section{Before the Semester}
+
+\begin{itemize}
+\item \textbf{Installing {\OKUSON}.} See chapter \ref{ch:inst}. Here one
+typically adjusts the configuration options for the course. After this
+step, the pages are ready for registration. One can already create the
+pages with bibliography and general information about the course.
+\item \textbf{Creating exercises.} It can be reasonable to prepare some
+exercises already in this early stage. One should not underestimate the
+time that is needed to invent decent multiple choice exercises and enough
+variants. If no exercises are available from earlier courses we calculate
+one day per week for two people to create the exercises for one sheet.
+
+It also cannot hurt to get used to the way exercises and sheets are entered
+into {\OKUSON}.
+
+It has proven sensible to have a sheet number $0$ which does not count in
+the end for the grade and which is available already at registration time,
+such that the participants can practice to use the system before the 
+actual exercises begin.
+\end{itemize}
+
+\section{At the Beginning of the Semester}
+
+\begin{itemize}
+\item \textbf{Registration of participants.} Once you tell the students
+the URL of the {\OKUSON} server, they can register. Obviously, you want
+to give them a few days for this purpose, before you distribute the
+registered participants into small tutoring groups.
+\item \textbf{Distribution of participants into tutoring groups.} See
+chapter \ref{ch:managepeople}. 
+\item \textbf{Setup of group information.} About at the same time than
+the previous step you want to edit \texttt{data/groupinfo.txt} to set
+up the information about your small tutoring groups. You can enter the
+names of the tutors and the time and place of their sessions. Also every
+tutor gets a password at this stage.
+\item \textbf{Publishing of distribution into tutoring groups.} From the
+moment you enter the distribution data into \texttt{data/groups.txt}
+and restart the {\OKUSON} server, the distribution is automatically
+published via the web pages. Note that the information you entered in
+the previous step is shown on the automatically generated pages.
+\end{itemize}
+
+\section{During the Semester}
+
+\begin{itemize}
+\item \textbf{Distribute late-comers into groups.} Especially in big
+courses with hundreds of participants, there always will be some sleepers
+who only register late. These people automatically appear in group number $0$.
+One has to distribute them by hand into tutoring groups by appending lines
+to the file \texttt{data/groups.txt}.
+\item \textbf{Create new exercise sheets.} Of course, you will create
+further exercise sheets during the semester. Note that you can use the
+attributes \texttt{openfrom} and \texttt{opento} to prepare the sheets
+beforehand and let them appear automatically at a given time on the web
+pages and let them be closed at another time. 
+\item \textbf{Let participants query their results.} The participants will
+query their results on a regular basis. Please note that there is the 
+possibility to put up individual messages on the result pages via the
+administrator menu (see section \ref{sendmess}) and to delete them
+later.
+\item \textbf{Tutors enter homework results.} There is a page especially
+for the tutors to type in the results of the participants in their 
+tutoring group, such that they appear on the result page. See section
+\ref{sec:tutpage}.
+\item \textbf{Exams during the course.} Especially for beginner's courses
+it seems to be a good practice to organize a written exam at some stage
+during the semester. The {\OKUSON} server can help you to organize this
+by handling the registration of participants for such exams and by
+producing the messages for the exams on the result page automatically,
+once the result of the exam is imported into the server (see
+\ref{ch:ExamOrga}).
+\end{itemize}
+
+\section{After the Semester}
+
+\begin{itemize}
+\item \textbf{Exam at the end of the semester.} The {\OKUSON} server can
+help to organize the registration of participants of exams at the end of the
+semester, see \ref{ch:ExamOrga}.
+\item \textbf{Automatic grading.} At this stage one can activate the 
+automatic grading function to produce output for the result pages of
+the participants, for example stating whether they get a certificate 
+about successful participation in the course or not. Note that to use
+this one has to learn a little bit of Python programming to customize
+the automatic grading function to your needs. One also has to learn
+a little bit about the internal data structures of {\OKUSON}, see
+chapter \ref{ch:intdata}. You can also choose not to use this feature,
+see the next step.
+\item \textbf{Export of results for further processing.} Now that all
+data about results is collected one can export these via the administrator
+menu (see \ref{sec:expresults}). The idea of this step is to be able to
+do statistical evaluations on this data. However, it is also possible to
+use external tools or scripts on this exported data for example to decide
+about grading by your own criteria. You can then import the result of these
+external tools in form of private messages to participants via the
+file \texttt{data/messages.txt} (see \ref{sec:messages.txt}).
+\item \textbf{Producing certificates.} One can use the export of results
+to produce certificates of successful participation.
+\end{itemize}
+
+\section{At all Times}
+
+\begin{itemize}
+\item You can at all times use the {\OKUSON} system to publish current
+information about the course. Our experience shows that usually no other
+means of publishing such information is needed any more.
+\end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Short Introduction to XML}\label{ch:introXML}
 
-XML is a standard by the W3C consortium ({\texttt http://www.w3c.org}) that
-allows to define \emph{markup languages} for text documents and data such 
-that documents using such a language can be checked and processed 
+XML is a standard by the W3C consortium
+(\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}) that allows
+to define \emph{markup languages} for text documents and data such
+that documents using such a language can be checked and processed
 systematically with generic tools.
 
 The {\OKUSON} package uses XML in several places:
@@ -647,7 +789,7 @@ templates for these pages are written with an XML markup
 The markup languages in each of these cases are different, but they are
 almost self explaining and we provide sample files for all of them. 
 
-In this Chapter we give a basic introduction to the XML concept. This
+In this chapter we give a basic introduction to the XML concept. This
 knowledge may be useful to avoid syntax errors and to understand the messages 
 of programs parsing an XML file containing errors and to correct such errors.
 
@@ -752,7 +894,7 @@ XML documents contain elements which must be empty or have begin and end
 tag and which must be properly nested. Element names are case sensitive.
 Elements can have attributes which
 must have a value and the value must be enclosed in double or single quotes.
-There a CDATA sections and entities for specifying content containing the
+There are CDATA sections and entities for specifying content containing the
 special characters used for XML markup.
 
 \subsubsection*{Reference}
@@ -770,7 +912,7 @@ documents  and translate it to some internal data structure are called
 
 XML documents that follow the formal rules explained 
 in~\ref{sec:XMLbasics} 
-are called \emph{well formed XML documents}. This means, that they can
+are called \emph{well-formed XML documents}. This means, that they can
 be parsed successfully, however, this does not imply
 that they make any sense. 
 
@@ -785,7 +927,7 @@ type is called  a \emph{valid XML document}. Some XML  parsers, like the one
 we use  in the {\OKUSON}  programs, can check if  an XML document  is valid.
 Such a parser is called a \emph{validating parser}. It is useful 
 for the user who wants to check if a newly created document has the correct XML
-structure, and it is useful for the programer as a general tool for checking
+structure, and it is useful for the programmer as a general tool for checking
 the formal correctness of XML input.
 
 As administrative user  of {\OKUSON} you can come across  the parsing of XML
@@ -798,7 +940,7 @@ cached.
 
 In the {\OKUSON} home directory, there is a script \texttt{xmlvalidate}
 which can be used to validate XML documents. (With \texttt{-w} argument it
-is only checked if a document is well formed.) In case of an error, a
+is only checked if a document is well-formed.) In case of an error, a
 sensible message for removing the problem is printed.
 
 \chapter{Creating Exercises and Sheets}\label{ch:createExercisesSheets}
@@ -816,7 +958,7 @@ While the actual exercise texts must be written in \LaTeX, the additional
 structure is added via some simple XML markup, see~\ref{ch:introXML}.
 We provide for both types of documents templates which you can just copy and
 fill in. Although these are almost self explaining we describe the details in
-this Chapter.
+this chapter.
 
 \section{Generalities on the Exercise and Sheet Files}
 
@@ -1109,11 +1251,11 @@ exercise text from a \texttt{.tex} file.
 
 \section{Specifying Sheets}\label{sec:Sheets}
 
-For exercise sheets in {\OKUSON} there is another XML document type which we
-will also explain by looking at an example. Files of this type must have
-\texttt{.bla} as their extension. In these files, interactive exercises
-are referred to by the value of their \texttt{key} attribute, and text
-exercises are identified by their file names.
+For exercise sheets in {\OKUSON} there is another XML document type
+definition which we will also explain by looking at an example. Files of
+this type must have \texttt{.bla} as their extension. In these files,
+interactive exercises are referred to by the value of their \texttt{key}
+attribute, and text exercises are identified by their file names.
 
 \subsection*{Example of an Exercise Sheet document}
 
@@ -1171,7 +1313,7 @@ sheet are accepted. The value must be in the format \verb+hh:mm_dd.MM.yyyy+,
 with \texttt{hh} the hour in the range $00..23$, \texttt{mm} the minutes in
 the range $00..23$, \texttt{dd} the day of the month in the range $1..31$,
 \texttt{MM} the month in the range $1..12$ and \texttt{yyyy} the year. This
-time is interpretet as local time on the machine running the {\OKUSON}
+time is interpreted as local time on the machine running the {\OKUSON}
 server.
 \item[\texttt{openfrom}] (optional, default is that the sheet is open
 immediately) entry with the same syntax as
@@ -1300,13 +1442,13 @@ uniform appearance and to change this appearance for all pages at once.
 standard tools for processing and checking such files (see
 chapter~\ref{ch:introXML}).  Actually, most pages delivered by an {\OKUSON}
 server are dynamically created from templates on demand. The templates are
-also well formed XML documents, which allow an efficient preparsing and
+also well-formed XML documents, which allow an efficient preparsing and
 processing.
 \item There are  developments like MathML which will allow in the future to
 include mathematical formulae directly in web pages (currently, we use
 images for that). Also, a systematic processing of XML documents on the client 
 side is already possible in new web browsers. Such extensions will only work 
-in combination with HTML pages which are strictly conform with some official
+in combination with HTML pages which strictly conform to some official
 specification.
 \item We can include in our built-in web server an automatic check of the
 validity of all delivered web pages. (Non valid pages are still delivered,
@@ -1326,7 +1468,7 @@ Probably  only minor adjustments will be needed for your course, see the
 next section for more details.
 
 All sample pages are provided as template files with extension
-\texttt{.tpl}. These are well formed XML documents and almost
+\texttt{.tpl}. These are well-formed XML documents and almost
 \texttt{XHTML}, except for some extra tags.
 
 The interface between the web pages and the {\OKUSON} server is described by
@@ -1336,7 +1478,7 @@ the administrator.
 
 \section{How to Customize the Web Pages}
 
-All web pages delivered by the  {\OKUSON} server are created by filling
+All web pages delivered by the  {\OKUSON} server are created by filling in
 template files (with extension \texttt{.tpl}) dynamically.
 
 The placeholders in  the \texttt{.tpl}-files are easy to detect: While all
@@ -1418,7 +1560,7 @@ See~\ref{sec:groups} for more details.
 \item[\texttt{<GroupSize number="??"/>}] number of participants in group
 with given number.
 \item[\texttt{<GroupDistribution/>}] sequence of HTML table rows (ID, number of
-group), sorted numerically of alphabetically by IDs.
+group), sorted numerically or alphabetically by IDs.
 \item[\texttt{<GroupsOverview components="\ldots"/>}] sequence of HTML table rows, 
 one for each group. See the comment in the sample file
 \texttt{groupoverview.tpl} and~\ref{sec:groups} 
@@ -1444,10 +1586,10 @@ page \texttt{results.tpl}.
 \subsubsection*{Registration and Change of Data}
 
 The following registration data  for each participant are stored by the
-{\OKUSON} server: a user Id, last name, first name, the number of semesters the
+{\OKUSON} server: a user id, last name, first name, the number of semesters the
 participant has studied, (main) topic of studies, password (has to be given
 two times when it is first specified or changed), 
-email address, wishlist of other Ids for distribution into
+email address, wishlist of other ids for distribution into
 tutoring groups and nine further fields for customization.
 
 Each of these fields is connected with three names used in the web pages.
@@ -1482,8 +1624,8 @@ web pages.
 There are further elements which can be used with the customization data
 components in case these should  take only a fixed set of values:
 
-\texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />},  
-\texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />} and
+\texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />}, \\ 
+\texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />} and \\
 \texttt{<PersonDataSelectOption name="persondata1" value="myvalue" }\\
 \mbox{}\texttt{~~~~~~content="mycontent"/>},  
 
@@ -1537,13 +1679,12 @@ final grading of the course. See the configuration entries
 \item[\texttt{<GeneralMessages/>}] this is substituted by the content of the
 file configured in the entry \texttt{<GeneralMessageFile>} of 
 \texttt{Config.xml} (\texttt{data/generalmessage.txt} by default).
-\item[\texttt{<PrivateMessages/>}] this is substituted by lines collected 
-for the specific participant in
-the file given by the entry \texttt{MessageFile} in \texttt{Config.xml}
-(default is \texttt{data/messages.txt}). 
-The format of this file is described in~\ref{sec:messages.txt}.
-You can add and remove individual messages via the administrator menu,
-see~\ref{sendmess}.
+\item[\texttt{<PrivateMessages/>}] this is substituted by message
+lines collected for the specific participant in the file given by
+the entry \texttt{MessageFile} in \texttt{Config.xml} (default is
+\texttt{data/messages.txt}). The format of this file is described
+in~\ref{sec:messages.txt}. You can add and remove individual messages
+via the administrator menu, see~\ref{sendmess}.
 \end{description}
 
 
@@ -1576,10 +1717,10 @@ this information can be given to the {\OKUSON} server.
 
 \begin{description}
 \item[\texttt{<GroupNumber/>}] the number of the group.
-\item[\texttt{<GroupTutor/>}] the name  of the tutor.
+\item[\texttt{<GroupTutor/>}] the name  of the tutor of the group.
 \item[\texttt{<GroupPlace/>}] place where the group meets.
 \item[\texttt{<GroupTime/>}] time when  the group meets.
-\item[\texttt{<GroupEmailTutor/>}] the email address of the tutor.
+\item[\texttt{<GroupEmailTutor/>}] the email address of the tutor of the group.
 \item[\texttt{<GroupIDs/>}] a comma separated sorted list (numerically or
 alphabetically) of the IDs of the participants.
 \item[\texttt{<GroupInfo1/>} to \texttt{<GroupInfo9/>}] further unspecified 
@@ -1595,126 +1736,6 @@ document the helper elements here. They are almost self explaining or else
 look in the code. If you want more functions in the admin menu, please, tell us
 about them. Maybe they are of general interest and we want to add them to
 the {\OKUSON} package.
-
-\chapter{Schedule of Events for One Course}\label{ch:semsched}
-
-In this chapter we go through the complete schedule for one course as
-we imagine it and describe the actions one has to perform during the various
-stages with respect to {\OKUSON}. Of course, you will have to adapt this
-to your specific situation. We hope however, that this chapter also gives
-a good overview over and a reference for the facilities of the {\OKUSON}
-system, because it also contains a lot of references to various sections
-of this manual.
-
-We proceed chronologically and divide roughly into the following stages:
-before the semester, at the begin of the semester, during the semester
-and after the semester.
-
-\section{Before the Semester}
-
-\begin{itemize}
-\item \textbf{Installing {\OKUSON}.} See chapter \ref{ch:inst}. Here one
-typically adjusts the configuration options for the course. After this
-step, the pages are ready for registration. One can already create the
-pages with bibliography and general information about the course.
-\item \textbf{Creating exercises.} It can be reasonable to prepare some
-exercises already in this early stage. One should not underestimate the
-time that is needed to invent decent multiple choice exercises and enough
-variants. If no exercises are available from earlier courses we calculate
-one day per week for two people to create the exercises for one sheet.
-
-It also cannot hurt to get used to the way exercises and sheets are entered
-into {\OKUSON}.
-
-It has proven sensible to have a sheet number $0$ which does not count in
-the end for the grade and which is available already at registration time,
-such that the participants can practice to use the system before the 
-actual exercises begin.
-\end{itemize}
-
-\section{At the Beginning of the Semester}
-
-\begin{itemize}
-\item \textbf{Registration of participants.} Once you tell the students
-the URL of the {\OKUSON} server, they can register. Obviously, you want
-to give them a few days for this purpose, before you distribute the
-registered participants into small tutoring groups.
-\item \textbf{Distribution of participants into tutoring groups.} See
-chapter \ref{ch:managepeople}. 
-\item \textbf{Setup of group information.} About at the same time than
-the previous step you want to edit \texttt{data/groupinfo.txt} to set
-up the information about your small tutoring groups. You can enter the
-names of the tutors and the time and place of their sessions. Also every
-tutor gets a password at this stage.
-\item \textbf{Publishing of distribution into tutoring groups.} From the
-moment you enter the distribution data into \texttt{data/groups.txt}
-and restart the {\OKUSON} server, the distribution is automatically
-published via the web pages. Note that the information you entered in
-the previous step is shown on the automatically generated pages.
-\end{itemize}
-
-\section{During the Semester}
-
-\begin{itemize}
-\item \textbf{Create new exercise sheets.} Of course, you will create
-further exercise sheets during the semester. Note that you can use the
-attributes \texttt{openfrom} and \texttt{opento} to prepare the sheets
-beforehand and let them appear automatically at a given time on the web
-pages and let them be closed at another time. One recent idea is not to
-publish the exact closing time to avoid a ``rush hour'' immediately before
-it.
-\item \textbf{Let participants query their results.} The participants will
-query their results on a regular basis. Please note that there is the 
-possibility to put up individual messages on the result pages via the
-administrator menu (see section \ref{sendmess}) and to delete them
-later.
-\item \textbf{Tutors enter homework results.} There is a page especially
-for the tutors to type in the results of the participants in their 
-tutoring group, such that they appear on the result page. See section
-\ref{sec:tutpage}.
-\item \textbf{Exams during the course.} Especially for beginner's courses
-it seems to be a good practice to organize a written exam at some stage
-during the semester. The {\OKUSON} server can help you to organize this
-by handling the registration of participants for such exams and by
-producing the messages for the exams on the result page automatically,
-once the result of the exam is imported into the server (see
-\ref{ch:ExamOrga}).
-\end{itemize}
-
-\section{After the Semester}
-
-\begin{itemize}
-\item \textbf{Exam at the end of the semester.} The {\OKUSON} server can
-help to organize the registration of participants of exams at the end of the
-semester, see \ref{ch:ExamOrga}.
-\item \textbf{Automatic grading.} At this stage one can activate the 
-automatic grading function to produce output for the result pages of
-the participants, for example stating whether they get a certificate 
-about successful participation in the course or not. Note that to use
-this one has to learn a little bit of Python programming to customize
-the automatic grading function to your needs. One also has to learn
-a little bit about the internal data structures of {\OKUSON}, see
-chapter \ref{ch:intdata}. You can also choose not to use this feature,
-see the next step.
-\item \textbf{Export of results for further processing.} Now that all
-data about results is collected one can export these via the administrator
-menu (see \ref{sec:expresults}). The idea of this step is to be able to
-do statistical evaluations on this data. However, it is also possible to
-use external tools or scripts on this exported data for example to decide
-about grading by your own criteria. You can then import the result of these
-external tools in form of private messages to participants via the
-file \texttt{data/messages.txt} (see \ref{sec:messages.txt}).
-\item \textbf{Producing of certificates.} One can use the export of results
-to produce certificates of successful participations.
-\end{itemize}
-
-\section{At all Times}
-
-\begin{itemize}
-\item You can at all times use the {\OKUSON} system to publish current
-information about the course. Our experience shows that usually no other
-means of publishing such information is needed any more.
-\end{itemize}
 
 \chapter{Administration via the Web Interface}
 \label{ch:adminpages}
@@ -1812,7 +1833,7 @@ With this option you can export the personal
 data of all registered participants into a single ASCII file.
 
 In the file exported there is --- after some comment
-lines beginning with a \#-character --- for every participant one line.
+lines beginning with a \#-character --- one line for every participant.
 This line comes in the same format as the file \texttt{data/people.txt}
 (see \ref{sec:people.txt}), \textbf{except} that there is an additional
 field, namely the number of the group in which the person is.
@@ -1951,8 +1972,13 @@ file is described in section \ref{sec:messages.txt}.
 
 This messaging system can also be used to automatically produce individual
 messages for all participants. In this case it is probably better not to
-type in the messages via the web interface, but to store the messages directly
-into the file \texttt{data/messages.txt}.
+type in the messages via the web interface, but to append the messages directly
+to the file \texttt{data/messages.txt}.
+
+Remember the possibility to display a general message on the result pages
+of all participants via the file \texttt{data/generalmessage.txt}
+(see section \ref{sec:generalmessage.txt}).
+
 
 \subsection{Delete messages of}
 
@@ -1964,7 +1990,7 @@ as a new message with a dollar sign \verb!$! prepended in the internal
 data format. The participant of course does no longer see revocated messages.
 In this way, no message is ever lost.
 
-\subsection{Reevaluate participant's answers for sheet}
+\subsection{Reevaluate participants' answers for sheet}
 
 This options comes in handy if the unfortunate case happens (and it will
 happen eventually, believe it or not!) that a ``correct'' solution was
@@ -2042,7 +2068,7 @@ want to fulfill wishes of participants to be together with some others.
 {\OKUSON} helps you to complete this task in the following ways:
 
 First (already at registration time), participants can enter a wishlist
-of other students IDs with whom they want to be in the same group. {\OKUSON}
+of other students' IDs with whom they want to be in the same group. {\OKUSON}
 offers one input field, where participants can basically type in IDs of
 other participants, usually separated by commas or whitespace.
 
@@ -2086,7 +2112,7 @@ in the end mean the 9 customization data \texttt{persondata1}, \ldots, which
 may be empty. Lines
 beginning with a hash \# character are ignored as comments. Empty lines
 play a special role,  they separate so called ``parts'' of the
-input. If you for example want to form groups for participants
+input. If for example you want to form groups for participants
 of some course of studies separately, you can just separate the lists of
 participants by empty lines, which is also done by the {\OKUSON} server,
 if you select the option ``by course of studies'' during export. Via the
@@ -2121,9 +2147,10 @@ where \texttt{INPUTFILE} is replaced with the name of the input file,
 \texttt{OUTPUTFILE} is replaced by the name of the output file and
 these two file names are followed by as many numbers as there are parts
 (separated by empty lines, see above) in the input. Each number specifies,
-how many groups should be formed out of the corresponding part. Note that
-the output file is overwritten and therefore should be different from the
-input file.
+how many groups should be formed out of the corresponding part. 
+
+\textbf{Note} that the output file is overwritten and therefore should
+be different from the input file.
 
 The information about the equivalence classes is preserved in the following
 way: between any two equivalence classes within the same group a comment
@@ -2219,7 +2246,7 @@ the entries you can encode a colon by typing \verb+\d+ instead.
 There is a web page \texttt{/tutors.html} where tutors can request input
 forms for homework exercise results, either for a particular member of the
 group and all sheets, or for a particular sheet and all members of the
-group. The groups password is needed for accessing these forms. This
+group. The group's password is needed for accessing these forms. This
 password can also be changed via this request page.
 
 Each result must be given in form of a total score and (maybe optionally) a
@@ -2363,18 +2390,21 @@ There are two configuration options for automatic grading:
 valued and the automatic grading functionality is switched on if and only if
 its integer value is non-zero.
 
-Once automatic grading is switched on, the entry \texttt{GradingFunction}
-is used. It has to contain a Python function \texttt{Grade}, which takes
-$5$ arguments: An object of type \texttt{Person} (see \ref{ch:intdata}), 
-then a list \texttt{sl} for the available sheets, the total score
-of the person in all multiple choice exercises, the total score in all
-written homework exercises, and finally a list of integers of length $24$,
-where each number corresponds to one exam, numbered from $0$ to $23$.
-A value of $0$ stands for either $0$ points or for the fact, that this
-person did not take part in the exam. This list is for programmer's
-convenience only, as this information is contained in the personal data
-of the person anyway. There one can also read off, whether the person
-actually did take part in a certain exam or not.
+Once automatic grading is switched on, the entry
+\texttt{GradingFunction} is used (the sample configuration file
+\texttt{Config.xml.sample} in the {\OKUSON} distribution has an example
+function, which is shown below at the end of the chapter). It has to
+contain a Python function \texttt{Grade}, which takes $5$ arguments:
+An object of type \texttt{Person} (see \ref{ch:intdata}), then a list
+\texttt{sl} for the available sheets, the total score of the person in
+all multiple choice exercises, the total score in all written homework
+exercises, and finally a list of integers of length $24$, where each
+number corresponds to one exam, numbered from $0$ to $23$. A value of
+$0$ stands for either $0$ points or for the fact, that this person did
+not take part in the exam. This list is for programmer's convenience
+only, as this information is contained in the personal data of the
+person anyway. There one can also read off, whether the person actually
+did take part in a certain exam or not.
 
 The function has to return a pair, where the first entry is a string which
 is put between a ``\texttt{<p> </p>}'' on the results page, if the
@@ -2393,6 +2423,29 @@ every web access has its own thread and any change in global data has to
 be protected by certain locking mechanisms to avoid possible internal
 data corruption. Bugs coming from such misuse will show up only
 occasionally and will be extremely hard to find!
+
+Here is the example function from the example configuration file:
+\begin{verbatim}
+def Grade(p,sl,mcscore,homescore,exams):
+    '''This function decides about the grade of person p. 
+       sl is a list of sheets as returned by the function
+       SheetList in the Exercises module. mcscore is the
+       total sum of points in all closed sheets with counts
+       value equal to 1. homescore is the total sum of
+       points in the homework and exams is a list of length
+       at least 24 with one score corresponding to each of
+       24 exams (indexed from 0 to 23). If the participant
+       did not take part in an exam, there is a zero in the
+       corresponding position.'''
+    if (mcscore+homescore >= 240 and 
+        (exams[0]+exams[1] >= 50 or
+         exams[2] >= 50 or
+         exams[0]+exams[2] >= 50 or
+         exams[1]+exams[2] >= 50)):
+        return ('Sie bekommen den Schein.',1)
+    else:
+        return ('Sie bekommen leider keinen Schein.',0)
+\end{verbatim}
 
 \chapter{File Formats}
 \label{ch:fileformats}
@@ -2510,7 +2563,7 @@ semester & Number of semester & non-negative integer \\
 \hline
 studies & Studiengang & string \\
 \hline
-passwd & encrypted password & string as from crypt \\
+passwd & encrypted password & string as from \texttt{crypt} \\
 \hline
 email & email address & string \\
 \hline
@@ -2601,7 +2654,7 @@ only the latest counts.
 \section{\texttt{data/exams.txt}}
 \label{sec:exams.txt}
 
-Note that after an exercise you will have to supply the content of this
+Note that after an exam you will have to supply the content of this
 file from outside the {\OKUSON} system. Usually you will have to type in
 the data from the external grading procedure of the exam. Therefore it
 is particularly important to document the format of this file.
@@ -2643,7 +2696,7 @@ last field is not used within the {\OKUSON} system as of this writing.
 The general comments about file formats at the beginning of this chapter
 apply also to \texttt{data/messages.txt}. There is however one exception,
 namely that all lines corresponding to a certain ID count, not only the
-latest. Messages are therefore never deleted but only ``revoked'': If
+last. Messages are therefore never deleted but only ``revoked'': If
 a message is repeated with a dollar sign ``\$'' prepended, it will no
 longer be displayed on the result page of the participant. 
 
@@ -2731,14 +2784,14 @@ Every \texttt{Person} object has an entry \texttt{mcresults}, which is a
 dictionary where under each sheet name (see section \ref{dataex}) there
 can be stored an object from the class \texttt{MCResult}. Note that it
 is not an inconsistency, if there is nothing bound in \texttt{mcresults}
-under a valid sheet name! Therefore one always has check whether there
+under a valid sheet name! Therefore one always has to check whether there
 is some data before accessing it!
 
 Further, every \texttt{Person} object has an entry \texttt{homework},
 which is a dictionary where for each sheet name (see section
 \ref{dataex}) there can be stored an object from the class
 \texttt{Homework}. Note that also here it is not an inconsistency, if
-there is nothing bound in \texttt{homework} a valud sheet name!
+there is nothing bound in \texttt{homework} for a valid sheet name!
 
 Every \texttt{Person} object has an entry \texttt{exams}, which is a list.
 This list has a certain length and at each position (zero based!) there may
@@ -2783,11 +2836,11 @@ All data for exercises and sheets is collected in the \texttt{Exercises}
 module in the {\OKUSON} server and resides therefore in the file
 \texttt{server/Exercises.py}.
 
-There are the classes \texttt{Sheet}, \texttt{Exercises},
+There are the classes \texttt{Sheet}, \texttt{Exercise},
 \texttt{Question}, and \texttt{TeXText}. A sheet consists of exercises,
 an exercises of questions, and the ``innermost'' parts of the whole
 system are simple strings and \TeX-texts, which are texts or formulae, which
-are typed in in {\TeX} input and can be rendered into a PDF file or as
+are typed in {\TeX} input and can be rendered into a PDF file or as
 image in a web page.
 
 There is a global list \texttt{AllSheets} where all known sheet
@@ -2832,13 +2885,13 @@ If you want to use other types of IDs, do the following:
 
 \begin{itemize}
 \item Adjust the two entries \texttt{<IdCheckRegExp>} and
-\texttt{<GuestIdRegExp>} in your \texttt{Config.xml} configuration file.
+\texttt{<GuestIdRegExp>} in your configuration file \texttt{Config.xml}.
 \item Adjust all places where the word \emph{Matrikelnummer} appears in
 templates.  There is one such line in the \texttt{<PDFTemplate>} entry of
 \texttt{Config.xml}. And there are quite a few files in \texttt{html/*.tpl}. 
 Here, change the word \emph{Matrikelnummer} to something more appropriate
 and maybe increase the values of the \texttt{size} and \texttt{maxlength} 
-attributes of corresponding \texttt{<input\ldots} elements.
+attributes of corresponding \texttt{input} elements.
 \end{itemize}
 
 That's it.
@@ -2851,7 +2904,7 @@ automatically by {\OKUSON}, do the following:
 \begin{itemize}
 \item Just ignore all remarks about \emph{homework points} in this manual 
 and in input forms. 
-\item Adjust the \texttt{<Results\ldots} tag in the template file
+\item Adjust the \texttt{<Results>} tag in the template file
 \texttt{html/results.tpl} to exclude the homework points.
 \end{itemize}
 
@@ -2859,7 +2912,7 @@ and in input forms.
 
 We also use {\OKUSON} for courses without interactive exercises, just to
 take advantage of the other utilities: registration, tutoring- and  exam-
-management, HTML versions of exercise sheets, \ldots
+management, HTML versions of exercise sheets, etc.
 
 In this case some things should be done a bit differently: In PDF-versions
 of the sheets the exercises should not be put into a table (and they should
@@ -2869,7 +2922,7 @@ should not be ID's in templates which now look the same to all participants.
 
 To achieve this, copy the files in \texttt{html} with a second extension
 \texttt{.nointeractive} over the files of the same name but without this
-extension before customizing further the web pages. 
+extension before further customizing the web pages. 
 
 Then start the {\OKUSON} server and register a user with a guest ID (the
 allowed guest IDs are configured in entry \texttt{<GuestIdRegExp>} of 
@@ -3109,16 +3162,16 @@ restrictive than for other (non-XML) variants of HTML. In particular note
 the following details of XHTML:
 
 \begin{itemize}
-\item all tags must be written with lower case letters in the element names.
-\item all non-empty elements must have a start- and end-tag, in particular
+\item All tags must be written with lower case letters in the element names.
+\item All non-empty elements must have a start- and end-tag, in particular
 enclose paragraphs in \texttt{<p>} and \texttt{</p>} or list entries in
 \texttt{<li>} and \texttt{</li>}.
-\item attributes always must have an assigned value and the value must be
+\item Attributes always must have an assigned value and the value must be
 enclosed by either double or single quotes.
-\item write empty elements like \texttt{<br />}, the space before the
+\item Write empty elements like \texttt{<br />}, the space before the
 \texttt{/>} is not necessary according to the specification but it helps
 some old browsers to interpret it correctly.
-\item do not put information on colors or fonts in the XHTML file. Instead
+\item Do not put information on colors or fonts in the XHTML file. Instead
 use the \texttt{.css} style sheet file. (For complicated cases use the
 \texttt{class} attribute to mark elements for which you want to give special
 formating rules in the style sheet.
