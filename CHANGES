@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.58 2003/11/16 20:41:22 neunhoef Exp $
+##  $Id: CHANGES,v 1.59 2003/11/17 09:19:43 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -32,6 +32,9 @@ Changes from 1.0-fix2 to 1.0-fix3
 * Small layout change in display of maximal points to avoid German words
   in code.
 * Documentation of new tags.
+* Documentation of statistic functions.
+* Fixed a bug in the evaluation of choice questions where selecting
+  no answer is the correct solution reported by Axel.
 
 Changes from 1.0-fix1 to 1.0-fix2
 ---------------------------------
