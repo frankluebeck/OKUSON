@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.59 2004/03/08 14:24:40 luebeck Exp $
+% $Id: manual.tex,v 1.60 2004/03/09 13:37:24 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1661,6 +1661,12 @@ content is only typeset if the option \texttt{<IndividualSheets>} in the
 \item[\texttt{<IfNoIndividualSheets>...</IfNoIndividualSheets>}] 
 content is only typeset if the option \texttt{<IndividualSheets>} in the 
 \texttt{Config.xml} file is set to \texttt{0}.
+\item[\texttt{<IfExamRegistered nr="X">...</IfExamRegistered>}]
+content is only typeset if the participant has registered for the exam
+with number $X$.
+\item[\texttt{<IfNotExamRegistered nr="X">...</IfNotExamRegistered>}]
+content is only typeset if the participant has not registered for the exam
+with number $X$.
 \end{description}
 
 \subsection{Special Elements in Pages Containing Personal
