@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.89 2005/04/02 19:49:51 neunhoef Exp $
+##  $Id: CHANGES,v 1.90 2005/04/02 20:40:23 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to ???
 
+* Display a message when a browser submits impossible values. The values
+  are ignored as before this change.
 * Improved the help text of the "schein.py" script.
 * Fix "Show Global Statistics for group" in administrator menu, allow
   access for tutors not only from administrators hosts.

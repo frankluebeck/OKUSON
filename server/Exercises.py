@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.32 2005/04/02 19:52:38 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.33 2005/04/02 20:40:23 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -365,7 +365,9 @@ type Person. The seed is the seed for the current person and the query
 is an object from which one can extract form data with the 'get' method.
 This method returns 1 on success and 0 on failure. A failure should only
 occur if something horrible happens like disk full or manipulation by
-the user.'''
+the user. Additionally the return value 2 is possible to indicate
+success but some dubious (and nearly impossible) submission, most 
+probably by a buggy browser.'''
         # Find out the special situation for this person:
         choice = self.ChooserFunction(seed)
 
@@ -374,6 +376,7 @@ the user.'''
         counter = 0  # we count questions to index sub and marks
         score = 0    # points
 
+        dubioussubmission = 0  # note any dubious submission
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,Exercise):
@@ -392,6 +395,7 @@ the user.'''
                             Utils.Error('Radio button value "'+val+'" found,'
                                 ' which should not be possible!',
                                 prefix="Warning:")
+                            dubioussubmission = 1
                             val = ''
                         sub.append(val)
                         if val == '': 
@@ -477,7 +481,10 @@ the user.'''
         p.mcresults[self.name] = m
         Data.Lock.release()
 
-        return 1
+        if dubioussubmission:
+            return 2
+        else:
+            return 1
 
     def Resubmit(self,p,seed):
         '''Accepts a resubmission from within the server. This is for the

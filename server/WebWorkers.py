@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.113 2005/04/02 19:54:01 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.114 2005/04/02 20:40:23 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -1356,7 +1356,10 @@ submission as well as the results.'''
         handler.iamadmin = iamadmin
         Utils.Error('['+LocalTimeString()+'] successful submission, id '+id+
                     ', sheet '+sheetname, prefix='SubmitSheet: ')
-        return Delegate('/messages/subsuccess.html',req,onlyhead,handler)
+        if ok == 2:
+            return Delegate('/messages/subdubious.html',req,onlyhead,handler)
+        else:
+            return Delegate('/messages/subsuccess.html',req,onlyhead,handler)
 
 Site['/SubmitSheet'] = FunWR(SubmitSheet)
 
