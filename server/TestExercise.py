@@ -18,7 +18,7 @@ Config.PostProcessing()    # some postprocessing of configuration data
 
 import Exercises
 
-from Tools import Utils, LatexImage
+from fmTools import Utils, LatexImage
 LatexImage.LatexTemplate = Config.conf["LaTeXTemplate"]
 
 tempfile.tempdir = 'tmptestimages'

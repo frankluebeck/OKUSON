@@ -79,7 +79,7 @@ else:
 
 # The following is needed for error reporting purposes:
 
-from Tools import Utils, SimpleTemplate
+from fmTools import Utils, SimpleTemplate
 import pyRXPU
 
 

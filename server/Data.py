@@ -5,13 +5,13 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.2 2003/09/29 22:30:54 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.3 2003/10/06 13:13:05 luebeck Exp $'
 
 import sys,os,string,threading
 
 import Config
 
-from Tools import Utils, AsciiData
+from fmTools import Utils, AsciiData
 
 # The following decides, whether the server is in Administrator mode
 # or not.

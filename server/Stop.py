@@ -12,7 +12,7 @@ import Config         # this automatically determines our home dir
 
 # Fetch the "Utils" and switch error reporting to log file:
 
-from Tools import Utils
+from fmTools import Utils
 
 # Now we can read our configuration file with proper error reporting
 # (note that this might fail miserably):

@@ -17,7 +17,7 @@ except:
   pass
 
 # Fetch the "Utils" and switch error reporting to log file:
-from Tools import Utils
+from fmTools import Utils
 Utils.ErrorLogFileName = os.path.join(Config.home,'log/server.log')
 Utils.currentError = Utils.ErrorToLogfile
 Utils.Error(time.asctime(time.localtime())+
@@ -48,7 +48,7 @@ if not(os.path.isdir(os.path.join(Config.home,'tmp'))):
 # Now we put some configuration data into the necessary places of our
 # generic library routines:
 
-from Tools import LatexImage
+from fmTools import LatexImage
 LatexImage.LatexTemplate = Config.conf["LaTeXTemplate"]
 
 
@@ -113,7 +113,7 @@ Data.MakeGroupStatistic()
 
 # Start our web server:
 # (switching XHTML validation of html files on.) 
-from Tools import BuiltinWebServer
+from fmTools import BuiltinWebServer
 BuiltinWebServer.ValidateHTMLAsXHTML = 1
 def NoValidFunction(req, res, e):
     # We save the result in a temporary directory as well as the exception
@@ -135,7 +135,7 @@ WebWorkers.RegisterAllTpl()
 Utils.Error(' Formatting current time on sheets like: ' + 
             WebWorkers.LocalTimeString(), prefix = 'Info:')
 
-from Tools import BuiltinWebServer
+from fmTools import BuiltinWebServer
 
 # We are ready, service can begin:
 try:

@@ -3,19 +3,19 @@
 #  Frank Lübeck and Max Neunhöffer
 
 """So far (calling python in ..):
-   from Tools import *
+   from fmTools import *
    import Exercises
    Exercises.ReadExercisesDirectory('/home/beteigeuze/luebeck/la2001/LAII/aufgaben')
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.6 2003/10/05 21:16:03 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.7 2003/10/06 13:13:05 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
 
 import Config,Data
-from Tools import Utils,LatexImage,SimpleRand,AsciiData
+from fmTools import Utils,LatexImage,SimpleRand,AsciiData
 
 # the data structure of sheets and exercises is described in the following 
 # class definitions:

@@ -47,7 +47,7 @@ except:
 import Exercises
 from  WebWorkers import LocalTimeString
 
-from Tools import Utils, LatexImage, SimpleTemplate
+from fmTools import Utils, LatexImage, SimpleTemplate
 LatexImage.LatexTemplate = Config.conf["LaTeXTemplate"]
 
 tempfile.tempdir = 'tmpsheettest'
