@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.66 2004/10/06 10:55:21 neunhoef Exp $
+% $Id: manual.tex,v 1.67 2004/10/06 22:54:20 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -171,7 +171,7 @@ and tricks in~\ref{sec:insttips}.
 
 \begin{enumerate}
 \setlength{\parskip}{0mm}
-\item Make sure you have Python version 2.2 or later installed.
+\item Make sure you have Python version 2.3 or later installed.
 
 (WARNING for \emph{Suse Linux 9.0} users: 
 Some users experienced that {\OKUSON} has problems with the non-official 
@@ -212,6 +212,10 @@ other obvious entries in the course section of this configuration file.
 \item Start server with: 
 
 \hspace*{5mm}\texttt{start}
+
+(If you get a message about 'port in use': another progamm is using that
+port (e.g., another {\OKUSON} server), change the \texttt{Port} 
+entry of the \texttt{Config.xml} file and try again.)
 \item Test server by pointing your browser to 
 
 \hspace*{5mm}\href{http://localhost:8000/index.html}%
@@ -228,7 +232,7 @@ account of tasks occurring during a semester is given in
 chapter~\ref{ch:semsched}.
 \item \textbf{Note}, that during the semester the {\OKUSON} server collects
 and stores personal data of the participating students. So you \textbf{must}
-be careful with the access to this data.
+be careful with the access to these data.
 \end{enumerate}
 
 
@@ -465,6 +469,7 @@ The stuff that is copied with the abovementioned command consists of
 processed by the {\OKUSON} web server during startup and then delivered
 to the web browser.
 \item A few images with the extension \texttt{.png}.
+\item A default address line icon \texttt{favicon.ico}.
 \end{itemize}
 Note that most  of the functionality of the {\OKUSON} server
 is driven by these web pages. Their structure and content lead the user
@@ -1625,6 +1630,7 @@ fonts, font sizes, margins, \ldots
 redesigned, but you clearly want to include  links to the main functions of
 the server: registration, change of registration data, getting the exercise
 sheets and result information.
+\item The \texttt{favicon.ico} icon can be substituted by another one.
 \end{itemize}
 
 \subsection{What You Should Not Change}
