@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.31 2003/10/09 21:33:33 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.32 2003/10/09 21:54:54 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -113,7 +113,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                         'Ignoring.',prefix='Warning:') 
             return
         try:
-            nr = node[1]['number']
+            nr = node[1]['number'].encode('ISO-8859-1','replace')
         except:
             Utils.Error('Found "number" attribute in <GroupSize /> tag with '
                         'value not being a non-negative integer. Ignoring.',
@@ -143,7 +143,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_GroupsOverview(self,node,out):
         l = self.sortnumeralpha(Data.groups.keys())
         try:
-            fields = node[1]['components'][0]
+            fields = node[1]['components'].encode('ISO-8859-1','replace')
             fields = map(lambda s: s.strip(), string.split(fields,','))
         except:
             # default
@@ -478,7 +478,7 @@ one Person object as data.'''
         # Check attributes if interactive and/or homework exercises are
         # considered (not given attributes mean 'true').
         try:
-            fields = node[1]['components'][0]
+            fields = node[1]['components'].encode('ISO-8859-1','replace')
             fields = map(lambda s: s.strip(), string.split(fields,','))
         except:
             # the default
