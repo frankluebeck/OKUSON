@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.87 2004/03/05 14:31:54 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.88 2004/03/08 00:23:05 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -425,8 +425,13 @@ and either send an error message or a report.'''
         groupnr = req.query.get('groupnr',['0'])[0].strip()[:3]
         try:
             groupnr = int(groupnr)
-            if not(Data.groups.has_key(str(groupnr))):
+            groupnrst = str(groupnr)
+            if not(Data.groups.has_key(groupnrst)):
                 groupnr = 0
+            else:      # Check for maximal number of group members:
+                g = Data.groups[groupnrst]
+                if len(g.people) >= g.maxsize:
+                    return Delegate('/errors/groupfull.html',req,onlyhead)
         except:
             groupnr = 0
     else:
@@ -848,8 +853,14 @@ and either send an error message or a report.'''
         groupnr = req.query.get('groupnr',['0'])[0].strip()[:3]
         try:
             groupnr = int(groupnr)
-            if not(Data.groups.has_key(str(groupnr))):
+            groupnrst = str(groupnr)
+            if not(Data.groups.has_key(groupnrst)):
                 groupnr = 0
+            else:      # Check for maximal number of group members:
+                if groupnr != p.group:   # This is a group change
+                    g = Data.groups[groupnrst]
+                    if len(g.people) >= g.maxsize:
+                        return Delegate('/errors/groupfull.html',req,onlyhead)
         except:
             groupnr = p.group
     else:

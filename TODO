@@ -57,7 +57,7 @@ M Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
     Genauer: z.B. Browser-Info dazubauen (WebServerRequestHandler.log_message)
              ebendort: GET requests in andere Datei (wird gross)
              Timestamps fuer andere Meldungen nach "QuerySheet: " z.B.
-M Hoechstanzahl von Leuten in Gruppe
+M!Hoechstanzahl von Leuten in Gruppe
 M!  Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
       eigenes logrotate: n versionen aufbewahren, alle ab .1 zippen
 ? Dezimalkomma schaltbar
