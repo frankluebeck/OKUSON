@@ -259,7 +259,7 @@ into a usable form. Some values are changed into other data types.'''
     if conf.has_key('ScheinDecisionFunction'):
         d = {}
         try:
-            exec conf['ScheinDecisionFunction'] in d
+            exec conf['ScheinDecisionFunction']+'\n' in d
             conf['ScheinDecisionFunction'] = d['ScheinDecision']
         except:
             etype, value, tb = sys.exc_info()
