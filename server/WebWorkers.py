@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.90 2004/03/08 13:37:52 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.91 2004/03/08 14:07:15 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -141,8 +141,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                     # special case of custom data
                     if len(a) > 9 and a[:10] == 'groupdata.':
                         key = a[11:]
-                        s.append('<td>'+str(grp.groupdata.get(key, [''])[0])+ \
-                                 '</td>')
+                        s.append('<td>'+str(grp.groupdata.get(key, ''))+'</td>')
                     elif a in ['number','nrparticipants']:
                         s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
                              str(getattr(grp, a))+'</a></td>')
@@ -531,22 +530,24 @@ one Person object as data.'''
         try:
           key = node[1]['key']
           out.write('<input size="30" maxlength="256" name="persondata.' + \
-                  +key+'" value="'+ \
-                  CleanQuotes(self.p.persondata.get(key,[''])[0])+'" />')
+                  key+'" value="'+ \
+                  CleanQuotes(self.p.persondata.get(key,''))+'" />')
         except:
-          pass
+          #pass
+          traceback.print_exc()
     def handle_PersonDataRadioButton(self, node, out):
         try:
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
             if len(name) > 10 and name[:11] == 'persondata.':
-              known = str(self.p.persondata.get(name[11:],[''])[0])
+              known = str(self.p.persondata.get(name[11:],''))
             else:
               try:
                 known = str(getattr(self.p, name))
               except:
                 known = ''
         except:
+            traceback.print_exc()
             return
         res = ['<input type="radio" name="', name, '" value="', val, '" '] 
         if val == known:
@@ -558,7 +559,7 @@ one Person object as data.'''
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
             if len(name) > 10 and name[:11] == 'persondata.':
-              known = str(self.p.persondata.get(name[11:],[''])[0])
+              known = str(self.p.persondata.get(name[11:],''))
             else:
               try:
                 known = str(getattr(self.p, name))
@@ -576,7 +577,7 @@ one Person object as data.'''
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
             if len(name) > 10 and name[:11] == 'persondata.':
-              known = str(self.p.persondata.get(name[11:],[''])[0])
+              known = str(self.p.persondata.get(name[11:],''))
             else:
               try:
                 known = str(getattr(self.p, name))
