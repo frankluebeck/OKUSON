@@ -7,17 +7,21 @@
 
 import sys,os,time,tempfile,locale,shutil,getopt
 
-tmp = getopt.getopt(sys.argv[1:], 'o:t:h')
+tmp = getopt.getopt(sys.argv[1:], 'o:t:hn')
 opt = {}
 for a in tmp[0]: opt[a[0]] = a[1]
 files = tmp[1]
-  
+
 if len(files) == 0 or opt.has_key('-h'):
   print '''
 Usage: 
-  testsheet [-h] <a>.bla [<b>.bla ...]
+  testsheet [-h] [-n] <a>.bla [<b>.bla ...]
 
 If option -h or no .bla sheet file is given, this help is shown.
+
+If the option -n is given, the PDFTemplateNoTable template (see
+Config.xml) is used and interactive exercises are printed as "???".
+This is meant for courses with homework exercises only.
 
 All arguments <x>.bla are checked as sheet files.
 
@@ -55,7 +59,6 @@ tempfile.tempdir = 'tmpsheettest'
 if not os.path.exists('tmpsheettest'):
   os.mkdir('tmpsheettest')
 
-files = sys.argv[1:]
 
 print 'Reading all available exercises ...'
 for d in Config.conf['ExerciseDirectories']:   
@@ -92,14 +95,18 @@ for a in files:
     # we add a further page with the solutions
     sol = sheet.AllSolutions().strip()
     values['ExercisesTable'] = sheet.LatexSheetTable('')
+    values['ExercisesNoTable'] = sheet.LatexSheetNoTable()
     if len(sol) > 0:
       values['ExercisesTable'] = values['ExercisesTable']+ \
         '\n\\newpage\n\n\\begin{verbatim}\n'+ sol +'\n\\end{verbatim}\n\n'
     latexinput = None
     pdf = None
+    if opt.has_key('-n'):
+      templ = Config.conf['PDFTemplateNoTable']
+    else:
+      templ = Config.conf['PDFTemplate']
     try:
-      latexinput = SimpleTemplate.FillTemplate(Config.conf['PDFTemplate'],
-                                             values)
+      latexinput = SimpleTemplate.FillTemplate(templ, values)
     except:
       print('Cannot produce LaTeX input.')
     if latexinput:
