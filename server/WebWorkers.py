@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.37 2003/10/10 19:24:57 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.38 2003/10/10 20:33:14 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1299,9 +1299,9 @@ def AdminLogin(req,onlyhead):
     if passwd != Config.conf['AdministratorPassword']:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
-    (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
     random.seed(time.time())
     currentcookie = str(random.randrange(10000000))
+    (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
     header['Set-Cookie'] = 'OKUSON='+currentcookie
     header['Location'] = '/adminmenu.html'
     return (header,content)
