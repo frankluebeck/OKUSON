@@ -21,8 +21,9 @@
        von ??:?? bis ??:?? Uhr im Hörsaal ??? an- bzw. abmelden. Geben Sie 
        dafür bitte Ihre Matrikelnummer und Ihr Passwort an.</p>
     
+    <!--
     <form action="ExamRegistration" method="post">
-     <p><input type="hidden" name="examnr" value="0" /><!-- please edit -->
+     <p><input type="hidden" name="examnr" value="0" /> ***please edit***
        Matrikelnummer: <input size="8" maxlength="6" name="id" value="" />
        Passwort: 
        <input type="password" size="16" maxlength="16" name="passwd" value="" />
@@ -33,7 +34,8 @@
        <input type="submit" name="action" value="Los" />
      </p>
     </form>
-     
+    -->
+ 
     <hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
@@ -49,5 +51,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregistration.tpl,v 1.1 2003/10/08 14:16:31 neunhoef Exp $ -->
+     $Id: examregistration.tpl,v 1.2 2003/10/16 08:13:10 neunhoef Exp $ -->
 

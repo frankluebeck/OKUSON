@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.3 2003/10/12 11:32:33 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.4 2003/10/16 08:13:10 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -349,8 +349,11 @@ otherwise self.query is {}. self.path is the path.'''
 
         # send content away 
         if type(res[1]) == types.StringType:
-            self.wfile.write(res[1])
-            #print "Sent:\n",res[1]
+            try:
+                self.wfile.write(res[1])
+            except:
+                Utils.Error('Peer closed connection before all data '
+                            'was sent.',prefix="Warning")
         else:
             try:
               shutil.copyfileobj(res[1], self.wfile)
