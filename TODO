@@ -6,6 +6,15 @@ Interessante Ergebnisse des Browser-Checks:
 
 Bug:
   Zugangsberechtigung für Tutoren bei Gruppe 0 checken!
+  Erinnerung: Export-Bug
+
+Jetzt:
+  Versionsnummer als Tag
+  Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+  Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
+    im Widerspruch zur Doku ignoriert)
+  Statistik fuer Tutoren zugaenglich (wie schwierig?)
+  Hinweis, dass man beliebige PDF's per Webserver ausliefern lassen kann.
 
 Spaeter: 
 
@@ -15,12 +24,10 @@ Spaeter:
      Problem dabei: TeX muss analog konfiguriert werden.
   Aufbau des Programms mit Erklaerung Locking dokumentieren
   alle Werte aus einem query speichern statt nur erster?
-  Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
   Person-Data-Seiten generisch mit weiterer Endung 
        (etwa .tplpers, oder proc.inst.) 
        entsprechend mit sheets, results
        ==> Benutzer kann beliebige Seiten neu machen.
-  Versionsnummer als Tag
-  Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
-    im Widerspruch zur Doku ignoriert)
-  Statistik fuer Tutoren zugaenglich
+  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
+    (Anfrage von Christoph Schweigert)
+
