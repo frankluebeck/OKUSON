@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.34 2003/10/15 10:29:03 neunhoef Exp $
+% $Id: manual.tex,v 1.35 2003/10/15 15:43:57 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -553,7 +553,7 @@ the {\OKUSON} service is as short as possible. For this we use an entry
 in the GNU \texttt{crontab} of the pseudo user on the server machine like
 
 \begin{verbatim}
-   @reboot  /my/okuson/dir/start
+   @reboot  /my/okuson/dir/server/Server.py &
 \end{verbatim}
 
 
