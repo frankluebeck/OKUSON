@@ -112,6 +112,12 @@
     <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
 
+    <form action="/Resubmit" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Reevaluate participant's answers for sheet
+    <input size="6" maxlength="4" name="sheet" value="" />
+    </p></form>
+
     <hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
@@ -127,5 +133,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.11 2003/10/08 23:00:23 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.12 2003/10/08 23:37:31 neunhoef Exp $ -->
 

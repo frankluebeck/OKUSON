@@ -1,8 +1,6 @@
 Für letztes (3.) Prerelease:
 
 UTILITIES zur Administration:
-  Resubmit als Button im Admin Menu
-
   Template fuer Fall ohne MC
   Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
      alle sort's aendern, die IDs sortieren
@@ -15,6 +13,7 @@ Fragen:
    Wenn man jemals fuer eine Klausur angemeldet war, dann erscheint
      im Export auch ein Ergebnis und nicht "nicht mitgeschrieben -", ist das
      OK?
+   Bei resubmit: altes Datum faelschen?
 
 Für Release:
   Mechanismus für Bilder in TeX
@@ -52,6 +51,7 @@ noch dokumentieren:
   automatic Grading
   handling of messages, including revocation
   handling of groups
+  resubmit
 
 Testen:
 

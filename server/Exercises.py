@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.8 2003/10/08 00:08:37 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.9 2003/10/08 23:37:31 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -371,19 +371,20 @@ the user.'''
                         # first get selected choice:
                         val = query.get('Q'+str(counter),[''])[0].strip()
                         if val == '+':    # nothing submitted
-                            choice = ['']
+                            innerchoice = ['']
                         else:
-                            choice = []
+                            innerchoice = []
                         for a in q.answers:
                             val = query.get('Q'+str(counter)+'.'+a,
                                             [''])[0].strip()
                             if val == '+':
-                                choice.append(a)
-                        choice.sort()
-                        sub.append(AsciiData.LineTuple(choice,delimiter=','))
-                        if '' in choice:
+                                innerchoice.append(a)
+                        innerchoice.sort()
+                        sub.append(AsciiData.LineTuple(innerchoice,
+                                                       delimiter=','))
+                        if '' in innerchoice:
                             marks.append('0')
-                        elif choice == q.solutions[k]:
+                        elif innerchoice == q.solutions[k]:
                             marks.append('+')
                             exscore += 1
                         else:
@@ -431,6 +432,111 @@ the user.'''
         except:
             Data.Lock.release()
             Utils.Error('Failed to register submission:\n'+line)
+            return 0
+
+        # Put new data into database in memory:
+        p.mcresults[self.name] = m
+        Data.Lock.release()
+
+        return 1
+
+    def Resubmit(self,p,seed):
+        '''Accepts a resubmission from within the server. This is for the
+case that the "correct answer" was not entered properly in the first place.
+This function mimics the behaviour of "AcceptSubmission", but takes its 
+data from the stored submission in memory instead from a query.
+p is an object of type Person. The seed is the seed for the current
+person and the sub is an object from which one can extract form data
+with the 'get' method. This method returns 1 on success and 0 on
+failure. A failure should only occur if something horrible happens like
+disk full or manipulation by the user.'''
+        # Find out the special situation for this person:
+        choice = self.ChooserFunction(seed)
+
+        if not(p.mcresults.has_key(self.name)):   # we know nothing for him
+            return 1
+        previousm = p.mcresults[self.name]  # an MCResult object
+        previoussub = AsciiData.TupleLine(previousm.submission,delimiter='|')
+        
+        sub = []     # here we collect submissions
+        marks = []   # here we collect the mark as strings of length 1
+        counter = 0  # we count questions to index sub and marks
+        score = 0    # points
+
+        for i in range(len(self.list)):
+            o = self.list[i]
+            if isinstance(o,Exercise):
+                # here we have to do something
+                exscore = 0
+                l = choice[i]
+                for j,k in l:
+                    q = o.list[j]    # the question object
+                    if q.type == 'r':     # a radio button
+                        val = previoussub[counter]
+                        sub.append(val)
+                        if val == '': 
+                            marks.append('0')
+                        elif val in q.solutions[k]:   # this list has always
+                                                      # length 1
+                            marks.append('+')
+                            exscore += 1
+                        else:
+                            marks.append('-')
+                            exscore -= 1
+                    elif q.type == 'c':   # a choice question
+                        # first get selected choice:
+                        innerchoice = AsciiData.TupleLine(previoussub[counter],
+                                                          delimiter=',')
+                        sub.append(AsciiData.LineTuple(innerchoice,
+                                                       delimiter=','))
+                        if '' in innerchoice:
+                            marks.append('0')
+                        elif innerchoice == q.solutions[k]:
+                            marks.append('+')
+                            exscore += 1
+                        else:
+                            marks.append('-')
+                            exscore -= 1
+                    elif q.type == 's':   # a free form question
+                        val = previoussub[counter]
+                        sub.append(val)
+                        if val == '': 
+                            marks.append('0')
+                        else:
+                            if type(q.solutions[k]) == types.ListType:
+                                if val in q.solutions[k]:
+                                    marks.append('+')
+                                    exscore += 1
+                                else:
+                                    marks.append('-')
+                                    exscore -= 1
+                            else:
+                                if q.solutions[k][1].search(val):
+                                    marks.append('+')
+                                    exscore += 1
+                                else:
+                                    marks.append('-')
+                                    exscore -= 1
+                    counter += 1
+                if exscore < 0: exscore = 0
+                score += exscore
+             
+        subst = AsciiData.LineTuple(sub,delimiter='|')
+        marks = string.join(marks,'')
+        # Now we append the submission to the data file:
+        m = Data.MCResult()
+        m.marks = marks
+        m.score = score
+        m.submission = subst
+        m.date = previousm.date   # we fake the last submission date
+        line = AsciiData.LineTuple( (p.id,self.name,marks,str(score),subst,
+                                     str(m.date)) )
+        Data.Lock.acquire()
+        try:
+            Data.mcresultsdesc.AppendLine(line)
+        except:
+            Data.Lock.release()
+            Utils.Error('Resubmit: failed to register submission:\n'+line)
             return 0
 
         # Put new data into database in memory:

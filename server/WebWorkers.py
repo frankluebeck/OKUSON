@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.26 2003/10/08 23:00:23 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.27 2003/10/08 23:37:31 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1708,6 +1708,36 @@ def DeleteMessagesDowork(req,onlyhead):
 Site['/DeleteMessagesDowork'] = FunWR(DeleteMessagesDowork)
 Site['/DeleteMessagesDowork'].access_list = \
         Config.conf['AdministrationAccessList']
+
+def Resubmit(req,onlyhead):
+    '''This function handles resubmission of all submissions for one sheet.
+This is for the case that the "correct answers" were not entered correctly
+in the first place.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    # Now check the sheet number:
+    sheet = req.query.get('sheet',[''])[0]
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet:
+        i += 1
+    if sheet == '' or i >= len(sl):
+        return Delegate('/errors/admunknownsheet.html',req,onlyhead)
+        
+    s = sl[i][2]
+
+    # Now run through all participants:
+    for k in Data.people:
+        p = Data.people[k]
+        ok = s.Resubmit(p,SeedFromId(p.id))
+        if not(ok):
+            return Delegate('/error/badsubmission.html',req,onlyhead)
+    
+    return Delegate('/messages/resubsuccess.html',req,onlyhead)
+
+Site['/Resubmit'] = FunWR(Resubmit)
+Site['/Resubmit'].access_list = Config.conf['AdministrationAccessList']
+
 
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
