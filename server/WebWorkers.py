@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.108 2004/10/06 11:16:52 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.109 2004/10/06 11:27:31 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -634,10 +634,10 @@ one Person object as data.'''
         for i in xrange(len(Config.conf['PossibleStudies'])):
             opt = Config.conf['PossibleStudies'][i]
             if self.p.stud[:len(opt)] == opt:
-                out.write(self.p.stud[len(opt):])
+                out.write(CleanQuotes(self.p.stud[len(opt):]))
                 found = 1
                 break
-        if not(found): out.write(CleanWeb(self.p.stud))
+        if not(found): out.write(CleanQuotes(self.p.stud))
         out.write('" />')
     def handle_Sem(self,node,out):
         out.write(str(self.p.sem))
