@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.34 2005/04/02 20:53:35 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.35 2005/04/02 21:10:48 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -798,6 +798,7 @@ of the sheet with seed "seed" and returns the result as a string.
                                         dictFalseAnswers[sm]=[p.id]
         return ( peopleCount, submissionCount, correctAnswerCount, 
                  dictCorrectAnswers, dictFalseAnswers, 
+                 self.list[exIndex].list[0],
                  self.list[exIndex].list[quIndex].variants[varNr-1])
     
     def Statistics(self):

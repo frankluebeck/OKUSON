@@ -9,10 +9,6 @@ Ideen:
     regeln)
 F  - die persondata Einträge sollten auch exportiert werden können
     (warum hat das noch niemand vermisst?)
-M  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
-    zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
-   (vielleicht 3te Variante der Antwort mit Hinweis.)
-   
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
@@ -37,13 +33,6 @@ M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
   Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
    später vielleicht, mit Texteingabefeld?
    
-M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
-    vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
-    OKUSON fuer den interaktiven Betrieb klar zu machen?
-     (evtl. Seite mit Antworten zurückgeben?)
-
-M  Ergaenzung von Marc --> okuson-folder
-  
 Matthias:
 
 F ShowGlobalStatisticsForGroup tut nicht
@@ -72,3 +61,14 @@ M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
 
 M  schein.py besser erklaeren, ev. Beispiel
 
+M  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
+    zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
+   (vielleicht 3te Variante der Antwort mit Hinweis.)
+   
+M  Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
+    vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
+    OKUSON fuer den interaktiven Betrieb klar zu machen?
+     (evtl. Seite mit Antworten zurückgeben?)
+
+M  Ergaenzung von Marc --> okuson-folder
+  

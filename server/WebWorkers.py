@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.114 2005/04/02 20:40:23 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.115 2005/04/02 21:10:48 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -1125,7 +1125,8 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
         result = self.s.StatisticsForVariant(self.exNr, self.quNr, self.varNr)
         if result != None:
             (peopleCount, submissionCount, correctAnswerCount, \
-             dictCorrectAnswers, dictFalseAnswers, variantText) = result
+             dictCorrectAnswers, dictFalseAnswers, questionText, \
+             variantText) = result
             out.write('<div class="statisticsforvariant">\n')
             out.write('<h2>Statistics for Exercise %d, Question %d, '
                       'Variant %d:</h2>\n' % 
@@ -1140,6 +1141,10 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
                       (submissionCount-correctAnswerCount))
             out.write('</table>')
             out.write('<p>This is the question:</p>\n')
+            out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>'
+               % ('96dpi', str(questionText.md5sum),
+                  Exercises.CleanString(
+                     Exercises.CleanStringTeXComments(questionText.text))))
             out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>' 
                 % ('96dpi', str(variantText.md5sum), 
                    Exercises.CleanString(
