@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.8 2003/10/04 23:03:08 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.9 2003/10/04 23:36:57 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -717,8 +717,6 @@ def QuerySheet(req,onlyhead):
         latexinput = SimpleTemplate.FillTemplate(Config.conf['PDFTemplate'], 
                                                  values)
         pdf = LatexImage.LatexToPDF(latexinput)
-        #pdf=latexinput
-        #Utils.FileString("tmp/AAA.tex",pdf)
 
         if not pdf:
             Utils.Error('Cannot pdflatex sheet input (id='+id+\

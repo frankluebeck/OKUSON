@@ -8,7 +8,7 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: LatexImage.py,v 1.2 2003/10/04 23:36:57 luebeck Exp $'
 
 import sys, os, types, tempfile, shutil
 import Utils
@@ -157,10 +157,15 @@ file to a PDF file with pdflatex. '''
       name = os.path.join(tmpdir, 'a.pdf')
       res = Utils.StringFile(name)
   except:
-      msg = "Cannot temporary PDF file " + name + "."
+      msg = "Cannot read temporary PDF file " + name + "."
       reporterror(msg)
       raise Utils.UtilsError, msg
+      
   if res:
+      try:
+          os.system('rm -rf '+tmpdir)
+      except:
+          pass   # we ignore problems here
       return res
   else:
       return None
