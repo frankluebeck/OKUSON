@@ -24,7 +24,7 @@
     <form action="/SubmitHomeworkSheet" method="post">
     <div><HiddenNumberOfGroup /><HiddenNameOfSheet /></div>
     <table>
-      <tr><th align="left">Matnr.</th><th align="left">Punkte</th>
+      <tr><th align="left">Matnr.</th><th>Name</th><th align="left">Punkte</th>
           <th align="left">Punkte in den Einzelaufgaben</th></tr>
 
       <HomeworkSheetInput />
@@ -50,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworksheet.tpl,v 1.4 2003/10/20 22:57:54 neunhoef Exp $ -->
+     $Id: edithomeworksheet.tpl,v 1.5 2003/10/22 22:27:53 neunhoef Exp $ -->
 
