@@ -5,6 +5,8 @@ Ideen:
      generischem Drumherum hinzufügen kann.
   - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
     <input type="file" ...>.)
+  - die persondata Einträge sollten auch exportiert werden können
+    (warum hat das noch niemand vermisst?)
 
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
