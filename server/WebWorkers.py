@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.80 2004/03/04 13:41:42 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.81 2004/03/04 13:52:24 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1788,6 +1788,10 @@ def GroupInfo(req, onlyhead):
 Site['/GroupInfo'] = FunWR(GroupInfo)
 
 def ExamRegistration(req, onlyhead):
+    # Very first check whether exam registration is allowed currently:
+    if Config.conf['ExamRegistrationPossible'] == 0:
+        return Delegate('/errors/examregnotallowed.html',req,onlyhead)
+
     # First check whether the id is valid:
     id = req.query.get('id',[''])[0].strip()   # our default id
     if not(Config.conf['IdCheckRegExp'].match(id)):

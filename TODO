@@ -51,7 +51,7 @@ F beliebige Anzahl persondata fuer Benutzer konfigurierbar
 M!wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
 ! Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
 M Anmeldung fuer exams schaltbar?
-M Anmeldung schaltbar
+M!Anmeldung schaltbar
 M log-Datei nicht ins Archiv, dafuer beim Start abchecken
 M Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
     Dateien, Browser Info speichern(?), Action Info in separate Datei mit

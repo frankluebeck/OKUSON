@@ -22,6 +22,7 @@
        dafür bitte Ihre Matrikelnummer und Ihr Passwort an.</p>
     
     <!--
+    DO NOT FORGET TO SWITCH ON <ExamRegistrationPossible> in Config.xml!!!
     <form action="ExamRegistration" method="post">
      <p><input type="hidden" name="examnr" value="0" /> ***please edit***
        Matrikelnummer: <input size="8" maxlength="6" name="id" value="" />
@@ -51,5 +52,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregistration.tpl,v 1.2 2003/10/16 08:13:10 neunhoef Exp $ -->
+     $Id: examregistration.tpl,v 1.3 2004/03/04 13:52:24 neunhoef Exp $ -->
 

@@ -143,6 +143,16 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 </RegistrationPossible>
 
 
+<!-- The following switch decides, whether registrations for exams are 
+     possible (value 1) or not (value 0). Note that you have to configure
+     this registration in the templates in the html directory (see 
+     html/examregistration.tpl for details. You might also want to add 
+     a menu entry in the main menu to link to /html/examregistration.html. -->
+<ExamRegistrationPossible>
+1
+</ExamRegistrationPossible>
+
+
 <!-- The following switch decides, whether it is possible to choose the
      number of the tutoring group during registration. If this switch is
      off (value 0), each newly registered participant is put into group

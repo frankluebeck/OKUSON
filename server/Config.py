@@ -42,6 +42,7 @@ Parameters = {
   "IdCheckRegExp":            ["STRING",1],
   "GuestIdRegExp":            ["STRING",0],
   "RegistrationPossible":     ["INT",1],
+  "ExamRegistrationPossible": ["INT",1],
   "GroupChoicePossible":      ["INT",1],
   "GroupChangePossible":      ["INT",1],
   "GradingFunction":          ["STRING",0],
