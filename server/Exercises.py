@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.17 2003/11/10 13:58:10 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.18 2003/11/11 10:13:50 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -76,7 +76,7 @@ ignored. We assume that for each resolution X there is already a subdirectory
 
         
 def CleanString(s):
-    '''Cleans a string for input in an <alt>-tag.'''
+    '''Cleans a string for input in an alt-attributes of images.'''
     s = string.strip(s)           # remove leading and trailing whitespace
     s = string.replace(s,'"','')  # remove quotes
     s = string.replace(s,'&','&amp;')
@@ -84,6 +84,21 @@ def CleanString(s):
     s = string.replace(s,'>','&gt;')
     return s
 
+def CleanStringTeXComments(s):
+    '''Strips TeX comments and cleans afterwards for alt-attributes.'''
+    # split in lines
+    sp = string.split(s, '\n')
+    # remove lines starting with '%'
+    sp = filter(lambda z: len(z) == 0 or z[0] != '%', sp)
+    # remove in each line everything after the first '%' without a previous '\'
+    for i in range(len(sp)):
+      pos = string.find(sp[i], '%')
+      while pos > 0 and sp[i][pos-1] == '\\':
+        pos = string.find(sp[i], '%', pos+1)
+      if pos >= 0:
+        sp[i] = sp[i][:pos]
+    # concatenate and clean XML characters
+    return CleanString(string.join(sp, '\n'))   
 
 class Sheet(Utils.WithNiceRepr):
     openfrom = None  # time when sheet is published (None == -infinity)
@@ -226,12 +241,12 @@ otherwise.'''
                     f.write('    <td colspan="2" valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                             (os.path.join(imagesdir,o.md5sum),
-                             CleanString(o.text)))
+                             CleanStringTeXComments(o.text)))
                 else:           # a TEXT
                     f.write('<tr><td colspan="3">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                             (os.path.join(imagesdir,o.md5sum),
-                             CleanString(o.text)))
+                             CleanStringTeXComments(o.text)))
             elif isinstance(o,Exercise):
                 f.write('<tr><td align="center" valign="top">'
                         '%d</td>\n' % self.exnr[i])
@@ -241,7 +256,7 @@ otherwise.'''
                     f.write('    <td colspan="2" valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                             (os.path.join(imagesdir,o.list[0].md5sum),
-                             CleanString(o.list[0].text)))
+                             CleanStringTeXComments(o.list[0].text)))
                     firstcolDone = 0
 
                 # Now we collect all questions:
@@ -254,7 +269,7 @@ otherwise.'''
                     f.write('    <td valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
                             (os.path.join(imagesdir,q.variants[k].md5sum),
-                             CleanString(q.variants[k].text)))
+                             CleanStringTeXComments(q.variants[k].text)))
                     f.write('    <td valign="top">')
                     if q.type == 'r':
                         checked = 0  # flag, whether something is checked
@@ -318,7 +333,7 @@ otherwise.'''
                     f.write('<tr><td></td>\n    <td colspan="2">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
                             (os.path.join(imagesdir,o.list[-1].md5sum),
-                             CleanString(o.list[-1].text)))
+                             CleanStringTeXComments(o.list[-1].text)))
                     f.write('</tr>\n')
 
         # Write Table end:
@@ -1079,7 +1094,7 @@ def MakeSheet(t):
         x[8] = -1  # dst flag
         sh.opento = time.mktime(x)
     except ValueError:
-        Utils.Error('Value of "opento" attribite is unparsable: '+
+        Utils.Error('Value of "opento" attribute is unparsable: '+
                     opento+' at '+Utils.StrPos(t[3])+
                     '\nWill stay open forever.',prefix='Warning:')
         sh.opento = 0
@@ -1091,7 +1106,7 @@ def MakeSheet(t):
             x[8] = -1  # dst flag
             sh.openfrom = time.mktime(x)
         except ValueError:
-            Utils.Error('Value of "openfrom" attribite is unparsable: '+
+            Utils.Error('Value of "openfrom" attribute is unparsable: '+
                         openfrom+' at '+Utils.StrPos(t[3])+
                         '\nAssuming -infinity.',prefix='Warning:')
             sh.openfrom = None
