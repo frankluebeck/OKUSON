@@ -21,10 +21,11 @@ Usage: sortselect.py [-t DELIMITER] [-f FIELDS] {SELECTSPECS} {SORTSPECS}
                           Mth but not the Nth)
                     (default is all fields in their natural order)
        SELECTSPECS: A selecting specifier can be one of the following:
-                    (N always stands for a field number and XYZ for a string)
+                    (N always stands for a field number in the original
+                     lines and XYZ for a string)
                     N==XYZ  specifies that the entry in field number N must 
                             be equal to the string XYZ
-                    N!=XYZ  ... must not be equal
+                    N!=XYZ  ... must not be equal to XYZ
                     N~~XYZ  ... must match the regexp XYZ
                     N>=XYZ  ... must be (string-) greater or equal to XYZ
                     N>-XYZ  ... must be numerically greater or equal to XYZ
@@ -35,10 +36,11 @@ Usage: sortselect.py [-t DELIMITER] [-f FIELDS] {SELECTSPECS} {SORTSPECS}
                     N<<XYZ  ... must be (string-) less than XYZ
                     N<+XYZ  ... must be numerically less than XYZ
                     If more than one selecting specifier is given, a logical
-                    "and" is performed, so all of them must be fulfilled.
+                    "or" is performed, so only one of them must be fulfilled.
                     Beware of input-/output redirection of your shell!
        SORTSPECS:   A sorting specifier is either n+N n-N or s+N or s-N where 
-                    N is replaced by a (zero based) field number , a leading 
+                    N is replaced by a (zero based) field number (in the
+                    output selection of fields), a leading 
                     "n+" specifies numerically ascending sorting, a leading
                     "n-" specifies numerically descending sorting, a leading
                     "s+" specifies string ascending sorting, a leading
@@ -46,8 +48,8 @@ Usage: sortselect.py [-t DELIMITER] [-f FIELDS] {SELECTSPECS} {SORTSPECS}
                     If more than one sort specifier is given, the first takes
                     precedence and the second is only considered for equal
                     values of the first sort specifier.
-       Comment: All field numbers in selecting and sorting specifiers are
-                    within the list of fields specified with -f.
+       Comment: All field numbers in sorting specifiers are within the
+                    list of fields specified with -f.
 """
     sys.exit(0)
 
@@ -116,6 +118,59 @@ for l in linelistin:
     # Now we split it:
     ll = ls.split(delim)
     
+    # Now we select:
+    if len(selectspecs) == 0:
+        takeit = 1
+    else:
+        takeit = 0
+        for s in selectspecs:
+            if   s[1] == '==':
+                if ll[s[0]] == s[2]: 
+                    takeit = 1
+                    break
+            elif s[1] == '!=':
+                if ll[s[0]] != s[2]: 
+                    takeit = 1
+                    break
+            elif s[1] == '>=':
+                if ll[s[0]] >= s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '<=':
+                if ll[s[0]] <= s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '>>':
+                if ll[s[0]] > s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '<<':
+                if ll[s[0]] < s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '>-':
+                if float(ll[s[0]]) >= s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '<-':
+                if float(ll[s[0]]) <= s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '>+':
+                if float(ll[s[0]]) > s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '<+':
+                if float(ll[s[0]]) >= s[2]:
+                    takeit = 1
+                    break
+            elif s[1] == '~~':
+                if s[2].search(ll[s[0]]): 
+                    takeit = 1
+                    break
+            
+    if not(takeit): continue
+    
     # Now we collect the fields of interest:
     if fields == None:
         lll = ll
@@ -134,24 +189,8 @@ for l in linelistin:
                                      " in line:\n"+l)
                     continue
                 lll.extend(ll[f[0]:])
+    linelist.append(lll)
 
-    # Now we select:
-    takeit = 1
-    for s in selectspecs:
-        if   s[1] == '=='    and lll[s[0]] != s[2]:           takeit = 0
-        elif s[1] == '!='    and lll[s[0]] == s[2]:           takeit = 0
-        elif s[1] == '>='    and lll[s[0]] < s[2]:            takeit = 0
-        elif s[1] == '<='    and lll[s[0]] > s[2]:            takeit = 0
-        elif s[1] == '>>'    and lll[s[0]] <= s[2]:           takeit = 0
-        elif s[1] == '<<'    and lll[s[0]] >= s[2]:           takeit = 0
-        elif s[1] == '>-'    and float(lll[s[0]]) < s[2]:     takeit = 0
-        elif s[1] == '<-'    and float(lll[s[0]]) > s[2]:     takeit = 0
-        elif s[1] == '>+'    and float(lll[s[0]]) <= s[2]:    takeit = 0
-        elif s[1] == '<+'    and float(lll[s[0]]) >= s[2]:    takeit = 0
-        elif s[1] == '~~'    and not(s[2].search(lll[s[0]])): takeit = 0
-        if not(takeit): break
-    if takeit: linelist.append(lll)
-    
 # Now sort survivors:
 def universalsort(a,b):
     i = 0
