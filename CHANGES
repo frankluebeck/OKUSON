@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.16 2003/10/06 22:44:18 neunhoef Exp $
+##  $Id: CHANGES,v 1.17 2003/10/07 15:55:44 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -57,6 +57,7 @@ Attention: You should put the configuration option "DocumentRoot" from the
 * added data structure for general information on tutoring groups, new 
   entry GroupInfoFile in "Config.xml"!
 * added convenient deletion of private messages by administrator
+* new entry in OKUSON.css to remove border around validation icon
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------
