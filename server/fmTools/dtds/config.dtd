@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ==================================================================
+     config.dtd - XML Document type definition for "Config.xml"
+     Copyright 2003 Frank Lübeck and Max Neunhöffer
+     ================================================================== -->
+
+<!-- $Id: config.dtd,v 1.1 2003/10/06 13:01:06 luebeck Exp $ -->
+
+<!ELEMENT Config ANY>
+
+
+<!-- The following make up the "Course" section: -->
+
+<!ELEMENT AdministratorPassword (#PCDATA)>
+<!ELEMENT CourseName (#PCDATA)>
+<!ELEMENT Semester (#PCDATA)>
+<!ELEMENT Lecturer (#PCDATA)>
+<!ELEMENT Feedback (#PCDATA)>
+<!ELEMENT PossibleStudies (Option)*>
+<!ELEMENT Port (#PCDATA)>
+<!ELEMENT ExtraLaTeXHeader (#PCDATA)>
+<!ELEMENT User1 (#PCDATA)>
+<!ELEMENT User2 (#PCDATA)>
+<!ELEMENT User3 (#PCDATA)>
+<!ELEMENT User4 (#PCDATA)>
+<!ELEMENT User5 (#PCDATA)>
+<!ELEMENT User6 (#PCDATA)>
+<!ELEMENT User7 (#PCDATA)>
+<!ELEMENT User8 (#PCDATA)>
+<!ELEMENT User9 (#PCDATA)>
+<!ELEMENT IdCheckRegExp (#PCDATA)>
+
+<!-- The following make up the "Installation" section: -->
+
+<!ELEMENT AccessList (Range)*>
+<!ELEMENT AdministrationAccessList (Range)*>
+<!ELEMENT ExerciseDirectories (Dir)*>
+<!ELEMENT SheetDirectories (Dir)*>
+<!ELEMENT GeneralMessageFile (#PCDATA)>
+<!ELEMENT RegistrationFile (#PCDATA)>
+<!ELEMENT SubmissionFile (#PCDATA)>
+<!ELEMENT HomeworkFile (#PCDATA)>
+<!ELEMENT ExamRegistrationFile (#PCDATA)>
+<!ELEMENT ExamFile (#PCDATA)>
+<!ELEMENT GroupFile (#PCDATA)>
+<!ELEMENT MessageFile (#PCDATA)>
+<!ELEMENT PathToDTDs (#PCDATA)>
+<!ELEMENT PDFTemplate (#PCDATA)>
+
+<!-- The following make up the "Customization" section: -->
+
+<!ELEMENT WidthOfSheetsHTML (#PCDATA)>
+<!ELEMENT WidthOfExerciseTextsHTML (#PCDATA)>
+<!ELEMENT WidthOfQuestionsHTML (#PCDATA)>
+<!ELEMENT WidthOfSheetsPDF (#PCDATA)>
+<!ELEMENT WidthOfExerciseTextsPDF (#PCDATA)>
+<!ELEMENT WidthOfQuestionsPDF (#PCDATA)>
+<!ELEMENT Resolutions (#PCDATA)>
+<!ELEMENT LaTeXTemplate (#PCDATA)>
+
+<!-- The following is used for lists of directory names: -->
+
+<!ELEMENT Dir (#PCDATA)>
+<!ELEMENT Option (#PCDATA)>
+<!ELEMENT Range (#PCDATA)>
