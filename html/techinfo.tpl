@@ -57,11 +57,12 @@
            geschrieben.
       </dd>
       <dt> <strong>Getestet mit:</strong> </dt>
-      <dd> FIXME FIXME FIXME: Neu testen!
-           Opera 5.05/Linux, Netscape 4.76/Linux, Mozilla 0.9.3/Linux,
-           Konqueror 2.1.1/Linux, Netscape 6.1/Linux, Lynx 2.8.3/Linux,
-           Netscape 4.75/Windows, Internet Explorer 5/Windows, 
-           Opera 5/Windows.
+      <dd> Galeon 1.2.7 auf Linux (mozilla 1.2.1), Mozilla 1.2.1 auf Linux,
+           Internet Explorer 5.5 auf Windows, Internet Explorer 6.0 auf 
+           Windows, Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows,
+           Konqueror 3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1
+           auf Linux, Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows,
+           W3M 0.3 auf Linux.
       </dd>
     </dl>
 
@@ -80,5 +81,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.2 2003/10/10 00:18:50 luebeck Exp $ -->
+     $Id: techinfo.tpl,v 1.3 2003/10/10 21:55:42 neunhoef Exp $ -->
 

@@ -5,13 +5,20 @@ Tests mit folgenden browsern:
   mozilla 1.2.1 auf Linux
   Internet Explorer 5.5 auf Windows ME
   Internet Explorer 6.0 auf Windows ME
-    
+  Opera 6.1 Build 271 auf Linux  
+  Netscape 7.1 auf Windows
+  Konqueror 3.1.4 auf Linux
+  Netscape 4.8 auf Linux
+  Netscape 6.2.1 auf Linux
+  Lynx 2.8.4rel.1 auf Linux 
 
 Interessant:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
-  opera adminlogin geht nicht!
-  
+  opera adminlogin --> geht nicht mit "Location" header!
+  netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
+  Lynx: adminlogin geht nicht, da Cookie unter Pfad /AdminLogin
+
 begleitmail
 
 Für Release:
