@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.53 2003/10/22 11:59:16 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.54 2003/10/22 14:12:12 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -67,38 +67,38 @@ BuiltinWebServer.SiteLock.acquire()
 class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     iamadmin = 0
     def handle_CourseName(self,node,out):
-        out.write(Config.conf['CourseName']+'\n')
+        out.write(Config.conf['CourseName'])
     def handle_Semester(self,node,out):
-        out.write(Config.conf['Semester']+'\n')
+        out.write(Config.conf['Semester'])
     def handle_Lecturer(self,node,out):
-        out.write(Config.conf['Lecturer']+'\n')
+        out.write(Config.conf['Lecturer'])
     def handle_User1(self,node,out):
         if Config.conf.has_key('User1'):
-            out.write(Config.conf['User1']+'\n')
+            out.write(Config.conf['User1'])
     def handle_User2(self,node,out):
         if Config.conf.has_key('User2'):
-            out.write(Config.conf['User2']+'\n')
+            out.write(Config.conf['User2'])
     def handle_User3(self,node,out):
         if Config.conf.has_key('User3'):
-            out.write(Config.conf['User3']+'\n')
+            out.write(Config.conf['User3'])
     def handle_User4(self,node,out):
         if Config.conf.has_key('User4'):
-            out.write(Config.conf['User4']+'\n')
+            out.write(Config.conf['User4'])
     def handle_User5(self,node,out):
         if Config.conf.has_key('User5'):
-            out.write(Config.conf['User5']+'\n')
+            out.write(Config.conf['User5'])
     def handle_User6(self,node,out):
         if Config.conf.has_key('User6'):
-            out.write(Config.conf['User6']+'\n')
+            out.write(Config.conf['User6'])
     def handle_User7(self,node,out):
         if Config.conf.has_key('User7'):
-            out.write(Config.conf['User7']+'\n')
+            out.write(Config.conf['User7'])
     def handle_User8(self,node,out):
         if Config.conf.has_key('User8'):
-            out.write(Config.conf['User8']+'\n')
+            out.write(Config.conf['User8'])
     def handle_User9(self,node,out):
         if Config.conf.has_key('User9'):
-            out.write(Config.conf['User9']+'\n')
+            out.write(Config.conf['User9'])
     def handle_Feedback(self,node,out):
         out.write(Config.conf['Feedback']+'\n')
     def handle_PossibleStudies(self,node,out):
@@ -484,7 +484,7 @@ one Person object as data.'''
         res = ['<option value="'+val+'" '] 
         if val == known:
             res.append(' selected="selected" ')
-        res.append('>'+cont+'</option>')
+        res.append('>'+cont+'</option>\n')
         out.write(string.join(res, ''));
     def handle_PossibleStudies(self,node,out):
         found = 0
