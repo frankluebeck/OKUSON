@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.24 2004/03/03 14:35:16 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.25 2004/03/04 12:36:03 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -185,13 +185,13 @@ a sheet for one certain student is needed.'''
                         l.append(j)
                 # Now we reduce the number of questions:
                 while len(l) > self.nrquestions[i]:
-                    n = rand.next() % len(l)
+                    n = rand.nextequaldist(len(l))
                     l = l[:n]+l[n+1:]
                 # Now we shuffle them if allowed:
                 if self.order[i] == 'p': rand.ShuffleList(l)
                 # Now we choose a variant randomly:
                 for k in range(len(l)):
-                    l[k] = [l[k],rand.next() % (o.list[l[k]].nrvariants)]
+                    l[k] = [l[k],rand.nextequaldist(o.list[l[k]].nrvariants)]
                 # Save the list of pairs:
                 result.append(l)
             else:

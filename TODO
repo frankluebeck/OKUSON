@@ -29,40 +29,39 @@ Vor naechstem Release:
 
 Ideen:
 
-  Statistik ueber Uebungsblaetter    --> Hilfsskript?
-  Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
-  Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
-  Sonstige Skripte während Semester erfinden, schreiben und in 
-     Version 1.1 hinzufügen.
-  Eingabe der Gruppennummer bei der Anmeldung
-  Aenderung der Gruppennummer bei Datenaenderung
+? Statistik ueber Uebungsblaetter    --> Hilfsskript?
+? Statistik ueber Resultate          --> fuer einzelne Exercises/Fragen?
+M Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
+M Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
+M Aenderung der Gruppennummer bei Datenaenderung
      letzte beiden Optionen schaltbar.
-  Hoechstzahl der Mitglieder einer Gruppe (schaltbar)
-  Scheinanfertigung   --> Hilfsskript dokumentieren
-  Beim Einlesen von Webtemplates filename und timestamp speichern und 
+M Hoechstzahl der Mitglieder einer Gruppe (schaltbar)
+M Scheinanfertigung   --> Hilfsskript dokumentieren
+F Beim Einlesen von Webtemplates filename und timestamp speichern und 
      beim Seitenabruf checken, ob neueres da, im Zweifel einlesen.
      Bei Fehlern altes halten
-  Person-Data-Seiten generisch mit weiterer Endung 
+F Person-Data-Seiten generisch mit weiterer Endung 
      (etwa .tplpers, oder proc.inst.) 
      entsprechend mit sheets, results
      ==> Benutzer kann beliebige Seiten neu machen.
-  beliebige Anzahl persondata fuer Benutzer konfigurierbar
+F beliebige Anzahl persondata fuer Benutzer konfigurierbar
      --> "persondata" ist dictionary im Person object
          Diese dict-Daten werden in einen String verpackt in person.dat
      --> "groupinfo" genauso
-  wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
-  Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
-  Anmeldung fuer exams schaltbar?
-  Anmeldung schaltbar
-  log-Datei nicht ins Archiv, dafuer beim Start abchecken
-  Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
+M wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
+! Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
+M Anmeldung fuer exams schaltbar?
+M Anmeldung schaltbar
+M log-Datei nicht ins Archiv, dafuer beim Start abchecken
+M Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
     Dateien, Browser Info speichern(?), Action Info in separate Datei mit
     lesbaren timestamps.
     Genauer: z.B. Browser-Info dazubauen (WebServerRequestHandler.log_message)
              ebendort: GET requests in andere Datei (wird gross)
              Timestamps fuer andere Meldungen nach "QuerySheet: " z.B.
-    Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
-  Dezimalkomma schaltbar
+M   Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
+      eigenes logrotate: n versionen aufbewahren, alle ab .1 zippen
+? Dezimalkomma schaltbar
         >>> locale.format("%2.1f",1.1)
         '1.1'
         >>> locale.setlocale(locale.LC_ALL, '')
@@ -78,24 +77,27 @@ Ideen:
         >>> locale.atof("1,1")
         1.1000000000000001
      Punktzahlen alle mit locale....  verarbeiten : fertig
-  Totalscore obsolet (jetzt TotalScore)
-  pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
-  Aufloesungs-Cookie persistent
-  Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
+! pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
+! Aufloesungs-Cookie persistent
+M Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
     von vorigen Blaettern uebernommen werden.
-  Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
+M Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
     Das Richtige Gruen machen
     Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
        das Richtige da war.
-  Overfull boxes melden beim Erzeugen von Pixelbildern.
+F Overfull boxes melden beim Erzeugen von Pixelbildern.
     (loest Problem abgeschnittener Aufgabentexte)
     testexercises soll .log-Datei anschauen und Fehler und overfull boxes
       richtig rausfinden.
-  Global die Anzahl der Klausuren Zaehlen
-  ExportResults mit dieser Anzahl von Klausuren bei allen
-  Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
-  Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
-  Dokumentation der neuen Features von LAFM
+M Global die Anzahl der Klausuren Zaehlen
+M ExportResults mit dieser Anzahl von Klausuren bei allen
+? Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
+F Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
+M Dokumentation der neuen Features von LAFM
+
+Vor release:
+
+  ChooserFunction neu machen! Dann sind alte Daten nicht mehr kompatibel
 
 Spaeter: 
 
