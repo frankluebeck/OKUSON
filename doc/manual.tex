@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.35 2003/10/15 15:43:57 luebeck Exp $
+% $Id: manual.tex,v 1.36 2003/10/16 07:12:03 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2180,7 +2180,8 @@ generated for all exams that participant took part in.
 
 The \texttt{Grade} function has read access to the personal and exam data
 and has to return a pair. The first entry of this pair has to be a string,
-which is put in a ``\texttt{<p> </p>}'' environment on the web page. The
+which is put in a ``\texttt{<p> </p>}'' environment on the web page, if you
+use the \texttt{<ExamGrades/>} element. The
 second entry is a grade, which is later exported in the result export.
 This grade has to be a number (int or float) and is converted into a 
 string during export.
@@ -2189,6 +2190,42 @@ Note that of course you can refrain from using this feature altogether,
 produce the output for the results display externally with your own tools
 and import this into standard private messages in the file \texttt{message.txt}
 (compare sections \ref{sendmess} and \ref{sec:messages.txt}). 
+
+\chapter{Automatic Grading}
+\label{ch:autograde}
+
+At the end of the semester there will usually be some kind of grading
+procedure. This can be as simple as deciding which participant passes
+the course and gets a certificate of participation (``Schein'') or can
+be more involved like coming up with a ``grade'' of some sort. 
+
+Usually the data going into such decisions is known to the {\OKUSON}
+system (scores from multiple choice exercises, scores in non-interactive
+exercises, results of exams). Therefore it seems natural to give the
+task of grading to the {\OKUSON} system as well as giving out the
+information about their results to the participants.
+
+There are two ways to do this: The first is using the automatic grading
+facilities of {\OKUSON} described in this chapter and the second works
+by exporting all the result data as described in section
+\ref{sec:expresults}, using external tools for the decision and reimport 
+the information back into the {\OKUSON} system as private messages
+(see sections \ref{sendmess} and \ref{sec:messages.txt}).
+
+Due to the big variety of possible grading algorithms, one has to learn
+to write a little Python function to use automatic grading.
+
+There are two configuration options for automatic grading:
+\texttt{GradingActive} and \texttt{GradingFunction}. The first is integer
+valued and the automatic grading functionality is switched on if and only if
+its integer value is non-zero.
+
+Once automatic grading is switched on, the entry \texttt{GradingFunction}
+is used. It has to contain a Python function \texttt{Grade}, which takes
+$5$ arguments: An object of type \texttt{Person} (see \ref{ch:intdata}), 
+then a list \texttt{sl} for the available sheets, the total score
+of the person in all multiple choice exercises, the total score in all
+...
 
 %\chapter{Finetuning the Configuration}\label{ch:config}
 \chapter{Customization Examples}
