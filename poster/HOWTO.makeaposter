@@ -18,9 +18,9 @@ benutzt, um ein Poster fuer die Begehung des Graduiertenkollegs
     Das Endergebnis steht in "meinposter.pdf".
 (4) Will man eine A4-Version des Posters haben, kann man entweder im
     acroread beim Ausdrucken "fit to page" und "Papierformat A4" eingeben
-    oder das Skript "psa0toa2" in diesem Verzeichnis benutzen:
+    oder das Skript "psa0toa4" in diesem Verzeichnis benutzen:
 
-    psa0toa2 meinposter.ps meinpostera0.ps
+    psa0toa4 meinposter.ps meinpostera0.ps
     ps2pdf meinpostera0.ps
 
     (das erzeugt "meinpostera0.ps" und "meinpostera0.pdf").
