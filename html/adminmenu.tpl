@@ -114,7 +114,7 @@
 
     <form action="/Resubmit" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Reevaluate participant's answers for sheet
+    Reevaluate participants' answers for sheet
     <input size="6" maxlength="4" name="sheet" value="" />
     </p></form>
 
@@ -133,5 +133,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.12 2003/10/08 23:37:31 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.13 2003/10/26 23:29:17 neunhoef Exp $ -->
 
