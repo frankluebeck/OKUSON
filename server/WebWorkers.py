@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.74 2004/02/20 10:46:13 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.75 2004/03/02 15:32:23 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -241,25 +241,36 @@ def Delegate(path,req,onlyhead,handler = None,addheader = []):
 def Authenticate(p,req,onlyhead):
     '''Checks password in the request. Administrator password is also 
        accepted. Return value is 1 if authentication was with admin
-       password and 0 otherwise. In case of a failure we return -1.'''
-    # Check whether password is correct:
-    pw = req.query.get('passwd',['1'])[0].strip()[:16]
-    salt = p.passwd[:2]
-    passwd = crypt.crypt(pw,salt)
+       password or login (documented by cookie) and 0 otherwise. In case
+       of a failure we return -1.'''
+    global currentcookie
+    if p != None:    # We use p == None for a check for administrator
+        # Check whether password is correct:
+        pw = req.query.get('passwd',['1'])[0].strip()[:16]
+        salt = p.passwd[:2]
+        passwd = crypt.crypt(pw,salt)
+        # First authenticate regular users with their password:
+        if passwd == p.passwd:
+            return 0
+    # Check for cookie:
+    cookie = Cookie.SimpleCookie()
+    cookie.load('Cookie: '+req.headers.get('Cookie',''))
+    try: 
+        cookieval = cookie['OKUSON'].value
+    except:
+        cookieval = ''
     # Check admin password:
     passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
-    if passwdadmin == Config.conf['AdministratorPassword'] and \
+    if (cookieval == currentcookie or \
+        passwdadmin == Config.conf['AdministratorPassword']) and \
        BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
                                       req.client_address[0]):
-        iamadmin = 1
+        return 1     # Administrator
+    if not(Config.conf['GuestIdRegExp'].match(p.id)):
+        return -1    # Failure
     else:
-        iamadmin = 0
-    # We authenticate everybody for guest IDs:
-    if passwd != p.passwd and not(iamadmin) and \
-       not(Config.conf['GuestIdRegExp'].match(p.id)):
-        return -1
-    else:
-        return iamadmin
+        return 0     # Guest authentication
+
 
 def AuthenticateTutor(g,req,onlyhead):
     '''Checks password in the request. Administrator password is also 
@@ -575,9 +586,6 @@ one Person object as data.'''
         out.write(str(self.TotalMCScore()))
     def handle_TotalHomeScore(self,node,out):
         out.write(str(self.TotalHomeScore()))
-    def handle_Totalscore(self,node,out):
-        # FIXME: Take this out when the time has come...
-        out.write(str(self.TotalMCScore() + self.TotalHomeScore()))
     def handle_TotalScore(self,node,out):
         out.write(str(self.TotalMCScore() + self.TotalHomeScore()))
     def MaxTotalMCScore(self):
@@ -992,7 +1000,9 @@ def QuerySheet(req,onlyhead):
                     resolution = Config.conf['Resolutions'][0]
                 else:
                     addheader = [('Set-Cookie',
-                       'OKUSONResolution='+str(resolution)+';Path:/')]
+                       'OKUSONResolution='+str(resolution)+
+                       ';Path:/;Max-Age=7862400;Version=1')]
+                    # Max-Age is 13 weeks, for one semester
             except: 
                 resolution = Config.conf['Resolutions'][0]
                
@@ -1596,26 +1606,6 @@ Site['/SubmitHomeworkPerson'] = FunWR(SubmitHomeworkPerson)
 #######################################################################
 # The following is for the administrator's pages:
 
-def AuthenticateAdmin(req,onlyhead):
-    '''Check password for admin. Return -1 for failure and 0 otherwise.'''
-    global currentcookie
-    # Check for cookie:
-    cookie = Cookie.SimpleCookie()
-    cookie.load('Cookie: '+req.headers.get('Cookie',''))
-    # Check for admin password:
-    passwd = req.query.get('passwd',[''])[0]
-    salt = Config.conf['AdministratorPassword'][:2]
-    passwd = crypt.crypt(passwd,salt)
-    try: 
-        cookieval = cookie['OKUSON'].value
-    except:
-        cookieval = ''
-    if cookieval != currentcookie and \
-       passwd != Config.conf['AdministratorPassword']:
-        return -1
-    else:
-        return 0
-
 def AdminLogin(req,onlyhead):
     global currentcookie
     passwd = req.query.get('passwd',[''])[0]
@@ -1627,7 +1617,9 @@ def AdminLogin(req,onlyhead):
     random.seed(time.time())
     currentcookie = str(random.randrange(10000000))
     (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead)
-    header['Set-Cookie'] = 'OKUSON='+currentcookie+';Path=/'
+    header['Set-Cookie'] = 'OKUSON='+currentcookie+ \
+         ';Path=/;Max-Age=3600;Version=1'
+         # Max-Age is one hour
     #header['Location'] = '/adminmenu.html'
     # Taken out to please opera, which does not get the cookie for the
     # login with this header. Max.
@@ -1646,7 +1638,7 @@ Site['/AdminLogout'].access_list = Config.conf['AdministrationAccessList']
 
 def Restart(req,onlyhead):
     '''If administrator can authorize, the server is restarted.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     BuiltinWebServer.SERVER.raus = 1
     BuiltinWebServer.SERVER.restartcommand = \
@@ -1659,7 +1651,7 @@ Site['/Restart'].access_list = Config.conf['AdministrationAccessList']
 
 def Shutdown(req,onlyhead):
     '''If administrator can authorize, the server is shut down.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     BuiltinWebServer.SERVER.raus = 1
     os.kill(BuiltinWebServer.SERVER.ourpid,signal.SIGUSR1)
@@ -1738,7 +1730,7 @@ def ExportPeopleForGroups(req,onlyhead):
        where wishes has been normalized into a comma separated list
        of existing id's. Colons have been deleted.'''
     global sorttable
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     meth = req.query.get('together',['all together'])[0]
     l = Data.people.keys()
@@ -1798,7 +1790,7 @@ def ExportPeople(req,onlyhead):
        personal data plus their group number (may be 0). 
        Colons have been deleted and newlines replaced by spaces.'''
     global sorttable
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     l = Data.people.keys()
     sortedby = req.query.get('sortedby',[''])[0]
@@ -1837,7 +1829,7 @@ Site['/ExportPeople'].access_list = Config.conf['AdministrationAccessList']
 def ExportExamParticipants(req,onlyhead):
     '''Export list of participants for exam.'''
     global sorttable
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
 
     examnr = req.query.get('examnr',['0'])[0]
@@ -1881,7 +1873,7 @@ Site['/ExportExamParticipants'].access_list = \
       Config.conf['AdministrationAccessList']
 
 def ShowExerciseStatistics(req,onlyhead):
-    if AuthenticateAdmin(req,onlyhead)<0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html', req, onlyhead)
 
     sheet = req.query.get('sheet',[''])[0].strip()
@@ -1901,7 +1893,7 @@ Site['/ShowExerciseStatistics'].access_list = \
      Config.conf['AdministrationAccessList']
 
 def ShowGlobalStatisticsPerGroup(req,onlyhead):
-    if AuthenticateAdmin(req,onlyhead)<0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html', req, onlyhead)
 
     sheet = req.query.get('sheet',[''])[0].strip()
@@ -1923,7 +1915,7 @@ Site['/ShowGlobalStatisticsPerGroup'].access_list = \
 
 def ShowGlobalStatistics(req,onlyhead):
     '''This function handles the request for the global statistics '''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     try:
         grp = Data.groups[req.query['group'][0]]
@@ -1940,7 +1932,7 @@ def ExportResults(req,onlyhead):
     '''Exports all results of all participants, including MC, homework and
        exams.'''
     global sorttable
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     l = Data.people.keys()
     sortedby = req.query.get('sortedby',[''])[0]
@@ -2031,7 +2023,7 @@ Site['/ExportResults'].access_list = Config.conf['AdministrationAccessList']
 
 def DisplaySheets(req,onlyhead):
     '''Allow the administrator after authentication to see future sheets.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     return Adminexquery.getresult(req, onlyhead)
     
@@ -2042,7 +2034,7 @@ def SendMessage(req,onlyhead):
     '''Take the message from the entry field and send it to participant with
        the given id. This means that this message will appear on the result
        page of the participant.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     msgid = req.query.get('msgid',[''])[0]
     if not(Config.conf['IdCheckRegExp'].match(msgid)):
@@ -2077,7 +2069,7 @@ Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
 def DeleteMessages(req,onlyhead):
     '''Show all private messages of a given participant and allow to delete
        some of them.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     msgid = req.query.get('msgid',[''])[0]
     if not(Config.conf['IdCheckRegExp'].match(msgid)):
@@ -2096,7 +2088,7 @@ Site['/DeleteMessages'].access_list = Config.conf['AdministrationAccessList']
 
 def DeleteMessagesDowork(req,onlyhead):
     '''Called from the display of messages of one person.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     persid = req.query.get('id',[''])[0]
     if not(Config.conf['IdCheckRegExp'].match(persid)):
@@ -2134,7 +2126,7 @@ def Resubmit(req,onlyhead):
     '''This function handles resubmission of all submissions for one sheet.
 This is for the case that the "correct answers" were not entered correctly
 in the first place.'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
+    if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     # Now check the sheet number:
     sheet = req.query.get('sheet',[''])[0]
