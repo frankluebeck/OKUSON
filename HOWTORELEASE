@@ -16,6 +16,6 @@ Small HOWTO for releasing versions.
    (the exported tree is modified substantially!)
    You find ../okuson-1.*.pdf and ../okuson-1.*.tar.gz .
 6) Copy those to  a checked out okuson directory.
-   Use 'cd website; cptowww' to update the web site.
+   Use 'cd website; cptoweb' to update the web site.
 7) Inform interested user.
 
