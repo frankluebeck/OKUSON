@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.60 2004/03/09 13:37:24 neunhoef Exp $
+% $Id: manual.tex,v 1.61 2004/03/09 14:16:54 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -29,7 +29,7 @@ This software package may be freely distributed under the terms of the
 GNU Public License, see chapter~\ref{ch:GPL} for the details of that
 license.
 
-\copyright\  (2003) Frank Lübeck and Max Neunhöffer
+\copyright\  (2003,2004) Frank Lübeck and Max Neunhöffer
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1406,8 +1406,12 @@ administrator can, so you can check and test a sheet before the course
 participants can see it.) 
 \item[\texttt{maxhomescore}] (optional, default empty) entry specifying the 
 maximal number of points a participant can achieve in his written homework
-exercises on this sheet. Up to now this is not used in the rest of the
-system.
+exercises on this sheet. This is used only for statistical purposes.
+\item[\texttt{starhomescore}] (optional, default empty) entry specifying the
+number of \texttt{optional} points among all points (see \texttt{maxhomescore}).
+``Optional'' points are not considered not mandatory and might be given
+for particularly difficult exercises. This is used only for statistical
+purposes.
 \end{description}
 
 The content of a \texttt{SHEET} element is a sequence of any number of 
@@ -1913,11 +1917,99 @@ script in the {\OKUSON} home directory. Note that you have to log in again
 for further administrative tasks, as the login session is terminated 
 automatically.
 
-\subsection{Stop server} 
+\subsection{Shutdown server} 
 
 This stops the {\OKUSON} server gracefully.
 This is the same as launching the \texttt{stop} script in the {\OKUSON}
 home directory.
+
+\subsection{Display available and future sheets} 
+
+This option gives the administrator access to a page to display sheets
+exactly as the page for regular participants, except, that also future
+sheets (which have not yet reached their \texttt{openfrom} date) are
+accessible.
+
+\subsection{Send message} 
+\label{sendmess}
+
+With this option one can send an individual message to a certain
+participant. This message will appear on the page where the participant
+queries his results. More than one message is possible. All messages
+are stored in the file \texttt{data/messages.txt}. The format of this
+file is described in section \ref{sec:messages.txt}.
+
+This messaging system can also be used to automatically produce individual
+messages for all participants. In this case it is probably better not to
+type in the messages via the web interface, but to append the messages directly
+to the file \texttt{data/messages.txt}.
+
+Remember the possibility to display a general message on the result pages
+of all participants via the file \texttt{data/generalmessage.txt}
+(see section \ref{sec:generalmessage.txt}).
+
+\subsection{Delete messages of}
+
+With this option you can delete a subset of the private messages of one
+participant. To this purpose one gets a display of all messages and can
+choose the subset to delete. Note that this deletion is not really a 
+deletion but more a ``revocation''. A ``deleted'' message is just repeated
+as a new message with a dollar sign \verb!$! prepended in the internal
+data format. The participant of course does no longer see revocated messages.
+In this way, no message is ever lost.
+
+\subsection{Reevaluate participants' answers for sheet}\label{ssec:reeval}
+
+This options comes in handy if the unfortunate case happens (and it will
+happen eventually, believe it or not!) that a ``correct'' solution was
+entered incorrectly in the exercise description. One has to know that
+the evaluation of the submission of a participant happens at the time
+of submission and is then cached in memory (and on disk). Therefore later
+changes in the correct solutions in the exercise source files are \textbf{not}
+considered without manual intervention!
+
+To this end, one can select this option and reevaluate all submissions of
+all participants for a certain sheet.
+
+
+\subsection{Show Exercise Statistics for sheet}
+
+\textbf{The code for this and the following four statistic functions was kindly
+contributed by Thorsten Heck and Ingo Klöcker from Lehrstuhl A für
+Mathematik, RWTH Aachen.}
+\bigskip
+
+With this option you can display statistics about numbers of participants.
+For every variant of questions the number of participants who have
+got this variant, the number of participants who answered the question, and
+the number of participants who answered the question correctly is shown
+with a nice graphical display. Color coding is used to mark extreme
+cases.
+
+\subsection{Show Global Statistics}
+
+With this option and the next one you can display statistics about the
+distribution of scores, separated by tutoring group and sheet, and by
+homework and multiple choice. The distributions are shown as total numbers, 
+as percentages, and as histograms.
+
+\subsection{Show Global Statistics, separated per Group, for sheet}
+
+See above.
+
+\subsection{Show Cumulated Score Statistics}
+
+With this option one can display statistics about cumulated scores of
+participants. This is interesting to track the success of participants
+during the semester. It can be restricted to one tutoring group or not.
+The distributions are shown as total numbers, 
+as percentages, and as histograms.
+
+\subsection{Show Detailed Score Table}
+
+With this option one can display an overview over all participants in
+a tutoring group with all their scores.
+
 
 \bigskip
 \textbf{Comment:} 
@@ -1931,6 +2023,25 @@ to view these exports, it may very well be that the exported files are
 written into some global temporary directory like \texttt{/tmp}. It is
 of course your responsibility to ensure proper data protection for this
 at least potentially critical personal data!
+
+\subsection{Format string}
+
+This is a generic export function. Above this input field there is
+a description of what can be exported. Basically the format string is
+a prototype of the lines to be exported (one line for each participant) and
+percentage signs followed by single letters indicate data fields to be
+exported. Between these percentage expressions arbitrary text can be
+entered and will be exported exactly as entered.
+
+This new generic export function probably makes all the following ones
+unnecessary.
+
+Note that there is a generic sorting and selecting script
+(\texttt{sortselect.py}) in the \texttt{scripts} directory of the
+{\OKUSON} distribution. It explains itself if it is called without
+arguments. Together with the UNIX standard utility \texttt{uniq} the
+generic export function and that script it should be possible to conduct
+nearly every statistical analysis necessary.
 
 \subsection{Export people for tutoring group distribution} 
 \label{sec:exppeotut}
@@ -2067,75 +2178,6 @@ and homework score, separated by semicolons.
 
 The obvious application of this export is at the
 end of the semester to produce certificates for successful participants.
-
-\subsection{Show Exercise Statistics for sheet}
-
-With this option you can display statistics about numbers of participants.
-For every variant of questions the number of participants who have
-got this variant, the number of participants who answered the question, and
-the number of participants who answered the question correctly is shown
-with a nice graphical display. Color coding is used to mark extreme
-cases.
-
-\subsection{Show Global Statistics}
-
-With this option and the next one you can display statistics about the
-distribution of scores, separated by tutoring group and sheet, and by
-homework and multiple choice. The distributions are shown as total numbers, 
-as percentages, and as histograms.
-
-\subsection{Show Global Statistics, separated per Group, for sheet}
-
-See above.
-
-\subsection{Display available and future sheets} 
-
-This option gives the administrator access to a page to display sheets
-exactly as the page for regular participants, except, that also future
-sheets (which have not yet reached their \texttt{openfrom} date) are
-accessible.
-
-\subsection{Send message} 
-\label{sendmess}
-
-With this option one can send an individual message to a certain
-participant. This message will appear on the page where the participant
-queries his results. More than one message is possible. All messages
-are stored in the file \texttt{data/messages.txt}. The format of this
-file is described in section \ref{sec:messages.txt}.
-
-This messaging system can also be used to automatically produce individual
-messages for all participants. In this case it is probably better not to
-type in the messages via the web interface, but to append the messages directly
-to the file \texttt{data/messages.txt}.
-
-Remember the possibility to display a general message on the result pages
-of all participants via the file \texttt{data/generalmessage.txt}
-(see section \ref{sec:generalmessage.txt}).
-
-
-\subsection{Delete messages of}
-
-With this option you can delete a subset of the private messages of one
-participant. To this purpose one gets a display of all messages and can
-choose the subset to delete. Note that this deletion is not really a 
-deletion but more a ``revocation''. A ``deleted'' message is just repeated
-as a new message with a dollar sign \verb!$! prepended in the internal
-data format. The participant of course does no longer see revocated messages.
-In this way, no message is ever lost.
-
-\subsection{Reevaluate participants' answers for sheet}\label{ssec:reeval}
-
-This options comes in handy if the unfortunate case happens (and it will
-happen eventually, believe it or not!) that a ``correct'' solution was
-entered incorrectly in the exercise description. One has to know that
-the evaluation of the submission of a participant happens at the time
-of submission and is then cached in memory (and on disk). Therefore later
-changes in the correct solutions in the exercise source files are \textbf{not}
-considered without manual intervention!
-
-To this end, one can select this option and reevaluate all submissions of
-all participants for a certain sheet.
 
 
 \chapter{Managing Participants}\label{ch:managepeople}

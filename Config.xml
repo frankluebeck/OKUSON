@@ -132,7 +132,6 @@ Example:
      that you need in your exercises. See "LaTeXTemplate" below to learn 
      which facilities are included by default. This entry is optional. -->
 <ExtraLaTeXHeader>
-\usepackage{amsxtra}
 </ExtraLaTeXHeader>
 
 
