@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.80 2004/10/04 15:54:28 luebeck Exp $
+##  $Id: CHANGES,v 1.81 2004/10/05 09:04:20 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,11 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix1 to 1.1-fix2
 
+* Fixed the handling of LaTeX texts in exercises to fix a bug reported
+  by Daniel Robertz which showed up, when TeX comment lines were at the
+  end of the LaTeX input. TeX comments now are filtered out completely.
+* Added new <Version/> element to display the OKUSON version. Added this
+  to all sample pages at the bottom.
 * Added a manual section, explaining how to deliver non-template files with 
   the OKUSON server.
 * Made a page with result statistics for single group available to

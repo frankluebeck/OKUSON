@@ -63,6 +63,14 @@
     <input size="6" maxlength="4" name="sheet" value="" />
     </p></form>
 
+    <form action="/ChangeGroup" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Move participant
+    <input size="8" maxlength="6" name="chgrpid" value="" />
+    to group number
+    <input size="4" maxlength="4" name="chgrpto" value="" />
+    </p></form>
+    
     <hr />
 
     <h3>Statistics:<a name="stat"></a></h3>
@@ -212,12 +220,12 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
     </p>
     <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.21 2004/03/09 12:58:29 luebeck Exp $ -->
+     $Id: adminmenu.tpl,v 1.22 2004/10/05 09:04:20 neunhoef Exp $ -->
 

@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.29 2004/03/08 11:12:38 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.30 2004/10/05 09:04:20 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -99,7 +99,7 @@ def CleanStringTeXComments(s):
       if pos >= 0:
         sp[i] = sp[i][:pos]
     # concatenate and clean XML characters
-    return CleanString(string.join(sp, '\n'))   
+    return string.join(sp, '\n')
 
 class Sheet(Utils.WithNiceRepr):
     openfrom = None  # time when sheet is published (None == -infinity)
@@ -251,12 +251,12 @@ otherwise.'''
                     f.write('    <td colspan="2" valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                             (os.path.join(imagesdir,o.md5sum),
-                             CleanStringTeXComments(o.text)))
+                             CleanString(CleanStringTeXComments(o.text))))
                 else:           # a TEXT
                     f.write('<tr><td colspan="3">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                             (os.path.join(imagesdir,o.md5sum),
-                             CleanStringTeXComments(o.text)))
+                             CleanString(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
                 f.write('<tr><td align="center" valign="top">'
                         '%d</td>\n' % self.exnr[i])
@@ -265,8 +265,8 @@ otherwise.'''
                 if isinstance(o.list[0], TeXText):
                     f.write('    <td colspan="2" valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
-                            (os.path.join(imagesdir,o.list[0].md5sum),
-                             CleanStringTeXComments(o.list[0].text)))
+                        (os.path.join(imagesdir,o.list[0].md5sum),
+                         CleanString(CleanStringTeXComments(o.list[0].text))))
                     firstcolDone = 0
 
                 # Now we collect all questions:
@@ -278,8 +278,8 @@ otherwise.'''
                     q = o.list[j]
                     f.write('    <td valign="top">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
-                            (os.path.join(imagesdir,q.variants[k].md5sum),
-                             CleanStringTeXComments(q.variants[k].text)))
+                      (os.path.join(imagesdir,q.variants[k].md5sum),
+                       CleanString(CleanStringTeXComments(q.variants[k].text))))
                     f.write('    <td valign="top">')
                     if q.type == 'r':
                         checked = 0  # flag, whether something is checked
@@ -347,8 +347,8 @@ otherwise.'''
                 if isinstance(o.list[-1],TeXText):
                     f.write('<tr><td></td>\n    <td colspan="2">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
-                            (os.path.join(imagesdir,o.list[-1].md5sum),
-                             CleanStringTeXComments(o.list[-1].text)))
+                         (os.path.join(imagesdir,o.list[-1].md5sum),
+                          CleanString(CleanStringTeXComments(o.list[-1].text))))
                     f.write('</tr>\n')
 
         # Write Table end:
@@ -605,12 +605,13 @@ of the sheet with seed "seed" and returns the result as a string.
                     f.write(('%d & \\multicolumn{2}{p{'+woe+\
                       '}|}{\\begin{minipage}[t]{'+woe+\
                       '}%s\\vspace{1mm}\\end{minipage}}\\\\\n\\hline\n') \
-                      % (self.exnr[i],string.strip(o.text)))
+                      % (self.exnr[i], \
+                         string.strip(CleanStringTeXComments(o.text))))
                 else:           # a TEXT
                     f.write(('\\multicolumn{3}{|p{'+wos+\
                       '}|}{\\begin{minipage}[t]{'+wos+\
                       '}%s\\vspace{1mm}\\end{minipage}} \\\\\n\\hline') \
-                      % string.strip(o.text))
+                      % string.strip(CleanStringTeXComments(o.text)))
             elif isinstance(o,Exercise):
                 f.write('%d & ' % self.exnr[i])
                 
@@ -619,7 +620,7 @@ of the sheet with seed "seed" and returns the result as a string.
                     f.write(('\\multicolumn{2}{p{'+woe+\
                       '}|}{\\begin{minipage}[t]{'+woe+
                       '}%s\\vspace{1mm}\\end{minipage}}\\\\\n\\cline{2-3}\n&') \
-                      % string.strip(o.list[0].text))
+                      % string.strip(CleanStringTeXComments(o.list[0].text)))
                     
                 # Now we collect all questions:
                 l = choice[i]
@@ -629,15 +630,16 @@ of the sheet with seed "seed" and returns the result as a string.
                 for j,k in l:
                     if (j,k) == (None,None):
                         if seed == '':  # called for checking all variants
-                            f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n {\\tiny ' + str(qnr) +'} & ')
+                            f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n {\\tiny '+\
+                                    str(qnr) +'} & ')
                             qnr = qnr + 1
                         else:
                             f.write('\n\\\\[-5.5mm]\n\\cline{2-3}\n & ')
                         continue;
                     q = o.list[j]
                     f.write(('\\begin{minipage}[t]{'+woq+\
-                      '}%s\\vspace{1mm}\\end{minipage} & ') \
-                      % string.strip(q.variants[k].text))
+                     '}%s\\vspace{1mm}\\end{minipage} & ') \
+                     % string.strip(CleanStringTeXComments(q.variants[k].text)))
                     if q.type == 'r':
                         for a in q.answers:
                             f.write('\\ $\\bigcirc$ %s ' % a)
@@ -661,7 +663,7 @@ of the sheet with seed "seed" and returns the result as a string.
                     f.write(('\\multicolumn{2}{p{'+woe+\
                       '}|}{\\begin{minipage}[t]{'+woe+\
                       '}%s\\vspace{1mm}\\end{minipage}} \\\\\n\\hline\n') \
-                      % string.strip(o.list[-1].text))
+                      % string.strip(CleanStringTeXComments(o.list[-1].text)))
 
         # Write Table end:
         f.write('\\end{longtable}\n')
@@ -684,9 +686,11 @@ of the sheet with seed "seed" and returns the result as a string.
             o = self.list[i]
             if isinstance(o,TeXText):
                 if self.exnr[i]:   # a conventional exercise
-                    f.write(('\n\n\\begin{exercise}{%d}\n%s\n\\end{exercise}\n\n') % (self.exnr[i],string.strip(o.text)))
+                    f.write(('\n\n\\begin{exercise}{%d}\n%s\n\\end{exercise}'
+                    '\n\n') % (self.exnr[i], \
+                               CleanStringTeXComments(string.strip(o.text))))
                 else:           # a TEXT
-                    f.write(string.strip(o.text))
+                    f.write(string.strip(CleanStringTeXComments(o.text)))
             elif isinstance(o,Exercise):
                 f.write('\n\n???\n\n')
         res = f.getvalue()

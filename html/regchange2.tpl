@@ -126,12 +126,12 @@ Ihr Passwort nicht ändern wollen.
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
     </p>
     <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange2.tpl,v 1.5 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: regchange2.tpl,v 1.6 2004/10/05 09:04:20 neunhoef Exp $ -->
 

@@ -31,7 +31,7 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
     </p>
     <Footer />
   </body>

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.106 2004/10/04 15:30:42 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.107 2004/10/05 09:04:20 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -67,6 +67,8 @@ BuiltinWebServer.SiteLock.acquire()
 #
 class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     iamadmin = 0
+    def handle_Version(self,node,out):
+        out.write(Config.conf['Version'])
     def handle_CourseName(self,node,out):
         out.write(Config.conf['CourseName'])
     def handle_Semester(self,node,out):
@@ -1115,7 +1117,8 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
             out.write('<p>This is the question:</p>\n')
             out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>' 
                 % ('96dpi', str(variantText.md5sum), 
-                   Exercises.CleanString(variantText.text)))
+                   Exercises.CleanString(
+                     Exercises.CleanStringTeXComments(variantText.text))))
             for heading,dict in [('List of incorrect answers',
                                   dictFalseAnswers), 
                        ('List of correct answers', dictCorrectAnswers) ] :
@@ -3115,6 +3118,59 @@ in the first place.'''
 
 Site['/Resubmit'] = FunWR(Resubmit)
 Site['/Resubmit'].access_list = Config.conf['AdministrationAccessList']
+
+
+def ChangeGroup(req,onlyhead):
+    '''Move a participant from one group to another. Adjust all the 
+       statistics. Handle error cases.'''
+    if Authenticate(None,req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    chgrpid = req.query.get('chgrpid',[''])[0]
+    if not(Config.conf['IdCheckRegExp'].match(chgrpid)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(chgrpid)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    # Now get the group number:
+    togrp = req.query.get('chgrpto',['0'])[0]
+
+    # Convert to integer:
+    try:
+        togrp = int(togrp)
+    except: 
+        togrp = -1
+    if togrp < 0:
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    p = Data.people[chgrpid]
+
+    # Now do the change:
+    Data.Lock.acquire()
+
+    # Create a new line for the file on disk:
+    line = AsciiData.LineTuple( (chgrpid,str(togrp)) )
+
+    # Put new information into file on disk:
+    try:
+        Data.groupdesc.AppendLine(line)
+    except:
+        Data.Lock.release()
+        Utils.Error('['+LocalTimeString()+'] Failed to append group info:\n'+
+                    line)
+        return Delegate('/errors/fatal.html',req,onlyhead)
+
+    # Put new message into database in memory:
+    Data.DelFromGroupStatistic(p)  # this takes the person out of the old group
+    p.group = togrp
+    Data.AddToGroupStatistic(p)    # this puts him into the new group
+
+    Data.Lock.release()
+    return Delegate('/AdminMenu',req,onlyhead)
+
+Site['/ChangeGroup'] = FunWR(ChangeGroup)
+Site['/ChangeGroup'].access_list = Config.conf['AdministrationAccessList']
 
 
 def AdminWork(req,onlyhead):

@@ -206,6 +206,16 @@ def ReadConfig():
             abort = 1
     if abort:
         FailMiserably()
+    # See whether we can find the VERSION file:
+    try:
+        f = file(os.path.join(home,"VERSION"))
+        version = f.readline()
+        f.close()
+        conf["Version"] = string.strip(version)
+    except:
+        conf["Version"] = 'UNKNOWN'
+        pass    # we silently ignore, if the VERSION file is not found
+
 
 def PostProcessing():
     '''This routine is called by the server to bring configuration options

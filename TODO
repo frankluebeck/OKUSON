@@ -5,13 +5,13 @@ Interessante Ergebnisse des Browser-Checks:
   netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
 
 Jetzt:
-  M Versionsnummer als Tag  ==>  auf default-website anzeigen
-  M Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+ >M Versionsnummer als Tag  ==>  auf default-website anzeigen
+ >M Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
   M Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
       im Widerspruch zur Doku ignoriert)
   M Cross-Site-Scripting problem?
   F Hinweis auf Python 2.3+ in Suse 9.0 ins Handbuch/Website
-  M Fehler berichtet von Daniel: Whitespace bei .tex am Ende wird entfernt,
+ >M Fehler berichtet von Daniel: Whitespace bei .tex am Ende wird entfernt,
     dadurch machen Kommentare am Ende Aerger
 
 Spaeter: 

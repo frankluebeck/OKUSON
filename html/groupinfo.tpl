@@ -37,12 +37,12 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
     </p>
     <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupinfo.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: groupinfo.tpl,v 1.4 2004/10/05 09:04:20 neunhoef Exp $ -->
 

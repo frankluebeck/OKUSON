@@ -81,7 +81,7 @@
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
       <a href="techinfo.html">Technische Informationen</a>
     </p>
 
@@ -90,5 +90,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.5 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: index.tpl,v 1.6 2004/10/05 09:04:20 neunhoef Exp $ -->
 

@@ -100,12 +100,12 @@ ja von den korrigierten Zetteln.):</p>
     </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> OKUSON-Version: <Version/>
     </p>
     <Footer />
   </body>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.11 2004/03/09 13:35:29 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.12 2004/10/05 09:04:20 neunhoef Exp $ -->
 
