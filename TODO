@@ -51,15 +51,15 @@ M!Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
 M!Anmeldung fuer exams schaltbar?
 M!Anmeldung schaltbar
 M!log-Datei nicht ins Archiv, dafuer beim Start abchecken
-M Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
-    Dateien, Browser Info speichern(?), Action Info in separate Datei mit
-    lesbaren timestamps.
-    Genauer: z.B. Browser-Info dazubauen (WebServerRequestHandler.log_message)
-             ebendort: GET requests in andere Datei (wird gross)
-             Timestamps fuer andere Meldungen nach "QuerySheet: " z.B.
+M!Log Einträge weiter verbessern: Evtl HTTP und andere Logs in verschiedene
+ !  Dateien, Browser Info speichern(?), Action Info in separate Datei mit
+ !  lesbaren timestamps.
+ !  Genauer: z.B. Browser-Info dazubauen (WebServerRequestHandler.log_message)
+ !           ebendort: GET requests in andere Datei (wird gross)
+ !           Timestamps fuer andere Meldungen nach "QuerySheet: " z.B.
 M!Hoechstanzahl von Leuten in Gruppe
 M!  Mechanismus, damit Log-Datei nicht zu gross wird (logrotate?)
-      eigenes logrotate: n versionen aufbewahren, alle ab .1 zippen
+ !    eigenes logrotate: n versionen aufbewahren, alle ab .1 zippen
 ? Dezimalkomma schaltbar
         >>> locale.format("%2.1f",1.1)
         '1.1'
