@@ -1,3 +1,7 @@
+  /* OKUSONStatistics.css - style sheet for OKUSON project.   */
+ /* Copyright 2003 by Frank Lübeck and Max Neunhöffer        */
+/* Lehrstuhl D für Mathematik, RWTH Aachen                  */
+
 
 table.statistics tr.extrenner td{
   border-top: 2px solid black;
@@ -29,3 +33,27 @@ table.statistics td.col10 {background-color: #ff3300 ;}
 table.statistics td.col5 {background-color: #ff1900;}
 table.statistics td.col0 {background-color: #ff0000 ;}
 
+table.pointdistribution td 
+    {padding: 0px;
+    width:20px;
+    padding:0px;
+    vertical-align: bottom;
+    text-align: center;
+    position:fixed;
+    bottom:0px;}
+
+table.pointdistribution tr.pdtext td
+    { position: fixed;
+    top: -20px;    
+    }
+    
+table.pointdistribution td.summary
+    { width: 10em;
+    text-align: left;}
+
+table.pointdistribution tr.pdindex td
+    { font-weight: bold;
+    }
+        
+table.pointdistribution {border-spacing:2px;
+        cell-spacing: 1px; }

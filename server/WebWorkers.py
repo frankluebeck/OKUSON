@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.68 2003/11/16 19:56:56 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.69 2003/11/16 20:27:37 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1175,7 +1175,8 @@ class EH_withGroupInfo_class(EH_Generic_class):
             out.write('<p>Not logged in: Statistics not displayed.</p>')
         else:
             out.write('<table class="scorestable">\n')
-            out.write('<tr><th></th><th colspan="4">Homework Scores</th><th colspan="4">Multiple Choice Scores</th></tr>')
+            out.write('<tr><th></th><th colspan="4">Homework Scores</th>'
+                      '<th colspan="4">Multiple Choice Scores</th></tr>')
             out.write('<tr><th>Sheet</th><th>#Subm.</th><th>Avg.</th>' )
             out.write( '<th>Median</th><th>Highest</th>')
             out.write(' <th>#Subm.</th><th>Avg.</th>' )
@@ -1187,16 +1188,21 @@ class EH_withGroupInfo_class(EH_Generic_class):
                 else:
                     group = None
                 numHw, avHw, medHw, highHw, listHw, \
-                numMc, avMc, medMc, highMc, listMc = Data.GlobalStatistics(sheetName, group)
+                numMc, avMc, medMc, highMc, listMc = \
+                       Data.GlobalStatistics(sheetName, group)
                 out.write('<tr>')
                 out.write('<td>%s</td>' % sheetName )
-                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>' % (numHw, avHw, medHw, highHw) )
-                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>' % (numMc, avMc, medMc, highMc) )
+                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
+                          % (numHw, avHw, medHw, highHw) )
+                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
+                          % (numMc, avMc, medMc, highMc) )
                 out.write('</tr>\n')
                 
                 exStr = '<h2>Overview for sheet %s</h2>\n' % sheetName
                 
-                for num, av, med, list, heading in [ (numHw, avHw, medHw, listHw, 'Homework'), (numMc, avMc, medMc, listMc, 'Multiple Choice')]:
+                for num, av, med, list, heading in \
+                    [ (numHw, avHw, medHw, listHw, 'Homework'), \
+                      (numMc, avMc, medMc, listMc, 'Multiple Choice')]:
                     exStr +='<h3>' + heading + '</h3>'
                     exStr +='<p>Median: %.2f, Average: %.2f</p>' % (med, av)
                     exStr += DistributionTable(num, list)
