@@ -3,7 +3,7 @@
                                              to OKUSON 1.1-fix2:
 ===============================================================================
 
-$Id: UPGRADE,v 1.15 2004/10/07 12:49:39 luebeck Exp $
+$Id: UPGRADE,v 1.16 2004/10/07 13:50:23 luebeck Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -29,7 +29,7 @@ copy them from html.sample/ to html/ :
   html.sample/[*/]*.tpl            added small "(OKUSON 1.1-fix2)" at the end
 
 So, if you didn't apply any changes to the default .tpl files just copy
-  cp -r html.sample html
+  cp -r html.sample/*  html
 Otherwise, if you didn't touch the defaults of the first four files,
 you may want:
   cp html.sample/{tutors.tpl,globalstatistics.tpl,adminmenu.tpl} html
