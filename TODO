@@ -29,7 +29,7 @@ Vor naechstem Release:
 
 Ideen:
 
-M Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
+M!Aufkleber drucken (nur Export?)    --> Hilfsskript (nur privat?)
 M!Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
 M!Aenderung der Gruppennummer bei Datenaenderung
  !   letzte beiden Optionen schaltbar.
@@ -100,7 +100,7 @@ M Dokumentation der neuen Features von LAFM
     --> statt <ExamRegStatus />
     --> In Kommentaren Beispiele zur Benutzung in templates
   Header und Footer in alle Seiten
-  
+M neue Randoms nochmal testen  
 
 Vor release:
 
