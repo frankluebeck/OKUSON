@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.31 2003/10/14 09:28:54 luebeck Exp $
+% $Id: manual.tex,v 1.32 2003/10/14 15:56:02 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1400,7 +1400,7 @@ components in case these should  take only a fixed set of values:
 
 \texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />},  
 \texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />} and
-\texttt{<PersonDataSelectOption name="persondata1" value="myvalue" />},  
+\texttt{<PersonDataSelectOption name="persondata1" value="myvalue"  content="mycontent"/>},  
 
 The first two produce an HTML \texttt{<input>} field of type  
 radio button or check box,
@@ -1411,9 +1411,11 @@ each component name. Instead of a component with multiple choices use
 several components which can be switched on and off independently.
 
 Similarly, \texttt{PersonDataSelectOption} produces an \texttt{<option>}
-element for use with \texttt{<select>}. Its content is \texttt{myvalue} and
+element for use with \texttt{<select>}. Its content is \texttt{mycontent}, its 
+\texttt{value} attribute is \texttt{myvalue} and
 its \texttt{selected} attribute is set if the currently stored value is
-\texttt{myvalue}.
+\texttt{myvalue}. In this case the \texttt{content} attribute is optional
+and defaults to being the same as \texttt{value}.
 
 \subsection{Special Elements for Sheet Specific Data}\label{ssec:sheetelements}
 
