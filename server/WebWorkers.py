@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.56 2003/10/22 22:27:53 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.57 2003/10/22 22:37:04 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -127,8 +127,9 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_GroupDistribution(self,node,out):
         l = Utils.SortNumerAlpha(Data.people.keys())
         for k in l:
-            out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
-                      '</td></tr>\n')
+            if not(Config.conf['GuestIdRegExp'].match(k)):
+                out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
+                          '</td></tr>\n')
     def handle_GroupsOverview(self,node,out):
         l = Utils.SortNumerAlpha(Data.groups.keys())
         try:
