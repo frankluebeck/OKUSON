@@ -5,9 +5,10 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.94 2004/03/08 17:01:58 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.95 2004/03/09 02:07:57 luebeck Exp $'
 
-import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
+import os,sys,time,locale,traceback,random,crypt,string
+import types,Cookie,signal,cStringIO
 
 import Config,Data,Exercises
 
@@ -2580,17 +2581,161 @@ ExportHelper['%s'] = ('Semester',
 ExportHelper['%a'] = ('Field of studies', 
   lambda p: p.stud)
 ExportHelper['%g'] = ('Tutoring group', 
-  lambda p: p.group)
+  lambda p: str(p.group))
 ExportHelper['%p'] = ('Password (encrypted)', 
   lambda p: p.passwd)
 ExportHelper['%w'] = ('Wishlist for group distribution', 
   lambda p: p.wishes)
-ExportHelper['%e'] = ('Email address', 
+ExportHelper['%m'] = ('Email address', 
   lambda p: p.email)
+def ExportHelper_e(p, d = ';', nr = None):
+  try:
+    t = p.exams
+    res = ['']
+    if nr:
+      rg = [nr]
+    else:
+      rg = xrange(len(t))
+    for i in rg:
+      try:
+        a = t[i]
+        res.append(str(i)+d+str(a.score)+d)
+      except:
+        res.append(str(i)+d+'none'+d)
+    res = string.join(res, '')
+    if res[-1] == d:
+      res = res[:-1]
+    return res
+  except:
+    return 'no exams'
+ExportHelper['%e'] = ('''Exams as concatenation of pairs "nr;score" with ";"s
+as delimiters, with %<d><nr>e use <d> instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only exam number <nr>.''',
+  ExportHelper_e)
+def ExportHelper_c(p, d = ';', nr = None):
+  try:
+    t = p.mcresults
+    res = ['']
+    if nr:
+      rg = [str(nr)]
+    else:
+      rg = t.keys()
+      rg.sort()
+    for i in rg:
+      try:
+        a = t[i]
+        res.append(str(i)+d+str(a.score)+d)
+      except:
+        res.append(str(i)+d+'none'+d)
+    res = string.join(res, '')
+    if res[-1] == d:
+      res = res[:-1]
+    return res
+  except:
+    return 'no mcresults'
+ExportHelper['%c'] = ('''Results of interactive exercises as concatenation 
+of pairs "sheet nr;score" with ";"s
+as delimiters, with %<d><nr>c use <d> instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only sheet number <nr>.''',
+  ExportHelper_c)
+def ExportHelper_h(p, d = ';', nr = None):
+  try:
+    t = p.homework
+    res = ['']
+    if nr:
+      rg = [str(nr)]
+    else:
+      rg = t.keys()
+      rg.sort()
+    for i in rg:
+      try:
+        a = t[i]
+        res.append(str(i)+d+str(a.totalscore)+d)
+      except:
+        res.append(str(i)+d+'none'+d)
+    res = string.join(res, '')
+    if res[-1] == d:
+      res = res[:-1]
+    return res
+  except:
+    return 'no homework results'
+ExportHelper['%h'] = ('''Results of homework exercises as concatenation 
+of pairs "sheet nr;score" with ";"s
+as delimiters, with %<d><nr>h use <d> instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only sheet number <nr>.''',
+  ExportHelper_h)
+ExportHelper['%C'] = ('''Total score for interactive exercises (all sheets
+which count)''',
+  lambda p: str(p.TotalMCScore()) )
+ExportHelper['%H'] = ('''Total score for homework exercises (all sheets which
+count)''', 
+  lambda p: str(p.TotalHomeScore()) )
+ExportHelper['%T'] = ('Total score for all sheets which count',
+  lambda p: str(p.TotalScore()) )
 
+def ParsedExportFormat(s):
+  res = []
+  pos = 0
+  next = s.find('%')
+  while next >= 0:
+    res.append(s[pos:next])
+    off = 1
+    try:
+      x = s[next+off]
+      off += 1
+    except:
+      x = ''
+    # literal %
+    if x == '%':
+      res.append('%')
+      pos = next+off
+      next = s.find('%',pos)
+      continue
+    # new delimiter
+    if not x in string.ascii_letters and not x in string.digits:
+      d = x
+      x = s[next+off]
+      off += 1
+    else:
+      d = None
+    # numeric argument
+    if x in string.digits:
+      nr = off-1
+      while next+off < len(s) and s[next+off] in string.digits:
+        off += 1
+      nr = int(s[next+nr:next+off])
+      try:
+        x = s[next+off]
+        off += 1
+      except:
+        x = ''
+    else:
+      nr = None
+    # a format letter
+    if ExportHelper.has_key('%'+x):
+      res.append((ExportHelper['%'+x][1], d, nr))
+    else:
+      Utils.Error('In export format string, there is no %'+x+' entry.')
+    pos = next+off
+    next = s.find('%',pos)
+  res.append(s[pos:])
+  return res
 
-
-
+def ExportLine(p, parse):
+  res = []
+  for a in parse:
+    if types.StringType == type(a):
+      res.append(a)
+    elif a[1] == None and a[2] == None:
+      res.append(a[0](p))
+    elif a[1] == None:
+      res.append(a[0](p, nr = a[2]))
+    elif a[2] == None:
+      res.append(a[0](p, d = a[1]))
+    else:
+      res.append(a[0](p, d = a[1], nr = a[2]))
+  res.append('\n')
+  return string.join(res, '')
 
 def ShowDetailedScoreTable(req,onlyhead):
     '''This function handles the request for the cumulated score statistics '''
