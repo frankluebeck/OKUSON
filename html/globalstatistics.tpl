@@ -14,7 +14,6 @@
   </head>
 
   <body>
-    <User1 />
 
     <h1>Statistics for all sheets</h1>
 

@@ -86,6 +86,9 @@ for a in files:
     values['IdOfPerson'] = 'CHECKING ALL VARIANTS'
     for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
       values[a] = Config.conf[a]
+    if Config.conf.has_key('ConfigData'):
+      for a in Config.conf['ConfigData'].keys():
+        values['ConfigData.'+a] = Config.conf['ConfigData'][a]
     values['OpenTo'] = LocalTimeString(sheet.opento)
     if sheet.openfrom:
       values['OpenFrom'] = LocalTimeString(sheet.openfrom)

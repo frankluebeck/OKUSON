@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.6 2003/11/03 21:46:08 neunhoef Exp $'
+CVS = '$Id: AsciiData.py,v 1.7 2004/03/05 08:24:34 luebeck Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -68,6 +68,27 @@ substrings is returned.
         ll[i] = s.replace('\\e','\\')
     return ll
 
+def LineDict(dict,delimiter = ','):
+    '''This can be used for encoding a dictionary dict for use with the 
+AsciiData module. The limitation for dict is that all keys and values must
+be strings. The function concatenates all key-value pairs and calls LineTuple
+with the delimiter argument.
+'''
+    keyvals = []
+    for k in dict.keys():
+        keyvals.append(str(k))
+        keyvals.append(str(dict[k]))
+    return LineTuple(keyvals, delimiter)
+
+def DictLine(l,delimiter = ','):
+    '''Returns a dictionary, reverses LineDict.
+'''
+    t = TupleLine(l, delimiter)
+    res = {}
+    for i in xrange(0, len(t), 2):
+        res[t[i]] = t[i+1]
+    return res
+
 # Description of straight line programs:
 #
 # Assumptions and conventions: 
@@ -94,8 +115,9 @@ substrings is returned.
 # The commands:
 # "STORE" - Followed by 3 arguments: n, f, t
 #         n is a number of a field in the input line, f is a string or 
-#         integer or float and t is either "STRING", "INT", "FLOAT" or
-#         "NUMBER".
+#         integer or float and t is either "STRING", "INT", "FLOAT",
+#         "NUMBER" or "LINEDICT" (a dictionary in string as with 
+#         LineDict above).
 #         This command is used to store a value in the tree.
 #         It stores the value in field number n in the entry named f of the
 #         current location in the tree. The value is stored as a string
@@ -125,8 +147,8 @@ substrings is returned.
 #         this class without arguments.
 # "FILL"  - Followed by 3 arguments: n, f, t
 #         n is a number of a field in the input line, f is a string or
-#         integer or float and t is either "STRING", "INT", "FLOAT" or
-#         "NUMBER" (see explanation of "STORE" for the meaning of "NUMBER").
+#         integer or float and t is either "STRING", "INT", "FLOAT", "NUMBER" 
+#         or "LINEDICT" (compare explanation of "STORE").
 #         This command is used to store the rest of an input line into
 #         a vector in the tree.
 #         It stores the values in the fields from number n up to the end
@@ -252,6 +274,14 @@ as described above.
                               ' (assuming 0)\nLine:'+l
                         reporterror(msg)
                         v = 0
+                elif t == "LINEDICT":
+                    try:
+                        v = DictLine(ll[n])
+                    except:
+                        msg = 'Warning: not a line encoded dictionary: '+ \
+                              ll[n]+' (assuming {})\nLine:'+l
+                        reporterror(msg)
+                        v = {}
                 else:
                     v = ll[n]
                 # Store it, depending on node type:
@@ -376,6 +406,14 @@ as described above.
                                   ' (appending 0)\nLine:'+l
                             reporterror(msg)
                             v.append(0)
+                    elif t == "LINEDICT":
+                        try:
+                            v = DictLine(ll[n])
+                        except:
+                            msg = 'Warning: not a line encoded dictionary: '+ \
+                                  ll[n]+' (assuming {})\nLine:'+l
+                            reporterror(msg)
+                            v = {}
                     else:
                         v.append(ll[n])
                     n += 1

@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.52 2004/03/04 15:45:47 neunhoef Exp $
+% $Id: manual.tex,v 1.53 2004/03/05 08:24:34 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1576,10 +1576,10 @@ by the content of the elements of the same name in your configuration file:
 \texttt{<CourseName/>}, \texttt{<Semester/>}, \texttt{<Lecturer/>},
 and \texttt{<Feedback/>}.
 
-For customization you can use elements \texttt{<User1>}, \ldots,
-\texttt{<User9>} in the configuration file \texttt{\$OKUSONHOME/Config.xml} 
-and include their content in the web pages via tags \texttt{<User1/>}, 
-\ldots, \texttt{<User9/>}.
+For customization you can use elements of form \texttt{<ConfigData key="...">},
+in the configuration file \texttt{\$OKUSONHOME/Config.xml} 
+and include their content in the web pages via tags 
+\texttt{<ConfigData key="..." />}. 
 
 Furthermore the following elements are generally useful:
 \begin{description}
@@ -1635,7 +1635,7 @@ The following registration data  for each participant are stored by the
 participant has studied, (main) topic of studies, password (has to be given
 two times when it is first specified or changed), 
 email address, wishlist of other ids for distribution into
-tutoring groups and nine further fields for customization.
+tutoring groups and a collection of further data for customization.
 
 Each of these fields is connected with three names used in the web pages.
 The first is a name of the input field in the registration form, the second
@@ -1657,10 +1657,12 @@ main topic&stud&\texttt{<TopicField/>}&\texttt{<Topic/>}\\
 password&passwd and passwd2&-&-\\
 email&email&\texttt{<EmailField/>}&\texttt{<Email/>}\\
 wishlist&wishes&\texttt{<WishesField/>}&\texttt{<Wishes/>}\\
-person data 1&persondata1&\texttt{<PersonData1Field/>}&\texttt{<PersonData1/>}\\
-\ldots&\ldots&\ldots&\ldots\\
-person data 9&persondata9&\texttt{<PersonData9Field/>}&\texttt{<PersonData9/>}
+custom data&persondata.xxx&
+\texttt{\parbox{11em}{<PersonDataField\\\mbox{}\hfill key="xxx"/>}}&
+\texttt{\parbox{8em}{<PersonData\\\mbox{}\hfill key="xxx"/>}}
 \end{tabular}
+
+In the last row the \texttt{xxx} can be substituted by any string.
 
 Concerning the main topic of studies, one can suggest some common entries
 which are specified in the configuration file, see the element
@@ -1670,18 +1672,18 @@ web pages.
 There are further elements which can be used with the customization data
 components in case these should  take only a fixed set of values:
 
-\texttt{<PersonDataRadioButton name="persondata1" value="myvalue" />}, \\ 
-\texttt{<PersonDataCheckBox name="persondata1" value="myvalue" />} and \\
-\texttt{<PersonDataSelectOption name="persondata1" value="myvalue" }\\
+\texttt{<PersonDataRadioButton name="persondata.xxx" value="myvalue" />}, \\ 
+\texttt{<PersonDataCheckBox name="persondata.xxx" value="myvalue" />} and \\
+\texttt{<PersonDataSelectOption name="persondata.xxx" value="myvalue" }\\
 \mbox{}\texttt{~~~~~~content="mycontent"/>},  
 
 The first two produce an HTML \texttt{<input>} field of type  
 radio button or check box,
 respectively, which has the \texttt{checked} attribute set if the currently
-stored value of \texttt{persondata1} is \texttt{myvalue} (and similar for
-\texttt{persondata2}, \ldots). Note that {\OKUSON} stores only one value for
-each component name. Instead of a component with multiple choices use
-several components which can be switched on and off independently.
+stored value of \texttt{persondata.xxx} is \texttt{myvalue}.
+Note that {\OKUSON} stores only one value for
+each component name. Instead of using a component with several input
+elements use several components which can be switched on and off independently.
 
 Similarly, \texttt{PersonDataSelectOption} produces an \texttt{<option>}
 element for use with \texttt{<select>}. Its content is \texttt{mycontent}, its 
@@ -2187,11 +2189,15 @@ The input to \texttt{distribute.py} is an ASCII file with one line for
 each participant (plus extra lines, see below). Each such line has to
 be in the following format:
 
-\hspace*{5mm}\texttt{id:last name:first name:semester:studiengang:wishlist:\ldots}
+{\small
+\hspace*{5mm}\texttt{id:last name:first
+name:semester:studiengang:wishlist:persondata}
+}
 
-where \texttt{wishlist} is a comma separated list of valid IDs and the dots
-in the end mean the 9 customization data \texttt{persondata1}, \ldots, which
-may be empty. Lines
+where \texttt{wishlist} is a comma separated list of valid IDs and the
+\texttt{persondata} in the end means a string describing the customization 
+data (as comma separated strings of concatenated key-value pairs 
+\texttt{xxx,xxxval}). Lines
 beginning with a hash \# character are ignored as comments. Empty lines
 play a special role,  they separate so called ``parts'' of the
 input. If for example you want to form groups for participants
@@ -2654,11 +2660,7 @@ email & email address & string \\
 \hline
 wishlist & ids of other people & string \\
 \hline
-persondata1 & personal data number 1 & string \\
-\hline
-\vdots & \vdots & \vdots \\
-\hline
-persondata9 & personal data number 9 & string \\
+persondata & custom personal data & string \\
 \hline
 \end{tabular}
 \end{center}
@@ -3030,14 +3032,14 @@ options, respectively.
 
 There are universities which use the place of birth as part of the
 identification of a person in course certificates. To get and store that
-information you can use the \texttt{persondata1} field. In the template 
+information you can use the \texttt{persondata} field. In the template 
 \texttt{html/registration.tpl} you could add a block:
 
 \begin{verbatim}
     <tr>
       <td>Place of Birth:</td>
-      <td> <input size="30" maxlength="30" name="persondata1" 
-                  value="" /> </td>
+      <td> <input size="30" maxlength="30" 
+                  name="persondata.birthplace" value="" /> </td>
     </tr>
 \end{verbatim}
 
@@ -3047,13 +3049,13 @@ block, in which the value from the registration (or last change) is preset:
 \begin{verbatim}
     <tr>
       <td>Place of Birth</td>
-      <td> <PersonData1Field /> </td>
+      <td> <PersonDataField key="birthplace" /> </td>
     </tr>
 \end{verbatim}
 
 \subsubsection*{Example: Group Choice with Radio Buttons}
 
-Say, you have three times for tutoring groups, on Monday, Tuesday and
+Say, you have three different tutoring groups, on Monday, Tuesday and
 Wednesday. Here is a way to let the participant choose exactly one of these.
 
 In \texttt{html/registration.tpl}:
@@ -3062,11 +3064,11 @@ In \texttt{html/registration.tpl}:
     <tr>
       <td>Preferred Tutoring Group:</td>
       <td>
-        <input type="radio" name="persondata1" 
+        <input type="radio" name="persondata.prefgroup" 
                value="Mon" checked="checked" />Monday,
-        <input type="radio" name="persondata1" 
+        <input type="radio" name="persondata.prefgroup" 
                value="Tue" />Tuesday,
-        <input type="radio" name="persondata1" 
+        <input type="radio" name="persondata.prefgroup" 
                value="Wed" />Wednesday
       </td>
     </tr>
@@ -3079,11 +3081,11 @@ the stored choice preselected use:
     <tr>
       <td>Preferred Tutoring Group:</td>
       <td>
-         <PersonDataRadioButton name="persondata1" 
+         <PersonDataRadioButton name="persondata.prefgroup" 
                                 value="Mon" />Monday,
-         <PersonDataRadioButton name="persondata1" 
+         <PersonDataRadioButton name="persondata.prefgroup" 
                                 value="Tue" />Tuesday,
-         <PersonDataRadioButton name="persondata1" 
+         <PersonDataRadioButton name="persondata.prefgroup" 
                                 value="Wed" />Wednesday
       </td>
     </tr>
@@ -3099,7 +3101,7 @@ You could use the following in \texttt{html/registration.tpl}:
 \begin{verbatim}
     <tr>
       <td>Preferred Tutoring Group:</td>
-      <td> <select name="persondata1">
+      <td> <select name="persondata.prefgroup">
         <option value="Mon" selected="selected">Monday</option>
         <option value="Tue">Tuesday</option>
         <option value="Wed">Wednesday</option>
@@ -3114,13 +3116,13 @@ Getting this with the stored value pre-selected in
 \begin{verbatim}
     <tr>
       <td>Preferred Tutoring Group:</td>
-      <td> <select name="persondata1">
-       <PersonDataSelectOption name="persondata1" value="Mon" 
-                               content="Monday" />
-       <PersonDataSelectOption name="persondata1" value="Tue" 
-                               content="Tuesday" />
-       <PersonDataSelectOption name="persondata1" value="Wed" 
-                               content="Wednesday" />
+      <td> <select name="persondata.prefgroup">
+       <PersonDataSelectOption name="persondata.prefgroup" 
+                         value="Mon"  content="Monday" />
+       <PersonDataSelectOption name="persondata.prefgroup" 
+                         value="Tue"  content="Tuesday" />
+       <PersonDataSelectOption name="persondata.prefgroup" 
+                         value="Wed"  content="Wednesday" />
        </select>
       </td>
     </tr>
@@ -3130,8 +3132,7 @@ Getting this with the stored value pre-selected in
 
 As a third variant of the previous two examples, assume you want to allow
 several choices by each participant. This could be done with check box input
-elements. In this case you can store each choice independently in the
-variables \texttt{persondata1} to \texttt{persondata3}. 
+elements. In this case you can store each choice with its own name.
 
 In \texttt{html/registration.tpl} you could add:
 
@@ -3139,11 +3140,11 @@ In \texttt{html/registration.tpl} you could add:
     <tr>
       <td>Possible Tutoring Groups:</td>
       <td>
-        <input type="checkbox" name="persondata1" 
+        <input type="checkbox" name="persondata.pref1" 
                value="yes" />Monday,
-        <input type="checkbox" name="persondata2" 
+        <input type="checkbox" name="persondata.pref2" 
                value="yes" />Tuesday,
-        <input type="checkbox" name="persondata3" 
+        <input type="checkbox" name="persondata.pref3" 
                value="yes" />Wednesday
       </td>
     </tr>
@@ -3156,11 +3157,11 @@ in \texttt{html/regchange2.tpl} with the stored values checked by:
     <tr>
       <td>Possible Tutoring Groups:</td>
       <td>
-        <PersonDataCheckBox name="persondata1" 
+        <PersonDataCheckBox name="persondata.pref1" 
                             value="yes" />Monday,
-        <PersonDataCheckBox name="persondata2" 
+        <PersonDataCheckBox name="persondata.pref2" 
                             value="yes" />Tuesday,
-        <PersonDataCheckBox name="persondata3" 
+        <PersonDataCheckBox name="persondata.pref3" 
                             value="yes" />Wednesday
       </td>
     </tr>
@@ -3220,12 +3221,12 @@ legibility.
 
 If you want to add some icon or some standard information on all course 
 web pages, you must edit all template files accordingly. You can use the 
-customization entries \texttt{<User1>} to \texttt{<User9>} 
-in the \texttt{Config.xml} file together with the tags \texttt{<User1/>} to
-\texttt{<User9/>} in the  template \texttt{.tpl} files. You can include HTML
-markup in the content of these elements, but note that you must use a
-\texttt{CDATA} environment or escape the markup with entities in your 
-\texttt{Config.xml} (see~\ref{ch:introXML}). 
+customization entries \texttt{<ConfigData key="...">} 
+in the \texttt{Config.xml} file together with the tags 
+\texttt{<ConfigData key="..." />} in the  template \texttt{.tpl} files. 
+You can include HTML markup in the content of these elements, but note 
+that you must use a \texttt{CDATA} environment or escape the markup with 
+entities in your \texttt{Config.xml} (see~\ref{ch:introXML}). 
 
 
 \section{Using {\OKUSON} with Another Language}

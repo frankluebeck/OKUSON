@@ -1,4 +1,7 @@
 
+Fragen:  - Header und Footer nur sinnvoll, wenn sie in den .tpl's vorkommen???
+         - handle_ExamRegStatus  enthält deutschen Text !???
+
 Interessante Ergebnisse des Browser-Checks:
   ie nach shutdown/restart kein stylesheet
   mozilla bei open mit less kein resultat
@@ -40,9 +43,9 @@ F Person-Data-Seiten generisch mit weiterer Endung
      (etwa .tplpers, oder proc.inst.) 
      entsprechend mit sheets, results
      ==> Benutzer kann beliebige Seiten neu machen.
-F beliebige Anzahl persondata fuer Benutzer konfigurierbar
-     --> "persondata" ist dictionary im Person object
-         Diese dict-Daten werden in einen String verpackt in person.dat
+F! beliebige Anzahl persondata fuer Benutzer konfigurierbar
+!     --> "persondata" ist dictionary im Person object
+!         Diese dict-Daten werden in einen String verpackt in person.dat
      --> "groupinfo" genauso
 M!wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
 M!Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung

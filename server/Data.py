@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.16 2004/03/04 14:28:48 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.17 2004/03/05 08:24:34 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -46,18 +46,9 @@ class Person(Utils.WithNiceRepr):
     passwd = "x"      # password, encrypted via "crypt"
     email = ""        # email address, optional
     wishes = ""       # a string with wishes for tutoring groups
-    persondata1 = ""  # there are up to 9 additional entries to store
-                      # personal data, these are not used in the default
-                      # setup provided by OKUSON
-    persondata2 = ""
-    persondata3 = ""
-    persondata4 = ""
-    persondata5 = ""
-    persondata6 = ""
-    persondata7 = ""
-    persondata8 = ""
-    persondata9 = ""
-
+    persondata = {}   # a dictionary for additional personal data, 
+                      # these are not used in the default setup provided 
+                      # by OKUSON
     mcresults = {}    # for each sheet name an object of type "MCResult"
                       # note that keys in this dictionary are strings!
     homework = {}     # for each sheet name an object of type "Homework"
@@ -106,24 +97,16 @@ class Person(Utils.WithNiceRepr):
 people = {}     # all people are stored in here under their id
 
 peopledesc = AsciiData.FileDescription(Config.conf['RegistrationFile'],people,
-  ( "ENTER", 0, "KEY",    Person,
-    "STORE", 0, "id",     "STRING",
-    "STORE", 1, "lname",  "STRING",
-    "STORE", 2, "fname",  "STRING",
-    "STORE", 3, "sem",    "INT",
-    "STORE", 4, "stud",   "STRING",
-    "STORE", 5, "passwd", "STRING",
-    "STORE", 6, "email",  "STRING",
-    "STORE", 7, "wishes", "STRING",
-    "STORE", 8, "persondata1", "STRING",
-    "STORE", 9, "persondata2", "STRING",
-    "STORE", 10, "persondata3", "STRING",
-    "STORE", 11, "persondata4", "STRING",
-    "STORE", 12, "persondata5", "STRING",
-    "STORE", 13, "persondata6", "STRING",
-    "STORE", 14, "persondata7", "STRING",
-    "STORE", 15, "persondata8", "STRING",
-    "STORE", 16, "persondata9", "STRING"  ) )
+  ( "ENTER", 0, "KEY",         Person,
+    "STORE", 0, "id",          "STRING",
+    "STORE", 1, "lname",       "STRING",
+    "STORE", 2, "fname",       "STRING",
+    "STORE", 3, "sem",         "INT",
+    "STORE", 4, "stud",        "STRING",
+    "STORE", 5, "passwd",      "STRING",
+    "STORE", 6, "email",       "STRING",
+    "STORE", 7, "wishes",      "STRING",
+    "STORE", 8, "persondata",  "LINEDICT" ) )
 
 
 class MCResult(Utils.WithNiceRepr):

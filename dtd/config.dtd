@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.11 2004/03/04 13:52:24 neunhoef Exp $ -->
+<!-- $Id: config.dtd,v 1.12 2004/03/05 08:24:34 luebeck Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -21,15 +21,6 @@
 <!ELEMENT PossibleStudies (Option)*>
 <!ELEMENT Port (#PCDATA)>
 <!ELEMENT ExtraLaTeXHeader (#PCDATA)>
-<!ELEMENT User1 (#PCDATA)>
-<!ELEMENT User2 (#PCDATA)>
-<!ELEMENT User3 (#PCDATA)>
-<!ELEMENT User4 (#PCDATA)>
-<!ELEMENT User5 (#PCDATA)>
-<!ELEMENT User6 (#PCDATA)>
-<!ELEMENT User7 (#PCDATA)>
-<!ELEMENT User8 (#PCDATA)>
-<!ELEMENT User9 (#PCDATA)>
 <!ELEMENT IdCheckRegExp (#PCDATA)>
 <!ELEMENT GuestIdRegExp (#PCDATA)>
 <!ELEMENT RegistrationPossible (#PCDATA)>
@@ -40,6 +31,9 @@
 <!ELEMENT GradingActive (#PCDATA)>
 <!ELEMENT ExamGradingFunction (#PCDATA)>
 <!ELEMENT ExamGradingActive (#PCDATA)>
+<!-- a container for extra data, use the 'key' attribute: -->
+<!ELEMENT ConfigData (#PCDATA)>
+<!ATTLIST ConfigData key CDATA #REQUIRED>
 
 <!-- The following make up the "Installation" section: -->
 

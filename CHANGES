@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.65 2004/03/04 15:47:36 luebeck Exp $
+##  $Id: CHANGES,v 1.66 2004/03/05 08:24:34 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,13 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.0-fix3 to 1.1
 
+* Substituted the <PersonData1> to <PersonData9> and related tags by more 
+  flexible <PersonData key="..."> tags.
+* Substituted the <User1> to <User9> by more flexible <ConfigData key="...">
+  configuration options (allows an arbitrary number of additional data and
+  a better naming).
+* Introduced a "LINEDICT" type for leaves in AsciiData module, for storing
+  whole dictionaries with string values.
 * Allow change of .tpl files without restarting the server: If a .tpl file 
   has changed and can be parsed then the internal parse tree of the template 
   is updated before it is used.

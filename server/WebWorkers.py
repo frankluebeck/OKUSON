@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.82 2004/03/04 14:06:43 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.83 2004/03/05 08:24:34 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -72,33 +72,11 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         out.write(Config.conf['Semester'])
     def handle_Lecturer(self,node,out):
         out.write(Config.conf['Lecturer'])
-    def handle_User1(self,node,out):
-        if Config.conf.has_key('User1'):
-            out.write(Config.conf['User1'])
-    def handle_User2(self,node,out):
-        if Config.conf.has_key('User2'):
-            out.write(Config.conf['User2'])
-    def handle_User3(self,node,out):
-        if Config.conf.has_key('User3'):
-            out.write(Config.conf['User3'])
-    def handle_User4(self,node,out):
-        if Config.conf.has_key('User4'):
-            out.write(Config.conf['User4'])
-    def handle_User5(self,node,out):
-        if Config.conf.has_key('User5'):
-            out.write(Config.conf['User5'])
-    def handle_User6(self,node,out):
-        if Config.conf.has_key('User6'):
-            out.write(Config.conf['User6'])
-    def handle_User7(self,node,out):
-        if Config.conf.has_key('User7'):
-            out.write(Config.conf['User7'])
-    def handle_User8(self,node,out):
-        if Config.conf.has_key('User8'):
-            out.write(Config.conf['User8'])
-    def handle_User9(self,node,out):
-        if Config.conf.has_key('User9'):
-            out.write(Config.conf['User9'])
+    def handle_ConfigData(self,node,out):
+        try: 
+            out.write(Config.conf['ConfigData'][node[1]['key']])
+        except: 
+            pass
     def handle_Header(self,node,out):
         out.write(Config.conf['Header'])
     def handle_Footer(self,node,out):
@@ -432,25 +410,21 @@ and either send an error message or a report.'''
     wishes = req.query.get('wishes',[''])[0].strip()[:80]
 
     # additional, not further specified, personal data for customization
-    # (each can store up to 256 characters)
-    persondata1 = req.query.get('persondata1',[''])[0].strip()[:256]
-    persondata2 = req.query.get('persondata2',[''])[0].strip()[:256]
-    persondata3 = req.query.get('persondata3',[''])[0].strip()[:256]
-    persondata4 = req.query.get('persondata4',[''])[0].strip()[:256]
-    persondata5 = req.query.get('persondata5',[''])[0].strip()[:256]
-    persondata6 = req.query.get('persondata6',[''])[0].strip()[:256]
-    persondata7 = req.query.get('persondata7',[''])[0].strip()[:256]
-    persondata8 = req.query.get('persondata8',[''])[0].strip()[:256]
-    persondata9 = req.query.get('persondata9',[''])[0].strip()[:256]
+    # (each can store up to 256 characters). The names are of form
+    # 'persondata.keyval' and the value is stored in the p.persondata
+    # dictionary und key keyval.
+    pdkeys = filter(lambda k: len(k) > 10 and k[:11] == 'persondata.', 
+                    req.query.keys())
+    persondata = {}
+    for k in pdkeys:
+        persondata[k[11:]] = req.query.get(k,[''])[0].strip()[:256]
 
     # Construct data line with encrypted password:
     salt = random.choice(LETTERS) + random.choice(LETTERS)
     passwd = crypt.crypt(pw1,salt)
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
-                                 persondata1, persondata2, persondata3,
-                                 persondata4, persondata5, persondata6,
-                                 persondata7, persondata8, persondata9 ) )
+                                 AsciiData.LineDict(persondata) ) )
 
     # Create a new Person object:
     p = Data.Person()
@@ -462,15 +436,7 @@ and either send an error message or a report.'''
     p.passwd = passwd
     p.email = email
     p.wishes = wishes
-    p.persondata1 = persondata1
-    p.persondata2 = persondata2
-    p.persondata3 = persondata3
-    p.persondata4 = persondata4
-    p.persondata5 = persondata5
-    p.persondata6 = persondata6
-    p.persondata7 = persondata7
-    p.persondata8 = persondata8
-    p.persondata9 = persondata9
+    p.persondata = persondata
 
     # Then check at last whether we already have someone with that id:
     Data.Lock.acquire()
@@ -519,56 +485,30 @@ one Person object as data.'''
     def handle_FirstNameField(self,node,out):
         out.write('<input size="30" maxlength="30" name="fname" value="'+
                   CleanQuotes(self.p.fname)+'" />')
-    def handle_PersonData1Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata1" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata1)+'" />')
-    def handle_PersonData2Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata2" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata2)+'" />')
-    def handle_PersonData3Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata3" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata3)+'" />')
-    def handle_PersonData4Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata4" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata4)+'" />')
-    def handle_PersonData5Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata5" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata5)+'" />')
-    def handle_PersonData6Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata6" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata6)+'" />')
-    def handle_PersonData7Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata7" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata7)+'" />')
-    def handle_PersonData8Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata8" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata8)+'" />')
-    def handle_PersonData9Field(self,node,out):
-        out.write('<input size="30" maxlength="256" name="persondata9" ' + \
-                  'value="'+ CleanQuotes(self.p.persondata9)+'" />')
-    def handle_PersonData1(self, node, out):
-        out.write(self.p.persondata1)
-    def handle_PersonData2(self, node, out):
-        out.write(self.p.persondata2)
-    def handle_PersonData3(self, node, out):
-        out.write(self.p.persondata3)
-    def handle_PersonData4(self, node, out):
-        out.write(self.p.persondata4)
-    def handle_PersonData5(self, node, out):
-        out.write(self.p.persondata5)
-    def handle_PersonData6(self, node, out):
-        out.write(self.p.persondata6)
-    def handle_PersonData7(self, node, out):
-        out.write(self.p.persondata7)
-    def handle_PersonData8(self, node, out):
-        out.write(self.p.persondata8)
-    def handle_PersonData9(self, node, out):
-        out.write(self.p.persondata9)
+    def handle_PersonData(self, node, out):
+        try:
+          out.write(self.p.persondata[node[1]['key']])
+        except:
+          pass
+    def handle_PersonDataField(self,node,out):
+        try:
+          key = node[1]['key']
+          out.write('<input size="30" maxlength="256" name="persondata.' + \
+                  +key+'" value="'+ \
+                  CleanQuotes(self.p.persondata.get(key,[''])[0])+'" />')
+        except:
+          pass
     def handle_PersonDataRadioButton(self, node, out):
         try:
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
-            known = str(getattr(self.p, name))
+            if len(name) > 10 and name[:11] == 'persondata.':
+              known = str(self.p.persondata.get(name[11:],[''])[0])
+            else:
+              try:
+                known = str(getattr(self.p, name))
+              except:
+                known = ''
         except:
             return
         res = ['<input type="radio" name="', name, '" value="', val, '" '] 
@@ -580,7 +520,13 @@ one Person object as data.'''
         try:
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
-            known = str(getattr(self.p, name))
+            if len(name) > 10 and name[:11] == 'persondata.':
+              known = str(self.p.persondata.get(name[11:],[''])[0])
+            else:
+              try:
+                known = str(getattr(self.p, name))
+              except:
+                known = ''
         except:
             return
         res = ['<input type="checkbox" name="', name, '" value="', val, '" '] 
@@ -592,7 +538,13 @@ one Person object as data.'''
         try:
             name = node[1]['name'].encode('ISO-8859-1','replace')
             val = node[1]['value'].encode('ISO-8859-1','replace')
-            known = str(getattr(self.p, name))
+            if len(name) > 10 and name[:11] == 'persondata.':
+              known = str(self.p.persondata.get(name[11:],[''])[0])
+            else:
+              try:
+                known = str(getattr(self.p, name))
+              except:
+                known = ''
             if node[1].has_key('content'):
                 cont = node[1]['content'].encode('ISO-8859-1','replace')
             else:
@@ -857,23 +809,19 @@ and either send an error message or a report.'''
     wishes = req.query.get('wishes',[''])[0].strip()[:80]
 
     # additional, not further specified, personal data for customization
-    # (each can store up to 256 characters)
-    persondata1 = req.query.get('persondata1',[''])[0].strip()[:256]
-    persondata2 = req.query.get('persondata2',[''])[0].strip()[:256]
-    persondata3 = req.query.get('persondata3',[''])[0].strip()[:256]
-    persondata4 = req.query.get('persondata4',[''])[0].strip()[:256]
-    persondata5 = req.query.get('persondata5',[''])[0].strip()[:256]
-    persondata6 = req.query.get('persondata6',[''])[0].strip()[:256]
-    persondata7 = req.query.get('persondata7',[''])[0].strip()[:256]
-    persondata8 = req.query.get('persondata8',[''])[0].strip()[:256]
-    persondata9 = req.query.get('persondata9',[''])[0].strip()[:256]
+    # (each can store up to 256 characters). The names are of form
+    # 'persondata.keyval' and the value is stored in the p.persondata
+    # dictionary und key keyval.
+    pdkeys = filter(lambda k: len(k) > 10 and k[:11] == 'persondata.', 
+                    req.query.keys())
+    persondata = {}
+    for k in pdkeys:
+        persondata[k[11:]] = req.query.get(k,[''])[0].strip()[:256]
 
     # Put person into file on disk:
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
-                                 persondata1, persondata2, persondata3,
-                                 persondata4, persondata5, persondata6,
-                                 persondata7, persondata8, persondata9 ) )
+                                 AsciiData.LineDict(persondata) ) )
 
     # Note: Between the moment we looked up our person and stored it in
     # 'p' there might have been some change in the database, because we
@@ -897,15 +845,7 @@ and either send an error message or a report.'''
     p.passwd = passwd
     p.email = email
     p.wishes = wishes
-    p.persondata1 = persondata1
-    p.persondata2 = persondata2
-    p.persondata3 = persondata3
-    p.persondata4 = persondata4
-    p.persondata5 = persondata5
-    p.persondata6 = persondata6
-    p.persondata7 = persondata7
-    p.persondata8 = persondata8
-    p.persondata9 = persondata9
+    p.persondata = persondata
 
     # The same person object stays in the "people" dictionary.
     Data.Lock.release()
@@ -1179,17 +1119,15 @@ def QuerySheet(req,onlyhead):
         values['IdOfPerson'] = id
         for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
           values[a] = Config.conf[a]
-        # find values of custom variables from config and for persons
-        for i in range(9):
-          ii = str(i+1)
-          if Config.conf.has_key('User'+ii):
-            values['User'+ii] = Config.conf['User'+ii]
-          else:
-            values['User'+ii] = ''
+        if Config.conf.has_key('ConfigData'):
+          for a in Config.conf['ConfigData'].keys():
+            values['ConfigData.'+a] = Config.conf['ConfigData'][a]
+        # find values of custom variables for persons
+        for a in Data[id].persondata.keys():
           try:
-            values['PersonData'+ii] = getattr(Data[id], 'persondata'+ii)
+            values['PersonData.'+a] = Data[id].persondata[a]
           except:
-            values['PersonData'+ii] = ''
+            values['PersonData.'+a] = ''
         values['OpenTo'] = LocalTimeString(sheet[2].opento)
         if sheet[2].openfrom:
             values['OpenFrom'] = LocalTimeString(sheet[2].openfrom)
@@ -2303,7 +2241,7 @@ sorttable = {'ID': CmpByID, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
 def ExportPeopleForGroups(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
-         id:lname:fname:sem:stud:wishes:persondata1-9
+         id:lname:fname:sem:stud:wishes:persondata
        where wishes has been normalized into a comma separated list
        of existing id's. Colons have been deleted.'''
     global sorttable
@@ -2327,11 +2265,7 @@ def ExportPeopleForGroups(req,onlyhead):
                 w = NormalizeWishes(p.wishes)
                 out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
                           str(p.sem)+':'+Protect(p.stud)+':'+w+':'+
-                          Protect(p.persondata1)+':'+Protect(p.persondata2)+
-                          ':'+Protect(p.persondata3)+':'+Protect(p.persondata4)+
-                          ':'+Protect(p.persondata5)+':'+Protect(p.persondata6)+
-                          ':'+Protect(p.persondata7)+':'+Protect(p.persondata8)+
-                          ':'+Protect(p.persondata9)+'\n')
+                          Protect(AsciiData.LineDict(p.persondata))+'\n')
     if meth == 'all together':
         writegroup(l,out)
     else:
@@ -2387,11 +2321,8 @@ def ExportPeople(req,onlyhead):
             out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
                       str(p.sem)+':'+Protect(p.stud)+':'+p.passwd+':'+
                       Protect(p.email)+':'+
-                      Protect(p.wishes)+':'+Protect(p.persondata1)+':'+
-                      Protect(p.persondata2)+':'+Protect(p.persondata3)+':'+
-                      Protect(p.persondata4)+':'+Protect(p.persondata5)+':'+
-                      Protect(p.persondata6)+':'+Protect(p.persondata7)+':'+
-                      Protect(p.persondata8)+':'+Protect(p.persondata9)+':'+
+                      Protect(p.wishes)+':'+
+                      Protect(AsciiData.LineDict(p.persondata))+':'+
                       str(p.group)+'\n')
     st = out.getvalue()
     out.close()

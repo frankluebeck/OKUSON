@@ -19,6 +19,10 @@ conf = {}       # dictionary of configuration data
 # whether they are essential (error message if value is missing) or not.
 # "PATH" means the same as "STRING", but home is prepended via
 # os.path.join. The same is true for the entries in a "PATHLIST".
+# There is one special element "ConfigData" for additional data, it may
+# appear an arbitrary number of times:
+#      <ConfigData key='bla'>blub</ConfigData>
+# The content 'blub' is stored in conf.ConfigData['bla'].
 Parameters = {
   "AdministratorPassword":    ["STRING",1],
   "CourseName":               ["STRING",1],
@@ -30,15 +34,6 @@ Parameters = {
   "PossibleStudies":          ["LIST",1],
   "Port":                     ["INT",1],
   "ExtraLaTeXHeader":         ["STRING",0],
-  "User1":                    ["STRING",0],
-  "User2":                    ["STRING",0],
-  "User3":                    ["STRING",0],
-  "User4":                    ["STRING",0],
-  "User5":                    ["STRING",0],
-  "User6":                    ["STRING",0],
-  "User7":                    ["STRING",0],
-  "User8":                    ["STRING",0],
-  "User9":                    ["STRING",0],
   "IdCheckRegExp":            ["STRING",1],
   "GuestIdRegExp":            ["STRING",0],
   "RegistrationPossible":     ["INT",1],
@@ -49,6 +44,7 @@ Parameters = {
   "GradingActive":            ["INT",0],
   "ExamGradingFunction":      ["STRING",0],
   "ExamGradingActive":        ["INT",0],
+  "ConfigData":               ["STRING",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -134,47 +130,55 @@ def ReadConfig():
             key = node[0].encode('ISO-8859-1','replace')
             if Parameters.has_key(key):
                 info = Parameters[key]
+                # special case 'ConfigData', create dictionary if not there
+                if key == 'ConfigData':
+                    if not conf.has_key(key):
+                        conf[key] = {}
+                    cnf = conf[key]
+                    key = node[1]['key'].encode('ISO-8859-1','replace')
+                else:
+                    cnf = conf
                 if info[0] == 'STRING' or info[0] == 'INT' or \
                    info[0] == 'FLOAT' or info[0] == 'PATH':
                     # We know by the DTD that there is only #PCDATA content
                     # Usually this will come as one chunk because of
                     # "MergePCData=1" above. We strip whitespace at 
                     # beginning and end:
-                    conf[key] = string.strip(string.join(node[2]))
+                    cnf[key] = string.strip(string.join(node[2]))
                     if info[0] == 'STRING' or info[0] == 'PATH':
                         try:
-                            conf[key] = conf[key].encode('ISO8859-1')
+                            cnf[key] = cnf[key].encode('ISO8859-1')
                         except:
-                            Utils.Error('Value "'+conf[key]+'" of '+
+                            Utils.Error('Value "'+cnf[key]+'" of '+
                                 'configuration field "'+key+'" at '+
                                 Utils.StrPos(node[3])+' has no ISO8859-1'+
                                 ' encoding. We assume the empty string.',
                                 prefix = 'Warning: ')
-                            conf[key] = ""
+                            cnf[key] = ""
                         if info[0] == 'PATH':
-                            conf[key] = os.path.join(home,conf[key])
+                            cnf[key] = os.path.join(home,cnf[key])
                     elif info[0] == 'INT':
                         try:
-                            conf[key] = int(conf[key])
+                            cnf[key] = int(cnf[key])
                         except:
-                            Utils.Error('Value "'+conf[key]+'" of '+
+                            Utils.Error('Value "'+cnf[key]+'" of '+
                                 'configuration field "'+key+'" at '+
                                 Utils.StrPos(node[3])+' is not an integer. We'+
                                 ' assume 0.',prefix = 'Warning: ')
-                            conf[key] = 0
+                            cnf[key] = 0
                     elif info[0] == 'FLOAT':
                         try:
-                            conf[key] = float(conf[key])
+                            cnf[key] = float(cnf[key])
                         except:
-                            Utils.Error('Value "'+conf[key]+'" of '+
+                            Utils.Error('Value "'+cnf[key]+'" of '+
                                 'configuration field "'+key+'" at '+
                                 Utils.StrPos(node[3])+' is not a float. We'+
                                 ' assume 0.0 .',prefix = 'Warning: ')
-                            conf[key] = 0.0
+                            cnf[key] = 0.0
                 elif info[0] == 'LIST' or info[0] == 'PATHLIST':
                     # We know by the DTD, that the children are just a list
                     # of elements with #PCDATA content:
-                    conf[key] = []
+                    cnf[key] = []
                     for subnode in node[2]:
                         if type(subnode) == types.TupleType:
                             s = string.strip(string.join(subnode[2]))
@@ -188,7 +192,7 @@ def ReadConfig():
                                     prefix = 'Warning: ')
                             if info[0] == 'PATHLIST':
                                 s = os.path.join(home,s)
-                            conf[key].append(s)
+                            cnf[key].append(s)
 
             else:  # A configuration field that we do not know!
                 Utils.Error('Unknown configuration field "'+key+'" at '+
