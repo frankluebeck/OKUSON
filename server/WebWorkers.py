@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.61 2003/10/28 16:18:09 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.62 2003/11/05 12:46:59 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1358,7 +1358,10 @@ def SubmitHomeworkPerson(req,onlyhead):
             score = req.query.get('S'+na,[''])[0]
             scores = req.query.get('T'+na,[''])[0]
             try:
-                totalscore = int(score)
+                if '.' in score:
+                    totalscore = float(score)
+                else:
+                    totalscore = int(score)
             except:
                 totalscore = 0
             if p.homework.has_key(na) or score != '':
