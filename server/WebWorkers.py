@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.102 2004/05/02 12:29:10 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.103 2004/05/02 12:45:02 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -991,7 +991,7 @@ a Person object and a Sheet object as data.'''
                 for n in node[2]:
                     XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_IfClosed(self,node,out):
-        if self.s.IsClosed():
+        if self.s.IsClosed() and not(self.iamadmin):
             # Sheet already closed
             # Write out tree recursively:
             if node[2] != None:
