@@ -53,7 +53,7 @@ activate with the following command:
 
   cp html.sample/regchange2.tpl html
 
-Beware if you have edited this file yourselve!
+Beware if you have edited this file yourself!
 
 You can use the new utility script "showdiffsintemplates" to display the
 files in your html directory, which differ from those in the distribution's
