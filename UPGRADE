@@ -1,8 +1,9 @@
 ===============================================================================
- This file describes the upgrade procedure from okuson 1.1 to okuson 1.1-fix1:
+ This file describes the upgrade procedure from OKUSON 1.1-fix1 
+                                             to OKUSON 1.1-fix2:
 ===============================================================================
 
-$Id: UPGRADE,v 1.13 2004/05/02 12:45:51 neunhoef Exp $
+$Id: UPGRADE,v 1.14 2004/10/07 12:27:34 luebeck Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -10,33 +11,34 @@ restart the server:
   cd okuson
   ./stop
   cd ..
-  tar xzvf okuson-1.1-fix1.tar.gz
+  tar xzvf okuson-1.1-fix2.tar.gz
   cd okuson
   ./start
 
-The archive does *not* overwrite any files you configured, especially:
+Unpacking the archive does *not* overwrite the following customizable files:
   html/*
   Config.xml
   data/*.txt
 
-remain unchanged.
+There are a few small changes in the web page templates, maybe you want to
+copy them from html.sample/ to html/ :
+  html.sample/favicon.ico          (new) a default address line icon
+  html.sample/tutors.tpl           function to access group statistics
+  html.sample/globalstatistics.tpl shows current group number
+  html.sample/adminmenu.tpl        function to move participant to other group
+  html.sample/*.tpl                added small "(OKUSON 1.1-fix2)" at the end
+
+So, if you didn't apply any changes to the default .tpl files just copy
+  cp -r html.sample html
+Otherwise, if you didn't touch the defaults of the first four files,
+you may want:
+  cp html.sample/{tutors.tpl,globalstatistics.tpl,adminmenu.tpl} html
+  cp html.sample/favicon.ico html
 
 If you applied any patches to the server programs, make sure to reapply them.
 
 Files changed in this bugfix:
 
-    data/empty/groupinfo.txt
-    doc/manual.tex
-    doc/manual.pdf
-    scripts/distribute.py
-    scripts/numbergroups.py
-    scripts/prettyprintgroupdist.py
-    server/WebWorkers.py
-    xmlvalidate
-    CHANGES
-    TODO
-    UPGRADE
-    VERSION
 
 
 Have fun!
