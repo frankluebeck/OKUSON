@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.1 2003/09/23 08:14:40 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.2 2003/09/23 13:49:30 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal
 
@@ -286,12 +286,18 @@ one Person object as data.'''
     p = None    # here we store the concrete personal data
     def __init__(self,p):
         self.p = p
+    def handle_IdOfPerson(self,node,out):
+        out.write(str(self.p.id))
     def handle_HiddenIdField(self,node,out):
         out.write('<input type="hidden" name="id" value="'+
                   CleanQuotes(self.p.id)+'" />'+self.p.id)
+    def handle_LastName(self,node,out):
+        out.write(str(self.p.lname))
     def handle_LastNameField(self,node,out):
         out.write('<input size="30" maxlength="30" name="lname" value="'+
                   CleanQuotes(self.p.lname)+'" />')
+    def handle_FirstName(self,node,out):
+        out.write(str(self.p.fname))
     def handle_FirstNameField(self,node,out):
         out.write('<input size="30" maxlength="30" name="fname" value="'+
                   CleanQuotes(self.p.fname)+'" />')
@@ -351,17 +357,25 @@ one Person object as data.'''
                 found = 1
             else:
                 out.write('  <option>'+opt+'</option>\n')
+    def handle_Topic(self,node,out):
+        out.write(str(self.p.stud))
     def handle_TopicField(self,node,out):
         out.write('<input size="18" maxlength="30" name="topic" value="')
         if not(self.p.stud in Config.conf['PossibleStudies']):
             out.write(self.p.stud)
         out.write('" />')
+    def handle_Semester(self,node,out):
+        out.write(str(self.p.sem))
     def handle_SemesterField(self,node,out):
         out.write('<input size="2" maxlength="2" name="sem" value="'+
                   str(self.p.sem)+'" />')
+    def handle_Email(self,node,out):
+        out.write(str(self.p.email))
     def handle_EmailField(self,node,out):
         out.write('<input size="30" maxlength="80" name="email" value="'+
                   CleanQuotes(self.p.email)+'" />')
+    def handle_Wishes(self,node,out):
+        out.write(str(self.p.wishes))
     def handle_WishesField(self,node,out):
         out.write('<input size="30" maxlength="80" name="wishes" value="'+
                   CleanQuotes(self.p.wishes)+'" />')
@@ -524,7 +538,7 @@ and either send an error message or a report.'''
     return Delegate('/messages/regchsuccess.html',req,onlyhead)
 
 
-class EH_withPersSheet_class(EH_Generic_class):
+class EH_withPersSheet_class(EH_withPersData_class):
     '''This class exists to produce handlers that can fill in personal data
 into an exercises sheet. It has some additional non-generic methods and holds
 a Person object and a Sheet object as data.'''
@@ -540,8 +554,6 @@ a Person object and a Sheet object as data.'''
         out.write(self.s.name)
     def handle_SheetNr(self,node,out):
         out.write(str(self.s.nr))
-    def handle_IdOfPerson(self,node,out):
-        out.write(str(self.p.id))
     def handle_IfOpen(self,node,out):
         if time.time() <= self.s.opento or self.iamadmin:   # Sheet still open
             # Write out tree recursively:
