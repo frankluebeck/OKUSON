@@ -1,11 +1,11 @@
-\documentclass[12pt,openany]{book}
+\documentclass[12pt,openany,a4paper]{book}
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
 \usepackage[latin1]{inputenc}
 \usepackage{times}
 \usepackage{calc}
-\usepackage[a4paper]{geometry}
+\usepackage{a4wide}
 \usepackage[colorlinks=true]{hyperref}
 
 % avoid overfull hboxes because of long typewriter font strings
@@ -433,7 +433,7 @@ the main concepts of the markup.
 
 <MainElt>
 
-<A xattr="val of xattr">abc<B yattr='contains " quotes'> </B> </A> 
+<A xattr="val of xattr">abc<B yattr='contains " quotes'></B></A> 
 
 <EmptyElt />
 
@@ -470,7 +470,7 @@ The \emph{name} of an element, here \texttt{A}, is case sensitive, that is
 There always must be a begin and end tag. A begin tag can contain further
 information as in \texttt{<A xattr="val of xattr">} above. 
 This extra information is called an \emph{attribute}, where
-\texttt{xattr} is the \emph{name} of the attribute and \texttt{val of attr}
+\texttt{xattr} is the \emph{name} of the attribute and \texttt{val of xattr}
 is the \emph{value} of the attribute. An attribute must always have a value
 and the specification of the value must be enclosed either in double
 quotes (\texttt{"}) or in single quotes (\texttt{'}). The enclosing quotes
@@ -635,8 +635,10 @@ itself in that file.
 
 We explain the format of an \texttt{.auf} file by an example that contains
 all possible constructs. In practice one may copy the template file
-\texttt{\$OKUSONHOME/exercises/empty.auf.template} and fill in the exercise
-texts.
+
+\hspace{0.5in}\texttt{\$OKUSONHOME/exercises/empty.auf.template} 
+
+and fill in the exercise texts.
 
 \subsection*{An Example File \texttt{example.auf}}
 
@@ -645,7 +647,7 @@ in interactive {\OKUSON} exercises. The example probably almost explains
 itself, but read the comments below on the types of questions and how the
 possible answers are specified.
 
-{\small
+{
 \begin{verbatim}
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
@@ -684,7 +686,8 @@ Mark the number(s) which are not integers.
 What is $3d+c$ (canceled down)?
 </VARIANT>
 <VARIANT solutionregexp="^4$|^9$|^14$">
-Give an integer which is the sum of two of the numbers $a, b, c, d$.
+Give an integer which is the sum of two of the 
+numbers $a, b, c, d$.
 </VARIANT>
 </QUESTION>
 
@@ -972,7 +975,7 @@ The  web   pages  delivered  by   the  {\OKUSON}  server  should   be  valid
 with  respect  to   a  specification  from  the  W3C   consortium  which  is
 called   \texttt{XHTML  1.0   Strict}. These are  combined  with   \texttt{CSS
 2.0}   style  sheets   which  are   also  specified   by  that   consortium,
-see~\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}.  
+details can be found in~\href{http://www.w3c.org}{\texttt{http://www.w3c.org}}.  
 
 Furthermore, we avoid the use of client side programs like \texttt{java} or
 \texttt{javascript}, plugins or other features of web browsers which 
