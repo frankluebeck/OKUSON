@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.99 2004/03/09 14:15:39 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.100 2004/03/09 14:51:51 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -312,7 +312,8 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                 out.write(str(maxtotalmcscore) + ' + ?')
     def handle_ExportFormatOptions(self,node,out):
         keys = ExportHelper.keys()
-        ord = ['%i','%n','%f','%s','%g','%a','%p','%c','%h','%C','%H','%T']
+        ord = ['%i','%n','%f','%s','%g','%a','%p','%c','%h',
+               '%C','%H','%T','%G','%M']
         for k in ord:
           keys.remove(k)
         keys = ord + keys
@@ -2653,7 +2654,7 @@ def ExportHelper_e(p, d = ';', nr = None):
     for i in rg:
       try:
         a = t[i]
-        res.append(str(i)+d+str(a.totalscore)+d+str(a.scores)+d)
+        res.append(str(i)+d+locale.str(a.totalscore)+d+locale.str(a.scores)+d)
       except:
         res.append(str(i)+d+'none'+d+'none'+d)
     res = string.join(res, '')
@@ -2679,7 +2680,7 @@ def ExportHelper_c(p, d = ';', nr = None):
     for i in rg:
       try:
         a = t[i]
-        res.append(str(i)+d+str(a.score)+d)
+        res.append(str(i)+d+locale.str(a.score)+d)
       except:
         res.append(str(i)+d+'none'+d)
     res = string.join(res, '')
@@ -2706,7 +2707,7 @@ def ExportHelper_h(p, d = ';', nr = None):
     for i in rg:
       try:
         a = t[i]
-        res.append(str(i)+d+str(a.totalscore)+d)
+        res.append(str(i)+d+locale.str(a.totalscore)+d)
       except:
         res.append(str(i)+d+'none'+d)
     res = string.join(res, '')
@@ -2723,12 +2724,12 @@ as delimiters, with %[d][nr]h use [d] instead of ";" as delimiter
   ExportHelper_h)
 ExportHelper['%C'] = ('''Total score for interactive exercises (all sheets
 which count)''',
-  lambda p: str(p.TotalMCScore()) )
+  lambda p: locale.str(p.TotalMCScore()) )
 ExportHelper['%H'] = ('''Total score for homework exercises (all sheets which
 count)''', 
-  lambda p: str(p.TotalHomeScore()) )
+  lambda p: locale.str(p.TotalHomeScore()) )
 ExportHelper['%T'] = ('Total score for all sheets which count',
-  lambda p: str(p.TotalScore()) )
+  lambda p: locale.str(p.TotalScore()) )
 def ExportHelper_Grade(p):
     if not (Config.conf['GradingActive'] and \
             Config.conf['GradingFunction'] != None):
@@ -2776,7 +2777,7 @@ def ExportHelper_Grade(p):
 ExportHelper['%M'] = ('Grading message (gives "no grade" if not available)',
   lambda p: ExportHelper_Grade(p)[0] )
 ExportHelper['%G'] = ('Grade (gives "no grade" if not available)',
-  lambda p: str(ExportHelper_Grade(p)[1]) )
+  lambda p: locale.str(ExportHelper_Grade(p)[1]) )
      
 # parse a format string for custom export for use with 'ExportLine' below
 def ParsedExportFormat(s):
