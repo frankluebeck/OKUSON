@@ -54,3 +54,10 @@ Ideen:
   Totalscore obsolet (jetzt TotalScore)
   pseudo-random fuer 3 moeglichkeiten korrekt nutzen!
   Aufloesungs-Cookie persistent
+  Feldnamen sollten Blattnummer enthalten, damit keine Voreingaben
+    von vorigen Blaettern uebernommen werden.
+  Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
+  Overfull boxes melden beim Erzeugen von Pixelbildern.
+    (loest Problem abgeschnittener Aufgabentexte)
+  Global die Anzahl der Klausuren Zaehlen
+  ExportResults mit dieser Anzahl von Klausuren bei allen
