@@ -40,3 +40,22 @@ Spaeter:
   Schalter fuer "interaktiven Betrieb"? Anzeige von Bewertungen bereits
     vor Abgabeschluss? (Anfrage von Daniel Robertz) Was ist zu tun, um
     OKUSON fuer den interaktiven Betrieb klar zu machen?
+  Ergaenzung von Marc --> okuson-folder
+  in BuiltinWebServer.py haben wir
+               'avi'  : 'video/x-msvideo',
+               'rm'   : 'application/vnd.rn-realmedia',
+  schein.py besser erklaeren, ev. Beispiel
+
+Matthias:
+
+Tutoren koennen von zu Hause Statistik nicht anschauen
+ShowGlobalStatisticsForGroup tut nicht
+Export Results of Participants Sorted By ID geht nicht (float problem in Z. 2976 in WebWorkers.py)
+ShowExerciseStatistics for Sheet (admin)
+Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
+Export fuer Zusatztext zum Hausaufgabenergebnis
+
+Marc:
+
+  unzulaessige Eingaben von Formularen (fehlerhafte Browser)
+    --> Warnung?
