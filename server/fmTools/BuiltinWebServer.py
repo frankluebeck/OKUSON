@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.10 2004/03/08 08:10:05 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.11 2004/03/08 08:11:29 neunhoef Exp $'
 
 
 __version__ = "0.2"
@@ -420,6 +420,8 @@ otherwise self.query is {}. self.path is the path.'''
         msg = ("%s - - [%s] %s" % 
            (self.address_string(), self.log_date_time_string(), format%args))
         Utils.Error(msg,"Log:")
+        # Comment out the following if you do not want to see the user agent
+        # lines:
         Utils.Error(self.headers.get_header('User-Agent'),"User-Agent:")
 
 class BuiltinWebServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
