@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.33 2005/04/02 20:40:23 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.34 2005/04/02 20:53:35 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -333,7 +333,8 @@ otherwise.'''
                         f.write('<span class="ergplus">['+
                                 string.join(q.solutions[k],',')+
                                 ']</span>')
-                    if marks and closed:
+                    if marks and \
+                       (closed or Config.conf['InteractiveMode'] != 0):
                         f.write('<span class=')
                         if marks[counter] == '+':
                             f.write('"ergplus">&nbsp;&nbsp;(+1)')

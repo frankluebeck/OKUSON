@@ -267,11 +267,21 @@ def Grade(p,examnr):
 0
 </ExamGradingActive>
 
+
 <!-- The following entry gives the (global) maximal length of inputs
      in string entries in MC questions. -->
 <MaxStringInputLength>
 20
 </MaxStringInputLength>
+
+
+<!-- The following entry allows to switch the server in so-called
+     "interactive" mode: This means that even before the closure time
+     of a sheet the marks are shown if the participant enters the sheet
+     again after a successfull submission. -->
+<InteractiveMode>
+0
+</InteractiveMode>
 
 
 <!-- ==================================================================== 

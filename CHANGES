@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.90 2005/04/02 20:40:23 neunhoef Exp $
+##  $Id: CHANGES,v 1.91 2005/04/02 20:53:35 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,10 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to ???
 
+* Create a switch "InteractiveMode". If this is 1 (default is 0), then the
+  resulting points are shown in the multiple choice sheets already before
+  the closing time of the sheet, if the user already has submitted once.
+  This is intended for interactive exercises only.
 * Display a message when a browser submits impossible values. The values
   are ignored as before this change.
 * Improved the help text of the "schein.py" script.
