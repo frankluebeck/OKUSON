@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.30 2004/10/05 09:04:20 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.31 2004/10/06 11:16:52 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -76,6 +76,9 @@ ignored. We assume that for each resolution X there is already a subdirectory
                         prefix='Info:')
 
         
+def CleanQuotes(st):
+    return st.replace('"','')
+
 def CleanString(s):
     '''Cleans a string for input in an alt-attributes of images.'''
     s = string.strip(s)           # remove leading and trailing whitespace
@@ -319,7 +322,7 @@ otherwise.'''
                                  'value="+" %s/> - ') % 
                                 ('B'+self.name+'Q'+str(counter),ch))
                     else:  # type is string:
-                        if sub: ch = 'value = "'+sub[counter]+'" '
+                        if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
                         else: ch = 'value = "" '
                         f.write('<input size="12" maxlength="20" '
                                 'name="%s" %s/> ' %

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.107 2004/10/05 09:04:20 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.108 2004/10/06 11:16:52 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -213,8 +213,8 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             for k in l:
                if not(Config.conf['GuestIdRegExp'].match(k)):
                    p = Data.people[k]
-                   out.write('<option value="'+k+'">'+k+' - '+p.fname+' '
-                             +p.lname+'</option>\n')
+                   out.write('<option value="'+k+'">'+k+' - '+CleanWeb(p.fname)
+                             +' '+CleanWeb(p.lname)+'</option>\n')
             out.write('</select>\n')
     def MaxTotalMCScore(self):
         l = Exercises.SheetList()
@@ -332,6 +332,14 @@ EH_Generic = EH_Generic_class()
 #
 def CleanQuotes(st):
     return st.replace('"','')
+
+def CleanWeb(st):
+    '''Function to avoid cross site scripting. We simply replace < by &lt;
+    and > by &gt; and & by &amp; . This should avoid that user input creates
+    tags in web output.'''
+    st = st.replace('<','&lt;')
+    st = st.replace('>','&gt;')
+    st = st.replace('&','&amp;')
 
 def Delegate(path,req,onlyhead,handler = None,addheader = []):
     '''This delegates to another path.'''
@@ -526,12 +534,12 @@ one Person object as data.'''
         out.write('<input type="hidden" name="id" value="'+
                   CleanQuotes(self.p.id)+'" />'+self.p.id)
     def handle_LastName(self,node,out):
-        out.write(str(self.p.lname))
+        out.write(CleanWeb(str(self.p.lname)))
     def handle_LastNameField(self,node,out):
         out.write('<input size="30" maxlength="30" name="lname" value="'+
                   CleanQuotes(self.p.lname)+'" />')
     def handle_FirstName(self,node,out):
-        out.write(str(self.p.fname))
+        out.write(CleanWeb(str(self.p.fname)))
     def handle_FirstNameField(self,node,out):
         out.write('<input size="30" maxlength="30" name="fname" value="'+
                   CleanQuotes(self.p.fname)+'" />')
@@ -619,7 +627,7 @@ one Person object as data.'''
             else:
                 out.write('  <option>'+opt+'</option>\n')
     def handle_Topic(self,node,out):
-        out.write(str(self.p.stud))
+        out.write(CleanWeb(str(self.p.stud)))
     def handle_TopicField(self,node,out):
         out.write('<input size="18" maxlength="30" name="topic" value="')
         found = 0
@@ -629,7 +637,7 @@ one Person object as data.'''
                 out.write(self.p.stud[len(opt):])
                 found = 1
                 break
-        if not(found): out.write(self.p.stud)
+        if not(found): out.write(CleanWeb(self.p.stud))
         out.write('" />')
     def handle_Sem(self,node,out):
         out.write(str(self.p.sem))
@@ -645,12 +653,12 @@ one Person object as data.'''
         else:
             out.write(str(self.p.group))
     def handle_Email(self,node,out):
-        out.write(str(self.p.email))
+        out.write(CleanWeb(str(self.p.email)))
     def handle_EmailField(self,node,out):
         out.write('<input size="30" maxlength="80" name="email" value="'+
                   CleanQuotes(self.p.email)+'" />')
     def handle_Wishes(self,node,out):
-        out.write(str(self.p.wishes))
+        out.write(CleanWeb(str(self.p.wishes)))
     def handle_WishesField(self,node,out):
         out.write('<input size="30" maxlength="80" name="wishes" value="'+
                   CleanQuotes(self.p.wishes)+'" />')
@@ -1127,7 +1135,7 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
                 out.write('<tr><th>Submission</th><th>IDs</th></tr>\n')
                 for submission in dict.keys():
                     out.write('<tr><td class="sm">%s</td><td class="idlist">' %
-                              submission)
+                              CleanWeb(submission))
                     listIds = Utils.SortNumerAlpha(dict[submission])
                     for id in listIds:
                         out.write(self.idLink(id) + '\n')
@@ -1142,7 +1150,8 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
         #   + '\')" onmouseout="untip()">' + str(id) + '</a>'
         return '<a href="mailto:%s">%s</a><a href="/QuerySheet?sheet=%s&amp;' \
                'id=%s">(S)</a>' % \
-               (Data.people[id].email, str(id), self.s.name, str(id))
+               (CleanQuotes(Data.people[id].email), str(id), self.s.name, 
+                str(id))
  
                         
 def ClassFromFraction(pc):
@@ -1604,8 +1613,8 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                         continue
                 if not(Config.conf['GuestIdRegExp'].match(k)):
                     tableRow[k] = '<td class="key">' + k + \
-                                  '</td><td class="name">' + p.lname + ', ' \
-                                  + p.fname + '</td>'
+                                  '</td><td class="name">' + CleanWeb(p.lname) \
+                                  + ', ' + CleanWeb(p.fname) + '</td>'
                     totalHomeScore[k] = 0
                     totalMCScore[k] = 0
                     for sheetNumber, sheetName, sheet in Exercises.SheetList():
@@ -1937,7 +1946,8 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                     default2 = ''
                 if counter % 5 == 0:
                   out.write('<tr><td class="trenner">'+k+'</td>'
-                            '<td class="trenner">'+p.lname+', '+p.fname+'</td>'
+                            '<td class="trenner">'+CleanWeb(p.lname)+', '+
+                            CleanWeb(p.fname)+'</td>'
                             '<td class="trenner">'
                             '<input size="6" maxlength="6"'
                             ' name="P'+k+'" value="'+default+'" /></td>\n'
@@ -1945,7 +1955,8 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                             'maxlength="60" name="S'+k+
                             '" value="'+default2+'" /></td></tr>\n')
                 else:
-                  out.write('<tr><td>'+k+'</td><td>'+p.lname+', '+p.fname+
+                  out.write('<tr><td>'+k+'</td><td>'+CleanWeb(p.lname)+', '+
+                            CleanWeb(p.fname)+
                             '</td><td><input size="6" maxlength="6"'
                             ' name="P'+k+'" value="'+default+'" /></td>\n'
                             '   <td><input size="30" maxlength="60" name="S'+k+
