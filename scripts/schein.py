@@ -89,11 +89,18 @@ if banner != "":
     print "\\vspace*{\\fill}\\par\\begin{center}\\Huge\n"+ \
     banner+"\n\\par\\end{center}\\vspace*{\\fill}\\pagebreak\n"
     
-stdin = sys.stdin
+linelist = sys.stdin.readlines()
+nr = len(linelist)
+if nr % 2 == 1:
+    linelist.append("\n")
+    nr += 1
+offset = nr / 2
+linelist2 = []
+for i in xrange(offset):
+    linelist2.append(linelist[i])
+    linelist2.append(linelist[i+offset])
 
-while 1:
-    line = stdin.readline()
-    if not(line): break
+for line in linelist2:
     line = string.strip(line)
     if not(line): continue
     l = string.split(line,delim)
