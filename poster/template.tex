@@ -1,0 +1,99 @@
+%\documentclass[portrait,a0,draft]{a0poster}
+\documentclass[portrait,a0]{a0poster}
+%\usepackage{german,epsf,psfig,pstricks,multicol,pst-grad,color}
+\usepackage{german,pstricks,multicol,pst-grad,color}
+\usepackage{graphicx}
+
+\begin{document}
+
+% Fliessenden Hintergrund von RGB-Farbe 1. .98 .98 nach 1. .85 .85 
+% und wieder nach  1. .98 .98 (1. .85 .85 wird nach 0.1=10% des Hinter-
+% grunds angenommen)
+% Achtung Werte unter .8 verbrauchen zu viel Tinte!!!
+%\background{1. .98 .98}{1. .85 .85}{0.1}
+% Hier haben wir ein paar Experimente gemacht und uns schliesslich auf
+\background{.98 .98 1.}{0.698 .819 0.941}{0.05}
+% geeinigt. Andere Versuche:
+%\background{.98 .98 1.}{.0 .39 0.65}{0.1}
+%\background{.98 .98 1.}{.0 .57 0.95}{0.1}
+%\background{.98 .98 1.}{0.741 .870 0.941}{0.05}
+%\background{.85 .85 1.}{.98 .98 1.}{-0.1}
+
+% Groesse der einzelnen Spalten als Anteil der Gesamt-Textbreite
+\renewcommand{\columnfrac}{.3}
+
+
+% Posterueberschrift, optional mit RGB-Hintergrundfarbe (hier .99 .99 1.)
+\begin{header}[1. .98 .98]
+\begin{tabular}{|p{9.5in}|p{19.5in}|}
+\hline
+\begin{minipage}[t]{9.5in}
+ \vspace*{0mm}
+ \begin{center}
+ \includegraphics[width=7in]{rwthaachenlogo.eps}
+ \end{center}
+
+ \vspace*{-0.8ex}
+ \rule{9.5in}{0.05ex}
+
+ \vspace*{0.6ex}
+ \begin{tabular}{cp{5.5in}}
+ \sf\veryHuge \raisebox{-1.05ex}{GRK 775} &
+ \renewcommand{\baselinestretch}{0.8}\sf\Large
+ Hierarchie und Symmetrie 
+ in mathematischen Modellen
+ \end{tabular}
+ \renewcommand{\baselinestretch}{1}
+ \vspace*{0.3ex}
+\end{minipage}
+&
+\begin{minipage}[t]{19.5in}
+ \vspace*{0mm}
+\begin{center}
+\vspace*{2ex}
+\Huge Hier kommt der Titel rein
+
+\vspace*{2ex}
+\large Gerhard Hi\ss, Lehrstuhl D f\"ur Mathematik
+\end{center}
+\end{minipage} \\
+\hline
+\end{tabular}
+
+\end{header}
+
+%%% Beginn des Posters ...
+\begin{poster}
+%%% Beginn der ersten Poster-Spalte
+\begin{pcolumn}
+%%%%% Beginn einer Poster-Box, 
+%%%%%   die Groesse wird an den eingegebenen Text angepasst!
+      \begin{pbox}
+        {\color{red} Pbox1 \vspace{35cm}}
+      \end{pbox}
+%%%%% Beginn der zweiten Poster-Box, diesmal mit RGB-Hintergrundfarbe
+      \begin{pbox}[1. .98 .98]
+        {\color{red} Pbox2 \vspace{37cm}}
+      \end{pbox}
+\end{pcolumn}
+%%% Beginn der zweiten Poster-Spalte. 
+%%%   Achtung, zw. \end{pccolumn} und \begin{pcolumn} keine Leerzeilen!   
+\begin{pcolumn}
+%%%%% Beginn einer Poster-Box, ohne Schatten
+      \begin{pboxns}
+       {\color{red} Pbox3 \vspace{35cm}}
+      \end{pboxns}
+      \begin{pbox}
+        {\color{red} Pbox2 \vspace{35cm}}
+      \end{pbox}
+\end{pcolumn}
+\begin{pcolumn}
+\section{Ein Abschnitt}
+
+Hier gibt es keine boxes.
+\end{pcolumn}
+
+\end{poster}
+
+\end{document}
+

@@ -1,0 +1,14 @@
+#!/bin/bash
+psresize -W84cm -H119cm -w21cm -h30cm $1 $1.tmp
+export l=`grep '%%DocumentPaperSizes' $1.tmp | wc -l`
+if [ $l = "0" ]; then
+  export l1=`grep -n '%%EndComments' $1.tmp | head -1 | sed 's/:.*$//'`
+  export l1=$(($l1 - 1))
+  sed -n "1,$l1"p $1.tmp > $2
+  echo "%%DocumentPaperSizes: a4" >> $2
+  export l1=$(($l1 + 1))
+  sed -n "$l1,\$"p $1.tmp >> $2 ;
+else
+  sed  '1,$s/%%DocumentPaperSizes: a0/%%DocumentPaperSizes: a4/' $1.tmp > $2 ;
+fi
+rm -f $1.tmp             

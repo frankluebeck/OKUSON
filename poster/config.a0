@@ -1,0 +1,47 @@
+@ a1 594mm 839.6mm
+@+ ! %%DocumentPaperSizes: a1
+@+ %%PaperSize: a1
+@+ %%BeginPaperSize: a1
+@+ /setpagedevice where {
+@+   pop 1 dict dup /PageSize [ 1684 2380 ] put setpagedevice
+@+ } {
+@+   statusdict /a1tray known {
+@+     statusdict begin a1tray end
+@+     /a1 where { pop a1 } if
+@+   } {
+@+     /a1 where {
+@+       pop a1
+@+     } {
+@+       statusdict /setpage known {
+@+         statusdict begin
+@+           1684 2380 0 setpage
+@+         end
+@+       } if
+@+     } ifelse
+@+   } ifelse
+@+ } ifelse
+@+ %%EndPaperSize
+
+@ a0 839.6mm 1188.2mm
+@+ ! %%DocumentPaperSizes: a0
+@+ %%PaperSize: a0
+@+ %%BeginPaperSize: a0
+@+ /setpagedevice where {
+@+   pop 1 dict dup /PageSize [ 2380 3368 ] put setpagedevice
+@+ } {
+@+   statusdict /a0tray known {
+@+     statusdict begin a0tray end
+@+     /a0 where { pop a0 } if
+@+   } {
+@+     /a0 where {
+@+       pop a0
+@+     } {
+@+       statusdict /setpage known {
+@+         statusdict begin
+@+           2380 3368 0 setpage
+@+         end
+@+       } if
+@+     } ifelse
+@+   } ifelse
+@+ } ifelse
+@+ %%EndPaperSize

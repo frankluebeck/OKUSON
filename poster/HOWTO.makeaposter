@@ -1,0 +1,60 @@
+Dieser Text beschreibt kurz, wie man die Dateien in diesem Verzeichnis
+benutzt, um ein Poster fuer die Begehung des Graduiertenkollegs
+"Hierarchie und Symmetrie in mathematischen Modellen" benutzt.
+
+(1) Alle Dateien dieses Verzeichnisses in ein Verzeichnis kopieren.
+(2) Die Datei "template.tex" enthaelt ein leeres Muster. Diese kopiert man
+    auf eine Datei "meinposter.tex" oder aehnlich.
+(3) Aus einer solchen LaTeX-Quelldatei macht man mit folgender Befehlsfolge
+    ein PDF-Poster:
+
+    latex meinposter.tex    
+    dvips -P a0 -P cmz -P amz meinposter.dvi -o meinposter.ps 
+    ps2pdf meinposter.ps
+
+    (ev. den latex-Lauf wiederholen, wenn noetig)
+
+    Zwischendurch entstehen die Dateien "meinposter.dvi" und "meinposter.ps".
+    Das Endergebnis steht in "meinposter.pdf".
+(4) Will man eine A4-Version des Posters haben, kann man entweder im
+    acroread beim Ausdrucken "fit to page" und "Papierformat A4" eingeben
+    oder das Skript "psa0toa2" in diesem Verzeichnis benutzen:
+
+    psa0toa2 meinposter.ps meinpostera0.ps
+    ps2pdf meinpostera0.ps
+
+    (das erzeugt "meinpostera0.ps" und "meinpostera0.pdf").
+(5) Das LaTeX-File sollte oben weitgehend unveraendert bleiben, damit die
+    Poster einigermassen einheitlich aussehen. Die erste zu aendernde Stelle
+    (abgesehen von Paketen, die man ev. laden will: BITTE NICHTS ABGEFAHRENES
+    VERWENDEN!!!) ist ab Zeile 56 der Titel und der Autor. Dort kann man
+    die minipage oben selbst gestalten.
+(6) Typischerweise sollten die Poster 3 Spalten haben, das ist so 
+    vorkonfiguriert durch die Angabe 
+       \renewcommand{\columnfrac}{.3}
+    in Zeile 25 und die Verwendung von 3 "pcolumn"-Umgebungen unten im Text.
+    Wenn man mehr oder weniger Spalten will, muss man das entsprechend
+    anpassen (beachte 3*0.3 < 1, 2*0.45 oder 4*0.22 kaemen ev. noch in Frage).
+(7) Im Hauptteil kann man mit "pboxns"- und "pbox"-Umgebungen einzelne
+    Boxen in die Spalten machen oder einfach mit "section"s unterteilen,
+    je nach Geschmack. Die boxen haben vermutlich den Vorteil, dass sie
+    einen weissen Hintergrund haben und damit nicht so viel Tinte fliessen
+    muss. Es gibt uebrigens zusaetzlich die folgenden Schriftgroessen:
+      \veryHuge
+      \VeryHuge
+      \VERYHuge
+(8) Damit das alles klappt, braucht man eine einigermassen vollstaendige
+    TeX-Installation mit den Paketen "pstricks", "german", "multicol", 
+    "color" und "graphicx". Fuer die Wandlung nach pdf wird ghostscript
+    verwendet, was ueblicherweise das Programm "ps2pdf" enthaelt. Fuer die
+    Skalierung wird das Programm "psresize" aus dem (Debian-) Paket
+    "psutils" benutzt. Anschauen kann man die PDFs mit xpdf oder acroread.
+    "pdflatex" direkt scheint nicht zu funktionieren.
+(9) Bei Fragen wendet Ihr Euch bitte an mich, wenn Ihr Euch nicht mehr
+    selber zu helfen wisst:
+       max.neunhoeffer@math.rwth-aachen.de
+
+
+Viel Spass beim Postern!
+
+                                             Max.
