@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.49 2003/10/20 09:45:58 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.50 2003/10/20 11:30:36 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -371,6 +371,7 @@ and either send an error message or a report.'''
     
     # Put new person into database in memory:
     Data.people[id] = p
+    Data.AddToGroupStatistic(p)
     Data.Lock.release()
 
     # At last write out a sensible response:
