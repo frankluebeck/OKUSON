@@ -17,14 +17,14 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
-    <p><strong>Nummer der Übungsgruppe:</strong><GroupNumber/></p>
-    <p><strong>Tutor:</strong><GroupTutor/></p>
-    <p><strong>Ort:</strong><GroupPlace/></p>
-    <p><strong>Zeit:</strong><GroupTime/></p>
-    <p><strong>Email des Tutors:</strong><GroupEmailTutor/></p>
-    
-    <h3>Teilnehmer</h3>
-    <p><GroupIDs/></p>
+    <p><strong>Nummer der Übungsgruppe:&nbsp;&nbsp;</strong><GroupNumber/></p>
+    <p><strong>Tutor:&nbsp;&nbsp;</strong><GroupTutor/></p>
+    <p><strong>Ort:&nbsp;&nbsp;</strong><GroupPlace/></p>
+    <p><strong>Zeit:&nbsp;&nbsp;</strong><GroupTime/></p>
+    <p><strong>Email des Tutors:&nbsp;&nbsp;</strong><GroupEmailTutor/></p>
+    <p><strong>Matrikelnummern der Teilnehmer:&nbsp;&nbsp;</strong><br />
+    <GroupIDs/>
+    </p>
    
 
     <hr />
@@ -42,5 +42,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupinfo.tpl,v 1.1 2003/10/06 16:34:23 luebeck Exp $ -->
+     $Id: groupinfo.tpl,v 1.2 2003/10/06 22:38:12 luebeck Exp $ -->
 

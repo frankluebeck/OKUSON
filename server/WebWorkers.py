@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.16 2003/10/06 21:36:03 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.17 2003/10/06 22:38:12 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -107,22 +107,59 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                         'Ignoring.',prefix='Warning:') 
             return
         try:
-            nr = int(node[1]['number'])
+            nr = node[1]['number']
         except:
             Utils.Error('Found "number" attribute in <GroupSize /> tag with '
                         'value not being a non-negative integer. Ignoring.',
                         prefix='Warning:')
             return
         if Data.groups.has_key(nr):
-            out.write(str(len(Data.groups[nr])))
+            out.write(str(len(Data.groups[nr].people)))
         else:
             out.write('0')
-    def handle_ExerciseclassDistribution(self,node,out):
+    def handle_ExerciseclassDistribution(self,node,out): #??? delete ???
         l = Data.people.keys()
         l.sort()
         for k in l:
             out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
                       '</td></tr>\n')
+    def sortnumeralpha(self, l):
+        'try converting entries of l to int, then sort and convert to str'
+        ll = list(l)
+        for i in range(len(ll)):
+            try:    a = int(ll[i])
+            except: a = ll[i]
+            ll[i] = a
+        ll.sort()
+        for i in range(len(ll)):
+            ll[i] = str(ll[i])
+        return ll
+        
+    def handle_GroupDistribution(self,node,out):
+        l = self.sortnumeralpha(Data.people.keys())
+        for k in l:
+            out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
+                      '</td></tr>\n')
+    def handle_GroupsOverview(self,node,out):
+        l = self.sortnumeralpha(Data.groups.keys())
+        try:
+            fields = node[1]['components'][0]
+            fields = map(lambda s: s.strip(), string.split(fields,','))
+        except:
+            # default
+            fields = ['number', 'place', 'tutor', 'nrparticipants']
+            
+        s = []
+        for nr in l:
+            grp = Data.groups[nr]
+            grp.nrparticipants = len(grp.people)
+            s.append('<tr>')
+            for a in fields:
+                if hasattr(grp, a):
+                    s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
+                             str(getattr(grp, a))+'</a></td>')
+            s.append('</tr>\n')
+        out.write(string.join(s,''))
     def handle_MembersOfGroup(self,node,out):
         if node[1] == None or not(node[1].has_key('number')):
             Utils.Error('Found <MemberOfGroups /> tag without "number" '
@@ -412,20 +449,12 @@ one Person object as data.'''
     def handle_Results(self,node,out):
         # Check attributes if interactive and/or homework exercises are
         # considered (not given attributes mean 'true').
-        if node[1] and node[1].has_key('interactive'):
-            if node[1]['interactive'] != 'false':
-                ia = 1
-            else:
-                ia = 0
-        else:
-            ia = 1
-        if node[1] and node[1].has_key('homework'):
-            if node[1]['homework'] != 'false':
-                hw = 1
-            else:
-                hw = 0
-        else:
-            hw = 1
+        try:
+            fields = node[1]['components'][0]
+            fields = map(lambda s: s.strip(), string.split(fields,','))
+        except:
+            # the default
+            fields = ['interactive', 'homework']
         l = Exercises.SheetList()
         for nr,name,s in l:
             if time.time() > s.opento:   # sheet already closed 
@@ -438,9 +467,9 @@ one Person object as data.'''
                 else:
                     homescore = '?'
                 out.write('<tr><td align="center">'+name+'</td>')
-                if ia:
+                if 'interactive' in fields:
                     out.write('<td align="center">'+mcscore+'</td>')
-                if hw:
+                if 'homework' in fields:
                     out.write('<td align="center">'+homescore+'</td>')
                 out.write('</tr>\n')  
     def handle_Totalscore(self,node,out):
@@ -848,7 +877,7 @@ class EH_withGroupInfo_class(EH_Generic_class):
 
 def GroupInfo(req, onlyhead):
     try:
-        grp = Data.groups[int(req.number)]
+        grp = Data.groups[req.query['number'][0]]
     except:
         grp = None
     if grp:

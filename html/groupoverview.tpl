@@ -19,34 +19,37 @@
 
     <h3>Übersicht über die Übungsgruppen:</h3>
 
+    <p>
+    Klicken Sie auf einen Eintrag, um weitere Informationen zu dieser
+    Gruppe zu bekommen.
+    </p>
     <table>
 
-     <tr><td><strong>Gruppennummer</strong></td> 
-         <td><strong>Hörsaal</strong></td>
-         <td><strong>Tutor</strong></td>
-         <td><strong>Teilnehmerzahl</strong></td></tr>
-         
-     <tr><td>Nicht eingeteilt</td>
-         <td>---</td>
-         <td>---</td>
-         <td class="right"><GroupSize number="0" /></td></tr>
-
-     <tr><td><a href="group1.html">Gruppe Nr. 1</a></td>
-         <td>AM</td>
-         <td>Max Neunhöffer</td>
-         <td class="right"><GroupSize number="1" /></td></tr>
+     <tr><th>Gruppennummer</th> 
+         <th>Hörsaal</th>
+         <th>Tutor</th>
+         <th>Teilnehmerzahl</th></tr>
+     <!-- customize with attribute 'components', default is
+       components="number,place,tutor,nrparticipants"
+       other possible components : time, emailtutor, groupinfo1, ..., 
+       groupinfo9                  
+     <GroupsOverview components="number,place,tutor,nrparticipants"/>
+    --> <GroupsOverview/>
 
     </table>
 
     <hr />
 
     <h3>Gruppeneinteilung:</h3>
-
+    <p>
+    Suchen Sie Ihre Matrikelnummer, um die Nummer Ihrer Übungsgruppe zu
+    erfahren.
+    </p>
     <table>
-      <tr><td><strong>Matrikelnummer</strong></td>
-          <td><strong>Gruppennummer</strong></td></tr>
+      <tr><th>Matrikelnummer</th>
+          <th>Gruppennummer</th></tr>
 
-      <ExerciseclassDistribution />
+      <GroupDistribution />
  
     </table>
     <hr />
@@ -64,5 +67,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: exercisesclasses.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: groupoverview.tpl,v 1.1 2003/10/06 22:38:12 luebeck Exp $ -->
 

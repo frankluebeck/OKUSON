@@ -1,2 +1,6 @@
 # groupinfo.txt - Information on tutoring groups
 # Format:  nr:passwd:tutor:place:time:email of tutor:groupinfo1: ... :groupinfo9
+# (passwd is encrypted, use $OKUSONHOME/cryptpasswd; separate by ':';
+# include ':' in entry by '\d')
+# example line:
+1:vO/l0d1OUzL.w:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::

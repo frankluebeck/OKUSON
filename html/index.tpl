@@ -53,7 +53,7 @@
       </li>
 
       <li>
-        <a href="exercisesclasses.html">Übungsgruppeneinteilung</a>
+        <a href="groupoverview.html">Übungsgruppeneinteilung</a>
       </li>
 
       <li>
@@ -77,5 +77,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: index.tpl,v 1.2 2003/10/06 22:38:12 luebeck Exp $ -->
 

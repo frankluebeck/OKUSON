@@ -17,6 +17,9 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
+    <p><strong>Teilnehmer:</strong> <FirstName/> <LastName/>
+    (<IdOfPerson/>)</p>
+
     <p>Sie haben auf den Übungsblättern, deren Abgabefrist
 bereits abgelaufen ist, die folgenden Punktzahlen in den
 Multiple-Choice-Aufgaben (MC) beziehungsweise in den schriftlichen
@@ -29,9 +32,10 @@ ja von den korrigierten Zetteln.):</p>
 <!-- Adjust header and <Results> attributes -->
     <tr><th>Übungsblatt</th><th>Interaktive Aufgaben</th>
         <th>Schriftliche Aufgaben</th></tr>
-<!-- Specify "false" as value if you don't want corresponding info.
-     Attributes are optional and default to "true".  -->
-    <Results interactive="true" homework="true" /> 
+<!-- Specify the components you want in attribute 'components', separated 
+     by commas. The default is both types of exercises in this order:
+       components="interactive,homework"                     -->
+    <Results components="interactive,homework" /> 
 
     </table>
 
@@ -58,5 +62,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.3 2003/10/04 23:16:12 luebeck Exp $ -->
+     $Id: results.tpl,v 1.4 2003/10/06 22:38:12 luebeck Exp $ -->
 

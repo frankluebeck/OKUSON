@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.4 2003/10/06 16:34:23 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.5 2003/10/06 22:38:12 luebeck Exp $'
 
 import sys,os,string,threading
 
@@ -202,7 +202,7 @@ class GroupInfo(Utils.WithNiceRepr):
 def AddToGroupStatistic(p):
     '''Adds a person to the groups statistic.'''
     global groups
-    g = p.group
+    g = str(p.group)
     if not(groups.has_key(g)): groups[g] = GroupInfo(g)
     groups[g].people.append(p.id)
 

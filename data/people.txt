@@ -1,2 +1,3 @@
 # people.txt - Registration information
 # Format:  id:name:fname:semester:stud:passwd:email:wishes:pdata1:...:pdata9
+500001:Nach:Vor:1:Mathematik-Diplom:ÝKYPJR1V7Qh9I:::::::::::
