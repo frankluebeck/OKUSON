@@ -84,12 +84,11 @@ M!ExportResults mit dieser Anzahl von Klausuren bei allen
 ? Variablerer Export (ev. Auswahl der Exportfelder, HTML/TXT)
 F!Config-Schalter fuer Vorlesungen ohne MC-Aufgaben
 M Dokumentation der neuen Features von LAFM
-? Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
 M Dokumentation von maxhomescore und starhomescore
-M AvailableIds dokumentieren?
-M <IfExamRegistered nr="1"> </IfExamRegistered>
-    --> statt <ExamRegStatus />
-    --> In Kommentaren Beispiele zur Benutzung in templates
+M!AvailableIds dokumentieren? nicht, da Admin-Pages sowieso undokumentiert
+M!<IfExamRegistered nr="1"> </IfExamRegistered>
+ !  --> statt <ExamRegStatus />
+ !  --> In Kommentaren Beispiele zur Benutzung in templates
 M!Header und Footer in alle Seiten
 M neue Randoms nochmal testen  
 M!Skript fuer selektieren und sortieren (allgemein)
@@ -105,3 +104,4 @@ Spaeter:
      Problem dabei: TeX muss analog konfiguriert werden.
   Aufbau des Programms mit Erklaerung Locking dokumentieren
   alle Werte aus einem query speichern statt nur erster?
+  Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt

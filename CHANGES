@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.71 2004/03/08 13:44:22 neunhoef Exp $
+##  $Id: CHANGES,v 1.72 2004/03/09 13:33:23 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -67,7 +67,10 @@ Changes from 1.0-fix3 to 1.1
   after closure of sheet.
 * OKUSON now counts globally the number of exams and exports accordingly.
 * Export of additional score info from exams.
-
+* Generic script "sortselect.py" to handle exported data efficiently with
+  respect to selecting subsets of people and sorting.
+* New tags <IfExamRegistered> and <IfNotExamRegistered> to display 
+  registration status in a generic way.
 
 Changes from 1.0-fix2 to 1.0-fix3
 
