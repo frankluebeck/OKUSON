@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.85 2004/10/07 02:22:48 neunhoef Exp $
+##  $Id: CHANGES,v 1.86 2004/10/12 01:51:46 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -10,6 +10,13 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.1-fix2 to 1.1-fix3
+
+* Fixed an embarrassing bug in "CleanWeb", introduced in 1.1-fix2. Pages
+  containing certain elements (like <LastName>) did no longer work.
+* Fixed a small typo in html/edithomeworkperson.tpl (a double colon).
+
 
 Changes from 1.1-fix1 to 1.1-fix2
 
