@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.39 2003/10/20 00:13:40 neunhoef Exp $
+% $Id: manual.tex,v 1.40 2003/10/20 16:34:48 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2737,12 +2737,221 @@ To achieve this, copy the files in \texttt{html} with a second extension
 \texttt{.nointeractive} over the files of the same name but without this
 extension before customizing further the web pages. 
 
+Then start the {\OKUSON} server and register a user with a guest ID (the
+allowed guest IDs are configured in entry \texttt{<GuestIdRegExp>} of 
+the configuration file \texttt{Config.xml}). Use this guest ID as value in the
+tag 
+
+\hspace{5mm}\texttt{<input type="hidden" name="id" value="???" />}
+
+which you find in the nointeractive version of \texttt{html/exquery.html}.
+
 \section{Managing Additional Personal Registration Data}
 
+In this section we give a few examples of using the special tags explained
+in section~\ref{ssec:regelts}. The first shows the use of a free-form
+string, the next three are about asking for additional information
+concerning tutoring groups using radio buttons, check boxes or select
+options, respectively.
+
+\subsubsection*{Example: Birthplace}
+
+There are universities which use the place of birth as part of the
+identification of a person in course certificates. To get and store that
+information you can use the \texttt{persondata1} field. In the template 
+\texttt{html/registration.tpl} you could add a block:
+
+\begin{verbatim}
+    <tr>
+      <td>Place of Birth:</td>
+      <td> <input size="30" maxlength="30" name="persondata1" 
+                  value="" /> </td>
+    </tr>
+\end{verbatim}
+
+And in the template \texttt{html/regchange2.tpl} you could add the following
+block, in which the value from the registration (or last change) is preset:
+
+\begin{verbatim}
+    <tr>
+      <td>Place of Birth</td>
+      <td> <PersonData1Field /> </td>
+    </tr>
+\end{verbatim}
+
+\subsubsection*{Example: Group Choice with Radio Buttons}
+
+Say, you have three times for tutoring groups, on Monday, Tuesday and
+Wednesday. Here is a way to let the participant choose exactly one of these.
+
+In \texttt{html/registration.tpl}:
+
+\begin{verbatim}
+    <tr>
+      <td>Preferred Tutoring Group:</td>
+      <td>
+        <input type="radio" name="persondata1" 
+               value="Mon" checked="checked" />Monday,
+        <input type="radio" name="persondata1" 
+               value="Tue" />Tuesday,
+        <input type="radio" name="persondata1" 
+               value="Wed" />Wednesday
+      </td>
+    </tr>
+\end{verbatim}
+
+To get an appropriate block in the \texttt{html/regchange2.tpl} page with
+the stored choice preselected use:
+
+\begin{verbatim}
+    <tr>
+      <td>Preferred Tutoring Group:</td>
+      <td>
+         <PersonDataRadioButton name="persondata1" 
+                                value="Mon" />Monday,
+         <PersonDataRadioButton name="persondata1" 
+                                value="Tue" />Tuesday,
+         <PersonDataRadioButton name="persondata1" 
+                                value="Wed" />Wednesday
+      </td>
+    </tr>
+\end{verbatim}
+
+\subsubsection*{Example: Group Choice with Select Options}
+
+An alternative for the last example is to use the \texttt{select} element,
+in particular if there are much more than three choices.
+
+You could use the following in \texttt{html/registration.tpl}:
+
+\begin{verbatim}
+    <tr>
+      <td>Preferred Tutoring Group:</td>
+      <td> <select name="persondata1">
+        <option value="Mon" selected="selected">Monday</option>
+        <option value="Tue">Tuesday</option>
+        <option value="Wed">Wednesday</option>
+           </select>
+      </td>
+    </tr>
+\end{verbatim}
+
+Getting this with the stored value pre-selected in
+\texttt{html/regchange2.tpl} you could use:
+
+\begin{verbatim}
+    <tr>
+      <td>Preferred Tutoring Group:</td>
+      <td> <select name="persondata1">
+       <PersonDataSelectOption name="persondata1" value="Mon" 
+                               content="Monday" />
+       <PersonDataSelectOption name="persondata1" value="Tue" 
+                               content="Tuesday" />
+       <PersonDataSelectOption name="persondata1" value="Wed" 
+                               content="Wednesday" />
+       </select>
+      </td>
+    </tr>
+\end{verbatim}
+
+\subsubsection*{Example: Group Choice with Check Boxes}
+
+As a third variant of the previous two examples, assume you want to allow
+several choices by each participant. This could be done with check box input
+elements. In this case you can store each choice independently in the
+variables \texttt{persondata1} to \texttt{persondata3}. 
+
+In \texttt{html/registration.tpl} you could add:
+
+\begin{verbatim}
+    <tr>
+      <td>Possible Tutoring Groups:</td>
+      <td>
+        <input type="checkbox" name="persondata1" 
+               value="yes" />Monday,
+        <input type="checkbox" name="persondata2" 
+               value="yes" />Tuesday,
+        <input type="checkbox" name="persondata3" 
+               value="yes" />Wednesday
+      </td>
+    </tr>
+\end{verbatim}
+
+In this case you could get a similar part of the form 
+in \texttt{html/regchange2.tpl} with the stored values checked by:
+
+\begin{verbatim}
+    <tr>
+      <td>Possible Tutoring Groups:</td>
+      <td>
+        <PersonDataCheckBox name="persondata1" 
+                            value="yes" />Monday,
+        <PersonDataCheckBox name="persondata2" 
+                            value="yes" />Tuesday,
+        <PersonDataCheckBox name="persondata3" 
+                            value="yes" />Wednesday
+      </td>
+    </tr>
+\end{verbatim}
 
 
 \section{Customizing the Look and Feel of the Web Pages}
+
+The most obvious thing to play around with may be the setting of colors or a
+background image.
+
+You may try the effect of changing the following line in
+\texttt{html/OKUSON.css}:
+
+\begin{verbatim}
+    background-color:#B0E0E6;
+\end{verbatim}
+
+to
+
+\begin{verbatim}
+      background-color:#FF0000;
+      color:#00FF00;
+\end{verbatim}
+
+You can be sure that some people cannot read anything on  pages with 
+this setting, so this demonstrates that you should be quite careful with
+choosing sensible colors. 
+
+Or you can add a background image with a setting like:
+
+\begin{verbatim}
+      background-color:#CCCCCC;
+      background-image:url(http://www.math.rwth-aachen.de/~OKUSON/badback.jpg);
+\end{verbatim}
+
+Of course, as you can see here: Only use background images which don't
+disturb the legibility of the pages!
+
+More subtle changes would affect the table layout, fonts, relative font
+sizes and many more details.
+
+As a general rule: Do not use CSS features which may not be reasonably well 
+implemented in essentially all current browsers (some CSS settings may
+shorten the list of successful browser tests, as given in
+\texttt{html/techinfo.tpl}).
+
+There are two CSS style sheet files in the {\OKUSON} sample pages, 
+\texttt{OKUSON.css} and \texttt{OKUSONSheet.css}. You must be more careful
+with changes to the latter one. In particular, the background of the table
+with the exercise texts as images should be white or very bright for good
+legibility.
+
 \section{Using {\OKUSON} with Another Language}
+
+As mentioned in the Web page chapter~\ref{ch:webpages} the {\OKUSON} system
+can be adjusted to another language by translating the visible texts in all
+sample web pages (the \texttt{html.sample/\ldots tpl} files). 
+
+If you intend to do this, please contact us. Of course, we would be happy to
+distribute {\OKUSON} with sets of sample pages in several languages.
+
+
 \chapter{Differences Between XHTML and Other Variants of
 HTML}\label{ch:diffHTMLXHTML}
 
