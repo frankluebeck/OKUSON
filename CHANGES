@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.47 2003/10/22 22:27:53 neunhoef Exp $
+##  $Id: CHANGES,v 1.48 2003/10/22 23:03:21 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -36,6 +36,9 @@ Changes from 1.0-pre4  to  1.0
 * sorting of IDs consistent (numerical if possible)
 * little paragraph about usage of TEXINPUTS
 * made tutors page even more user friendly by adding name column
+* added a script to remove a person from all data files when server
+  is *not* running. Please pay ATTENTION to your data when using this!
+
 
 Changes from 1.0-pre3  to  1.0-pre4
 -----------------------------------
