@@ -37,14 +37,14 @@ table {
 th {
   border: 0pt solid #444444;
   border-bottom: 1pt solid #444444;
-  padding-left: 15;
+  padding-left: 15pt;
   padding-right: 15pt;
   font-weight: bold;
 }
 
 td {
   border: 0pt solid #444444;
-  padding-left: 15;
+  padding-left: 15pt;
   padding-right: 15pt;
   font-weight: normal;
 }
@@ -76,4 +76,4 @@ hr {
 img {
   border: 0pt;
 }
-/*  $Id: OKUSON.css,v 1.3 2003/10/08 15:29:45 luebeck Exp $  */ 
+/*  $Id: OKUSON.css,v 1.4 2003/10/16 13:48:30 luebeck Exp $  */ 
