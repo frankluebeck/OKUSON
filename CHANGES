@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.84 2004/10/06 11:16:52 neunhoef Exp $
+##  $Id: CHANGES,v 1.85 2004/10/07 02:22:48 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,12 +13,15 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix1 to 1.1-fix2
 
+* Made a small change to the RandObj class in SimpleRand because of an
+  integer overflow occuring in Python 2.2 (was no problem in 2.3).
+  Should not be visible.
 * Fixed all (???) places where user entered data (last name, first name,
-  studies, email, wishlist, string answers) is put back on some web page,
-  which is sent out. To avoid cross site scripting attacks we replace
-  "<" by "&lt;", ">" by "&gt;" and "&" by "&amp;" in those places. This
-  should never hurt and should make cross site scripting attacks at least
-  a bit harder.
+  studies, email, wishlist, string answers, persondata) is put back
+  on some web page, which is sent out. To avoid cross site scripting
+  attacks we replace "<" by "&lt;", ">" by "&gt;" and "&" by "&amp;"
+  in those places. This should never hurt and should make cross site
+  scripting attacks at least a bit harder.
 * Amended the manual with respect of TEXT elements in EXERCISE elements:
   Only a prefix and a postfix to all questions are considered, not TEXTs
   between questions, even for the case order="f". (Sorry Axel!)
