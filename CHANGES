@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.95 2005/04/04 11:36:11 neunhoef Exp $
+##  $Id: CHANGES,v 1.96 2005/04/04 12:38:48 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,7 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to 1.1-fix4
 
+* Fixed a bug with locale.str in ExportResults.
 * Explained the scoring of interactive exercises in the manual (was only in
   sample web page before).
 * Two corrections in the documentation of <GroupsOverview />.
