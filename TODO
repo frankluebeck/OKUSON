@@ -4,17 +4,15 @@ Interessante Ergebnisse des Browser-Checks:
   opera adminlogin --> geht nicht mit "Location" header!
   netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
 
-Bug:
-  Zugangsberechtigung für Tutoren bei Gruppe 0 checken!
-  Erinnerung: Export-Bug
-
 Jetzt:
-  Versionsnummer als Tag
-  Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
-  Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
-    im Widerspruch zur Doku ignoriert)
-  Statistik fuer Tutoren zugaenglich (wie schwierig?)
-  Hinweis, dass man beliebige PDF's per Webserver ausliefern lassen kann.
+  M Versionsnummer als Tag  ==>  auf default-website anzeigen
+  M Funktion auf Adminseite, die Gruppenwechsel von Leuten erlaubt
+  M Zwischentexte innerhalb von MC-Aufgaben (bei order="fix") (werden bislang
+      im Widerspruch zur Doku ignoriert)
+  M Cross-Site-Scripting problem?
+  F Statistik fuer Tutoren zugaenglich (wie schwierig?)
+  F Hinweis, dass man beliebige PDF's per Webserver ausliefern lassen kann.
+  F Hinweis auf Python 2.3+ in Suse 9.0 ins Handbuch/Website
 
 Spaeter: 
 

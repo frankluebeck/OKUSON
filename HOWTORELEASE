@@ -1,5 +1,6 @@
 Small HOWTO for releasing versions.
 
+0) Change VERSION file.
 1) Tag the whole tree with:
    cvs tag -F tag-1r1
            ^ This forces tags even to files which are already tagged with

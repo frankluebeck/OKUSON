@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.77 2004/05/03 13:11:00 neunhoef Exp $
+##  $Id: CHANGES,v 1.78 2004/10/01 15:07:38 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -10,6 +10,13 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.1-fix1 to 1.1-fix2
+
+* Fixed a bug with the generic export functionality (concerning exercise 
+  results)
+* Created favicon.ico, because browsers ask for it.
+
 
 Changes from 1.1 to 1.1-fix1
 
