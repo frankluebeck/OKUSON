@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.6 2003/11/07 09:40:23 neunhoef Exp $ -->
+<!-- $Id: config.dtd,v 1.7 2004/03/03 14:35:16 neunhoef Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -15,7 +15,9 @@
 <!ELEMENT CourseName (#PCDATA)>
 <!ELEMENT Semester (#PCDATA)>
 <!ELEMENT Lecturer (#PCDATA)>
+<!ELEMENT Header (#PCDATA)>
 <!ELEMENT Feedback (#PCDATA)>
+<!ELEMENT Footer (#PCDATA)>
 <!ELEMENT PossibleStudies (Option)*>
 <!ELEMENT Port (#PCDATA)>
 <!ELEMENT ExtraLaTeXHeader (#PCDATA)>

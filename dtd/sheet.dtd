@@ -4,7 +4,7 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: sheet.dtd,v 1.3 2003/10/09 12:02:30 neunhoef Exp $ -->
+<!-- $Id: sheet.dtd,v 1.4 2004/03/03 14:35:16 neunhoef Exp $ -->
 
 <!ELEMENT SHEETS (SHEET)*>
 
@@ -20,6 +20,10 @@
                 opento     time to submit at latest, in format:  
                              HH:mm_DD.MM.YYYY, Hour, minute, day, month, year
                 maxhomescore  maximal number of points in homework part
+                              (mandatory + optional exercises), no default
+                starhomescore maximal number of points for optional homework
+                              exercises (default is 0, i.e. all homework
+                              exercises are treated as mandatory)
 -->
 <!ATTLIST SHEET counts       CDATA #IMPLIED 
                 nr           CDATA #REQUIRED 
@@ -28,7 +32,8 @@
                 magic        CDATA #IMPLIED
                 openfrom     CDATA #IMPLIED
                 opento       CDATA #REQUIRED
-                maxhomescore CDATA #IMPLIED> 
+                maxhomescore CDATA #IMPLIED
+                starhomescore CDATA #IMPLIED> 
 
 <!ELEMENT EXERCISE EMPTY>
 <!-- attributes:

@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.62 2003/12/01 14:45:55 neunhoef Exp $
+##  $Id: CHANGES,v 1.63 2004/03/03 14:35:15 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -11,7 +11,7 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
-Changes from 1.0-fix3 to 1.0-fix4
+Changes from 1.0-fix3 to ???
 
 * Added 'value = ""' for string input fields, if nothing was entered before.
   This hopefully avoids pre-filled-in fields by "intelligent" browsers.

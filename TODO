@@ -20,6 +20,13 @@ Testen:
   Alle Moeglichkeiten bei den Sheets ausprobieren.
   Dateiheader checken.
 
+Vor naechstem Release:
+
+  <AvailableIds /> aus Adminseite wieder raus?
+  .totalscore durchschauen, ob -1 weh tut
+  neue Authenticates /-Admin durchschauen
+  AdminMenu - funktion machen und ueberall aendern mit authentification
+
 Ideen:
 
   Statistik ueber Uebungsblaetter    --> Hilfsskript?

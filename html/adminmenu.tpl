@@ -93,6 +93,9 @@
       </select>
     </p></form>
 
+
+    <h3>Statistics:</h3>
+
     <form action="/ShowExerciseStatistics" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Show Exercise Statistics for sheet
@@ -114,6 +117,45 @@
     </p>
     </form>
 
+    <form action="/ShowCumulatedScoreStatistics" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Cumulated Score Statistics for
+      <select name="exerciseCategory">
+        <option selected="selected" value="all">MC and Homework</option>
+        <option value="mc">MC only</option>
+        <option value="homework">Homework only</option>
+      </select>
+    for group
+    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)<br />
+    Who should be included in the cumulated statistics for a set of sheets?<br />
+    <input type="radio" name="includeAll" value="no" checked="true" />
+    Only people who returned the last sheet of the considered set of sheets.<br />
+    <input type="radio" name="includeAll" value="yes" />
+    All people who ever returned any sheet of the considered set of sheets.
+    </p>
+    </form>
+
+    <form action="/ShowDetailedScoreTable" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Show Detailed Score Table for
+      <select name="exerciseCategory">
+        <option  value="all" selected="selected">MC and Homework</option>
+        <option value="mc">MC only</option>
+        <option value="homework">Homework only</option>
+      </select>
+    for group
+    <input  name="group" size="4" maxlength="4" /> (leave field empty for all groups)
+    sorted by  
+      <select name="sortBy">
+        <option value="ID" selected="selected">ID</option>
+        <option value="name">name</option>
+        <option value="total score">total score</option>
+        <option value="total MC score">total MC score</option>
+        <option value="total homework score">total homework score</option>
+      </select>
+    </p>
+    </form>
+    
     
     <h3>Special Access for Administrators:</h3>
 
@@ -125,13 +167,14 @@
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Send message 
     <input size="60" maxlength="240" name="msgtext" value="" />
-    to <input size="8" maxlength="6" name="msgid" value="" />
+    to
+    <AvailableIds />
     </p></form>
      
     <form action="/DeleteMessages" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Delete messages of
-    <input size="8" maxlength="6" name="msgid" value="" />
+    <AvailableIds />
     </p></form>
 
     <form action="/Resubmit" method="post">
@@ -155,5 +198,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.16 2003/11/16 19:56:56 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.17 2004/03/03 14:35:16 neunhoef Exp $ -->
 

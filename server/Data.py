@@ -5,11 +5,11 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.14 2003/11/16 14:08:58 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.15 2004/03/03 14:35:16 neunhoef Exp $'
 
 import sys,os,string,threading
 
-import Config
+import Config, Exercises
 
 from fmTools import Utils, AsciiData
 
@@ -73,7 +73,35 @@ class Person(Utils.WithNiceRepr):
         self.homework = {}
         self.exams = []
         self.messages = []
-
+        
+    def TotalMCScore(self):
+        l = Exercises.SheetList()
+        totalscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                if self.mcresults.has_key(name):
+                    totalscore += self.mcresults[name].score
+        return totalscore
+    def TotalHomeScore(self):
+        l = Exercises.SheetList()
+        totalscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                if self.homework.has_key(name) and \
+                   self.homework[name].totalscore != -1:
+                    totalscore += self.homework[name].totalscore
+        return totalscore
+    def TotalScore(self):
+        l = Exercises.SheetList()
+        totalscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                if self.mcresults.has_key(name):
+                    totalscore += self.mcresults[name].score
+                if self.homework.has_key(name) and \
+                   self.homework[name].totalscore != -1:
+                    totalscore += self.homework[name].totalscore
+        return totalscore
 
 people = {}     # all people are stored in here under their id
 
@@ -118,7 +146,7 @@ mcresultsdesc = AsciiData.FileDescription(Config.conf['SubmissionFile'],people,
 
 class Homework(Utils.WithNiceRepr):
     '''Objects in this class store homework results.'''
-    totalscore = 0  # score for all written exercises
+    totalscore = -1 # score for all written exercises
     scores = ""     # scores of the separate written exercises
 
     def __init__(self):
@@ -263,7 +291,8 @@ Sheet Number is indicated by sheetKey.
         if group != None:
             if p.group != groups[group].number: continue
         if not(Config.conf['GuestIdRegExp'].match(k)):
-            if p.homework.has_key(sheetKey):
+            if p.homework.has_key(sheetKey) and \
+               p.homework[sheetKey].totalscore != -1:
                 numberOfSubmissions += 1
                 score = p.homework[sheetKey].totalscore
                 listOfPoints.append(score)

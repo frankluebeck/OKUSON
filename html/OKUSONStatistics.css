@@ -57,3 +57,65 @@ table.pointdistribution tr.pdindex td
 table.pointdistribution 
     { border-spacing:2px; 
     }
+
+table.detailedscoretable 
+    { border-spacing: 0px;
+    }
+
+table.detailedscoretable tr.head 
+    { background-color: #ccc;
+    }
+
+table.detailedscoretable tr.head th 
+    { border-bottom: 2px black solid;
+    }
+
+table.detailedscoretable tr.max 
+    { background-color: #ccc;
+    }
+
+table.detailedscoretable tr.max td 
+    { border-bottom: 1px black solid;
+    }
+
+table.detailedscoretable tr.odd 
+    { background-color: #eee;
+    }
+
+table.detailedscoretable tr.even 
+    { background-color: #ddd;
+    }
+
+table.detailedscoretable td 
+    { padding: 1px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+table.detailedscoretable td.no 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.pts 
+    { text-align: center;
+    }
+
+table.detailedscoretable tr.odd td.pts 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.even td.pts 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.sum 
+    { text-align: center;
+    }
+
+table.detailedscoretable tr.odd td.sum 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.even td.sum 
+    { text-align: right;
+    }

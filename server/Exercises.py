@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.23 2003/11/24 09:56:03 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.24 2004/03/03 14:35:16 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -109,6 +109,7 @@ class Sheet(Utils.WithNiceRepr):
     first = 1        # number of first exercise on this sheet
                      # the following four lists have equal length:
     maxhomescore=-1  # maximal number of of points in homework
+    starhomescore=0  # maximal number of points for optional homework exercises
     list = []        # sequence of TeXTexts or Exercise objects
     exnr = []        # None for each TeXText in "list", and a number otherwise
     order = []       # 'p' for permuted and 'f' for fixed for each 
@@ -707,6 +708,67 @@ of the sheet with seed "seed" and returns the result as a string.
                 res.append('')
         return string.join(res, '\n')
 
+    def StatisticsForVariant(self, exNr, quNr, varNr):
+        ''' Gives detailed  statistics for the specified variant 
+        '''
+        exercise = None
+        i = 0
+        numberOfQuestionsBefore = 0
+        while ((exercise  == None) and (i < len(self.exnr)) ) :
+            if self.exnr[i] == exNr :
+                exercise = self.list[i]
+                break
+            if self.nrquestions[i] != None:
+                numberOfQuestionsBefore += self.nrquestions[i]
+            i += 1
+        if exercise == None: return None
+        exIndex = i
+        quCount = 0
+        found = 0        
+        i = 0
+        while ((i < len(exercise.list)) and (found  == 0)):
+            if isinstance(exercise.list[i], Question) : quCount += 1
+            if quNr == quCount: 
+                found = 1
+                break
+            i += 1
+        if found ==0: return None
+        quIndex = i 
+        peopleCount = 0
+        submissionCount = 0
+        correctAnswerCount = 0
+        dictCorrectAnswers = {}
+        dictFalseAnswers = {}
+        for k in Data.people.keys():
+            p = Data.people[k]
+            if not(Config.conf['GuestIdRegExp'].match(k)):
+                personalQuestions = self.ChooserFunction(WebWorkers.SeedFromId(p.id)) 
+                personalQuestions = personalQuestions[exIndex]
+                #personalQuestions = self.list[ self.ChooserFunction(WebWorkers.SeedFromId(p.id))[exIndex] ]
+                countOfQuestions = -1
+                # personalQuestions ist jetzt eine Liste mit Tupeln (Index in ex.list, Variantennummer)
+                for (i,n) in personalQuestions: 
+                    countOfQuestions += 1    #0 für die erste Frage
+                    if i == quIndex and ((n+1) == varNr):
+                        if p.mcresults.has_key(self.name):
+                            peopleCount += 1
+                            if p.mcresults[self.name].marks[numberOfQuestionsBefore+countOfQuestions] !='0':
+                                submissionCount += 1
+                                sm = p.mcresults[self.name].submission.split('|')[numberOfQuestionsBefore+countOfQuestions]
+                                if p.mcresults[self.name].marks[numberOfQuestionsBefore+countOfQuestions] =='+':
+                                    correctAnswerCount += 1
+                                    if dictCorrectAnswers.has_key(sm):
+                                        dictCorrectAnswers[sm].append(p.id)
+                                    else:
+                                        dictCorrectAnswers[sm]=[p.id]
+                                else:
+                                    if dictFalseAnswers.has_key(sm):
+                                        dictFalseAnswers[sm].append(p.id)
+                                    else:
+                                        dictFalseAnswers[sm]=[p.id]
+        return ( peopleCount, submissionCount, correctAnswerCount, dictCorrectAnswers, 
+            dictFalseAnswers, self.list[exIndex].list[quIndex].variants[varNr-1])
+    
     def Statistics(self):
         presented = {}   # How many students have seen this question/variant?
         tried = {}  # How many students have submitted an solution?
@@ -1125,13 +1187,24 @@ def MakeSheet(t):
         try:
             sh.maxhomescore = int(t[1]['maxhomescore'])
         except:
-            Utils.Error('Value of "magic" attribute is no integer: '+
+            Utils.Error('Value of "maxhomescore" attribute is no integer: '+
                         t[1]['maxhomescore'].encode('ISO-8859-1','replace')+ 
                         ' at '+Utils.StrPos(t[3])+'\nAssuming "-1"',
                         prefix='Warning:')
             sh.maxhomescore = -1
     else:
         sh.maxhomescore = -1
+    if t[1].has_key('starhomescore'):
+        try:
+            sh.starhomescore = int(t[1]['starhomescore'])
+        except:
+            Utils.Error('Value of "starhomescore" attribute is no integer: '+
+                        t[1]['starhomescore'].encode('ISO-8859-1','replace')+ 
+                        ' at '+Utils.StrPos(t[3])+'\nAssuming "0"',
+                        prefix='Warning:')
+            sh.starhomescore = 0
+    else:
+        sh.starhomescore = 0
 
     counter = sh.first
     for a in t[2]:

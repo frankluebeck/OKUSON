@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.75 2004/03/02 15:32:23 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.76 2004/03/03 14:35:16 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -99,6 +99,10 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_User9(self,node,out):
         if Config.conf.has_key('User9'):
             out.write(Config.conf['User9'])
+    def handle_Header(self,node,out):
+        out.write(Config.conf['Header'])
+    def handle_Footer(self,node,out):
+        out.write(Config.conf['Footer'])
     def handle_Feedback(self,node,out):
         out.write(Config.conf['Feedback']+'\n')
     def handle_PossibleStudies(self,node,out):
@@ -205,7 +209,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         for r in Config.conf['Resolutions']:
             out.write('<option>'+str(r)+'</option>\n')    
     def handle_AvailableIds(self,node,out):
-        if currentcookie == None:
+        if not(self.iamadmin):
             out.write('<input size="8" maxlength="6" name="msgid" value="" '
                       '/>\n')
         else:
@@ -217,7 +221,102 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                    out.write('<option value="'+k+'">'+k+' - '+p.fname+' '
                              +p.lname+'</option>\n')
             out.write('</select>\n')
-            
+    def MaxTotalMCScore(self):
+        l = Exercises.SheetList()
+        maxtotalmcscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                maxtotalmcscore += s.MaxMCScore()
+        return maxtotalmcscore
+    def MaxTotalHomeScore(self):
+        l = Exercises.SheetList()
+        maxtotalhomescore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                if s.maxhomescore == -1:
+                    return -1    # invalid homescore -> abort calculation
+                maxtotalhomescore += s.maxhomescore
+        return maxtotalhomescore
+    def MaxTotalOptionalHomeScore(self):
+        l = Exercises.SheetList()
+        maxtotalstarhomescore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                maxtotalstarhomescore += s.starhomescore
+        return maxtotalstarhomescore
+    def MaxTotalMandatoryHomeScore(self):
+        maxtotalhomescore = self.MaxTotalHomeScore()
+        if maxtotalhomescore == -1:
+            return -1
+        else:
+            return maxtotalhomescore - self.MaxTotalOptionalHomeScore()
+    def handle_MaxTotalMCScore(self,node,out):
+        out.write(str(self.MaxTotalMCScore()))
+    def handle_MaxTotalHomeScore(self,node,out):
+        # possible values for type:
+        # - mandatory: print the maximal total mandatory homework score
+        # - optional : print the maximal total optional homework score
+        # - plus     : print literally as sum e.g. "10 + 5"
+        # - sum      : print the maximal total homework score (default)
+        typ = 'sum'
+        try:
+            typ = node[1]['type'].encode('ISO-8859-1','replace')
+        except:
+            pass        
+        if typ == 'mandatory':
+            score = self.MaxTotalMandatoryHomeScore()
+            if score > -1:
+                out.write(str(score))
+            else:
+                out.write('?')
+        elif typ == 'optional':
+             out.write(str(self.MaxTotalOptionalHomeScore()) + '*')
+        elif typ == 'plus':
+            score = self.MaxTotalMandatoryHomeScore()
+            if score > -1:
+                out.write(str(score) + ' + ' +
+                          str(self.MaxTotalOptionalHomeScore()) + '*' )
+            else:
+                out.write('?')
+        else: # typ == 'sum' or none of the valid values
+            score = self.MaxTotalHomeScore()
+            if score != -1:
+                out.write(str(score))
+            else:
+                out.write('?')
+    def handle_MaxTotalScore(self,node,out):
+        # possible values for type:
+        # - mandatory: print the maximal total mandatory homework score
+        # - optional : print the maximal total optional homework score
+        # - plus     : print literally as sum e.g. "10 + 5"
+        # - sum      : print the maximal total homework score (default)
+        typ = 'sum'
+        try:
+            typ = node[1]['type'].encode('ISO-8859-1','replace')
+        except:
+            pass        
+        maxtotalmcscore = self.MaxTotalMCScore()
+        if typ == 'mandatory':
+            score = self.MaxTotalMandatoryHomeScore()
+            if score > -1:
+                out.write(str(maxtotalmcscore + score))
+            else:
+                out.write(str(maxtotalmcscore) + ' + ?')
+        elif typ == 'optional':
+             out.write(str(self.MaxTotalOptionalHomeScore()))
+        elif typ == 'plus':
+            score = self.MaxTotalMandatoryHomeScore()
+            if score > -1:
+                out.write(str(maxtotalmcscore + score) + ' + ' +
+                          str(self.MaxTotalOptionalHomeScore()) )
+            else:
+                out.write('?')
+        else: # typ == 'sum' or none of the valid values
+            score = self.MaxTotalHomeScore()
+            if score != -1:
+                out.write(str(maxtotalmcscore + score))
+            else:
+                out.write(str(maxtotalmcscore) + ' + ?')
 
 
 EH_Generic = EH_Generic_class()
@@ -551,75 +650,34 @@ one Person object as data.'''
                     mcscore = '---'
                 if 'withMaxMCScore' in fields:
                     mcscore += ' (' + str(s.MaxMCScore()) + ')'
-                if self.p.homework.has_key(name):
+                if self.p.homework.has_key(name) and \
+                   self.p.homework[name].totalscore != -1:
                     homescore = str(self.p.homework[name].totalscore)
                 else:
                     homescore = '?'
                 if 'withMaxHomeScore' in fields:
-                    if s.maxhomescore != -1:
-                        homescore += ' (' + str(s.maxhomescore) + ')'
-                    else:
+                    if s.maxhomescore < s.starhomescore:
                         homescore += ' (?)'
+                    elif s.starhomescore == 0:
+                        homescore += ' (' + str(s.maxhomescore) + ')'
+                    elif s.maxhomescore == s.starhomescore:
+                        homescore += ' (' + str(s.starhomescore) + '*)'
+                    else:
+                        homescore += ' (' + \
+                                     str(s.maxhomescore - s.starhomescore) + \
+                                     '+' + str(s.starhomescore) + '*)'
                 out.write('<tr><td align="center">'+name+'</td>')
                 if 'interactive' in fields:
                     out.write('<td align="center">'+mcscore+'</td>')
                 if 'homework' in fields:
                     out.write('<td align="center">'+homescore+'</td>')
                 out.write('</tr>\n')  
-    def TotalMCScore(self):
-        l = Exercises.SheetList()
-        totalscore = 0
-        for nr,name,s in l:
-            if s.counts and s.IsClosed():   # sheet already closed 
-                if self.p.mcresults.has_key(name):
-                    totalscore += self.p.mcresults[name].score
-        return totalscore
-    def TotalHomeScore(self):
-        l = Exercises.SheetList()
-        totalscore = 0
-        for nr,name,s in l:
-            if s.counts and s.IsClosed():   # sheet already closed 
-                if self.p.homework.has_key(name):
-                    totalscore += self.p.homework[name].totalscore
-        return totalscore
     def handle_TotalMCScore(self,node,out):
-        out.write(str(self.TotalMCScore()))
+        out.write(str(self.p.TotalMCScore()))
     def handle_TotalHomeScore(self,node,out):
-        out.write(str(self.TotalHomeScore()))
+        out.write(str(self.p.TotalHomeScore()))
     def handle_TotalScore(self,node,out):
-        out.write(str(self.TotalMCScore() + self.TotalHomeScore()))
-    def MaxTotalMCScore(self):
-        l = Exercises.SheetList()
-        maxtotalmcscore = 0
-        for nr,name,s in l:
-            if s.counts and s.IsClosed():   # sheet already closed 
-                maxtotalmcscore += s.MaxMCScore()
-        return maxtotalmcscore
-    def MaxTotalHomeScore(self):
-        l = Exercises.SheetList()
-        maxtotalhomescore = 0
-        for nr,name,s in l:
-            if s.counts and s.IsClosed():   # sheet already closed 
-                if s.maxhomescore == -1:
-                    maxtotalhomescore = -1
-                if maxtotalhomescore != -1:
-                    maxtotalhomescore += s.maxhomescore
-        return maxtotalhomescore
-    def handle_MaxTotalMCScore(self,node,out):
-        out.write(str(self.MaxTotalMCScore()))
-    def handle_MaxTotalHomeScore(self,node,out):
-        maxtotalhomescore = self.MaxTotalHomeScore()
-        if maxtotalhomescore != -1:
-            out.write(str(maxtotalhomescore))
-        else:
-            out.write('?')
-    def handle_MaxTotalScore(self,node,out):
-        maxtotalmcscore = self.MaxTotalMCScore()
-        maxtotalhomescore = self.MaxTotalHomeScore()
-        if maxtotalhomescore != -1:
-            out.write(str(maxtotalmcscore + maxtotalhomescore))
-        else:
-            out.write(str(maxtotalmcscore) + ' + ?')
+        out.write(str(self.p.TotalScore()))
     def handle_ExamGrades(self,node,out):
         if Config.conf['ExamGradingActive'] == 0 or \
            Config.conf['ExamGradingFunction'] == None: return
@@ -655,6 +713,22 @@ one Person object as data.'''
             Utils.Error('Call of ExamGradingFunction raised an '
                     'exception, ID: '+self.p.id+', message:\n'+
                     string.join(lines))
+    def handle_ExamRegStatus(self, node,out):
+        if node[1].has_key('examnr'):
+            examnr = node[1]['examnr'].encode('ISO-8859-1', 'replace')
+        try:
+            exam = int(examnr)
+        except:
+            return
+        teilnahme = 0
+        if exam < len(self.p.exams):
+            if self.p.exams[exam] != None:
+                if self.p.exams[exam].registration:
+                    teilnahme = 1
+        if teilnahme == 1:
+            out.write('<p>Sie sind zu Klausur %d angemeldet.</p>' % exam)
+        else:
+            out.write('<p>Sie sind zu Klausur %d nicht angemeldet.</p>' % exam)
     def handle_Grade(self,node,out):
         if Config.conf['GradingActive'] == 0 or \
            Config.conf['GradingFunction'] == None: return
@@ -664,7 +738,8 @@ one Person object as data.'''
             if s.counts and s.IsClosed():   # we count it
                 if self.p.mcresults.has_key(na):
                     mcscore += self.p.mcresults[na].score
-                if self.p.homework.has_key(na):
+                if self.p.homework.has_key(na) and \
+                   self.p.homework[na].totalscore != -1:
                     homescore += self.p.homework[na].totalscore
         exams = []
         for i in range(24):
@@ -878,11 +953,15 @@ a Person object and a Sheet object as data.'''
         if self.s.openfrom:
             out.write(LocalTimeString(self.s.openfrom))
     def handle_StatisticsTable(self, node, out):
+        if not(self.iamadmin):
+            out.write('<p>Not logged in: Statistics not displayed.</p>')
+            return
         numberOfPeople, numberOfSubmissions, statistics = self.s.Statistics()
         out.write('<table class="statistics">\n')
         out.write('<tr><th>Ex</th><th>Qu</th><th>Var</th>'
             + '<th colspan="2">Seen By</th><th colspan="2">Tried By</th>'
-              '<th colspan="2">Solved By</th></tr>')
+              '<th colspan="2">Solved By</th><th></th></tr>')
+
         if len(statistics) > 0:
             exnr_old, qnr_old, vnr, presented, tried, solved = statistics[0]
         for exnr, qnr, vnr, presented, tried, solved in statistics:
@@ -913,6 +992,9 @@ a Person object and a Sheet object as data.'''
                                (solved, ClassFromFraction(pc), 100*pc ))
             else:
                 out.write('<td>%d</td><td>0</td>' % solved)
+            out.write('<td><a href="/ShowExerciseStatisticsDetails?' +
+                'sheet=%s&amp;ex=%d&amp;qu=%d&amp;var=%d">Details</a></td>' \
+                    % (self.s.name,exnr, qnr, vnr))
             out.write('</tr>\n')
         out.write('</table>')
     def handle_ScoresTableByGroup(self, node, out):
@@ -923,15 +1005,82 @@ a Person object and a Sheet object as data.'''
             numHw, avHw, medHw, highHw, listHw, \
             numMc, avMc, medMc, highMc, listMc = \
                  Data.GlobalStatistics(self.s.name, grp)
+            if self.s.maxhomescore == -1:
+                maxHw = highHw
+            else:
+                maxHw = self.s.maxhomescore
+            maxMc = self.s.MaxMCScore()
             hwStr += '<h4>Group: %s</h4>\n' % grp                
             hwStr += '<p>Median: %.2f, Average: %.2f </p>' % (medHw, avHw)
-            hwStr += DistributionTable(numHw, listHw)
+            hwStr += DistributionTable(numHw, maxHw, listHw)
             mcStr += '<h4>Group: %s</h4>\n' % grp
             mcStr += '<p>Median: %.2f, Average: %.2f </p>' % (medMc, avMc)
-            mcStr += DistributionTable(numMc, listMc)
+            mcStr += DistributionTable(numMc, maxMc, listMc)
         out.write(hwStr)
         out.write(mcStr)
 
+
+class EH_withSheetVariant_class(EH_withPersSheet_class):
+    s = None # For the sheet Data
+    exNr = 0;
+    quNr = 0;
+    varNr = 0;
+    def __init__(self, s, exNr, quNr, varNr):
+        self.s = s
+        self.exNr = exNr
+        self.quNr = quNr
+        self.varNr = varNr
+    def handle_StatisticsForVariant(self, node, out):
+        if not(self.iamadmin):
+            out.write('<p>Not logged in: Statistics not displayed.</p>')
+            return
+        result = self.s.StatisticsForVariant(self.exNr, self.quNr, self.varNr)
+        if result != None:
+            (peopleCount, submissionCount, correctAnswerCount, \
+             dictCorrectAnswers, dictFalseAnswers, variantText) = result
+            out.write('<div class="statisticsforvariant">\n')
+            out.write('<h2>Statistics for Exercise %d, Question %d, '
+                      'Variant %d:</h2>\n' % 
+                      (self.exNr, self.quNr, self.varNr))
+            out.write('<table>\n')
+            out.write('<tr><td>Seen by:</td><td>%d</td></tr>' % submissionCount)
+            out.write('<tr><td>Submitted by:</td><td>%d</td></tr>' % 
+                      submissionCount)
+            out.write('<tr><td>Correct answers:</td><td>%d</td></tr>' % 
+                      correctAnswerCount)
+            out.write('<tr><td>Inorrect answers:</td><td>%d</td></tr>' % 
+                      (submissionCount-correctAnswerCount))
+            out.write('</table>')
+            out.write('<p>This is the question:</p>\n')
+            out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>' 
+                % ('96dpi', str(variantText.md5sum), 
+                   Exercises.CleanString(variantText.text)))
+            for heading,dict in [('List of incorrect answers',
+                                  dictFalseAnswers), 
+                       ('List of correct answers', dictCorrectAnswers) ] :
+                out.write('<h3>%s</h3>\n' % heading)
+                out.write('<table class="submissionlist">\n')
+                out.write('<tr><th>Submission</th><th>IDs</th></tr>\n')
+                for submission in dict.keys():
+                    out.write('<tr><td class="sm">%s</td><td class="idlist">' %
+                              submission)
+                    listIds = Utils.SortNumerAlpha(dict[submission])
+                    for id in listIds:
+                        out.write(self.idLink(id) + '\n')
+                    out.write('</td></tr>')
+                out.write('</table>\n')
+            out.write('</div>\n\n')
+        else: 
+            out.write('<p>Error: Result of StatisticsForVariant is empty.</p>')
+
+    def idLink(self,id):
+        #return '<a href="" onmouseover="tip(\'''' + str(id) \
+        #   + '\')" onmouseout="untip()">' + str(id) + '</a>'
+        return '<a href="mailto:%s">%s</a><a href="/QuerySheet?sheet=%s&amp;' \
+               'id=%s">(S)</a>' % \
+               (Data.people[id].email, str(id), self.s.name, str(id))
+ 
+                        
 def ClassFromFraction(pc):
     # pc should be a float. Meaningful results only with 0<=pc<=1
     # Returns string with CSS-"class"-statement, corresponding to pc
@@ -1183,11 +1332,13 @@ class EH_withGroupInfo_class(EH_Generic_class):
         out.write('<tr><th></th><th colspan="4">Homework Scores</th>'
                   '<th colspan="4">Multiple Choice Scores</th></tr>')
         out.write('<tr><th>Sheet</th><th>#Subm.</th><th>Avg.</th>' )
-        out.write( '<th>Median</th><th>Highest</th>')
+        out.write( '<th>Median</th><th>Highest</th><th>Max</th>')
         out.write(' <th>#Subm.</th><th>Avg.</th>' )
-        out.write( '<th>Median</th><th>Highest</th>  </tr>')
+        out.write( '<th>Median</th><th>Highest</th><th>Max</th></tr>')
         listOfTables = []
         for sheetNumber, sheetName, sheet in Exercises.SheetList():
+            if not sheet.IsClosed():
+                continue
             if self.grp != None:
                 group = str(self.grp.number)
             else:
@@ -1195,28 +1346,36 @@ class EH_withGroupInfo_class(EH_Generic_class):
             numHw, avHw, medHw, highHw, listHw, \
             numMc, avMc, medMc, highMc, listMc = \
                    Data.GlobalStatistics(sheetName, group)
+            if sheet.maxhomescore == -1:
+                maxHw = highHw
+                maxHwStr = '?'
+            else:
+                maxHw = sheet.maxhomescore
+                maxHwStr = str(maxHw)
+            maxMc = sheet.MaxMCScore()
             out.write('<tr>')
             out.write('<td>%s</td>' % sheetName )
             out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
-                      % (numHw, avHw, medHw, highHw) )
+                      '<td>%s</td>'
+                      % (numHw, avHw, medHw, highHw, maxHwStr) )
             out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
-                      % (numMc, avMc, medMc, highMc) )
+                      '<td>%d</td>'
+                      % (numMc, avMc, medMc, highMc, maxMc) )
             out.write('</tr>\n')
             
             exStr = '<h2>Overview for sheet %s</h2>\n' % sheetName
-            
-            for num, av, med, list, heading in \
-                [ (numHw, avHw, medHw, listHw, 'Homework'), \
-                  (numMc, avMc, medMc, listMc, 'Multiple Choice')]:
+            for num, av, med, maxPts, list, heading in \
+                [ (numHw, avHw, medHw, maxHw, listHw, 'Homework'), \
+                  (numMc, avMc, medMc, maxMc, listMc, 'Multiple Choice')]:
                 exStr +='<h3>' + heading + '</h3>'
                 exStr +='<p>Median: %.2f, Average: %.2f</p>' % (med, av)
-                exStr += DistributionTable(num, list)
+                exStr += DistributionTable(num, maxPts, list)
             listOfTables.append(exStr)
         out.write('</table>\n')
         for s in listOfTables:
             out.write(s)
 
-def DistributionTable(num, list):
+def DistributionTable(num, maxPts, list):
     exStr = ''
     if num > 0:
         exStr +='<table class="pointdistribution">\n'
@@ -1230,12 +1389,16 @@ def DistributionTable(num, list):
                 scalefactor = 1
         except:
             scalefactor = 1
-        for i in range(len(list)):
+        for i in range(maxPts+1):
+            if i < len(list):
+                count = list[i]
+            else:
+                count = 0
             row1 += '<td><img src="/images/red.png" alt="" width="10px" '\
-                    'height="' + str(list[i] * scalefactor) + 'px" /></td>'
-            row2 += '<td>%d</td>' % list[i]
+                    'height="' + str(count * scalefactor) + 'px" /></td>'
+            row2 += '<td>%d</td>' % count
             try:
-                row3 += '<td>%d</td>' % (100*float(list[i]) / float(num))
+                row3 += '<td>%d</td>' % (100*float(count) / float(num))
             except:
                 row3 += '<td>0%</td>'
             row4 +=  '<td>%d</td>' % i 
@@ -1249,6 +1412,358 @@ def DistributionTable(num, list):
     return exStr
     
        
+#######################################################################
+# This is for statistics pages:
+
+class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
+    options = {}
+    def __init__(self,grp,options):
+        self.grp = grp   # this we owe our base class
+        self.options = options
+    def handle_CumulatedScoreDiagrams(self, node, out):
+        if not(self.iamadmin):   # just for security reasons
+            out.write('<p>Not logged in: Statistics not displayed.</p>')
+        else:
+            if self.grp != None:
+                group = str(self.grp.number)
+            else:
+                group = None
+            category = 'all'  # default
+            if self.options.has_key('exerciseCategory'):
+                if self.options['exerciseCategory'] in ['mc', 'homework']:
+                    category = self.options['exerciseCategory']
+            if self.options.has_key('includeAll'):
+                includeAll = self.options['includeAll']
+            try:
+                numIntervals = int(node[1]['intervals'])
+            except:
+                # default
+                numIntervals = 20
+            if numIntervals <= 0:
+                numIntervals = 20
+            totalMCScore = {}
+            maxTotalMCScore = 0
+            totalHomeScore = {}
+            maxTotalHomeScore = 0
+            maxTotalStarHomeScore = 0
+            totalScore = {}
+            for sheetNumber, sheetName, sheet in Exercises.SheetList():
+                if not sheet.IsClosed():
+                    continue
+                highestHomeScore = 0
+                # for scores which are included in the cumulated statistics:
+                tempTotalMCScore = {}
+                tempTotalHomeScore = {}
+                tempTotalScore = {}
+                for k in Data.people.keys():
+                    p = Data.people[k]
+                    if group != None:
+                        if p.group != Data.groups[group].number:
+                            continue
+                    if not(Config.conf['GuestIdRegExp'].match(k)):
+                        if p.homework.has_key(sheetName) and \
+                           p.homework[sheetName].totalscore != -1:
+                            homeScore = p.homework[sheetName].totalscore
+                            if totalHomeScore.has_key(k):
+                                totalHomeScore[k] += homeScore
+                            else:
+                                totalHomeScore[k] = homeScore
+                            tempTotalHomeScore[k] = totalHomeScore[k]
+                            if totalScore.has_key(k):
+                                totalScore[k] += homeScore
+                            else:
+                                totalScore[k] = homeScore
+                            tempTotalScore[k] = totalScore[k]
+                            highestHomeScore = max(highestHomeScore,homeScore)
+                        if p.mcresults.has_key(sheetName):
+                            mcScore = p.mcresults[sheetName].score
+                            if totalMCScore.has_key(k):
+                                totalMCScore[k] += mcScore
+                            else:
+                                totalMCScore[k] = mcScore
+                            tempTotalMCScore[k] = totalMCScore[k]
+                            if totalScore.has_key(k):
+                                totalScore[k] += mcScore
+                            else:
+                                totalScore[k] = mcScore
+                            tempTotalScore[k] = totalScore[k]
+                if sheet.maxhomescore == -1:
+                    maxTotalHomeScore += highestHomeScore
+                else:
+                    maxTotalHomeScore += sheet.maxhomescore
+                maxTotalStarHomeScore += sheet.starhomescore
+                maxTotalMCScore += sheet.MaxMCScore()
+                maxTotalScore = maxTotalHomeScore + maxTotalMCScore
+                if includeAll == 'yes':
+                    tempTotalMCScore = totalMCScore
+                    tempTotalHomeScore = totalHomeScore
+                    tempTotalScore = totalScore
+                if category == 'mc':
+                    st = '<h2>Cumulated MC Points up to Sheet %s</h2>\n' % \
+                         sheetName
+                    st += ScoreDiagram( tempTotalMCScore, maxTotalMCScore, 
+                                        numIntervals )
+                elif category == 'homework':
+                   st = '<h2>Cumulated Homework Points up to Sheet %s</h2>\n'%\
+                        sheetName
+                   st += ScoreDiagram( tempTotalHomeScore, maxTotalHomeScore, 
+                                       numIntervals )
+                   st += '<div><em>Optional Points</em>: %d</div>\n' % \
+                         maxTotalStarHomeScore
+                else:
+                   st = '<h2>Cumulated Points up to Sheet %s</h2>\n'%sheetName
+                   st += ScoreDiagram( tempTotalScore, maxTotalScore, 
+                                       numIntervals )
+                out.write( st )
+    
+    def handle_DetailedScoreTable(self, node, out):
+        if not(self.iamadmin):
+            out.write('<p>Not logged in: Statistics not displayed.</p>')
+        else:
+            if self.grp != None:
+                group = str(self.grp.number)
+            else:
+                group = None
+            bDisplayMC = False
+            bDisplayHW = False
+            if self.options.has_key('exerciseCategory'):
+                if self.options['exerciseCategory'] == 'mc':
+                    bDisplayMC = True
+                elif self.options['exerciseCategory'] == 'homework':
+                    bDisplayHW = True
+                elif self.options['exerciseCategory'] == 'all':
+                    bDisplayMC = True
+                    bDisplayHW = True
+            sortBy = 'ID'
+            if self.options.has_key('sortBy'):
+                sortBy = self.options['sortBy']
+            totalMCScore = {}
+            totalHomeScore = {}
+            tableRow = {}
+            for k in Data.people.keys():
+                p = Data.people[k]
+                if group != None:
+                    if p.group != Data.groups[group].number:
+                        continue
+                if not(Config.conf['GuestIdRegExp'].match(k)):
+                    tableRow[k] = '<td class="key">' + k + \
+                                  '</td><td class="name">' + p.lname + ', ' \
+                                  + p.fname + '</td>'
+                    totalHomeScore[k] = 0
+                    totalMCScore[k] = 0
+                    for sheetNumber, sheetName, sheet in Exercises.SheetList():
+                        if not sheet.IsClosed():
+                            continue
+                        score = 0
+                        if bDisplayHW:
+                            if not p.homework.has_key(sheetName):
+                                homeScoreStr = '?'
+                            else:
+                                if p.homework[sheetName].totalscore == -1:
+                                    homeScoreStr = '-'
+                                else:
+                                    homeScore = p.homework[sheetName].totalscore
+                                    homeScoreStr = str(homeScore)
+                                    score += homeScore
+                                    if sheet.counts:
+                                        totalHomeScore[k] += homeScore
+                        if bDisplayMC:
+                            if p.mcresults.has_key(sheetName):
+                                mcScore = p.mcresults[sheetName].score
+                                mcScoreStr = str(mcScore)
+                                score += mcScore
+                                if sheet.counts:
+                                    totalMCScore[k] += mcScore
+                            else:
+                                mcScoreStr = '-'
+                        tableRow[k] += '<td class="pts">'
+                        if not sheet.counts:
+                            tableRow[k] += '('
+                        if bDisplayHW and bDisplayMC:
+                            tableRow[k] += str(score) + ' (' + mcScoreStr \
+                                           + '|' + homeScoreStr + ')'
+                        elif bDisplayHW:
+                            tableRow[k] += homeScoreStr
+                        elif bDisplayMC:
+                            tableRow[k] += mcScoreStr
+                        if not sheet.counts:
+                            tableRow[k] += ')'
+                        tableRow[k] += '</td>'
+                    # write the sum of all points
+                    tableRow[k] += '<td class="sum">'
+                    if bDisplayHW and bDisplayMC:
+                        tableRow[k] += str(totalHomeScore[k] + totalMCScore[k])\
+                                       + ' (' + str(totalMCScore[k]) \
+                                       + '|' + str(totalHomeScore[k]) + ')'
+                    elif bDisplayHW:
+                        tableRow[k] += str(totalHomeScore[k])
+                    elif bDisplayMC:
+                        tableRow[k] += str(totalMCScore[k])
+                    tableRow[k] += '</td>'
+            headRow = '<th></th><th class="key">Matr.-Nr.</th>'\
+                      '<th class="name">Name</th>'
+            maxRow = '<td></td><td></td><td class="name">'\
+                     'Maximale Punktzahlen</td>'
+            maxTotalHomeScore = 0
+            maxTotalStarHomeScore = 0
+            maxTotalMCScore = 0
+            for sheetNumber, sheetName, sheet in Exercises.SheetList():
+                if not sheet.IsClosed():
+                    continue
+                headRow += '<th class="pts">' + sheetName + '</th>'
+                maxMCScore = sheet.MaxMCScore()
+                maxHomeScore = sheet.maxhomescore
+                starHomeScore = sheet.starhomescore
+                if sheet.counts:
+                    maxTotalMCScore += maxMCScore
+                    if maxHomeScore == -1:
+                        maxTotalHomeScore = -1
+                    elif maxTotalHomeScore != -1:
+                        maxTotalHomeScore += maxHomeScore
+                    maxTotalStarHomeScore += starHomeScore
+                maxRow += '<td class="pts">'
+                if not sheet.counts:
+                    maxRow += '('
+                if bDisplayHW and bDisplayMC:
+                    if maxHomeScore < starHomeScore:
+                        # this catches also the case of maxHomeScore == -1
+                        # because starHomeScore >= 0
+                        maxRow += str(maxMCScore) + ' + ?'
+                    elif starHomeScore == 0:
+                        maxRow += str(maxMCScore + maxHomeScore) \
+                                  + ' (' + str(maxMCScore) + '|' + \
+                                  str(maxHomeScore) + ')'
+                    elif maxHomeScore == starHomeScore:
+                        maxRow += str(maxMCScore + maxHomeScore) \
+                                  + ' (' + str(maxMCScore) + '|' + \
+                                  str(maxHomeScore) + '*)'
+                    else:
+                        maxRow += str(maxMCScore + maxHomeScore) \
+                                  + ' (' + str(maxMCScore) + '|' + \
+                                  str(maxHomeScore - starHomeScore) + \
+                                  '+' + str(starHomeScore) + '*)'
+                elif bDisplayHW:
+                    if maxHomeScore < starHomeScore:
+                        maxRow += '?'
+                    elif starHomeScore == 0:
+                        maxRow += str(maxHomeScore)
+                    elif maxHomeScore == starHomeScore:
+                        maxRow += str(maxHomeScore) + '*'
+                    else:
+                        maxRow += str(maxHomeScore - starHomeScore) + \
+                                  '+' + str(starHomeScore) + '*'
+                elif bDisplayMC:
+                    maxRow += str(maxMCScore)
+                if not sheet.counts:
+                    maxRow += ')'
+                maxRow += "</td>"
+            headRow += '<th class="sum">Summe</th>'
+            maxRow += '<td class="sum">'
+            if bDisplayHW and bDisplayMC:
+                if maxTotalHomeScore < maxTotalStarHomeScore:
+                    maxRow += str(maxTotalMCScore) + ' + ?'
+                elif maxTotalStarHomeScore == 0:
+                    maxRow += str(maxTotalMCScore + maxTotalHomeScore) \
+                              + ' (' + str(maxTotalMCScore) + '|' + \
+                              str(maxTotalHomeScore) + ')'
+                elif maxTotalHomeScore == maxTotalStarHomeScore:
+                    maxRow += str(maxTotalMCScore + maxTotalHomeScore) \
+                              + ' (' + str(maxTotalMCScore) + '|' + \
+                              str(maxTotalHomeScore) + '*)'
+                else:
+                    maxRow += str(maxTotalMCScore + maxTotalHomeScore) \
+                              + ' (' + str(maxTotalMCScore) + '|' + \
+                              str(maxTotalHomeScore - maxTotalStarHomeScore) + \
+                              '+' + str(maxTotalStarHomeScore) + '*)'
+            elif bDisplayHW:
+                if maxTotalHomeScore < maxTotalStarHomeScore:
+                    maxRow += '?'
+                elif maxTotalStarHomeScore == 0:
+                    maxRow += str(maxTotalHomeScore)
+                elif maxTotalHomeScore == maxTotalStarHomeScore:
+                    maxRow += str(maxTotalHomeScore) + '*'
+                else:
+                    maxRow += str(maxTotalHomeScore - maxTotalStarHomeScore) + \
+                              '+' + str(maxTotalStarHomeScore) + '*'
+            elif bDisplayMC:
+                maxRow += str(maxTotalMCScore)
+            maxRow += "</td>"
+            out.write( '<table class="detailedscoretable">\n' )
+            out.write( '<thead>\n' )
+            out.write( '<tr class="head">' + headRow + '</tr>\n' )
+            out.write( '</thead>\n' )
+            out.write( '<tbody>\n' )
+            out.write( '<tr class="max">' + maxRow + '</tr>\n' )
+            row = 0
+            l = Data.people.keys()
+            global sorttable
+            if sorttable.has_key(sortBy):
+                l.sort(sorttable[sortBy])
+            else:
+                l.sort(CmpByID)
+            for k in l:
+                p = Data.people[k]
+                if group != None:
+                    if p.group != Data.groups[group].number:
+                        continue
+                if not(Config.conf['GuestIdRegExp'].match(k)):
+                    row += 1
+                    if row % 2 == 0:
+                        out.write( '<tr class="even"><td class="no">' + 
+                              str(row) + '</td>' + tableRow[k] + '</tr>\n' )
+                    else:
+                        out.write( '<tr class="odd"><td class="no">' + 
+                              str(row) + '</td>' + tableRow[k] + '</tr>\n' )
+            out.write( '</tbody>\n' )
+            out.write('</table>\n')
+                    
+def ScoreDiagram( scores, maxScore, numIntervals ):
+    counts = []
+    for i in range( numIntervals ):
+        counts.append( 0 )
+    # 
+    num = 0
+    for k in Data.people.keys():
+        if scores.has_key( k ):
+            num += 1
+            if scores[k] > ( maxScore - 1 ):
+                counts[numIntervals-1] += 1
+            else:
+                i = int(float(scores[k])*float(numIntervals)/float(maxScore))
+                counts[i] += 1
+    # 
+    exStr = ''
+    if num > 0:
+        exStr +='<table class="pointdistribution">\n'
+        row1 = '<tr class="pddata">'
+        row2 = '<tr class="pdtext">'
+        row3 = '<tr class="pdpercentage">'
+        row4 = '<tr class="pdindex">'
+        try: 
+            scalefactor = 200 / max( counts )
+            if scalefactor < 1: 
+                scalefactor = 1
+        except:
+            scalefactor = 1
+        for i in range( numIntervals ):
+            count = counts[i]
+            row1 += '<td><img src="/images/red.png" alt="" width="20px" '\
+                    'height="' + str(count * scalefactor) + 'px" /></td>'
+            row2 += '<td>%d</td>' % count
+            try:
+                row3 += '<td>%.1f</td>' % (100*float(count) / float(num))
+            except:
+                row3 += '<td>0%</td>'
+            row4 +=  '<td>%.1f</td>' % (i*float(maxScore)/float(numIntervals))
+        row1 += '<td class="summary"></td>'
+        row2 += '<td class="summary">Sum: %d</td>' % num
+        row3 += '<td class="summary">%</td>'
+        row4 += '<td class="summary">Max: %d</td>' % float(maxScore)
+        exStr +=   row1 +'</tr>\n' + row2 + '</tr>\n' + row3 + '</tr>\n' + \
+                   row4 +'</tr>\n' 
+        exStr += '</table>\n\n' 
+    return exStr
+                            
 def GroupInfo(req, onlyhead):
     try:
         grp = Data.groups[req.query['number'][0]]
@@ -1343,7 +1858,9 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
             if Data.people.has_key(k):
                 counter += 1
                 p = Data.people[k]
-                if p.homework.has_key(s.name) and s.openfrom < time.time():
+                if p.homework.has_key(s.name) and \
+                   p.homework[s.name].totalscore != -1 and \
+                   s.openfrom < time.time():
                     default = str(p.homework[s.name].totalscore)
                     default2 = p.homework[s.name].scores
                 else:
@@ -1381,7 +1898,8 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
         counter = 0
         for nr,na,s in sl:
             counter += 1
-            if self.p.homework.has_key(na):
+            if self.p.homework.has_key(na) and \
+               self.p.homework[na].totalscore != -1:
                 default = str(self.p.homework[na].totalscore)
                 default2 = self.p.homework[na].scores
             else:
@@ -1506,16 +2024,22 @@ def SubmitHomeworkSheet(req,onlyhead):
         for k in g.people:
             if Data.people.has_key(k):
                 p = Data.people[k]
-                score = req.query.get('P'+k,[''])[0]
-                scores = req.query.get('S'+k,[''])[0]
-                try:
-                    if '.' in score:
-                        totalscore = float(score)
-                    else:
-                        totalscore = int(score)
-                except:
-                    totalscore = 0
-                if p.homework.has_key(s.name) or score != '':
+                # allow the usage of ',' instead of '.' for decimal numbers
+                score = req.query.get('P'+k,[''])[0].strip().replace(',','.')
+                scores = req.query.get('S'+k,[''])[0].strip()
+                if score == '':
+                    totalscore = -1 # no homework points
+                else:
+                    try:
+                        if '.' in score:
+                            totalscore = float(score)
+                        else:
+                            totalscore = int(score)
+                    except:
+                        totalscore = 0
+                if ( p.homework.has_key(s.name) and 
+                     p.homework[s.name].totalscore != -1 ) or \
+                   score != '':
                     # We only work, if either the input is non-empty or
                     # if there was already a result. This allows for
                     # deletion of results.
@@ -1572,16 +2096,21 @@ def SubmitHomeworkPerson(req,onlyhead):
     Data.Lock.acquire()
     for nr,na,s in sl:
         if s.counts and s.openfrom < time.time():
-            score = req.query.get('S'+na,[''])[0]
-            scores = req.query.get('T'+na,[''])[0]
-            try:
-                if '.' in score:
-                    totalscore = float(score)
-                else:
-                    totalscore = int(score)
-            except:
-                totalscore = 0
-            if p.homework.has_key(na) or score != '':
+            # allow the usage of ',' instead of '.' for decimal numbers
+            score = req.query.get('S'+na,[''])[0].strip().replace(',','.')
+            scores = req.query.get('T'+na,[''])[0].strip()
+            if score == '':
+                totalscore = -1 # no homework points
+            else:
+                try:
+                    if '.' in score:
+                        totalscore = float(score)
+                    else:
+                        totalscore = int(score)
+                except:
+                    totalscore = 0
+            if ( p.homework.has_key(na) and p.homework[na].totalscore != 1 ) \
+               or score != '':
                 # We only work, if either the input is non-empty or
                 # if there was already a result. This allows for
                 # deletion of results.
@@ -1591,7 +2120,7 @@ def SubmitHomeworkPerson(req,onlyhead):
                     Data.homeworkdesc.AppendLine(line)
                 except:
                     Data.Lock.release()
-                    Utils.Error('Failed store homework result:\n'+line)
+                    Utils.Error('Failed to store homework result:\n'+line)
                     return Delegate('/errors/fatal.html',req,onlyhead)
                 if not(p.homework.has_key(s.name)):
                     p.homework[s.name] = Data.Homework()
@@ -1717,11 +2246,29 @@ def CmpByGroupAndID(a,b):
     if v: return v
     return CmpByID(a,b)
 
+def CmpByTotalMCScore(a,b):
+    v = cmp( Data.people[a].TotalMCScore(), Data.people[b].TotalMCScore() )
+    if v: return v
+    return CmpByID(a,b)
+
+def CmpByTotalHomeScore(a,b):
+    v = cmp( Data.people[a].TotalHomeScore(), Data.people[b].TotalHomeScore() )
+    if v: return v
+    return CmpByID(a,b)
+
+def CmpByTotalScore(a,b):
+    v = cmp( Data.people[a].TotalScore(), Data.people[b].TotalScore() )
+    if v: return v
+    return CmpByID(a,b)
+
 sorttable = {'ID': CmpByID, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
              'semester': CmpBySemester, 
              'length of wishlist': CmpByLengthOfWishlist,
              'group and ID': CmpByGroupAndID, 
-             'group and name': CmpByGroupAndName}
+             'group and name': CmpByGroupAndName,
+             'total MC score': CmpByTotalMCScore,
+             'total homework score': CmpByTotalHomeScore,
+             'total score': CmpByTotalScore}
 
 def ExportPeopleForGroups(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
@@ -1892,6 +2439,33 @@ Site['/ShowExerciseStatistics'] = FunWR(ShowExerciseStatistics)
 Site['/ShowExerciseStatistics'].access_list = \
      Config.conf['AdministrationAccessList']
 
+
+def ShowExerciseStatisticsDetails(req,onlyhead):
+    if Authenticate(None,req,onlyhead)<0:
+        return Delegate('/errors/notloggedin.html', req, onlyhead)
+    try:
+        sheet = req.query.get('sheet',[''])[0].strip()
+        exNr = int(req.query.get('ex',[''])[0].strip())
+        quNr = int(req.query.get('qu',[''])[0].strip())
+        varNr = int(req.query.get('var',[''])[0].strip())
+    except:
+        return Delegate('/errors/unknownsheet.html', req, onlyhead)
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet: i += 1
+    if i < len(sl):
+        s = sl[i][2]
+        handler = EH_withSheetVariant_class(s, exNr, quNr, varNr)
+        handler.iamadmin = 1
+        return Delegate('/exercisestatisticsdetails.html',req,onlyhead,handler)
+    else:
+        return Delegate('/errors/unknownsheet.html', req, onlyhead)
+
+Site['/ShowExerciseStatisticsDetails'] = FunWR(ShowExerciseStatisticsDetails)
+Site['/ShowExerciseStatisticsDetails'].access_list = \
+    Config.conf['AdministrationAccessList']
+
+
 def ShowGlobalStatisticsPerGroup(req,onlyhead):
     if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html', req, onlyhead)
@@ -1903,6 +2477,7 @@ def ShowGlobalStatisticsPerGroup(req,onlyhead):
     if i < len(sl):
         s = sl[i][2]
         handler = EH_withPersSheet_class(None,s,Config.conf['Resolutions'][0])
+        handler.iamadmin = 1
         return Delegate('/globalstatisticspergroup.html',req,onlyhead,handler)
     else:
         return Delegate('/errors/unknownsheet.html', req, onlyhead)
@@ -1922,11 +2497,65 @@ def ShowGlobalStatistics(req,onlyhead):
     except:
         grp = None
     handler = EH_withGroupInfo_class(grp)
+    handler.iamadmin = 1
     return Delegate('/globalstatistics.html',req,onlyhead, handler)
         
         
 Site['/ShowGlobalStatistics'] = FunWR(ShowGlobalStatistics)
-Site['/ShowGlobalStatistics'].access_list = Config.conf['AdministrationAccessList']
+Site['/ShowGlobalStatistics'].access_list = \
+         Config.conf['AdministrationAccessList']
+
+def ShowCumulatedScoreStatistics(req,onlyhead):
+    '''This function handles the request for the cumulated score statistics '''
+    if Authenticate(None,req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    try:
+        grp = Data.groups[req.query['group'][0]]
+    except:
+        grp = None
+    options = {}
+    try:
+        options['exerciseCategory'] = req.query['exerciseCategory'][0]
+    except:
+        pass
+    try:
+        options['includeAll'] = req.query['includeAll'][0]
+    except:
+        pass
+    handler = EH_withGroupAndOptions_class(grp,options)
+    handler.iamadmin = 1
+    return Delegate('/cumulatedscorestatistics.html',req,onlyhead, handler)
+
+Site['/ShowCumulatedScoreStatistics'] = FunWR(ShowCumulatedScoreStatistics)
+Site['/ShowCumulatedScoreStatistics'].access_list = \
+    Config.conf['AdministrationAccessList']
+
+
+def ShowDetailedScoreTable(req,onlyhead):
+    '''This function handles the request for the cumulated score statistics '''
+    if Authenticate(None,req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    try:
+        grp = Data.groups[req.query['group'][0]]
+    except:
+        grp = None
+    options = {}
+    try:
+        options['exerciseCategory'] = req.query['exerciseCategory'][0]
+    except:
+        pass
+    try:
+        options['sortBy'] = req.query['sortBy'][0]
+    except:
+        pass
+    handler = EH_withGroupAndOptions_class(grp,options)
+    handler.iamadmin = 1
+    return Delegate('/detailedscoretable.html',req,onlyhead, handler)
+
+Site['/ShowDetailedScoreTable'] = FunWR(ShowDetailedScoreTable)
+Site['/ShowDetailedScoreTable'].access_list = \
+    Config.conf['AdministrationAccessList']
+
 
 def ExportResults(req,onlyhead):
     '''Exports all results of all participants, including MC, homework and
@@ -1956,7 +2585,8 @@ def ExportResults(req,onlyhead):
                 if s.counts and s.IsClosed():   # sheet already closed
                     if p.mcresults.has_key(na):
                         mcscore += p.mcresults[na].score
-                    if p.homework.has_key(na):
+                    if p.homework.has_key(na) and \
+                       p.homework[na].totalscore != -1:
                         homescore += p.homework[na].totalscore
             exams = []
             exams1 = []
@@ -2007,7 +2637,8 @@ def ExportResults(req,onlyhead):
                     if p.mcresults.has_key(na):
                         out.write(str(p.mcresults[na].score))
                     out.write(';')
-                    if p.homework.has_key(na):
+                    if p.homework.has_key(na) and \
+                       p.homework[na].totalscore != -1:
                         out.write(str(p.homework[na].totalscore))
             out.write('\n')
     st = out.getvalue()
@@ -2129,7 +2760,7 @@ in the first place.'''
     if Authenticate(None,req,onlyhead) < 0:
         return Delegate('/errors/notloggedin.html',req,onlyhead)
     # Now check the sheet number:
-    sheet = req.query.get('sheet',[''])[0]
+    sheet = req.query.get('sheet',[''])[0].strip()
     sl = Exercises.SheetList()
     i = 0
     while i < len(sl) and sl[i][1] != sheet:
