@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.18 2003/10/08 15:29:45 luebeck Exp $
+% $Id: manual.tex,v 1.19 2003/10/08 23:59:50 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -440,7 +440,7 @@ We always create a pseudo user as administrator of the package. This makes
 it easy to share the administration between several people without fiddling
 around with strange file access settings in private directories.
 
-We close completely (\texttt{chmod 700 ~}) the access to the pseudo users
+We close completely (\verb+chmod 700 ~+) the access to the pseudo users
 home directory. Note that during the semester the {\OKUSON} server collects
 and stores personal data of the participating students. So, you must be
 careful with the access to these data.
@@ -450,19 +450,112 @@ careful with the access to these data.
 We always choose a very restricted setting for the machines from which 
 administrator access to an {\OKUSON} server is allowed, see the entry
 \texttt{AdministrationAccessList} in the configuration file
-\texttt{Config.xml}   ??????? hier weiter machen  ?????????
+\texttt{Config.xml}. 
 
 Note that the administrator of an {\OKUSON} server is quite powerful:
 in all web forms of the system where a password (of a participant, a tutor or
 the administrator) is required, the
 administrator password is considered valid \emph{provided} the request is
-coming from a machine configured in 
+coming from a machine with administrator access. As administrator you can
+see sheets which are not yet open, submit solutions to closed sheets, change
+a user password, get any users sheets and results and use the /adminmenu.html 
+functions.
+
+\subsubsection*{Make Sure Your Server Uses the Correct Time}
+
+Since an {\OKUSON} server is very strict about accepting submitted solutions
+as long as a sheet is open and showing the grading after a sheet is closed,
+it is very important that the server uses the correct local time. Otherwise
+expect unpleasant discussions with your students, some of them tend to hand
+in their solutions in the last minute.
+
+We use the network time protocol (NTP) service on our machines, using the
+\texttt{ntpdate} program.
+
+\subsubsection*{Backup}
+
+Since the data collected by an {\OKUSON} server can be relevant for grades
+it is important to have a good backup system for them.  
+
+We use a machine different from the one running the {\OKUSON} server for
+this. It has the GNU version of the \texttt{cron} program installed and 
+we define (as the {\OKUSON} pseudo user) \texttt{crontab} entries like:
+
+\begin{verbatim}
+MAILTO=""
+*/5 * * * * ~/okusonsync 
+10 * * * * ~/okusonarchive
+\end{verbatim}
+
+Here, the scripts \texttt{okusonsync} and \texttt{okusonarchive} are in the
+pseudo users home directory and look as in the following examples (using the
+\texttt{rsync}, \texttt{tar}, \texttt{gzip} and \texttt{ssh} programs,
+assuming that the pseudo user can login from the backup machine to the
+server machine with ssh without password).
+
+\begin{verbatim}
+#!/bin/sh
+##  okusonsync       syncronizes an OKUSON installation using rsync
+
+BACKUPDIR="..."
+ORIGSERVER="..."
+ORIGDIR="..."  # no final '/'
+
+cd $BACKUPDIR
+rsync -a --delete -e ssh $ORIGSERVER:$ORIGDIR .
+\end{verbatim}
+
+and
+
+\begin{verbatim}
+#!/bin/sh
+##  okusonarchive          packs whole backup into an archive
+
+BACKUPDIR="..."
+DIRNAME="..."
+
+cd $BACKUPDIR
+fname=`date +"BACKUP-%Y-%m-%d_%H_%M_%S.tgz"`
+tar czf $fname $DIRNAME
+\end{verbatim}
+
+So, every five minutes all files of an {\OKUSON} installation 
+are synchronised to the backup machine (takes a split second after the first
+time). And once an hour all files are packed and compressed, archiving the
+precise status of the whole system.
+
+(Furthermore we have a daily backup of all data on all machines in our 
+institute.)
+
+These precautions allow a quick recovery of most or all data after a
+possible crash or data corruption of the original server.
+
+\subsubsection*{Restarting Server after Reboot}
+
+Usually, our server machines are never rebooted. But in case that happens
+for some reason (e.g., a power failure) it is desirable that the downtime of
+the {\OKUSON} service is as short as possible. For this we use an entry
+in the GNU \texttt{crontab} of the pseudo user on the server machine like
+
+\begin{verbatim}
+@reboot  /my/okuson/dir/start
+\end{verbatim}
+
 
 \subsubsection*{Alias for Server Machine}
 
 We create an alias for the machine running the {\OKUSON} server. 
 This allows a quick move of the whole service to another machine, in case
 the server crashes for some reason.
+
+\subsubsection*{\emph{Paperless} Courses}
+
+With the exception of exam exercise sheets we do not print any paper for
+courses with {\OKUSON} exercises. Registration, exercise sheets, 
+announcements, exam results, final grades are \emph{only} available via the
+{\OKUSON} server web interface. Our experience was that  no students complain
+about this approach.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
