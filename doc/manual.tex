@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.37 2003/10/18 23:13:39 luebeck Exp $
+% $Id: manual.tex,v 1.38 2003/10/19 20:17:37 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1541,8 +1541,10 @@ tutoring group, such that they appear on the result page. See section
 \item \textbf{Exams during the course.} Especially for beginner's courses
 it seems to be a good practice to organize a written exam at some stage
 during the semester. The {\OKUSON} server can help you to organize this
-by handling the registration of participants for such exams, see
-\ref{ch:ExamOrga}.
+by handling the registration of participants for such exams and by
+producing the messages for the exams on the result page automatically,
+once the result of the exam is imported into the server (see
+\ref{ch:ExamOrga}).
 \end{itemize}
 
 \section{After the Semester}
@@ -1662,6 +1664,7 @@ of course your responsibility to ensure proper data protection for this
 at least potentially critical personal data!
 
 \subsection{Export people for tutoring group distribution} 
+\label{sec:exppeotut}
 
 With this option
 you can export data about all registered participants for the purpose of
@@ -2214,7 +2217,7 @@ information about their results to the participants.
 There are two ways to do this: The first is using the automatic grading
 facilities of {\OKUSON} described in this chapter and the second works
 by exporting all the result data as described in section
-\ref{sec:expresults}, using external tools for the decision and reimport 
+\ref{sec:expresults}, using external tools for the decision and reimporting
 the information back into the {\OKUSON} system as private messages
 (see sections \ref{sendmess} and \ref{sec:messages.txt}).
 
@@ -2222,7 +2225,7 @@ Due to the big variety of possible grading algorithms, one has to learn
 to write a little Python function to use automatic grading.
 
 There are two configuration options for automatic grading:
-\texttt{GradingActive} and \texttt{GradingFunction}. The first is integer
+\texttt{GradingActive} and \texttt{Grading\-Function}. The first is integer
 valued and the automatic grading functionality is switched on if and only if
 its integer value is non-zero.
 
@@ -2231,15 +2234,137 @@ is used. It has to contain a Python function \texttt{Grade}, which takes
 $5$ arguments: An object of type \texttt{Person} (see \ref{ch:intdata}), 
 then a list \texttt{sl} for the available sheets, the total score
 of the person in all multiple choice exercises, the total score in all
-...
+written homework exercises, and finally a list of integers of length $24$,
+where each number corresponds to one exam, numbered from $0$ to $23$.
+A value of $0$ stands for either $0$ points or for the fact, that this
+person did not take part in the exam. This list is for programmer's
+convenience only, as this information is contained in the personal data
+of the person anyway. There one can also read off, whether the person
+actually did take part in a certain exam or not.
 
-%\chapter{Finetuning the Configuration}\label{ch:config}
+The function has to return a pair, where the first entry is a string which
+is put between a ``\texttt{<p> </p>}'' on the results page, if the
+element \texttt{<Grade />} is present in the template file. The second
+entry is a number (float or integer), that is stored as the grade.
+It is later exported along with the other results. You can for example use
+the grade as a flag, whether somebody passed the course or not.
+
+With the automatic grading facility you can devise nearly arbitarily 
+complicated conditions for the grading decision. You have read access to
+all personal data and the whole {\OKUSON} system.
+
+Note however that is strictly forbidden to change any global data in the
+{\OKUSON} server. The reason for this is that the server is multi-threaded,
+every web access has its own thread and any change in global data has to
+be protected by certain locking mechanisms to avoid possible internal
+data corruption. Bugs coming from such misuse will show up only
+occasionally and will be extremely hard to find!
+
 \chapter{File Formats}
 \label{ch:fileformats}
-to be written
+
+The data files of the {\OKUSON} system all reside in the \texttt{data}
+directory in the standard configuration. They are all extended ASCII files
+(usually with the ISO-8859-1 8 bit encoding) and have the following
+standard format:
+
+\begin{itemize}
+\item Lines are separated by newline characters (ASCII code 10), i.e.~UNIX
+line ends.
+\item Empty lines are ignored.
+\item Lines where the first non-whitespace character is a hash character ``\#''
+are treated as comments and are ignored.
+\item Every line that is not ignored stands for a data record.
+\item For each file there is a field separating character (usually a colon
+``:'') and one can access all the fields in a line simply by splitting
+the line at all occurances of the separating character. If the value of a 
+data field actually contains the separating character it is protected as 
+described below.
+\item After reading an input line, the following procedure is applied
+to every data field (after the split):
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+replace & \verb!\d! & by the delimiter \\
+\hline
+replace & \verb!\n! & by a newline \\
+\hline
+replace & \verb!\r! & by a carriage return \\
+\hline
+replace & \verb!\c! & by a hash mark \# \\
+\hline
+replace & \verb!\e! & by a backslash \\
+\hline
+\end{tabular}
+\end{center}
+\item Before writing an output line, the following procedure is applied
+to every data field (before joining fields with the separator in between):
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+replace & every backslash & by \verb!\e! \\
+\hline
+replace & every delimiter & by \verb!\d! \\
+\hline
+replace & every newline   & by \verb!\n! \\
+\hline
+replace & every hash character \# & by \verb!\c! \\
+\hline
+replace & every carriage return & by \verb!\r! \\
+\hline
+\end{tabular}
+\end{center}
+\item The last two points ensure that data lines contain delimiter characters
+only between fields and that backslashes are followed only by one of the
+characters ``cdenr''. Therefore, arbitrary string values can be put into
+data fields within one line.
+\item In every file one of the fields is the ID that identifies the person 
+to which the data belongs.
+\item There is the following principle: New data is \textbf{always appended}
+to the file and \textbf{never deleted}. Therefore, at any given time, 
+\textbf{the last value with a certain ID} is the one that counts. The
+reason for this is that appending is more efficient than writing the
+file anew and that it is guaranteed, that every piece of information in
+the memory of the server is also saved to disc at all times.
+\end{itemize}
+
+Whereas the format of the file makes it easy to use external standard UNIX
+tools to access all the information, the last principle somehow ruins this,
+because one always has to sort out the last valid value. We strongly recommend
+to use the export facilities described in sections \ref{sec:exppeotut}
+to \ref{sec:expresults} to access data, because they do not impose this
+difficulty.
+
+However, we see certain applications (mainly data import) to access
+the files described in this chapter, therefore it is worthwhile to
+document the format.
+
 \section{\texttt{data/people.txt}}
 \label{sec:people.txt}
-to be written
+
+The general comments about file formats at the beginning of this chapter
+apply also to \texttt{data/people.txt}. The delimiter character for this
+file is a colon ``:''. 
+
+Each line of the file corresponds to the personal data of one participant
+and contains the following data fields (in the third column some
+comments about the data type are displayed):
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+Name of field & Description & Data type \\
+\hline
+\hline
+id & Identification & string \\
+\hline
+lname & Last name   & string \\
+\hline
+fname & First name  & string \\
+\hline
+\end{tabular}
+\end{center}
+
 \section{\texttt{data/groups.txt}}
 \label{sec:groups.txt}
 to be written
