@@ -31,9 +31,6 @@ M ??? Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
   Richtig, das machen wir auch jetzt nicht.
   Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
 
-M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
-    (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
-
   Anfrage von Marc Ensenbach fuer andere Ergebniseingabe Hausaufgaben
    später vielleicht, mit Texteingabefeld?
    
@@ -76,3 +73,7 @@ M  Ergaenzung von Marc --> okuson-folder
   
 M ShowExerciseStatistics for Sheet (admin)
   --> scheint mir zu gehen???
+
+M  Einblenden von Musterloesungen nach Abgabeschluss fuer schriftliche Aufgaben
+    (Anfrage von Christoph Schweigert, ...)  Eine %SOLUTION Zeile in *.tex?
+

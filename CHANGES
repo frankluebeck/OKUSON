@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.92 2005/04/02 21:10:48 neunhoef Exp $
+##  $Id: CHANGES,v 1.93 2005/04/03 21:38:58 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,9 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to ???
 
+* New feature of example solutions to written exercises, which are displayed
+  with the written exercises as soon as the sheet is closed. See Manual 
+  section 5.2.
 * Inserted a suggestion by Marc to display the prefix of the multiple
   choice question in the statistics page for a certain variant.
 * Create a switch "InteractiveMode". If this is 1 (default is 0), then the

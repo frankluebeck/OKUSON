@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.35 2005/04/02 21:10:48 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.36 2005/04/03 21:38:58 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -29,7 +29,7 @@ from fmTools import Utils,LatexImage,SimpleRand,AsciiData,XMLRewrite
 class TeXText(Utils.WithNiceRepr):
     text = ""        # the actual text as TeX input
     filename = ""    # name of file containing the text
-    position = 0     # line number of beginning of text in that file
+    position = (0,0,0,0)  # position as the XML parser gives them, a 4-tuple
     md5sum = ""      # a hexadecimal md5sum string for .text, used as 
                      # filename for images
     def __init__(self,text,filename,position,width=5):
@@ -59,7 +59,7 @@ ignored. We assume that for each resolution X there is already a subdirectory
                          remove=remove)
             except:
               Utils.Error('Offending LaTeX source comes from "'+self.filename+
-                          '" line '+str(self.position)+'.',prefix='')
+                          '" line '+str(self.position[0])+'.',prefix='')
               #traceback.print_exc()
               return
             try:
@@ -114,7 +114,9 @@ class Sheet(Utils.WithNiceRepr):
                      # the following four lists have equal length:
     maxhomescore=-1  # maximal number of of points in homework
     starhomescore=0  # maximal number of points for optional homework exercises
-    list = []        # sequence of TeXTexts or Exercise objects
+    list = []        # sequence of TeXTexts (for texts between exercises) or 
+                     # pairs of TeXTexts (for written exercises) or 
+                     # Exercise objects
     exnr = []        # None for each TeXText in "list", and a number otherwise
     order = []       # 'p' for permuted and 'f' for fixed for each 
                      # Exercise object, otherwise None
@@ -248,18 +250,23 @@ otherwise.'''
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,TeXText):
-                if self.exnr[i]:   # a conventional exercise
-                    f.write('<tr><td align="center" valign="top">'
-                            '%d</td>\n' % self.exnr[i])
-                    f.write('    <td colspan="2" valign="top">')
-                    f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
-                            (os.path.join(imagesdir,o.md5sum),
-                             CleanString(CleanStringTeXComments(o.text))))
-                else:           # a TEXT
-                    f.write('<tr><td colspan="3">')
-                    f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
-                            (os.path.join(imagesdir,o.md5sum),
-                             CleanString(CleanStringTeXComments(o.text))))
+                f.write('<tr><td colspan="3">')
+                f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
+                        (os.path.join(imagesdir,o.md5sum),
+                         CleanString(CleanStringTeXComments(o.text))))
+            elif type(o) == types.TupleType and isinstance(o[0],TeXText):
+                # a conventional exercise
+                if closed:
+                    o = o[1]   # the version with solution
+                else:
+                    o = o[0]   # the version without solution
+                # a conventional exercise
+                f.write('<tr><td align="center" valign="top">'
+                        '%d</td>\n' % self.exnr[i])
+                f.write('    <td colspan="2" valign="top">')
+                f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
+                        (os.path.join(imagesdir,o.md5sum),
+                         CleanString(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
                 f.write('<tr><td align="center" valign="top">'
                         '%d</td>\n' % self.exnr[i])
@@ -614,17 +621,21 @@ of the sheet with seed "seed" and returns the result as a string.
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,TeXText):
-                if self.exnr[i]:   # a conventional exercise
-                    f.write(('%d & \\multicolumn{2}{p{'+woe+\
-                      '}|}{\\begin{minipage}[t]{'+woe+\
-                      '}%s\\vspace{1mm}\\end{minipage}}\\\\\n\\hline\n') \
-                      % (self.exnr[i], \
-                         string.strip(CleanStringTeXComments(o.text))))
-                else:           # a TEXT
-                    f.write(('\\multicolumn{3}{|p{'+wos+\
-                      '}|}{\\begin{minipage}[t]{'+wos+\
-                      '}%s\\vspace{1mm}\\end{minipage}} \\\\\n\\hline') \
-                      % string.strip(CleanStringTeXComments(o.text)))
+                f.write(('\\multicolumn{3}{|p{'+wos+\
+                  '}|}{\\begin{minipage}[t]{'+wos+\
+                  '}%s\\vspace{1mm}\\end{minipage}} \\\\\n\\hline') \
+                  % string.strip(CleanStringTeXComments(o.text)))
+            elif type(o) == types.TupleType and isinstance(o[0],TeXText):
+                # a conventional exercise:
+                if self.IsClosed:
+                    o = o[1]
+                else:
+                    o = o[0]
+                f.write(('%d & \\multicolumn{2}{p{'+woe+\
+                  '}|}{\\begin{minipage}[t]{'+woe+\
+                  '}%s\\vspace{1mm}\\end{minipage}}\\\\\n\\hline\n') \
+                  % (self.exnr[i], \
+                     string.strip(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
                 f.write('%d & ' % self.exnr[i])
                 
@@ -698,12 +709,16 @@ of the sheet with seed "seed" and returns the result as a string.
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,TeXText):
-                if self.exnr[i]:   # a conventional exercise
-                    f.write(('\n\n\\begin{exercise}{%d}\n%s\n\\end{exercise}'
-                    '\n\n') % (self.exnr[i], \
-                               CleanStringTeXComments(string.strip(o.text))))
-                else:           # a TEXT
-                    f.write(string.strip(CleanStringTeXComments(o.text)))
+                f.write(string.strip(CleanStringTeXComments(o.text)))
+            if type(o) == types.TupleType and isinstance(o[0],TeXText):
+                # a conventional exercise
+                if self.IsClosed():
+                    o = o[1]
+                else:
+                    o = o[0]
+                f.write(('\n\n\\begin{exercise}{%d}\n%s\n\\end{exercise}'
+                '\n\n') % (self.exnr[i], \
+                           CleanStringTeXComments(string.strip(o.text))))
             elif isinstance(o,Exercise):
                 f.write('\n\n???\n\n')
         res = f.getvalue()
@@ -1114,13 +1129,25 @@ def ReadTeXFile(fname,prefix):
         Utils.Error('Did not read '+fname+'.')
         return
     b = prefix + os.path.basename(fname)
-    t = TeXText(s,fname,(1,1,s.count('\n'),1),
-                Config.conf['WidthOfExerciseTextsHTML'])
-    AllTexts.append(t)
+    # Here we create two TeXTexts, one for before the closure time of the
+    # sheet and one for after that time:
+    p = s.find("\n% SOLUTION\n")
+    if p == -1:
+        ssol = s
+        sbef = s
+    else:
+        ssol = s
+        sbef = s[:p+1]
+    tsol = TeXText(ssol,fname,(1,1,ssol.count('\n'),1),
+                   Config.conf['WidthOfExerciseTextsHTML'])
+    AllTexts.append(tsol)
+    tbef = TeXText(sbef,fname,(1,1,sbef.count('\n'),1),
+                   Config.conf['WidthOfExerciseTextsHTML'])
+    AllTexts.append(tbef)
     if AllExercises.has_key(b):
         Utils.Error('Overwriting exercise with key '+b+' .',
                     prefix='Warning:')
-    AllExercises[b] = t
+    AllExercises[b] = (tbef,tsol)
 
 # Read all *.auf files in a directory. Using the prefix, one can use 
 # several such directories and avoid key-name conflict without editing the

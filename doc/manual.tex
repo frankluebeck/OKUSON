@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.68 2004/10/07 12:34:26 luebeck Exp $
+% $Id: manual.tex,v 1.69 2005/04/03 21:38:58 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1152,6 +1152,13 @@ enclose with \texttt{\{\ldots\}} or put text in some boxes.
 A text exercise used by {\OKUSON} is written in a separate file with
 the extension \texttt{.tex}. Put only the \LaTeX-code of the exercise text
 itself in that file.
+
+If the file contains a line that consists exactly of the string
+``\texttt{\% SOLUTION}'', then everything after that is considered to
+be a solution to the exercise. Before the closure time of the sheet, only
+the part before the \texttt{SOLUTION} line is displayed, after the closure
+time of the sheet, the full text is shown. This is a mechanism to publish
+example solutions to written exercises.
 
 We explain the format of an \texttt{.auf} file by an example that contains
 all possible constructs. In practice one may copy the template file
