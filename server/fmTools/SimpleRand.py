@@ -19,7 +19,7 @@ ShuffleList(l[, seed])
 that pseudo randomly permutes the entries of a list l in place.
 """
 
-CVS = '$Id: SimpleRand.py,v 1.2 2004/03/04 12:36:03 neunhoef Exp $'
+CVS = '$Id: SimpleRand.py,v 1.3 2004/03/09 15:22:28 neunhoef Exp $'
 
 class RandObj:
   """RandObj([bound][, seed])
@@ -41,17 +41,19 @@ for simulating a die 10 times.
   def next(self):
     self.seed = (self.a * self.seed + self.c) % self.m
     return self.seed % self.bound
+  # Reuse the following three lines and rename the method thereafter from
+  # "nextequaldist" to "nextequaldistfuture" to get the old behaviour
+  #def nextequaldist(self,maxval):
+  #  # FIXME: Old (buggy) behaviour
+  #  return self.next() % maxval
   def nextequaldist(self,maxval):
-    # FIXME: Throw this out!
-    return self.next() % maxval
-  def nextequaldistfuture(self,maxval):
     # Delivers a pseudo random number in xrange(maxval), equally distributed:
     return int(self.next() * maxval) / self.bound
     # The int tries to make a short int from the result, which is good as
     # long as maxval is small
   def ShuffleList(self,l):
       for k in range(len(l), 0, -1):
-        pos = self.next() % k
+        pos = self.nextequaldist(k)
         if pos < k-1:
           t = l[k-1]
           l[k-1] = l[pos]
