@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.59 2003/11/17 09:19:43 neunhoef Exp $
+##  $Id: CHANGES,v 1.60 2003/11/17 10:12:37 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -35,6 +35,7 @@ Changes from 1.0-fix2 to 1.0-fix3
 * Documentation of statistic functions.
 * Fixed a bug in the evaluation of choice questions where selecting
   no answer is the correct solution reported by Axel.
+* Fixed a bug in the statistic function for the noninteractive case.
 
 Changes from 1.0-fix1 to 1.0-fix2
 ---------------------------------
