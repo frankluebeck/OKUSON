@@ -1,5 +1,7 @@
 To upgrade to 1.0-pre3 you have to do the following:
 
+   ATTENTION: Read this section BEFORE doing it!
+
 1) Extract the archive over the old installation:
 
    gzip -dc okuson-XXX.tar.gz | tar xvf -
@@ -9,8 +11,6 @@ To upgrade to 1.0-pre3 you have to do the following:
 2) cd okuson
 
 3) ./upgrade
-
-   ATTENTION: Read this section BEFORE doing this!
 
    This will install new versions of the web pages and add a new data file.
    Also the files data/homework.txt and data/examregistrations.txt are
