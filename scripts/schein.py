@@ -16,10 +16,10 @@ FIELDS:     three field numbers in input lines for id, name, first name
 """
     sys.exit(0)
 
-optlist,args = getopt.getopt(sys.argv[1:],'t:f:v:z:s:d:b:')
+optlist,args = getopt.getopt(sys.argv[1:],'t:f:c:l:s:b:d:')
 
 # defaults:
-delim = ','
+delim = ':'
 fieldsst = "1,2,3"   # this means matrikel, name, vorname
 fields = [0,1,2]
 vorlesung = "Lineare Algebra I"
@@ -29,7 +29,7 @@ datum = "\\today"
 banner = ""
 
 for (k,v) in optlist:
-    if k == "-t": delim = v
+    if   k == "-t": delim = v
     elif k == "-c": vorlesung = v
     elif k == "-l": dozent = v
     elif k == "-s": semester = v
@@ -44,6 +44,8 @@ for (k,v) in optlist:
                 fields.append(int(s)-1)
             else:
                 for i in range(int(s[:p])-1,int(s[p+1:])): fields.append(i)
+    elif k == "-d": datum = v
+
 
 print r"""\documentclass[12pt,german]{article}
 
