@@ -8,7 +8,7 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.3 2003/10/10 14:02:30 luebeck Exp $'
+CVS = '$Id: LatexImage.py,v 1.4 2004/03/05 15:32:50 luebeck Exp $'
 
 import sys, os, types, tempfile, shutil
 import Utils
@@ -45,7 +45,7 @@ LatexTemplate = """
 """
 
 def LatexToPnm(text, width = 6.5, resolution = 100, extraheader = '',
-               Latexfmt = '', reporterror = Utils.Error):
+               Latexfmt = '', reporterror = Utils.Error, remove = 1):
   '''Convert the LaTeX input in "text" to a pnm file. "width" is in inch
 "resolution" in points per inch, it can be an integer or a list
 of integers, the result is an image or a list of images accordingly. 
@@ -121,11 +121,11 @@ via Utils.Error.'''
       res.append(Utils.StringFile(os.path.join(tmpdir, 'a.pnm')))
 
   # if everything went OK:
-  try:
-      shutil.rmtree(tmpdir)
-      #os.system('rm -rf '+tmpdir)
-  except:
-      pass   # we ignore problems here
+  if remove:
+      try:
+          shutil.rmtree(tmpdir)
+      except:
+          pass   # we ignore problems here
 
   if type(resolution) == types.IntType:
       return res[0]
@@ -133,7 +133,7 @@ via Utils.Error.'''
       return res
 
 
-def LatexToPDF(text, repeat=2, reporterror = Utils.Error):
+def LatexToPDF(text, repeat = 2, reporterror = Utils.Error, remove = 1):
   '''Convert the LaTeX input in "text" which must be a complete LaTeX input
 file to a PDF file with pdflatex. '''
 
@@ -165,11 +165,11 @@ file to a PDF file with pdflatex. '''
       raise Utils.UtilsError, msg
       
   if res:
-      try:
-          shutil.rmtree(tmpdir)
-          #os.system('rm -rf '+tmpdir)
-      except:
-          pass   # we ignore problems here
+      if remove:
+          try:
+              shutil.rmtree(tmpdir)
+          except:
+              pass   # we ignore problems here
       return res
   else:
       return None
@@ -202,14 +202,14 @@ one png in a string or a list of pngs in strings is returned.'''
   return res
 
 def LatexToPng(text, width = 6.5, resolution = 100, extraheader = '',
-             Latexfmt = '', reporterror = Utils.Error):
+             Latexfmt = '', reporterror = Utils.Error, remove = 1):
   '''Convert latex input to png format. Uses "LaTeXToPnm" and "PnmToPng".
 The semantics of the arguments is as in LaTeXToPnm. Escpecially "resolution"
 can be an integer or a list of integers and the return value is either
 one png image or a list of such accordingly.'''
   pnm = LatexToPnm(text, width=width, resolution=resolution,
                    extraheader=extraheader, Latexfmt=Latexfmt,
-                   reporterror=reporterror)
+                   reporterror=reporterror, remove=remove)
   if type(pnm) == types.ListType:
       for p in range(len(pnm)):
           pnm[p] = PnmToPng(pnm[p],reporterror)

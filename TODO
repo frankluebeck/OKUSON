@@ -83,7 +83,7 @@ M Auch bei "Ich sag nix" nach Abgabeschluss das "Richtige" markieren.
     Das Richtige Gruen machen
     Bei String-Eingaben das Richtige Gruen neben Eingabefeld, falls nicht
        das Richtige da war.
-F Overfull boxes melden beim Erzeugen von Pixelbildern.
+F! Overfull boxes melden beim Erzeugen von Pixelbildern.
     (loest Problem abgeschnittener Aufgabentexte)
     testexercises soll .log-Datei anschauen und Fehler und overfull boxes
       richtig rausfinden.

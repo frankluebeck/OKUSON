@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.25 2004/03/04 12:36:03 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.26 2004/03/05 15:32:49 luebeck Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -39,7 +39,7 @@ class TeXText(Utils.WithNiceRepr):
         self.width = width
         self.md5sum = md5.new(self.text).hexdigest()
 
-    def MakeImages(self,imagedir,resolutions):
+    def MakeImages(self,imagedir,resolutions,remove=1):
         '''This method calculates images for all resolutions in "resolutions"
 and stores them under the corresponding subdirectories of "imagedir" in files
 with the md5sum as file name. Errors are reported to the user but otherwise
@@ -55,7 +55,8 @@ ignored. We assume that for each resolution X there is already a subdirectory
             try:
               imgs = LatexImage.LatexToPng(self.text,width=self.width,
                          resolution=resolutions,
-                         extraheader=Config.conf['ExtraLaTeXHeader'])
+                         extraheader=Config.conf['ExtraLaTeXHeader'],
+                         remove=remove)
             except:
               Utils.Error('Offending LaTeX source comes from "'+self.filename+
                           '" line '+str(self.position)+'.',prefix='')

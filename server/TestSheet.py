@@ -124,6 +124,5 @@ for a in files:
         Utils.FileString(fname+'_'+sheet.name+'.pdf',pdf)    
         print 'Wrote PDF file to '+fname+'_'+sheet.name+'.pdf'
         shutil.rmtree('tmpsheettest')
-        #os.system('rm -rf tmpsheettest')    
 
 

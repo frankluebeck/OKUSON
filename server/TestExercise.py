@@ -59,14 +59,16 @@ def handletext(t):
     os.mkdir('tmptestimages')
   if not os.path.exists('tmptestimages/100dpi'):
     os.mkdir('tmptestimages/100dpi')
-  t.MakeImages('tmptestimages', [100])
+  t.MakeImages('tmptestimages', [100], remove = 0)
+  print ''
+  os.system('/bin/sh -c \'grep -A2 "^Overfull" tmptestimages/*/a.log\'')
+  print ''
   if os.path.exists('tmptestimages/100dpi/'+t.md5sum+'.png'):
     os.system('/bin/sh -c \''+opt['-v']+' tmptestimages/100dpi/*.png\'')
     # remove temp dir
     shutil.rmtree('tmptestimages')
-    #os.system('rm -rf tmptestimages')
   else:
-    os.system('/bin/sh -c \'less +"/^l\." tmptestimages/@*/a.log\'')
+    os.system('/bin/sh -c \'less +"/^l\." tmptestimages/*/a.log\'')
 
     
 for a in files:
