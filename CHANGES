@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.27 2003/10/09 11:38:35 neunhoef Exp $
+##  $Id: CHANGES,v 1.28 2003/10/09 12:02:30 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -76,6 +76,7 @@ Attention: The following four configuration options are new in the file
 * added possibility to resubmit all submissions for a sheet to correct
   potential errors in the "correct solutions".
 * made output at startup shorter (not every loaded web page is shown)
+* add optional attribute "maxhomescore", not used up to now
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

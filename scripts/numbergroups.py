@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: numbergroups.py,v 1.1 2003/10/05 14:03:35 neunhoef Exp $
+#   $Id: numbergroups.py,v 1.2 2003/10/09 12:02:30 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
@@ -13,8 +13,10 @@
 # stored. Groups are numbered from 1 on.
 #
 # Input is an ASCII file with one line for each person in the format:
-#  id:last name:first name:semester:studiengang:wishlist
-# where wishlist is a list of id's of people, separated by commas.
+#  id:last name:first name:semester:studiengang:wishlist:pdata1-9
+# where wishlist is a list of id's of people, separated by commas,
+# and pdata1-9 are the 9 personal data fields, separated by :
+# characters.
 # Such a file is produced by distribute.py.
 # Empty lines indicate the separation of groups.
 # Lines beginning with a "#" sign are ignored as comments.
@@ -31,7 +33,7 @@ Usage: numbergroups.py INPUTFILE OUTPUTFILE [FIRSTGROUPNUMBER]
        defaults to 1.
        Groups in the input are separated by empty lines.
        Format of input file:
-         id:last name:first name:semester:studiengang:wishlist
+         id:last name:first name:semester:studiengang:wishlist:pdata1-9
        where wishlist is a comma separated list of ids.
 """
     sys.exit(0)
@@ -54,7 +56,7 @@ number.'''
         if line[0] == '#':   # a comment, we ignore line
             continue
         p = line.split(':')
-        if len(p) < 6:
+        if len(p) < 15:
             print "Illegal format, offending line:\n  "+line+"\nignoring..."
             continue
         output.write(p[0]+':'+str(nr)+'\n')

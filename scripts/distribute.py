@@ -3,14 +3,16 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: distribute.py,v 1.2 2003/10/08 09:29:30 neunhoef Exp $
+#   $Id: distribute.py,v 1.3 2003/10/09 12:02:30 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
 # It distributes people into tutoring groups, according to their wishes.
 # Input is an ASCII file with one line for each person in the format:
-#  id:last name:first name:semester:studiengang:wishlist
-# where wishlist is a list of id's of people, separated by commas.
+#  id:last name:first name:semester:studiengang:wishlist:pdata1-9
+# where wishlist is a list of id's of people, separated by commas,
+# and pdata1-9 are the 9 extra personal data fields, separated by :
+# characters.
 # Such a file is exported by OKUSON with the menu point 
 #  "Export people for tutoring groups".
 # Empty lines indicate the separation of parts, like for example if you
@@ -33,7 +35,7 @@ Usage: distribute.py INPUTFILE OUTPUTFILE NUMBEROFGROUPS {NUMBEROFGROUPS}
        There must be one "NUMBEROFGROUPS" for each part in the input.
        Parts in the input are separated by empty lines.
        Format of input file (and output file):
-         id:last name:first name:semester:studiengang:wishlist
+         id:last name:first name:semester:studiengang:wishlist:pdata1-9
        where wishlist is a comma separated list of ids.
 """
     sys.exit(0)
@@ -58,7 +60,7 @@ wishes.'''
         if line[0] == '#':   # a comment, we ignore line
             continue
         p = line.split(':')
-        if len(p) < 6:
+        if len(p) < 15:
             print "Illegal format, offending line:\n  "+line+"\nignoring..."
             continue
         p[5] = p[5].split(',')
@@ -122,7 +124,7 @@ wishes.'''
             else:
                 p = people[k]
                 output.write(string.join(p[:5],':')+':'+string.join(p[5],',')+
-                             '\n')
+                             ':'+string.join(p[6:],':')+'\n')
         output.write('\n')
              
     return done

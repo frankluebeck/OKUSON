@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.28 2003/10/09 11:38:36 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.29 2003/10/09 12:02:30 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1405,7 +1405,7 @@ sorttable = {'ID': CmpByID, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
 def ExportPeopleForGroups(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
-         id:lname:fname:sem:stud:wishes 
+         id:lname:fname:sem:stud:wishes:persondata1-9
        where wishes has been normalized into a comma separated list
        of existing id's. Colons have been deleted.'''
     global sorttable
@@ -1415,7 +1415,7 @@ def ExportPeopleForGroups(req,onlyhead):
     l = Data.people.keys()
     sortedby = req.query.get('sortedby',[''])[0]
     out = cStringIO.StringIO()
-    out.write('# ID:last name:first name:semester:studiengang:wishes\n')
+    out.write('# ID:last name:first name:semester:studies:wishes:pdata1-9\n')
     def writegroup(l,out):
         global sorttable
         if sorttable.has_key(sortedby):
@@ -1428,7 +1428,12 @@ def ExportPeopleForGroups(req,onlyhead):
                 p = Data.people[k]
                 w = NormalizeWishes(p.wishes)
                 out.write(k+':'+Protect(p.lname)+':'+Protect(p.fname)+':'+
-                          str(p.sem)+':'+Protect(p.stud)+':'+w+'\n')
+                          str(p.sem)+':'+Protect(p.stud)+':'+w+':'+
+                          Protect(p.persondata1)+':'+Protect(p.persondata2)+
+                          ':'+Protect(p.persondata3)+':'+Protect(p.persondata4)+
+                          ':'+Protect(p.persondata5)+':'+Protect(p.persondata6)+
+                          ':'+Protect(p.persondata7)+':'+Protect(p.persondata8)+
+                          ':'+Protect(p.persondata9)+'\n')
     if meth == 'all together':
         writegroup(l,out)
     else:

@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.9 2003/10/08 23:37:31 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.10 2003/10/09 12:02:30 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -93,6 +93,7 @@ class Sheet(Utils.WithNiceRepr):
     name = ""        # a name of the sheet, the default is  str(nr)
     first = 1        # number of first exercise on this sheet
                      # the following four lists have equal length:
+    maxhomescore=-1  # maximal number of of points in homework
     list = []        # sequence of TeXTexts or Exercise objects
     exnr = []        # None for each TeXText in "list", and a number otherwise
     order = []       # 'p' for permuted and 'f' for fixed for each 
@@ -1008,6 +1009,17 @@ def MakeSheet(t):
             sh.openfrom = None
     else:
         sh.openfrom = None
+    if t[1].has_key('maxhomescore'):
+        try:
+            sh.maxhomescore = int(t[1]['maxhomescore'])
+        except:
+            Utils.Error('Value of "magic" attribute is no integer: '+
+                        t[1]['maxhomescore'].encode('ISO-8859-1','replace')+ 
+                        ' at '+Utils.StrPos(t[3])+'\nAssuming "-1"',
+                        prefix='Warning:')
+            sh.maxhomescore = -1
+    else:
+        sh.maxhomescore = -1
 
     counter = sh.first
     for a in t[2]:
