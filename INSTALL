@@ -1,4 +1,4 @@
-$Id: INSTALL,v 1.5 2003/10/10 13:00:31 luebeck Exp $
+$Id: INSTALL,v 1.6 2004/10/07 13:14:07 luebeck Exp $
 
                    Installation instructions for OKUSON
                   ======================================
@@ -7,7 +7,7 @@ $Id: INSTALL,v 1.5 2003/10/10 13:00:31 luebeck Exp $
 
 (for full instructions see the manual in the doc subdirectory.) 
 
- * Make sure you have Python version 2.2 or later installed.
+ * Make sure you have Python version 2.3 or later installed.
  * Download okuson-XXX.tar.gz from:
       http://www.math.rwth-aachen.de/~OKUSON/
  * Extract archive with: 
@@ -18,7 +18,8 @@ $Id: INSTALL,v 1.5 2003/10/10 13:00:31 luebeck Exp $
       cd ..
  * Copy Config.xml.sample to Config.xml and edit to adjust at least
    AdministratorPassword (use cryptpasswd to encrypt your password)
-   and some other obvious entries in the top part.
+   and some other obvious entries in the top part. (Change Port, if
+   default is used by previous OKUSON installation.)
  * Copy the sample web pages to the document root: 
       cp -r html.sample/* html
  * Copy the empty data files to the place where they should be:
