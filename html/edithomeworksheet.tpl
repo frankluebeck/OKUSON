@@ -24,19 +24,15 @@
     <form action="/SubmitHomeworkSheet" method="post">
     <div><HiddenNumberOfGroup /><HiddenNameOfSheet /></div>
     <table>
-      <tr><th align="left">Matrikelnummer</th><th align="left">Gesamtpunkte</th>
+      <tr><th align="left">Matnr.</th><th align="left">Punkte</th>
           <th align="left">Punkte in den Einzelaufgaben</th></tr>
 
       <HomeworkSheetInput />
 
-      <tr><td>Password:
-              <input type="password" size="16" maxlength="12" 
-                     name="passwd" value="" />
-          </td>
-          <td><input type="submit" name="action" value="Abschicken" /></td>
-          <td></td>
-      </tr>
     </table>
+      <p>Password: <input type="password" size="16" maxlength="12" 
+                          name="passwd" value="" />
+          <input type="submit" name="action" value="Abschicken" /></p>
     </form>
 
     <hr />
@@ -54,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworksheet.tpl,v 1.3 2003/10/09 11:38:36 neunhoef Exp $ -->
+     $Id: edithomeworksheet.tpl,v 1.4 2003/10/20 22:57:54 neunhoef Exp $ -->
 

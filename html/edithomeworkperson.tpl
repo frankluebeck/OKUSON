@@ -24,19 +24,15 @@
     <form action="/SubmitHomeworkPerson" method="post">
     <div><HiddenNumberOfGroup /><HiddenIdOfPerson /></div>
     <table>
-      <tr><th align="left">Übungsblatt</th><th align="left">Gesamtpunkte</th>
+      <tr><th align="left">Blatt</th><th align="left">Punkte</th>
           <th align="left">Punkte in den Einzelaufgaben</th></tr>
 
       <HomeworkPersonInput />
 
-      <tr><td>Passwort:
-              <input type="password" size="16" maxlength="12" 
-                     name="passwd" value="" />
-          </td>
-          <td><input type="submit" name="action" value="Abschicken" /></td>
-          <td></td>
-      </tr>
     </table>
+    <p>Passwort: <input type="password" size="16" maxlength="12" 
+                        name="passwd" value="" />
+                 <input type="submit" name="action" value="Abschicken" /></p>
     </form>
 
     <hr />
@@ -54,5 +50,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkperson.tpl,v 1.3 2003/10/09 11:38:36 neunhoef Exp $ -->
+     $Id: edithomeworkperson.tpl,v 1.4 2003/10/20 22:57:54 neunhoef Exp $ -->
 

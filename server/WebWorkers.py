@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.51 2003/10/20 22:51:41 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.52 2003/10/20 22:57:54 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1134,15 +1134,19 @@ class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
                     default = ''
                     default2 = ''
                 if counter % 5 == 0:
-                    out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
-                              ' name="P'+k+'" value="'+default+'" /></td>\n'
-                              '    <td><input size="30" maxlength="60" name="S'+k+
-                              '" value="'+default2+'" /></td></tr>\n')
+                  out.write('<tr><td class="trenner">'+k+'</td>'
+                            '<td class="trenner">'
+                            '<input size="6" maxlength="3"'
+                            ' name="P'+k+'" value="'+default+'" /></td>\n'
+                            '    <td class="trenner"><input size="30" '
+                            'maxlength="60" name="S'+k+
+                            '" value="'+default2+'" /></td></tr>\n')
                 else:
-                    out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
-                              ' name="P'+k+'" value="'+default+'" /></td>\n'
-                              '    <td><input size="30" maxlength="60" name="S'+k+
-                              '" value="'+default2+'" /></td></tr>\n')
+                  out.write('<tr><td>'+k+'</td><td><input size="6" '
+                            'maxlength="3"'
+                            ' name="P'+k+'" value="'+default+'" /></td>\n'
+                            '   <td><input size="30" maxlength="60" name="S'+k+
+                            '" value="'+default2+'" /></td></tr>\n')
     
 class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
     '''This class exists to produce handlers that can fill data from a
