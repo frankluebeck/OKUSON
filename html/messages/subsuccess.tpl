@@ -16,7 +16,7 @@
     <h1>Abgabe erfolgreich</h1>
 
     <p> Ihre Abgabe für Blatt <SheetName /> wurde erfolgreich registriert 
-        (<Timestamp />).</p>
+        (<CurrentTime />).</p>
 
     <p> Bitte checken Sie, ob diese Zeit aktuell ist, um eventuelle Fehler
         durch falsch funktionierende Caches in Ihrem Browser zu bemerken.
@@ -43,5 +43,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: subsuccess.tpl,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+     $Id: subsuccess.tpl,v 1.2 2003/10/08 23:38:56 neunhoef Exp $ -->
 
