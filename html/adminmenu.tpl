@@ -167,14 +167,13 @@
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Send message 
     <input size="60" maxlength="240" name="msgtext" value="" />
-    to
-    <AvailableIds />
+    to <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
      
     <form action="/DeleteMessages" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Delete messages of
-    <AvailableIds />
+    <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
 
     <form action="/Resubmit" method="post">
@@ -198,5 +197,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.17 2004/03/03 14:35:16 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.18 2004/03/04 14:28:48 neunhoef Exp $ -->
 

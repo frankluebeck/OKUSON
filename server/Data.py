@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.15 2004/03/03 14:35:16 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.16 2004/03/04 14:28:48 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -231,6 +231,7 @@ class GroupInfo(Utils.WithNiceRepr):
     place = ''         # description where the group meets
     time = ''          # description when the group meets
     emailtutor = ''    # email of tutor
+    maxsize = 1000     # maximal number of participants
     groupinfo1 = ''    # customization info for use on group specific web pages 
     groupinfo2 = ''    # customization info for use on group specific web pages 
     groupinfo3 = ''    # customization info for use on group specific web pages 
@@ -348,13 +349,14 @@ groupinfodesc = AsciiData.FileDescription(Config.conf['GroupInfoFile'],groups,
      "STORE", 3, "place",      "STRING",
      "STORE", 4, "time",       "STRING",
      "STORE", 5, "emailtutor", "STRING",
-     "STORE", 6, "groupinfo1", "STRING",
-     "STORE", 7, "groupinfo2", "STRING",
-     "STORE", 8, "groupinfo3", "STRING",
-     "STORE", 9, "groupinfo4", "STRING",
-     "STORE", 10, "groupinfo5", "STRING",
-     "STORE", 11, "groupinfo6", "STRING",
-     "STORE", 12, "groupinfo7", "STRING",
-     "STORE", 13, "groupinfo8", "STRING",
-     "STORE", 14, "groupinfo9", "STRING"    )  )
+     "STORE", 6, "maxsize",    "INT",
+     "STORE", 7, "groupinfo1", "STRING",
+     "STORE", 8, "groupinfo2", "STRING",
+     "STORE", 9, "groupinfo3", "STRING",
+     "STORE", 10, "groupinfo4", "STRING",
+     "STORE", 11, "groupinfo5", "STRING",
+     "STORE", 12, "groupinfo6", "STRING",
+     "STORE", 13, "groupinfo7", "STRING",
+     "STORE", 14, "groupinfo8", "STRING",
+     "STORE", 15, "groupinfo9", "STRING"    )  )
 

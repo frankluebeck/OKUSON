@@ -158,7 +158,7 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
      off (value 0), each newly registered participant is put into group
      number 0. If this switch is on (value 1), each newly registered 
      participant can choose the group from the selection configured in
-     the file specified below under <GroupFile>, provided the chosen
+     the file specified below under <GroupInfoFile>, provided the chosen
      group is not yet full. -->
 <GroupChoicePossible>
 0

@@ -22,7 +22,6 @@ Testen:
 
 Vor naechstem Release:
 
-  <AvailableIds /> aus Adminseite wieder raus?
   .totalscore durchschauen, ob -1 weh tut
   neue Authenticates /-Admin durchschauen
 
@@ -98,6 +97,7 @@ M Dokumentation der neuen Features von LAFM
 Vor release:
 
   ChooserFunction neu machen! Dann sind alte Daten nicht mehr kompatibel
+   --> nur noch in fmTools/SimpleRand aktivieren!
 
 Spaeter: 
 
