@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.12 2003/10/05 22:22:57 neunhoef Exp $
+##  $Id: CHANGES,v 1.13 2003/10/05 22:48:32 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -48,6 +48,7 @@ Attention: You have to put the configuration option "DocumentRoot" from the
 * added configuration option 'DocumentRoot', this changes "Config.xml"!
 * added a few sanity checks at startup 
 * added export facility for people including group membership, documented
+* added option to send personal message to participant via admin menu
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

@@ -42,6 +42,13 @@
        <tr><td>Display available and future sheets:</td>
            <td><input type="submit" name="Action" value="Display Sheets" /></td>
            </tr>
+       <tr><td>Send message to
+               <input size="8" maxlength="6" name="msgid" value="" /></td>
+           <td><input type="submit" name="Action" value="Send message" /></td>
+           </tr>
+       <tr><td colspan="2">
+           <input size="80" maxlength="240" name="msgtext" value="" /></td>
+           </tr>
       </table>
     </form>
      
@@ -60,5 +67,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.5 2003/10/05 22:22:57 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.6 2003/10/05 22:48:32 neunhoef Exp $ -->
 

@@ -1,2 +1,6 @@
 # messages.txt - private messages for participants
 # Format:  id:message
+214199:Sie haben den Schein.
+214199:Sie haben den Schein.
+214199:Doch nicht.
+214199:Oder doch?

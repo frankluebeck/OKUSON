@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.12 2003/10/05 22:22:57 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.13 2003/10/05 22:48:32 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -931,6 +931,37 @@ def ExportPeople(req,onlyhead):
             'Last-modified':req.date_time_string(time.time())}
     return (head,st)
 
+def SendMessage(req,onlyhead):
+    '''Take the message from the entry field and send it to participant with
+       the given id. This means that this message will appear on the result
+       page of the participant.'''
+    msgid = req.query.get('msgid','')[0]
+    if not(Config.conf['IdCheckRegExp'].match(msgid)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(msgid)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    # Now get the text:
+    msgtext = req.query.get('msgtext','')[0]
+
+    line = AsciiData.LineTuple( (msgid,msgtext) )
+    Data.Lock.acquire()
+
+    # Put new message into file on disk:
+    try:
+        Data.messagedesc.AppendLine(line)
+    except:
+        Data.Lock.release()
+        Utils.Error('Failed to append message:\n'+line)
+        return Delegate('/errors/fatal.html',req,onlyhead)
+
+    # Put new message into database in memory:
+    Data.people[msgid].messages.append(msgtext)
+    Data.Lock.release()
+    return Delegate('/adminmenu.html',req,onlyhead)
+
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
@@ -955,6 +986,8 @@ def AdminWork(req,onlyhead):
         return ExportPeople(req,onlyhead)
     if action == 'Display Sheets':
         return Adminexquery.getresult(req, onlyhead)
+    if action == 'Send message':
+        return SendMessage(req,onlyhead)
 
 # Install the dynamic pages:
 # There are two different sorts of pages:

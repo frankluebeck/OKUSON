@@ -2,10 +2,8 @@
 Mechanismus für Bilder in TeX
 
 UTILITIES zur Administration:
-  Datenexport: Personen, Gruppen, Ergebnisse, Scheindaten, Scheine
+  Datenexport: Gruppen, Ergebnisse, Scheindaten, Scheine
   automatische Scheinermittlung
-  Messageeingabe
-  Messageausgabe
   Scheinanfertigung
   Aufkleber drucken (nur Export?)
   Statistik ueber Uebungsblaetter
