@@ -266,8 +266,8 @@
 \newsavebox{\spalten}
 
 \newenvironment{poster} {
-   \vfill \begin{minipage}{\textwidth}  }
-  {\end{minipage} \vfill}
+   \vfill \begin{minipage}{\textwidth}\hfill }
+  {\hfill\end{minipage} \vfill}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -276,7 +276,8 @@
 
 \newcommand{\columnfrac}{.3}
 \newenvironment{pcolumn}{%
-  \hfill\begin{minipage}[t]{\columnfrac\textwidth}}{\end{minipage}\hfill%
+%\hfill%
+\begin{minipage}[t]{\columnfrac\textwidth}}{\end{minipage}\hfill%
 }
 
 
@@ -287,11 +288,12 @@
 \newenvironment{pbox}[1][1. 1. 1.] {
    \newrgbcolor{bcolor}{#1}
   \begin{lrbox}{\dummybox}%
-    \begin{minipage}{0.96\linewidth}}%
+    \begin{minipage}{0.92\linewidth}}%
     {\end{minipage}
   \end{lrbox}
-  \raisebox{-\depth}{\hspace{-.5em} 
-   \psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=1em]{\usebox{\dummybox}}} \vspace{2em} \vfill}
+  \raisebox{-\depth}{%
+\psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=1em]{\usebox{\dummybox}}%
+}\vspace{2em}\vfill}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,15 +303,39 @@
 \newenvironment{pboxns}[1][1. 1. 1.] {
    \newrgbcolor{bcolor}{#1}
   \begin{lrbox}{\dummybox}%
-    \begin{minipage}{0.96\linewidth}}%
+    \begin{minipage}{0.92\linewidth}}%
     {\end{minipage}
   \end{lrbox}
-  \raisebox{-\depth}{\hspace{-.5em} 
-   \psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=1em,shadowsize=0pt]{\usebox{\dummybox}}} \vspace{2em} \vfill}
+  \raisebox{-\depth}{%
+\psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=1em,shadowsize=0pt]{\usebox{\dummybox}}%
+}\vspace{2em}\vfill}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%             prbox   round corners           %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newenvironment{prbox}[1][1. 1. 1.] {
+   \newrgbcolor{bcolor}{#1}
+  \begin{lrbox}{\dummybox}%
+    \begin{minipage}{0.92\linewidth}}%
+    {\end{minipage}
+  \end{lrbox}
+  \raisebox{-\depth}{%
+\psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=2em, framearc=.2]{\usebox{\dummybox}}}\vspace{2em} \vfill}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%             prbox   round corners           %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{prboxns}[1][1. 1. 1.] {
+   \newrgbcolor{bcolor}{#1}
+  \begin{lrbox}{\dummybox}%
+    \begin{minipage}{0.92\linewidth}}%
+    {\end{minipage}
+  \end{lrbox}
+  \raisebox{-\depth}{%
+\psshadowbox[fillstyle=solid,fillcolor=bcolor,framesep=2em, framearc=.2, shadowsize=0pt]{\usebox{\dummybox}}}\vspace{2em}\vfill}
 
 \endinput
 %% 
