@@ -36,6 +36,7 @@ Parameters = {
   "ExtraLaTeXHeader":         ["STRING",0],
   "IdCheckRegExp":            ["STRING",1],
   "GuestIdRegExp":            ["STRING",0],
+  "IndividualSheets":         ["INT",1],
   "RegistrationPossible":     ["INT",1],
   "ExamRegistrationPossible": ["INT",1],
   "GroupChoicePossible":      ["INT",1],

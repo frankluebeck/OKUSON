@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.67 2004/03/05 10:40:23 luebeck Exp $
+##  $Id: CHANGES,v 1.68 2004/03/05 14:31:54 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,9 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.0-fix3 to 1.1
 
+* New switch <IndividualSheets> in Config.xml and <If[No]IndividualSheets>
+  for .tpl files. (Switch defaults to 1, if set to 0,  no password is needed 
+  for sheets and PDF sheets don't use table.)
 * Substituted the <GroupInfo1> to <GroupInfo9> and related tags by more 
   flexible <GroupData key="..."> tags.
 * Substituted the <PersonData1> to <PersonData9> and related tags by more 

@@ -17,23 +17,32 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
+    <IfIndividualSheets>
     <p>Für Matrikelnummer: <IdOfPerson /></p>
+    </IfIndividualSheets>
 
     <p>Abgabe bis: <OpenTo /></p>
 
+    <IfIndividualSheets>
     <p>Diese Seite wurde erstellt: <CurrentTime /></p>
 
     <p>
      <IfClosed><strong>Abgabefrist ist bereits abgelaufen</strong></IfClosed>
      <IfOpen>Die Abgabefrist ist noch nicht abgelaufen.</IfOpen>
     </p>
+    </IfIndividualSheets>
 
     <form action="/SubmitSheet" method="post">
+     <IfIndividualSheets>
      <div>
      <HiddenIdOfPerson />
      <HiddenNameOfSheet />
      </div>
+     </IfIndividualSheets>
+     
      <WebSheetTable />
+     
+     <IfIndividualSheets>
      <IfOpen>
       <p>Passwort:
          <input type="password" size="16" maxlength="16" name="passwd"
@@ -44,6 +53,7 @@
      <IfClosed>
       <p><strong>Abgabefrist ist bereits abgelaufen!</strong></p>
      </IfClosed>
+     </IfIndividualSheets>
     </form>
 
     <hr />
@@ -61,5 +71,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: sheet.tpl,v 1.2 2003/10/04 23:03:08 luebeck Exp $ -->
+     $Id: sheet.tpl,v 1.3 2004/03/05 14:31:54 luebeck Exp $ -->
 

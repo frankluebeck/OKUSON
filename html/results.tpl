@@ -20,6 +20,7 @@
     <p><strong>Teilnehmer:</strong> <FirstName/> <LastName/>
     (<IdOfPerson/>)</p>
 
+    <IfIndividualSheets>
     <p>Sie haben auf den Übungsblättern, deren Abgabefrist
 bereits abgelaufen ist, die folgenden Punktzahlen in den
 Multiple-Choice-Aufgaben (MC) beziehungsweise in den schriftlichen
@@ -27,7 +28,13 @@ Aufgaben (S) erhalten (letztere, soweit diese uns mitgeteilt wurden,
 sonst steht da ein `?`. <strong>ACHTUNG</strong>: Die Punkte für die
 schriftlichen Aufgaben werden nicht regelmäßig erfasst, die wissen Sie
 ja von den korrigierten Zetteln.):</p>
+    </IfIndividualSheets>
+    <IfNoIndividualSheets>
+    <p>Sie haben für die abgelaufenen Übungsblätter die folgenden
+    Punktzahlen erreicht (soweit diese bereits eingegeben wurden):</p>
+    </IfNoIndividualSheets>
 
+<IfIndividualSheets>
   <table>
 <!-- Adjust header and <Results> attributes -->
     <tr><th>Übungsblatt</th><th>Interaktive Aufgaben</th>
@@ -41,7 +48,14 @@ ja von den korrigierten Zetteln.):</p>
   <Results components="interactive,homework" /> 
   -->
   </table>
-
+</IfIndividualSheets>
+<IfNoIndividualSheets>
+  <table>
+    <tr><th>Übungsblatt</th>
+        <th>Punktzahl</th></tr>
+        <Results components="homework,withMaxHomeScore" />
+  </table>
+</IfNoIndividualSheets>
     <p><br /></p>
 
     <!-- Additionally, one can use:
@@ -82,5 +96,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.8 2003/11/16 19:05:27 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.9 2004/03/05 14:31:54 luebeck Exp $ -->
 

@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.54 2004/03/05 10:40:23 luebeck Exp $
+% $Id: manual.tex,v 1.55 2004/03/05 14:31:54 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1041,7 +1041,8 @@ The {\LaTeX} templates used for producing the images of exercise texts for
 the web pages and for producing the exercise sheets in PDF-format can be
 found (and adjusted, if you know what you are doing) in the {\OKUSON}
 configuration  file \texttt{\$OKUSONHOME/Config.xml}, see the elements
-\texttt{<LaTeXTemplate>} and \texttt{<PDFTemplate>}.
+\texttt{<LaTeXTemplate>} and \texttt{<PDFTemplate>} (or
+\texttt{<PDFTemplateNoTable>} without interactive exercises).
 
 If you just want to add the loading of some further packages or to read in
 some of your favourite personal macros, use the \texttt{<ExtraLaTeXHeader>}
@@ -1617,6 +1618,12 @@ sheets,  for use on query page for sheets.
 \item[\texttt{<AvailableResolutions/>}] a \texttt{select} environment
 showing the resolutions configured in entry \texttt{<Resolutions>} of the
 \texttt{Config.xml} file.
+\item[\texttt{<IfIndividualSheets>...</IfIndividualSheets>}] 
+content is only typeset if the option \texttt{<IndividualSheets>} in the 
+\texttt{Config.xml} file is set to \texttt{1}.
+\item[\texttt{<IfNoIndividualSheets>...</IfNoIndividualSheets>}] 
+content is only typeset if the option \texttt{<IndividualSheets>} in the 
+\texttt{Config.xml} file is set to \texttt{0}.
 \end{description}
 
 \subsection{Special Elements in Pages Containing Personal
@@ -3012,24 +3019,20 @@ We also use {\OKUSON} for courses without interactive exercises, just to
 take advantage of the other utilities: registration, tutoring- and  exam-
 management, HTML versions of exercise sheets, etc.
 
-In this case some things should be done a bit differently: In PDF-versions
-of the sheets the exercises should not be put into a table (and they should
-not be regenerated for each request), participants
-should not need to type a password for getting the exercise sheet, there
-should not be ID's in templates which now look the same to all participants.
+This can be achieved by setting the option \texttt{<IndividualSheets>} of 
+the configuration file \texttt{Config.xml} to \texttt{0}.
 
-To achieve this, copy the files in \texttt{html} with a second extension
-\texttt{.nointeractive} over the files of the same name but without this
-extension before further customizing the web pages. 
+By this switch certain things vanish for the participants, for example
+it is no longer necessary to type ID and password to get the exercise
+sheets, on the results page the interactive exercises are not mentioned,
+and the PDF-sheets don't use a table for the exercises. 
 
-Then start the {\OKUSON} server and register a user with a guest ID (the
-allowed guest IDs are configured in entry \texttt{<GuestIdRegExp>} of 
-the configuration file \texttt{Config.xml}). Use this guest ID as value in the
-tag 
+The two cases are handled by the same template files, via the tags
+\texttt{<IfIndividualSheets>} and \texttt{<IfNoIndividualSheets>}.
 
-\hspace{5mm}\texttt{<input type="hidden" name="id" value="???" />}
-
-which you find in the nointeractive version of \texttt{html/exquery.html}.
+The different templates for the \TeX-files of the PDF-sheets are marked by
+\texttt{<PDFTemplate>} and \texttt{<PDFTemplateNoTable>} in the 
+\texttt{Config.xml} file.
 
 \section{Managing Additional Personal Registration Data}
 

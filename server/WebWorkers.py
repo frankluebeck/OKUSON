@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.86 2004/03/05 13:31:27 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.87 2004/03/05 14:31:54 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -83,6 +83,16 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         out.write(Config.conf['Footer'])
     def handle_Feedback(self,node,out):
         out.write(Config.conf['Feedback']+'\n')
+    def handle_IfIndividualSheets(self,node,out):
+        if Config.conf['IndividualSheets']:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
+    def handle_IfNoIndividualSheets(self,node,out):
+        if not Config.conf['IndividualSheets']:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_PossibleStudies(self,node,out):
         for opt in Config.conf['PossibleStudies']:
             out.write('  <option>'+opt+'</option>\n')
@@ -1098,22 +1108,24 @@ def SeedFromId(id):
                       # the same string?
 
 def QuerySheet(req,onlyhead):
-    # First check whether the id is valid:
-    id = req.query.get('id',[''])[0].strip()   # our default id
-    if not(Config.conf['IdCheckRegExp'].match(id)):
-        return Delegate('/errors/invalidid.html',req,onlyhead)
+    # We need personal data only if <IndividualSheets> is true.
+    indiv = Config.conf['IndividualSheets']
+    if indiv:
+        # First check whether the id is valid:
+        id = req.query.get('id',[''])[0].strip()   # our default id
+        if not(Config.conf['IdCheckRegExp'].match(id)):
+            return Delegate('/errors/invalidid.html',req,onlyhead)
 
-    # Then check whether we already have someone with that id:
-    if not(Data.people.has_key(id)):
-        return Delegate('/errors/idunknown.html',req,onlyhead)
-        
-    p = Data.people[id]
-    iamadmin = Authenticate(p,req,onlyhead)
-    if iamadmin < 0:
-        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+        # Then check whether we already have someone with that id:
+        if not(Data.people.has_key(id)):
+            return Delegate('/errors/idunknown.html',req,onlyhead)
+            
+        p = Data.people[id]
+        iamadmin = Authenticate(p,req,onlyhead)
+        if iamadmin < 0:
+            return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
     format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF"
-    pdftable = req.query.get('pdftable',['yes'])[0] # Can also be "no"
     sheetname = req.query.get('sheet',[''])[0].strip()  # the name of a sheet
     # Search for this name among sheet names:
     l = Exercises.SheetList()
@@ -1154,7 +1166,10 @@ def QuerySheet(req,onlyhead):
                
         # Now we really deliver the sheet. We must create a handler object
         # for person p's sheet l[i]:
-        handler = EH_withPersSheet_class(p,sheet[2],resolution)
+        if indiv:
+            handler = EH_withPersSheet_class(p,sheet[2],resolution)
+        else:
+            handler = EH_withPersSheet_class(None,sheet[2],resolution)
         handler.iamadmin = iamadmin
         Utils.Error('id '+id+', sheet '+sheet[2].name+' as HTML', 
                     prefix='QuerySheet: ')
@@ -1163,27 +1178,33 @@ def QuerySheet(req,onlyhead):
         # Collect placeholder values in dictionary
         values = {}
         values['SheetName'] = sheetname
-        values['IdOfPerson'] = id
         for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
           values[a] = Config.conf[a]
         if Config.conf.has_key('ConfigData'):
           for a in Config.conf['ConfigData'].keys():
             values['ConfigData.'+a] = Config.conf['ConfigData'][a]
-        # find values of custom variables for persons
-        for a in Data[id].persondata.keys():
-          try:
-            values['PersonData.'+a] = Data[id].persondata[a]
-          except:
-            values['PersonData.'+a] = ''
         values['OpenTo'] = LocalTimeString(sheet[2].opento)
         if sheet[2].openfrom:
             values['OpenFrom'] = LocalTimeString(sheet[2].openfrom)
         else:
             values['OpenFrom'] = ''
         values['CurrentTime'] = LocalTimeString()
+        if indiv:
+            # find values of custom variables for persons
+            values['IdOfPerson'] = id
+            for a in Data.people[id].persondata.keys():
+              try:
+                values['PersonData.'+a] = Data.people[id].persondata[a]
+              except:
+                values['PersonData.'+a] = ''
 
         # finally the actual exercises as longtable environment or text
-        if pdftable == 'no':
+        if indiv:
+            values['ExercisesTable'] = sheet[2].LatexSheetTable(SeedFromId(id))
+            latexinput = SimpleTemplate.FillTemplate(
+                               Config.conf['PDFTemplate'], values)
+            pdf = LatexImage.LatexToPDF(latexinput)
+        else: 
             if hasattr(sheet[2], 'cachedPDF'):
                 pdf = sheet[2].cachedPDF
             else:
@@ -1192,11 +1213,6 @@ def QuerySheet(req,onlyhead):
                                Config.conf['PDFTemplateNoTable'], values)
                 pdf = LatexImage.LatexToPDF(latexinput)
                 sheet[2].cachedPDF = pdf
-        else: 
-            values['ExercisesTable'] = sheet[2].LatexSheetTable(SeedFromId(id))
-            latexinput = SimpleTemplate.FillTemplate(
-                               Config.conf['PDFTemplate'], values)
-            pdf = LatexImage.LatexToPDF(latexinput)
 
         if not pdf:
             Utils.Error('Cannot pdflatex sheet input (id='+id+\

@@ -17,9 +17,11 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
+    <IfIndividualSheets>
     <p>Bitte geben Sie Ihre Matrikelnummer und Ihr Passwort ein (mit dem
     Sie sich <a href="/registration.html">angemeldet</a> haben).
     </p>
+    </IfIndividualSheets>
 
 <!--    <p>Auch wenn Sie nicht angemeldet sind, können Sie sich als Gast
     Beispielblätter ansehen. Benutzen Sie die Nummer <GuestId />
@@ -28,19 +30,27 @@
     <form action="QuerySheet" method="post">
 
     <table>
+    <IfIndividualSheets>
     <tr><td>Ihre Matrikelnummer: </td>
     <td><input size="8"  maxlength="6" name="id" value="" 
                tabindex="1"/></td></tr>
     <tr><td>Ihr Passwort: </td>
     <td><input type="password" size="16"
                maxlength="16" name="passwd" value="" tabindex="2" /> </td></tr>
+    </IfIndividualSheets>
     <tr><td>Gewünschter Dokumenttyp 
             (<a href="/doctypehelp.html">Hilfe</a>):</td>
     <td><select name="format" tabindex="10000">
+    <IfIndividualSheets>
         <option selected="selected">HTML</option>
         <option>PDF</option>
+    </IfIndividualSheets>
+    <IfNoIndividualSheets>
+        <option>HTML</option>
+        <option selected="selected">PDF</option>
+    </IfNoIndividualSheets>
     </select></td></tr>
-    <tr><td>Auflösung:</td>
+    <tr><td>Auflösung (HTML):</td>
     <td><select name="resolution" tabindex="10001">
         <AvailableResolutions />
     </select></td></tr>
@@ -66,5 +76,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: exquery.tpl,v 1.2 2003/10/27 09:12:07 neunhoef Exp $ -->
+     $Id: exquery.tpl,v 1.3 2004/03/05 14:31:54 luebeck Exp $ -->
 

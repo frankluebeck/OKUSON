@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.12 2004/03/05 08:24:34 luebeck Exp $ -->
+<!-- $Id: config.dtd,v 1.13 2004/03/05 14:31:54 luebeck Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -23,6 +23,7 @@
 <!ELEMENT ExtraLaTeXHeader (#PCDATA)>
 <!ELEMENT IdCheckRegExp (#PCDATA)>
 <!ELEMENT GuestIdRegExp (#PCDATA)>
+<!ELEMENT IndividualSheets (#PCDATA)>
 <!ELEMENT RegistrationPossible (#PCDATA)>
 <!ELEMENT ExamRegistrationPossible (#PCDATA)>
 <!ELEMENT GroupChoicePossible (#PCDATA)>

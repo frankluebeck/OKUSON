@@ -111,7 +111,6 @@ indicate that the free form field counts which is also available. -->
 
 Example:
 -->
-
 <ConfigData key="bla">blub</ConfigData>
 
 <!-- A chunk of LaTeX header code that is put in the preamble of all
@@ -143,6 +142,14 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 <GuestIdRegExp>^9999[0-9][0-9]$</GuestIdRegExp>
 <!--<GuestIdRegExp>^_gast[a-zA-Z0-9_]*$</GuestIdRegExp>-->
 
+
+<!-- The following switch tells OKUSON, whether exercise sheets are individual 
+     (value 1) or not (value 0). This way OKUSON can be used easily for
+     courses with "classical" exercise sheets (without multiple choice 
+     exercises).  -->
+<IndividualSheets>
+1
+</IndividualSheets>
 
 <!-- The following switch decides, whether new registrations are possible 
      (value 1) or not (value 0). -->
