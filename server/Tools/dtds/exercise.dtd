@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ==================================================================
+     exercise.dtd - XML Document type definition for "Exercise"s
+     Copyright 2001 Frank Lübeck and Max Neunhöffer
+     ================================================================== -->
+
+<!-- $Id: exercise.dtd,v 1.1 2003/10/04 23:05:55 luebeck Exp $ -->
+
+<!ELEMENT EXERCISES (EXERCISE)*>
+<!ELEMENT EXERCISE (ANSWERS | TEXT | QUESTION)*>
+<!ATTLIST EXERCISE key CDATA #REQUIRED
+                   keywords CDATA #IMPLIED>
+
+<!ELEMENT ANSWERS (#PCDATA)>
+   <!-- Content must be a | separated list of possible answers. -->
+<!ATTLIST ANSWERS type CDATA #REQUIRED>  
+   <!-- may be: r - radio         one and only one solution possible
+                c - checkboxes    every answer is correct or not
+                s - string        free form answer -->
+
+<!ELEMENT TEXT (#PCDATA)>
+
+<!ELEMENT QUESTION (ANSWERS | VARIANT)*>
+
+<!ELEMENT VARIANT (#PCDATA)>
+<!-- of course, one of the following attributes is #REQUIRED    -->
+<!-- solution must be a | separated list, or solutionregexp a regular
+     expression matching exactly all valid solutions.  -->
+<!ATTLIST VARIANT solution CDATA #IMPLIED
+                  solutionregexp CDATA #IMPLIED >  
+
