@@ -4,6 +4,9 @@ Interessante Ergebnisse des Browser-Checks:
   opera adminlogin --> geht nicht mit "Location" header!
   netscape6.2.1 auf Linux: "localhost" geht nicht, aber "127.0.0.1"
 
+Bug:
+  Zugangsberechtigung für Tutoren bei Gruppe 0 checken!
+
 Spaeter: 
 
   Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
