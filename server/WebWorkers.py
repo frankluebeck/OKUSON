@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.111 2004/10/11 14:19:52 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.112 2004/10/12 01:49:34 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -337,9 +337,9 @@ def CleanWeb(st):
     '''Function to avoid cross site scripting. We simply replace < by &lt;
     and > by &gt; and & by &amp; . This should avoid that user input creates
     tags in web output.'''
+    st = st.replace('&','&amp;')
     st = st.replace('<','&lt;')
     st = st.replace('>','&gt;')
-    st = st.replace('&','&amp;')
     return st
 
 def Delegate(path,req,onlyhead,handler = None,addheader = []):
