@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.54 2003/11/10 13:58:10 neunhoef Exp $
+##  $Id: CHANGES,v 1.55 2003/11/11 13:49:31 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.0-fix2 to 1.0-fix3
 
+* Striping comments from LaTeX code in alt-attributes of images
+  (-> can now safely add references and solutions in exercise comments)
 * Resolve a subtle bug with non-thread-safeness of the pyRXP XML parser
   (there is now a global pyRXP Lock object and the interface to the parser
    has been improved).
