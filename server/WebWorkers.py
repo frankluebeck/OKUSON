@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.43 2003/10/13 18:41:58 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.44 2003/10/14 09:15:44 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1115,7 +1115,7 @@ def TutorRequest(req,onlyhead):
         groupnr = int(groupnr)
     except:
         groupnr = 0
-    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+    if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
         return Delegate('/errors/badgroupnr.html',req,onlyhead)
 
     g = Data.groups[str(groupnr)]
