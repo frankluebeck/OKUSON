@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.21 2003/11/16 19:05:27 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.22 2003/11/17 09:19:57 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -924,9 +924,12 @@ def MakeQuestion(t, defansw):
                      '"solutionregexp" attribute forbidden\nat '+
                      Utils.StrPos(a[3]))
                   raise Utils.UtilsError
-              sol = a[1]['solution'].encode('ISO-8859-1','replace')
-              sol = sol.split('|')
-              sol = map(string.strip,sol)
+              sol = a[1]['solution'].encode('ISO-8859-1','replace').strip()
+              if sol == '':
+                  sol = []
+              else:
+                  sol = sol.split('|')
+                  sol = map(string.strip,sol)
               if res.type == 'r' and len(sol) > 1:
                   Utils.Error('Question variant of type "r" has more than one '
                      'correct solution\nat '+Utils.StrPos(a[3]))
