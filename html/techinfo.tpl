@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <h1>Impressum/Technische Informationen</h1>
+    <h1>Technische Informationen</h1>
 
         <p>
         <a href="http://www.math.rwth-aachen.de/~OKUSON"><strong>OKUSON
@@ -81,5 +81,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.4 2003/10/12 11:32:33 neunhoef Exp $ -->
+     $Id: techinfo.tpl,v 1.5 2003/10/15 20:02:34 luebeck Exp $ -->
 
