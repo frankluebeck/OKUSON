@@ -106,11 +106,14 @@ WebWorkers.RegisterAllTpl()
 Utils.Error(' Formatting current time on sheets like: ' + 
             WebWorkers.LocalTimeString(), prefix = 'Info:')
 
-# We are ready, service can begin:
-Utils.Error(time.asctime(time.localtime(time.time()))+
-            ' Server up and running...',prefix='')
-
 from Tools import BuiltinWebServer
 
-BuiltinWebServer.StartServer(port = Config.conf['Port'])
+# We are ready, service can begin:
+try:
+    Utils.Error(time.asctime(time.localtime(time.time()))+
+                ' Ready to start service ...',prefix='')
+    BuiltinWebServer.StartServer(port = Config.conf['Port'])
+except:
+    Utils.Error(' Cannot start service! (Port in Use? Server running?)')
+
 

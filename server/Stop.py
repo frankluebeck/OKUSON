@@ -25,14 +25,19 @@ f = file("log/server.log","r")
 f.seek(0,2)     # seek to end of file
 p = f.tell()
 
+# Now send the request:
+try:
+    u = urllib.urlopen('http://localhost:'+str(Config.conf['Port'])+
+                       '/AdminWork?Action=PID')
+    spid = u.read()
+    u.close()
+except:
+    Utils.Error('Cannot contact server. No server running?')
+    sys.exit(1)
+
 pid = os.fork()
 if pid == 0:
     time.sleep(0.5)   # Let the parent get hold of the log file
-    # Now send the request:
-    u = urllib.urlopen('http://localhost:'+str(Config.conf['Port'])+
-                           '/AdminWork?Action=PID')
-    spid = u.read()
-    u.close()
     os.kill(int(spid), signal.SIGUSR1)
     print 'Sent server with PID '+spid+' a USR1 signal.'
     sys.exit(0)  # Terminate this child process

@@ -11,15 +11,11 @@ if pid == 0:
     server = os.path.join(homedir,"server/Server.py")
     os.execl(server,server)
 
-# no longer necessary:
-#f = file("currentPID", "w")
-#f.write(str(pid))
-#f.close
-
 f = file("log/server.log","r")
 f.seek(0,2)     # seek to end of file
 p = f.tell()
 
+ok = 0
 while 1:
     f.seek(0,2)
     np = f.tell()
@@ -28,9 +24,19 @@ while 1:
         s = f.readlines()
         p = f.tell()
         for l in s:
-            sys.stdout.write(l)
-            if l[-25:] == 'Server up and running...\n':
+            if l[:29] == 'Error:  Cannot start service!':
+                sys.stdout.write(l)
+                sys.exit(1)
+            elif ok:
                 sys.exit(0)
+            elif l[-27:] == 'Ready to start service ...\n':
+                sys.stdout.write(l)
+                ok = 1
+                s = s+f.readlines()
+                if l == s[-1]:
+                    sys.exit(0)
             elif l == 'Aborting.\n':
+                sys.stdout.write(l)
                 sys.exit(0)
     time.sleep(0.5)
+
