@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.88 2005/04/01 16:38:38 luebeck Exp $
+##  $Id: CHANGES,v 1.89 2005/04/02 19:49:51 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,8 +13,14 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix3 to ???
 
+* Improved the help text of the "schein.py" script.
+* Fix "Show Global Statistics for group" in administrator menu, allow
+  access for tutors not only from administrators hosts.
+* Allow registration if the first password is the administrator password,
+  even if registration is switched off.
+* New configuration option "MaxStringInputLength" to give the maximal length
+  of the input in string fields in multiple choice exercises.
 * New mime types .avi, .rm.
-
 * Forcing PGM output from ghostscript to avoid non-antialiased images with
   big LaTeX input (should not make a difference for most people).
 
