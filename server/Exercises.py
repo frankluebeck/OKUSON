@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.28 2004/03/08 10:36:30 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.29 2004/03/08 11:12:38 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -750,20 +750,25 @@ of the sheet with seed "seed" and returns the result as a string.
         for k in Data.people.keys():
             p = Data.people[k]
             if not(Config.conf['GuestIdRegExp'].match(k)):
-                personalQuestions = self.ChooserFunction(WebWorkers.SeedFromId(p.id)) 
+                personalQuestions = \
+                       self.ChooserFunction(WebWorkers.SeedFromId(p.id)) 
                 personalQuestions = personalQuestions[exIndex]
-                #personalQuestions = self.list[ self.ChooserFunction(WebWorkers.SeedFromId(p.id))[exIndex] ]
                 countOfQuestions = -1
-                # personalQuestions ist jetzt eine Liste mit Tupeln (Index in ex.list, Variantennummer)
+                # personalQuestions is now a list of tuples 
+                #   (index in ex.list, variant number)
                 for (i,n) in personalQuestions: 
-                    countOfQuestions += 1    #0 für die erste Frage
+                    countOfQuestions += 1    #0 for first question
                     if i == quIndex and ((n+1) == varNr):
                         if p.mcresults.has_key(self.name):
                             peopleCount += 1
-                            if p.mcresults[self.name].marks[numberOfQuestionsBefore+countOfQuestions] !='0':
+                            if p.mcresults[self.name].marks[ \
+                               numberOfQuestionsBefore+countOfQuestions] !='0':
                                 submissionCount += 1
-                                sm = p.mcresults[self.name].submission.split('|')[numberOfQuestionsBefore+countOfQuestions]
-                                if p.mcresults[self.name].marks[numberOfQuestionsBefore+countOfQuestions] =='+':
+                                sm = p.mcresults[self.name].submission.split(
+                                 '|')[numberOfQuestionsBefore+countOfQuestions]
+                                if p.mcresults[self.name].marks[ \
+                                   numberOfQuestionsBefore+countOfQuestions] \
+                                    =='+':
                                     correctAnswerCount += 1
                                     if dictCorrectAnswers.has_key(sm):
                                         dictCorrectAnswers[sm].append(p.id)
@@ -774,13 +779,14 @@ of the sheet with seed "seed" and returns the result as a string.
                                         dictFalseAnswers[sm].append(p.id)
                                     else:
                                         dictFalseAnswers[sm]=[p.id]
-        return ( peopleCount, submissionCount, correctAnswerCount, dictCorrectAnswers, 
-            dictFalseAnswers, self.list[exIndex].list[quIndex].variants[varNr-1])
+        return ( peopleCount, submissionCount, correctAnswerCount, 
+                 dictCorrectAnswers, dictFalseAnswers, 
+                 self.list[exIndex].list[quIndex].variants[varNr-1])
     
     def Statistics(self):
         presented = {}   # How many students have seen this question/variant?
-        tried = {}  # How many students have submitted an solution?
-        solved = {}  # How many students did it right?
+        tried = {}       # How many students have submitted an solution?
+        solved = {}      # How many students did it right?
 
         peopleKeys = Data.people.keys()
 
