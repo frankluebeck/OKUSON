@@ -22,9 +22,10 @@
        <strong>Blatt:</strong> <SheetName /></p>
 
     <form action="/SubmitHomeworkSheet" method="post">
-    <div><HiddenNameOfSheet /></div>
+    <div><HiddenNumberOfGroup /><HiddenNameOfSheet /></div>
     <table>
       <tr><th align="left">Matrikelnummer</th><th align="left">Punkte</th></tr>
+
       <HomeworkSheetInput />
 
       <tr><td>Password:
@@ -51,5 +52,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworksheet.tpl,v 1.1 2003/10/08 20:36:38 neunhoef Exp $ -->
+     $Id: edithomeworksheet.tpl,v 1.2 2003/10/08 21:53:10 neunhoef Exp $ -->
 

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.23 2003/10/08 20:36:39 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.24 2003/10/08 21:53:10 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -1027,6 +1027,9 @@ class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
         self.p = p     # this also is used by base class methods
     def handle_HiddenIdOfPerson(self,node,out):
         out.write('<input type="hidden" name="id" value="'+self.p.id+'" />\n')
+    def handle_HiddenNumberOfGroup(self,node,out):
+        out.write('<input type="hidden" name="group" value="'+
+                  str(self.grp.number)+'" />\n')
     def handle_HomeworkPersonInput(self,node,out):
         sl = Exercises.SheetList()
         for nr,na,s in sl:
@@ -1085,12 +1088,15 @@ def TutorRequest(req,onlyhead):
     
     # Now password is changed (or not), decide about input request:
     sheet = req.query.get('sheet',[''])[0]
-    sl = Exercises.SheetList()
-    i = 0
-    while i < len(sl) and sl[i][1] != sheet: i += 1
-    if i < len(sl):   # we know this sheet!
-        handler = EH_withGroupAndSheet_class(g,sl[i][2])
-        return Delegate('/edithomeworksheet.html',req,onlyhead,handler)
+    if sheet != '':
+        sl = Exercises.SheetList()
+        i = 0
+        while i < len(sl) and sl[i][1] != sheet: i += 1
+        if i < len(sl):   # we know this sheet!
+            handler = EH_withGroupAndSheet_class(g,sl[i][2])
+            return Delegate('/edithomeworksheet.html',req,onlyhead,handler)
+        else:
+            return Delegate('/errors/tutunknownsheet.html',req,onlyhead)
 
     id = req.query.get('id',[''])[0]
     if id == '':   # we do nothing
@@ -1111,6 +1117,124 @@ def TutorRequest(req,onlyhead):
     return Delegate('/edithomeworkperson.html',req,onlyhead,handler)
 
 Site['/TutorRequest'] = FunWR(TutorRequest)
+
+
+def SubmitHomeworkSheet(req,onlyhead):
+    '''This accepts the input by a tutor for his group for one sheet.'''
+    # First verify validity of group number:
+    groupnr = req.query.get('group',['0'])[0]
+    try:
+        groupnr = int(groupnr)
+    except:
+        groupnr = 0
+    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    g = Data.groups[str(groupnr)]
+    # Now verify the password for this group:
+    # We use the function for people, this is possible because g as a
+    # data field "passwd".
+    iamadmin = Authenticate(g,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    # Now look for the sheet:
+    sheet = req.query.get('sheet',[''])[0]
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet: i += 1
+    if i < len(sl):   # we know this sheet!
+        # Now we have sheet and group and authentication, read off results:
+        s = sl[i][2]
+        Data.Lock.acquire()
+        for k in g.people:
+            if Data.people.has_key(k):
+                p = Data.people[k]
+                score = req.query.get('P'+k,[''])[0]
+                try:
+                    totalscore = int(score)
+                except:
+                    totalscore = 0
+                if p.homework.has_key(s.name) or score != '':
+                    # We only work, if either the input is non-empty or
+                    # if there was already a result. This allows for
+                    # deletion of results.
+                    line = AsciiData.LineTuple( 
+                                 (p.id, s.name, str(totalscore),'0','') )
+                    try:
+                        Data.homeworkdesc.AppendLine(line)
+                    except:
+                        Data.Lock.release()
+                        Utils.Error('Failed store homework result:\n'+line)
+                        return Delegate('/errors/fatal.html',req,onlyhead)
+                    if not(p.homework.has_key(s.name)):
+                        p.homework[s.name] = Data.Homework()
+                    p.homework[s.name].totalscore = totalscore
+        Data.Lock.release()
+        return Delegate('/tutors.html',req,onlyhead)
+    else:
+        return Delegate('/errors/tutunknownsheet.html',req,onlyhead)
+
+Site['/SubmitHomeworkSheet'] = FunWR(SubmitHomeworkSheet)
+
+def SubmitHomeworkPerson(req,onlyhead):
+    '''This accepts the input by a tutor for his group for one person.'''
+    # First verify validity of group number:
+    groupnr = req.query.get('group',['0'])[0]
+    try:
+        groupnr = int(groupnr)
+    except:
+        groupnr = 0
+    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    g = Data.groups[str(groupnr)]
+    # Now verify the password for this group:
+    # We use the function for people, this is possible because g as a
+    # data field "passwd".
+    iamadmin = Authenticate(g,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    # Now look for the person:
+    id = req.query.get('id',[''])[0]
+    if not(Config.conf['IdCheckRegExp'].match(id)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(id)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[id]
+    sl = Exercises.SheetList()
+    # Now we have person and group and authentication, read off results:
+    Data.Lock.acquire()
+    for nr,na,s in sl:
+        if s.counts and s.openfrom < time.time():
+            score = req.query.get('S'+na,[''])[0]
+            try:
+                totalscore = int(score)
+            except:
+                totalscore = 0
+            if p.homework.has_key(na) or score != '':
+                # We only work, if either the input is non-empty or
+                # if there was already a result. This allows for
+                # deletion of results.
+                line = AsciiData.LineTuple( 
+                             (p.id, s.name, str(totalscore),'0','') )
+                try:
+                    Data.homeworkdesc.AppendLine(line)
+                except:
+                    Data.Lock.release()
+                    Utils.Error('Failed store homework result:\n'+line)
+                    return Delegate('/errors/fatal.html',req,onlyhead)
+                if not(p.homework.has_key(s.name)):
+                    p.homework[s.name] = Data.Homework()
+                p.homework[s.name].totalscore = totalscore
+    Data.Lock.release()
+    return Delegate('/tutors.html',req,onlyhead)
+
+Site['/SubmitHomeworkPerson'] = FunWR(SubmitHomeworkPerson)
 
 #######################################################################
 # The following is for the administrator's pages:

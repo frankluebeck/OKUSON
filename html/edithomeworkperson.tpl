@@ -22,7 +22,7 @@
        <strong>Matrikelnummer:</strong> <IdOfPerson /></p>
 
     <form action="/SubmitHomeworkPerson" method="post">
-    <div><HiddenIdOfPerson /></div>
+    <div><HiddenNumberOfGroup /><HiddenIdOfPerson /></div>
     <table>
       <tr><th align="left">Übungsblatt</th><th align="left">Punkte</th></tr>
 
@@ -52,5 +52,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkperson.tpl,v 1.1 2003/10/08 20:36:38 neunhoef Exp $ -->
+     $Id: edithomeworkperson.tpl,v 1.2 2003/10/08 21:53:10 neunhoef Exp $ -->
 
