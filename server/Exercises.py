@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.12 2003/10/13 21:57:45 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.13 2003/10/23 10:58:33 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -1117,7 +1117,7 @@ def ReadSheetsFile(fname):
   # document.
   if tree[0] == 'SHEETS':
       for a in tree[2]:
-          if type(a) == types.TupleType and a[0] == 'EXERCISE':
+          if type(a) == types.TupleType and a[0] == 'SHEET':
                try:
                    MakeSheet(a)
                except:   # may fail, error is already reported
