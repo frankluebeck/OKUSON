@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.71 2003/11/17 10:10:40 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.72 2003/11/24 09:56:03 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -908,24 +908,21 @@ a Person object and a Sheet object as data.'''
             out.write('</tr>\n')
         out.write('</table>')
     def handle_ScoresTableByGroup(self, node, out):
-        if currentcookie == None:
-            out.write('<p>Not logged in: Statistics not displayed.</p>')
-        else:
-            hwStr = '<h3>Homework</h3>'
-            mcStr = '<h3>Multiple Choice</h3>'
-            l = Utils.SortNumerAlpha(Data.groups.keys())
-            for grp in l:
-                numHw, avHw, medHw, highHw, listHw, \
-                numMc, avMc, medMc, highMc, listMc = \
-                     Data.GlobalStatistics(self.s.name, grp)
-                hwStr += '<h4>Group: %s</h4>\n' % grp                
-                hwStr += '<p>Median: %.2f, Average: %.2f </p>' % (medHw, avHw)
-                hwStr += DistributionTable(numHw, listHw)
-                mcStr += '<h4>Group: %s</h4>\n' % grp
-                mcStr += '<p>Median: %.2f, Average: %.2f </p>' % (medMc, avMc)
-                mcStr += DistributionTable(numMc, listMc)
-            out.write(hwStr)
-            out.write(mcStr)
+        hwStr = '<h3>Homework</h3>'
+        mcStr = '<h3>Multiple Choice</h3>'
+        l = Utils.SortNumerAlpha(Data.groups.keys())
+        for grp in l:
+            numHw, avHw, medHw, highHw, listHw, \
+            numMc, avMc, medMc, highMc, listMc = \
+                 Data.GlobalStatistics(self.s.name, grp)
+            hwStr += '<h4>Group: %s</h4>\n' % grp                
+            hwStr += '<p>Median: %.2f, Average: %.2f </p>' % (medHw, avHw)
+            hwStr += DistributionTable(numHw, listHw)
+            mcStr += '<h4>Group: %s</h4>\n' % grp
+            mcStr += '<p>Median: %.2f, Average: %.2f </p>' % (medMc, avMc)
+            mcStr += DistributionTable(numMc, listMc)
+        out.write(hwStr)
+        out.write(mcStr)
 
 def ClassFromFraction(pc):
     # pc should be a float. Meaningful results only with 0<=pc<=1
@@ -1172,45 +1169,42 @@ class EH_withGroupInfo_class(EH_Generic_class):
         out.write(string.join(l, ', '))
 
     def handle_ScoresTable(self, node, out):
-        if currentcookie == None:
-            out.write('<p>Not logged in: Statistics not displayed.</p>')
-        else:
-            out.write('<table class="scorestable">\n')
-            out.write('<tr><th></th><th colspan="4">Homework Scores</th>'
-                      '<th colspan="4">Multiple Choice Scores</th></tr>')
-            out.write('<tr><th>Sheet</th><th>#Subm.</th><th>Avg.</th>' )
-            out.write( '<th>Median</th><th>Highest</th>')
-            out.write(' <th>#Subm.</th><th>Avg.</th>' )
-            out.write( '<th>Median</th><th>Highest</th>  </tr>')
-            listOfTables = []
-            for sheetNumber, sheetName, sheet in Exercises.SheetList():
-                if self.grp != None:
-                    group = str(self.grp.number)
-                else:
-                    group = None
-                numHw, avHw, medHw, highHw, listHw, \
-                numMc, avMc, medMc, highMc, listMc = \
-                       Data.GlobalStatistics(sheetName, group)
-                out.write('<tr>')
-                out.write('<td>%s</td>' % sheetName )
-                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
-                          % (numHw, avHw, medHw, highHw) )
-                out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
-                          % (numMc, avMc, medMc, highMc) )
-                out.write('</tr>\n')
-                
-                exStr = '<h2>Overview for sheet %s</h2>\n' % sheetName
-                
-                for num, av, med, list, heading in \
-                    [ (numHw, avHw, medHw, listHw, 'Homework'), \
-                      (numMc, avMc, medMc, listMc, 'Multiple Choice')]:
-                    exStr +='<h3>' + heading + '</h3>'
-                    exStr +='<p>Median: %.2f, Average: %.2f</p>' % (med, av)
-                    exStr += DistributionTable(num, list)
-                listOfTables.append(exStr)
-            out.write('</table>\n')
-            for s in listOfTables:
-                out.write(s)
+        out.write('<table class="scorestable">\n')
+        out.write('<tr><th></th><th colspan="4">Homework Scores</th>'
+                  '<th colspan="4">Multiple Choice Scores</th></tr>')
+        out.write('<tr><th>Sheet</th><th>#Subm.</th><th>Avg.</th>' )
+        out.write( '<th>Median</th><th>Highest</th>')
+        out.write(' <th>#Subm.</th><th>Avg.</th>' )
+        out.write( '<th>Median</th><th>Highest</th>  </tr>')
+        listOfTables = []
+        for sheetNumber, sheetName, sheet in Exercises.SheetList():
+            if self.grp != None:
+                group = str(self.grp.number)
+            else:
+                group = None
+            numHw, avHw, medHw, highHw, listHw, \
+            numMc, avMc, medMc, highMc, listMc = \
+                   Data.GlobalStatistics(sheetName, group)
+            out.write('<tr>')
+            out.write('<td>%s</td>' % sheetName )
+            out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
+                      % (numHw, avHw, medHw, highHw) )
+            out.write('<td>%d</td><td>%.2f</td><td>%.2f</td><td>%d</td>'
+                      % (numMc, avMc, medMc, highMc) )
+            out.write('</tr>\n')
+            
+            exStr = '<h2>Overview for sheet %s</h2>\n' % sheetName
+            
+            for num, av, med, list, heading in \
+                [ (numHw, avHw, medHw, listHw, 'Homework'), \
+                  (numMc, avMc, medMc, listMc, 'Multiple Choice')]:
+                exStr +='<h3>' + heading + '</h3>'
+                exStr +='<p>Median: %.2f, Average: %.2f</p>' % (med, av)
+                exStr += DistributionTable(num, list)
+            listOfTables.append(exStr)
+        out.write('</table>\n')
+        for s in listOfTables:
+            out.write(s)
 
 def DistributionTable(num, list):
     exStr = ''
@@ -1886,36 +1880,6 @@ Site['/ExportExamParticipants'] = FunWR(ExportExamParticipants)
 Site['/ExportExamParticipants'].access_list = \
       Config.conf['AdministrationAccessList']
 
-def ExportExerciseStatistics2(req,onlyhead):
-    '''Export statistics for the MC-questions. How many tried, how
-        many failed for which question?'''
-    if AuthenticateAdmin(req,onlyhead) < 0:
-        return Delegate('/errors/notloggedin.html',req,onlyhead)
-
-    out = cStringIO.StringIO()
-
-    sheet = req.query.get('sheet',[''])[0].strip()
-    sl = Exercises.SheetList()
-    i = 0
-    while i < len(sl) and sl[i][1] != sheet: i += 1
-    if i < len(sl):   # we know this sheet!
-        s = sl[i][2]
-        out.write('Statistik für Blatt ' + s.name + '\n')
-        statistics = s.Statistics()
-        for exnr, qnr, vnr, presented, tried, solved in statistics:
-            out.write(str(exnr) + ' ' + str(qnr) + ' ' + str(vnr) + ' ' \
-                + str(presented) + ' ' + str(tried) + ' ' + str(solved) + '\n')
-    else:
-        out.write('Blatt nicht gefunden.\n')
-    st = out.getvalue()
-    head = {'Content-type':'text/text',
-               'Content-transfer-encoding':'iso-8859-1',
-               'Last-modified':req.date_time_string(time.time())}
-    return(head,st)
-
-Site['/ExportExerciseStatistics2'] = FunWR(ExportExerciseStatistics2)
-Site['/ExportExerciseStatistics2'].access_list = Config.conf['AdministrationAccessList']
-
 def ShowExerciseStatistics(req,onlyhead):
     if AuthenticateAdmin(req,onlyhead)<0:
         return Delegate('/errors/notloggedin.html', req, onlyhead)
@@ -1933,7 +1897,8 @@ def ShowExerciseStatistics(req,onlyhead):
 
 
 Site['/ShowExerciseStatistics'] = FunWR(ShowExerciseStatistics)
-Site['/ShowExerciseStatistics'].access_list = Config.conf['AdministrationAccessList']
+Site['/ShowExerciseStatistics'].access_list = \
+     Config.conf['AdministrationAccessList']
 
 def ShowGlobalStatisticsPerGroup(req,onlyhead):
     if AuthenticateAdmin(req,onlyhead)<0:
@@ -1946,13 +1911,14 @@ def ShowGlobalStatisticsPerGroup(req,onlyhead):
     if i < len(sl):
         s = sl[i][2]
         handler = EH_withPersSheet_class(None,s,Config.conf['Resolutions'][0])
-        return Delegate('/globalstatisticspergroup.html', req, onlyhead, handler)
+        return Delegate('/globalstatisticspergroup.html',req,onlyhead,handler)
     else:
         return Delegate('/errors/unknownsheet.html', req, onlyhead)
 
 
 Site['/ShowGlobalStatisticsPerGroup'] = FunWR(ShowGlobalStatisticsPerGroup)
-Site['/ShowGlobalStatisticsPerGroup'].access_list = Config.conf['AdministrationAccessList']
+Site['/ShowGlobalStatisticsPerGroup'].access_list = \
+     Config.conf['AdministrationAccessList']
 
 
 def ShowGlobalStatistics(req,onlyhead):

@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.22 2003/11/17 09:19:57 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.23 2003/11/24 09:56:03 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -318,7 +318,7 @@ otherwise.'''
                                 ('Q'+str(counter),ch))
                     else:  # type is string:
                         if sub: ch = 'value = "'+sub[counter]+'" '
-                        else: ch = ''
+                        else: ch = 'value = "" '
                         f.write('<input size="12" maxlength="20" '
                                 'name="%s" %s/> ' %
                                 ('Q'+str(counter),ch))
