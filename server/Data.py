@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.19 2004/03/05 13:25:03 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.20 2004/03/05 13:27:15 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -275,7 +275,7 @@ Sheet Number is indicated by sheetKey.
     highestScore = 0
     highestScoreMc=0
     for k in people.keys():
-        p =people[k]
+        p = people[k]
         if group != None:
             if p.group != groups[group].number: continue
         if not(Config.conf['GuestIdRegExp'].match(k)):
