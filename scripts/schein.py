@@ -9,10 +9,10 @@ import string,sys,getopt
 
 if len(sys.argv) == 1:
     print """
-Usage: schein.py [-t TRENNZEICHEN] [-f FELDER] [-z DOZENT]
-                 [-v VORLESUNG] [-s SEMESTER] [-d DATUM] [-b BANNER]
-TRENNZEICHEN:  field delimiter for input lines
-FELDER:        three field numbers in input lines for id, name, first name 
+Usage: schein.py [-t DELIMITER] [-f FIELDS] [-l LECTURER]
+                 [-c COURSE] [-s SEMESTER] [-d DATE] [-b BANNER]
+DELIMITER:  field delimiter for input lines
+FIELDS:     three field numbers in input lines for id, name, first name 
 """
     sys.exit(0)
 
@@ -30,8 +30,8 @@ banner = ""
 
 for (k,v) in optlist:
     if k == "-t": delim = v
-    elif k == "-v": vorlesung = v
-    elif k == "-z": dozent = v
+    elif k == "-c": vorlesung = v
+    elif k == "-l": dozent = v
     elif k == "-s": semester = v
     elif k == "-b": banner = v
     elif k == "-f":

@@ -36,7 +36,7 @@ M Eingabe der Gruppennummer bei der Anmeldung (Auswahlfeld)
 M Aenderung der Gruppennummer bei Datenaenderung
      letzte beiden Optionen schaltbar.
 M Hoechstzahl der Mitglieder einer Gruppe (schaltbar)
-M Scheinanfertigung   --> Hilfsskript dokumentieren
+M!Scheinanfertigung   --> Hilfsskript dokumentieren
 F Beim Einlesen von Webtemplates filename und timestamp speichern und 
      beim Seitenabruf checken, ob neueres da, im Zweifel einlesen.
      Bei Fehlern altes halten
@@ -48,7 +48,7 @@ F beliebige Anzahl persondata fuer Benutzer konfigurierbar
      --> "persondata" ist dictionary im Person object
          Diese dict-Daten werden in einen String verpackt in person.dat
      --> "groupinfo" genauso
-M wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
+M!wenn nicht "Sonstiges" bei "stud", dann freiform-Wert anhaengen
 ! Header und Footer als Konfigurationsoptionen? Ev. mit rekursiver Ersetzung
 M Anmeldung fuer exams schaltbar?
 M Anmeldung schaltbar

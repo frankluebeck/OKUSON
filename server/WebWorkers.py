@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.77 2004/03/03 15:36:39 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.78 2004/03/04 13:24:39 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -412,7 +412,7 @@ and either send an error message or a report.'''
     fname = req.query.get('fname',[''])[0].strip()[:30]
     stud = req.query.get('stud',[''])[0].strip()[:30]
     topic = req.query.get('topic',[''])[0].strip()[:30]
-    if topic != '': stud = topic
+    if topic != '': stud = stud + topic
     sem = req.query.get('sem',[''])[0].strip()[:2]
     try:
         sem = int(sem)
@@ -602,9 +602,9 @@ one Person object as data.'''
         out.write(string.join(res, ''));
     def handle_PossibleStudies(self,node,out):
         found = 0
-        for i in range(len(Config.conf['PossibleStudies'])):
+        for i in xrange(len(Config.conf['PossibleStudies'])):
             opt = Config.conf['PossibleStudies'][i]
-            if (self.p.stud == opt) or \
+            if (self.p.stud[:len(opt)] == opt) or \
                (found == 0 and i == len(Config.conf['PossibleStudies'])-1):
                 out.write('  <option selected="selected">'+opt+'</option>\n')
                 found = 1
@@ -614,8 +614,14 @@ one Person object as data.'''
         out.write(str(self.p.stud))
     def handle_TopicField(self,node,out):
         out.write('<input size="18" maxlength="30" name="topic" value="')
-        if not(self.p.stud in Config.conf['PossibleStudies']):
-            out.write(self.p.stud)
+        found = 0
+        for i in xrange(len(Config.conf['PossibleStudies'])):
+            opt = Config.conf['PossibleStudies'][i]
+            if self.p.stud[:len(opt)] == opt:
+                out.write(self.p.stud[len(opt):])
+                found = 1
+                break
+        if not(found): out.write(self.p.stud)
         out.write('" />')
     def handle_Sem(self,node,out):
         out.write(str(self.p.sem))
