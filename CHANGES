@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.15 2003/10/06 21:36:03 neunhoef Exp $
+##  $Id: CHANGES,v 1.16 2003/10/06 22:44:18 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -23,7 +23,9 @@ Otherwise:
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
-Attention: You have to put the configuration option "DocumentRoot" from the
+Attention: You should put the configuration option "DocumentRoot" from the
+           new Config.xml.sample into your Config.xml file!
+           You have to put the configuration option "GroupInfoFile" from the
            new Config.xml.sample into your Config.xml file!
 
 * removed bug with double use of <Semester/>.
@@ -54,6 +56,7 @@ Attention: You have to put the configuration option "DocumentRoot" from the
 * moved files in server/Tools to a subpackage 'fmTools'
 * added data structure for general information on tutoring groups, new 
   entry GroupInfoFile in "Config.xml"!
+* added convenient deletion of private messages by administrator
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

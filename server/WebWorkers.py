@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.17 2003/10/06 22:38:12 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.18 2003/10/06 22:44:18 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -486,7 +486,19 @@ one Person object as data.'''
         out.write(Config.conf['GeneralMessages'])
     def handle_PrivateMessages(self,node,out):
         for m in self.p.messages:
+            out.write('<p>\n')
             out.write(m+'\n')
+            out.write('</p>\n')
+    def handle_PrivateMessagesForDeletion(self,node,out):
+        '''This is called from the administrator's menu after he has
+           requested to see the messages of one participant to delete
+           some of those messages.'''
+        out.write('<p><input type="hidden" name="id" value="'+self.p.id+
+                  '" /></p>\n')
+        for i in range(len(self.p.messages)):
+            m = self.p.messages[i]
+            out.write('<p><input type="checkbox" name="msg'+str(i)+
+                      '" value="+" />'+m+'</p>\n')
 
 def QueryRegChange(req,onlyhead):
     '''This function is called when a user asks to change his registration. 
@@ -1136,6 +1148,55 @@ def SendMessage(req,onlyhead):
     Data.Lock.release()
     return Delegate('/adminmenu.html',req,onlyhead)
 
+def DeleteMessages(req,onlyhead):
+    '''Show all private messages of a given participant and allow to delete
+       some of them.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    msgid = req.query.get('msgid',[''])[0]
+    if not(Config.conf['IdCheckRegExp'].match(msgid)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(msgid)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[msgid]
+    currentHandler = EH_withPersData_class(p)
+    return Delegate('/showmessages.html',req,onlyhead,currentHandler)
+
+def DeleteMessagesDowork(req,onlyhead):
+    '''Called from the display of messages of one person.'''
+    if AuthenticateAdmin(req,onlyhead) < 0:
+        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    persid = req.query.get('id',[''])[0]
+    if not(Config.conf['IdCheckRegExp'].match(persid)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(persid)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[persid]
+    i = len(p.messages)-1
+    while i >= 0:
+        flag = req.query.get('msg'+str(i),['-'])[0]
+        if flag == '+':   # should be deleted
+            line = AsciiData.LineTuple( (p.id,'$'+p.messages[i]) )
+            Data.Lock.acquire()
+            try:
+                Data.messagedesc.AppendLine(line)
+            except:
+                Data.Lock.release()
+                Utils.Error('Failed to append deletion of message:\n'+line)
+                return Delegate('/error/fatal.html',req,onlyhead)
+            del p.messages[i]
+            Data.Lock.release()
+        i -= 1
+    
+    return Delegate('/adminmenu.html',req,onlyhead)
+
+
 def AdminWork(req,onlyhead):
     '''This function does the dispatcher work for the administrator
        actions.'''
@@ -1170,6 +1231,11 @@ Site['/DisplaySheets'] = FunWR(DisplaySheets)
 Site['/DisplaySheets'].access_list = Config.conf['AdministrationAccessList']
 Site['/SendMessage'] = FunWR(SendMessage)
 Site['/SendMessage'].access_list = Config.conf['AdministrationAccessList']
+Site['/DeleteMessages'] = FunWR(DeleteMessages)
+Site['/DeleteMessages'].access_list = Config.conf['AdministrationAccessList']
+Site['/DeleteMessagesDowork'] = FunWR(DeleteMessagesDowork)
+Site['/DeleteMessagesDowork'].access_list = \
+        Config.conf['AdministrationAccessList']
 
 
 # We register all the other .tpl files in our tree with EH_Generic handlers:

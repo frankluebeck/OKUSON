@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.5 2003/10/06 22:38:12 luebeck Exp $'
+CVS = '$Id: Data.py,v 1.6 2003/10/06 22:44:18 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -120,10 +120,10 @@ class Homework(Utils.WithNiceRepr):
     '''Objects in this class store homework results.'''
     totalscore = 0  # score for all written exercises
     maxscore = 0    # maximal possible score
-    scores = []     # scores of the separate written exercises
+    scores = ""     # scores of the separate written exercises
 
     def __init__(self):
-        self.scores = []
+        self.scores = ""
 
 homeworkdesc = AsciiData.FileDescription(Config.conf['HomeworkFile'],people,
   ( "ENTER", 0, "KEY",        Person,
@@ -132,7 +132,7 @@ homeworkdesc = AsciiData.FileDescription(Config.conf['HomeworkFile'],people,
     "ENTER", 1, "KEY",        Homework,
     "STORE", 2, "totalscore", "INT",
     "STORE", 3, "maxscore",   "INT",
-    "FILL",  4, "scores",     "INT" ) )
+    "FILL",  4, "scores",     "STRING" ) )
 
 
 class Exam(Utils.WithNiceRepr):
@@ -170,6 +170,25 @@ messagedesc = AsciiData.FileDescription(Config.conf['MessageFile'],people,
     "STORE", 0, "id",           "STRING",
     "ENTER", 0, "messages",     "VECT",
     "STORE", 1, "NEXT",         "STRING" ) )
+
+def cleanRevokedMessages():
+    '''This little function cleans revoked messages. If the administrator
+       deletes a private message, it is not really deleted but only revoked.
+       This means, that a new message is appended, that starts with a dollar
+       sign and repeats the text of the message before. Such messages cancel
+       the previous ones by way of this function.'''
+    for k,p in people.iteritems():
+        i = 0
+        while i < len(p.messages):
+            if len(p.messages[i]) > 0 and p.messages[i][0] == '$':
+                j = 0
+                while j < i and p.messages[j] != p.messages[i][1:]: 
+                    j += 1
+                if j < i:   # found a revoked message
+                    del p.messages[i]
+                    del p.messages[j]
+                    i -= 2   # will be inkremented in a second.
+            i += 1
 
 # Here comes a little statistic about the exercises classes or "groups":
 # Under each key we store

@@ -76,6 +76,12 @@
     to <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
      
+    <form action="/DeleteMessages" method="post">
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    Delete messages of
+    <input size="8" maxlength="6" name="msgid" value="" />
+    </p></form>
+
     <hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
@@ -91,5 +97,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.7 2003/10/06 21:36:03 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.8 2003/10/06 22:44:18 neunhoef Exp $ -->
 

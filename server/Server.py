@@ -102,6 +102,7 @@ try:
     Data.groupdesc.LoadFile()
     Utils.Error('Reading message data...',prefix='Info:')
     Data.messagedesc.LoadFile()
+    Data.cleanRevokedMessages()   # clean revoked messages
     Utils.Error('Reading group information...',prefix='Info:')
     Data.groupinfodesc.LoadFile()
 except:
