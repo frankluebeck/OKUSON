@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.4 2003/10/01 15:46:27 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.5 2003/10/01 16:12:44 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -778,11 +778,13 @@ def ReadExercisesFile(fname, prefix=''):
                try:
                    MakeExercise(a, prefix)
                except:   # may fail, error is already reported
+                   traceback.print_exc()
                    Utils.Error("Exception raised.")
   elif tree[0] == 'EXERCISE':
       try:
           MakeExercise(tree, prefix)
       except:   # may fail, error is already reported
+          traceback.print_exc()
           Utils.Error("Exception raised.")
 
 # Read one file as a TeX exercises:
@@ -881,15 +883,18 @@ def MakeSheet(t):
                     '\nWill stay open forever.',prefix='Warning:')
         sh.opento = 0
 
-    openfrom = t[1]['openfrom'].encode('ISO-8859-1','replace')
-    try:
-        x = list(time.strptime(openfrom,"%H:%M_%d.%m.%Y"))
-        x[8] = -1  # dst flag
-        sh.openfrom = time.mktime(x)
-    except ValueError:
-        Utils.Error('Value of "openfrom" attribite is unparsable: '+
-                    openfrom+' at '+Utils.StrPos(t[3])+
-                    '\nAssuming -infinity.',prefix='Warning:')
+    if t[1].has_key('openfrom'):
+        openfrom = t[1]['openfrom'].encode('ISO-8859-1','replace')
+        try:
+            x = list(time.strptime(openfrom,"%H:%M_%d.%m.%Y"))
+            x[8] = -1  # dst flag
+            sh.openfrom = time.mktime(x)
+        except ValueError:
+            Utils.Error('Value of "openfrom" attribite is unparsable: '+
+                        openfrom+' at '+Utils.StrPos(t[3])+
+                        '\nAssuming -infinity.',prefix='Warning:')
+            sh.openfrom = None
+    else:
         sh.openfrom = None
 
     counter = sh.first
@@ -970,11 +975,13 @@ def ReadSheetsFile(fname):
                try:
                    MakeSheet(a)
                except:   # may fail, error is already reported
+                   traceback.print_exc()
                    Utils.Error("Exception raised.")
   elif tree[0] == 'SHEET':
       try:
           MakeSheet(tree)
       except:   # may fail, error is already reported
+          traceback.print_exc()
           Utils.Error("Exception raised.")
 
 # Read all *.bla files in a directory. 
