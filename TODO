@@ -9,11 +9,6 @@ Ideen:
     regeln)
 F  - die persondata Einträge sollten auch exportiert werden können
     (warum hat das noch niemand vermisst?)
-M  - Einige fest eingebaute Größen durch Einträge in der Config.xml
-    festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
-    (z.Z. 2 mal fest in Exercises.py eingebaut).
-M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
-    Sollte von überall zugreifbar sein. (Mathias Künzer)
 M  - (Marc Ensenbach, 21 Jan 2005): Bei 'unvorhergesehenen' Antworten
     zu MC Aufgaben, Blatt ablehnen oder Warnung in Antwortseite oder ...?
    (vielleicht 3te Variante der Antwort mit Hinweis.)
@@ -27,9 +22,6 @@ Interessante Ergebnisse des Browser-Checks:
 
 Spaeter: 
 
-M  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
-    (mit adm password)
-    
   Webinterface fuer Config.xml-Edit
   ISO-8859-1 konfigurierbar?
      Problem dabei: TeX muss analog konfiguriert werden.
@@ -65,3 +57,18 @@ F Export fuer Zusatztext zum Hausaufgabenergebnis
 F Group 0 in <GroupsOverview per Attr. ausblendbar.
   Außerdem hätte ich noch gerne in den components-Optionen               
   dieser Tabelle die Möglichkeit, auch die Raumkapazität anzeigen zu lassen, 
+
+
+Done :
+
+M  - Einige fest eingebaute Größen durch Einträge in der Config.xml
+    festlegen, z.B. die Eingabelänge "20" bei Fragen vom Typ 's'
+    (z.Z. 2 mal fest in Exercises.py eingebaut).
+
+M  Nachtraegliche Anmeldung durch Admin wenn Anmeldung gesperrt.
+    (mit adm password)
+   Dokumentiert im Config.xml-File
+    
+M  - Statistik-Zugriff von Tutorenseite nur von den Admin-Rechnern erlaubt?
+    Sollte von überall zugreifbar sein. (Mathias Künzer)
+
