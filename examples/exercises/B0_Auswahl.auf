@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<!-- the value of the 'key' attribute is used for referring to this exercise in 
+     an exercise sheet.    -->
+<EXERCISE key="B0_Auswahl" keywords="Demo">
+
+<!-- This is the default setting of the possible answers for all questions 
+     within this exercise. Can also be given individually for each question. 
+     Attribute 'type' can be: "r" - radio buttons, "c" - multiple choice,
+                              "s" - string                                  -->
+<ANSWERS type="c"> (a)|(b)|(c) </ANSWERS>
+
+<!-- An introductory  text appearing before the questions of the exercise.  -->
+<TEXT>
+Bitte kreuzen Sie genau die Aussagen an, die sie für richtig halten.
+Um einen Punkt zu erhalten, müssen Sie alle richtigen und keine falschen
+Aussagen ankreuzen. Wenn Sie "-" anwählen, zählen Ihre anderen Kreuze
+nicht und Sie bekommen $0$ Punkte.
+</TEXT>
+
+<QUESTION>
+<!-- One can put an individual <ANSWERS> element for this question here.    -->
+<VARIANT solution="(a)|(b)">
+\begin{itemize}
+\item[(a)] Schröder ist Kanzler
+\item[(b)] Kohl war Kanzler
+\item[(c)] Stoiber ist Kanzler
+\end{itemize}
+</VARIANT>
+<VARIANT solution="(b)">
+\begin{itemize}
+\item[(a)] Fischer war Kanzler
+\item[(b)] Schröder ist Kanzler
+\item[(c)] Stoiber ist Kanzler
+\end{itemize}
+</VARIANT>
+<!-- more <VARIANT>'s can come here  -->
+</QUESTION>
+
+<QUESTION>
+<ANSWERS type="c">(x)|(y)|(z)</ANSWERS>
+<VARIANT solution="(z)">
+\begin{itemize}
+\item[(x)] $(a+b)^2 = a^2+b^2$ in beliebigen Ringen.
+\item[(y)] $(a+b)^2 = a^2+b^2$ in Ringen der Charakteristik $2$.
+\item[(y)] $(a+b)^2 = a^2-2ab+b^2$ in beliebigen Ringen.
+\end{itemize}
+</VARIANT>
+</QUESTION>
+
+</EXERCISE>
+
