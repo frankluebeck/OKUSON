@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.69 2003/11/16 20:27:37 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.70 2003/11/16 20:40:08 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -539,16 +539,16 @@ one Person object as data.'''
                 else:
                     mcscore = '---'
                 if 'withMaxMCScore' in fields:
-                    mcscore += ' von ' + str(s.MaxMCScore())
+                    mcscore += ' (' + str(s.MaxMCScore()) + ')'
                 if self.p.homework.has_key(name):
                     homescore = str(self.p.homework[name].totalscore)
                 else:
                     homescore = '?'
                 if 'withMaxHomeScore' in fields:
                     if s.maxhomescore != -1:
-                        homescore += ' von ' + str(s.maxhomescore)
+                        homescore += ' (' + str(s.maxhomescore) + ')'
                     else:
-                        homescore += ' von ?'
+                        homescore += ' (?)'
                 out.write('<tr><td align="center">'+name+'</td>')
                 if 'interactive' in fields:
                     out.write('<td align="center">'+mcscore+'</td>')
