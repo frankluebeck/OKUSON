@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.8 2003/11/10 12:54:34 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.9 2003/11/10 13:51:37 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -322,7 +322,9 @@ otherwise self.query is {}. self.path is the path.'''
                     dummy.close()
                 except:
                     res = (res[0], '')
-            #Utils.Error('Validating '+str(self.path), prefix='Check: ')
+            # here we don't use the XMLRewrite.Parse wrapper because one may
+            # want to print the exception error message, so we must make
+            # sure that we lock the pyRXP module explicitly
             t = None
             XMLRewrite.pyRXPLock.acquire()
             try:

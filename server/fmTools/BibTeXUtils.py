@@ -4,7 +4,7 @@
 # This file contains utilities to read in a BibXML-database and to generate
 # strings for BibTeX and BibXML versions of the entries.
 # 
-#  $Id: BibTeXUtils.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $
+#  $Id: BibTeXUtils.py,v 1.2 2003/11/10 13:51:37 luebeck Exp $
 
 import types, string, re, popen2, os
 
@@ -309,7 +309,7 @@ def SearchString(d):
 BibEntries = []
 def AddBibEntries(filename):
   # the [0] because the default Parser setting is ReturnList == 1  
-  t = XMLRewrite.ParseFile(filename)[0]
+  t = XMLRewrite.Parse(XMLRewrite.RewriteParser, file = filename)[0]
   for e in t[2]:
     if not type(e) in types.StringTypes:
       BibEntries.append(DictEntry(e));
