@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.78 2004/03/04 13:24:39 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.79 2004/03/04 13:26:17 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -837,7 +837,7 @@ and either send an error message or a report.'''
     fname = req.query.get('fname',[''])[0].strip()[:30]
     stud = req.query.get('stud',[''])[0].strip()[:30]
     topic = req.query.get('topic',[''])[0].strip()[:30]
-    if topic != '': stud = topic
+    if topic != '': stud = stud + topic
     sem = req.query.get('sem',[''])[0].strip()[:2]
     try:
         sem = int(sem)
