@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.20 2003/11/16 18:38:35 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.21 2003/11/16 19:05:27 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -130,6 +130,14 @@ class Sheet(Utils.WithNiceRepr):
            component.'''
         if time.time() > self.opento: return 1
         else:                         return 0
+
+    def MaxMCScore(self):
+        result = 0
+        for i in range(len(self.list)):
+            o = self.list[i]
+            if isinstance(o,Exercise):
+                result += self.nrquestions[i]
+        return result   
 
     def ChooserFunction(self,seed):
         '''Uses a pseudo random generator to choose which questions in which

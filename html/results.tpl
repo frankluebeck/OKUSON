@@ -28,20 +28,33 @@ sonst steht da ein `?`. <strong>ACHTUNG</strong>: Die Punkte für die
 schriftlichen Aufgaben werden nicht regelmäßig erfasst, die wissen Sie
 ja von den korrigierten Zetteln.):</p>
 
-    <table>
+  <table>
 <!-- Adjust header and <Results> attributes -->
     <tr><th>Übungsblatt</th><th>Interaktive Aufgaben</th>
         <th>Schriftliche Aufgaben</th></tr>
 <!-- Specify the components you want in attribute 'components', separated 
      by commas. The default is both types of exercises in this order:
        components="interactive,homework"                     -->
-    <Results components="interactive,homework" /> 
-
-    </table>
+  <Results components="interactive,withMaxMCScore,homework,withMaxHomeScore" />
+  <!-- Alternatively, one could use the following if one does not want to 
+         show the maximal scores:
+  <Results components="interactive,homework" /> 
+  -->
+  </table>
 
     <p><br /></p>
 
-    <p>Sie haben im Moment insgesamt <Totalscore /> Punkte.</p>
+    <!-- Additionally, one can use:
+    <p>Sie haben im Moment insgesamt <TotalMCScore /> von <MaxTotalMCScore /> 
+       Punkten in den Multi-Choice-Aufgaben und <TotalHomeScore /> von 
+       <MaxTotalHomeScore /> Punkten in den schriftlichen Hausaufgaben 
+       erreicht.
+    </p>
+    -->
+    <p>Sie haben im Moment insgesamt <TotalScore /> <!-- Punkte -->
+       von <MaxTotalScore /> Punkten.  <!-- comment this out if you do not
+                                            want to show maximal scores. -->
+    </p>
 
     <ExamGrades />
     <!-- Alternatively, one could use: 
@@ -69,5 +82,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.7 2003/10/15 00:05:12 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.8 2003/11/16 19:05:27 neunhoef Exp $ -->
 

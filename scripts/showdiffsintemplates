@@ -1,0 +1,10 @@
+#!/bin/sh
+cd html.sample
+for i in *.tpl ; do diff $1 $i ../html ; done
+for i in *.css ; do diff $1 $i ../html ; done
+for i in *.nointeractive ; do diff -q $i ../html ; done
+cd messages
+for i in *.tpl ; do diff $1 $i ../../html/messages ; done
+cd ../errors
+for i in *.tpl ; do diff $1 $i ../../html/errors ; done
+

@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.55 2003/11/11 13:49:31 luebeck Exp $
+##  $Id: CHANGES,v 1.56 2003/11/16 19:05:27 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -25,6 +25,9 @@ Changes from 1.0-fix2 to 1.0-fix3
 * Fix timeout-functionality by only using timeouts in Python 2.3 and higher.
   Upgrading to Python 2.3 is now recommended to avoid hanging threads.
 * Acknowledgements in the manual.
+* Added Ingo's patches to support maximal possible scores and displaying
+  them. 
+* New script "showdiffsintemplates" to do what it says.
 
 Changes from 1.0-fix1 to 1.0-fix2
 ---------------------------------

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.66 2003/11/16 14:09:55 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.67 2003/11/16 19:05:27 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -538,26 +538,80 @@ one Person object as data.'''
                     mcscore = str(self.p.mcresults[name].score)
                 else:
                     mcscore = '---'
+                if 'withMaxMCScore' in fields:
+                    mcscore += ' von ' + str(s.MaxMCScore())
                 if self.p.homework.has_key(name):
                     homescore = str(self.p.homework[name].totalscore)
                 else:
                     homescore = '?'
+                if 'withMaxHomeScore' in fields:
+                    if s.maxhomescore != -1:
+                        homescore += ' von ' + str(s.maxhomescore)
+                    else:
+                        homescore += ' von ?'
                 out.write('<tr><td align="center">'+name+'</td>')
                 if 'interactive' in fields:
                     out.write('<td align="center">'+mcscore+'</td>')
                 if 'homework' in fields:
                     out.write('<td align="center">'+homescore+'</td>')
                 out.write('</tr>\n')  
-    def handle_Totalscore(self,node,out):
+    def TotalMCScore(self):
         l = Exercises.SheetList()
         totalscore = 0
         for nr,name,s in l:
             if s.counts and s.IsClosed():   # sheet already closed 
                 if self.p.mcresults.has_key(name):
                     totalscore += self.p.mcresults[name].score
+        return totalscore
+    def TotalHomeScore(self):
+        l = Exercises.SheetList()
+        totalscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
                 if self.p.homework.has_key(name):
                     totalscore += self.p.homework[name].totalscore
-        out.write(str(totalscore))
+        return totalscore
+    def handle_TotalMCScore(self,node,out):
+        out.write(str(self.TotalMCScore()))
+    def handle_TotalHomeScore(self,node,out):
+        out.write(str(self.TotalHomeScore()))
+    def handle_Totalscore(self,node,out):
+        # FIXME: Take this out when the time has come...
+        out.write(str(self.TotalMCScore() + self.TotalHomeScore()))
+    def handle_TotalScore(self,node,out):
+        out.write(str(self.TotalMCScore() + self.TotalHomeScore()))
+    def MaxTotalMCScore(self):
+        l = Exercises.SheetList()
+        maxtotalmcscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                maxtotalmcscore += s.MaxMCScore()
+        return maxtotalmcscore
+    def MaxTotalHomeScore(self):
+        l = Exercises.SheetList()
+        maxtotalhomescore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                if s.maxhomescore == -1:
+                    maxtotalhomescore = -1
+                if maxtotalhomescore != -1:
+                    maxtotalhomescore += s.maxhomescore
+        return maxtotalhomescore
+    def handle_MaxTotalMCScore(self,node,out):
+        out.write(str(self.MaxTotalMCScore()))
+    def handle_MaxTotalHomeScore(self,node,out):
+        maxtotalhomescore = self.MaxTotalHomeScore()
+        if maxtotalhomescore != -1:
+            out.write(str(maxtotalhomescore))
+        else:
+            out.write('?')
+    def handle_MaxTotalScore(self,node,out):
+        maxtotalmcscore = self.MaxTotalMCScore()
+        maxtotalhomescore = self.MaxTotalHomeScore()
+        if maxtotalhomescore != -1:
+            out.write(str(maxtotalmcscore + maxtotalhomescore))
+        else:
+            out.write(str(maxtotalmcscore) + ' + ?')
     def handle_ExamGrades(self,node,out):
         if Config.conf['ExamGradingActive'] == 0 or \
            Config.conf['ExamGradingFunction'] == None: return
