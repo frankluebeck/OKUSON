@@ -246,7 +246,7 @@ into a usable form. Some values are changed into other data types.'''
                             'a slash:\n'+s)
                 FailMiserably()
             conf['AdministrationAccessList'][i] = (socket.inet_aton(s[:pos]),
-                                                  socket.inet_aton(s[pos+1:]))
+                                                   socket.inet_aton(s[pos+1:]))
         except:
             traceback.print_exc()
             Utils.Error('Cannot parse IP range for AdministrationAccessList: '+

@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.7 2003/10/08 14:16:15 neunhoef Exp $'
+CVS = '$Id: Data.py,v 1.8 2003/10/08 20:36:39 neunhoef Exp $'
 
 import sys,os,string,threading
 
@@ -45,7 +45,7 @@ class Person(Utils.WithNiceRepr):
     stud = "?"        # "Studiengang"
     passwd = "x"      # password, encrypted via "crypt"
     email = ""        # email address, optional
-    wishes = ""       # a string with wishes for small groups
+    wishes = ""       # a string with wishes for tutoring groups
     persondata1 = ""  # there are up to 9 additional entries to store
                       # personal data, these are not used in the default
                       # setup provided by OKUSON
@@ -60,10 +60,10 @@ class Person(Utils.WithNiceRepr):
 
     mcresults = {}    # for each sheet name an object of type "MCResult"
                       # note that keys in this dictionary are strings!
-    homework = {}     # for each sheet number an object of type "Homework"
+    homework = {}     # for each sheet name an object of type "Homework"
     exams = []        # for each exam (zero based numbers) either unbound
                       # or None or an object of type "Exam"
-    group = 0         # number of small group the person is in
+    group = 0         # number of tutoring group the person is in
     messages = []     # here we collect private messages for participants
                       # these are just strings which are put into a web
                       # page one after another.

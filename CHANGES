@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.21 2003/10/08 15:29:45 luebeck Exp $
+##  $Id: CHANGES,v 1.22 2003/10/08 20:36:38 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -64,6 +64,7 @@ Attention: The following four configuration options are new in the file
   in the result page.
 * added feature to register (and unregister) for exams
 * export of registered participants for exam via administrator menu
+* only allow super-password access from administrator enabled client hosts
 
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------

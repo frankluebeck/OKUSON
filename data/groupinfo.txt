@@ -4,3 +4,8 @@
 # include ':' in entry by '\d')
 # example line:
 1:vO/l0d1OUzL.w:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::
+1:KÀruaCIdIGtrs:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::
+1:BgeU5hFnVvAvw:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::
+1:ïDM7kwI7m76NI:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::
+1:bªSK3BiRqeM/6:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::
+1:ÐF59mTbgkmcJ6:Heinz Meier:AS (Sammelbau):Mittwoch 17\d30-19\d00:meier@some.where:::::::::

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.22 2003/10/08 14:16:15 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.23 2003/10/08 20:36:39 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -243,7 +243,12 @@ def Authenticate(p,req,onlyhead):
     passwd = crypt.crypt(pw,salt)
     # Check admin password:
     passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
-    iamadmin = (passwdadmin == Config.conf['AdministratorPassword'])
+    if passwdadmin == Config.conf['AdministratorPassword'] and \
+       BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
+                                      req.client_address[0]):
+        iamadmin = 1
+    else:
+        iamadmin = 0
     if passwd != p.passwd and not(iamadmin):
         return -1
     else:
@@ -676,14 +681,14 @@ a Person object and a Sheet object as data.'''
     def handle_SheetNr(self,node,out):
         out.write(str(self.s.nr))
     def handle_IfOpen(self,node,out):
-        if (not(self.IsClosed()) and (self.s.openfrom == None or 
+        if (not(self.s.IsClosed()) and (self.s.openfrom == None or 
             time.time() >= self.s.openfrom)) or self.iamadmin:  # Sheet is open
             # Write out tree recursively:
             if node[2] != None:
                 for n in node[2]:
                     XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_IfClosed(self,node,out):
-        if self.IsClosed() and not(self.iamadmin):    
+        if self.s.IsClosed() and not(self.iamadmin):    
             # Sheet already closed
             # Write out tree recursively:
             if node[2] != None:
@@ -980,6 +985,132 @@ def ExamRegistration(req, onlyhead):
     return Delegate('/messages/examregsucc.html',req,onlyhead)
 
 Site['/ExamRegistration'] = FunWR(ExamRegistration)
+
+#######################################################################
+# The following is for the tutor's pages:
+
+class EH_withGroupAndSheet_class(EH_withGroupInfo_class):
+    '''This class exists to produce handlers that can fill data from a
+       group and a sheet. It holds a group object and a sheet object.'''
+    s = None    # A sheet object
+    def __init__(self,g,s):
+        self.grp = g   # this we owe our base class
+        self.s = s
+    def handle_SheetName(self,node,out):
+        out.write(self.s.name)
+    def handle_SheetNumber(self,node,out):
+        out.write(str(self.s.nr))
+    def handle_HiddenNameOfSheet(self,node,out):
+        out.write('<input type="hidden" name="sheet" value="'+self.s.name+
+                  '" />\n')
+    def handle_HiddenNumberOfGroup(self,node,out):
+        out.write('<input type="hidden" name="group" value="'+
+                  str(self.grp.number)+'" />\n')
+    def handle_HomeworkSheetInput(self,node,out):
+        l = list(self.grp.people)
+        l.sort()   # FIXME, bessere Sortierung
+        for k in l:
+            if Data.people.has_key(k):
+                p = Data.people[k]
+                if p.homework.has_key(self.s.name):
+                    default = str(p.homework[self.s.name].totalscore)
+                else:
+                    default = ''
+                out.write('<tr><td>'+k+'</td><td><input size="6" maxlength="3"'
+                          ' name="P'+k+'" value="'+default+'" /></td></tr>\n')
+    
+class EH_withGroupAndPerson_class(EH_withGroupInfo_class,EH_withPersData_class):
+    '''This class exists to produce handlers that can fill data from a
+       group and personal data. It holds a group object and a Person object.'''
+    def __init__(self,g,p):
+        self.grp = g   # this we owe our base class
+        self.p = p     # this also is used by base class methods
+    def handle_HiddenIdOfPerson(self,node,out):
+        out.write('<input type="hidden" name="id" value="'+self.p.id+'" />\n')
+    def handle_HomeworkPersonInput(self,node,out):
+        sl = Exercises.SheetList()
+        for nr,na,s in sl:
+            if s.counts and s.openfrom < time.time():
+                if self.p.homework.has_key(na):
+                    default = str(self.p.homework[na].totalscore)
+                else:
+                    default = ''
+                out.write('<tr><td>'+na+'</td><td><input size="6" maxlength="3"'
+                          ' name="S'+na+'" value="'+default+'" /></td></tr>\n')
+
+
+def TutorRequest(req,onlyhead):
+    '''This handles a request from a tutor via the tutor page. This means
+       a possible password change and/or a request for an input page.'''
+    # First verify validity of group number:
+    groupnr = req.query.get('group',['0'])[0]
+    try:
+        groupnr = int(groupnr)
+    except:
+        groupnr = 0
+    if groupnr < 1 or not(Data.groups.has_key(str(groupnr))):
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    g = Data.groups[str(groupnr)]
+    # Now verify the password for this group:
+    # We use the function for people, this is possible because g as a
+    # data field "passwd".
+    iamadmin = Authenticate(g,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    # Now check whether the two new passwords are identical:
+    pw1 = req.query.get('pw1',[''])[0].strip()[:16]
+    pw2 = req.query.get('pw2',[''])[0].strip()[:16]
+    if pw1 != '' or pw2 != '':
+        if pw1 != pw2:
+            return Delegate('/errors/diffpasswd.html',req,onlyhead)
+        salt = random.choice(string.letters) + random.choice(string.letters)
+        passwd = crypt.crypt(pw1,salt)
+        # Now change password for this group:
+        line = AsciiData.LineTuple( (str(groupnr), passwd, g.tutor, g.place,
+                                     g.time, g.emailtutor, g.groupinfo1,
+                                     g.groupinfo2, g.groupinfo3, g.groupinfo4,
+                                     g.groupinfo5, g.groupinfo6, g.groupinfo7,
+                                     g.groupinfo8, g.groupinfo9) )
+        Data.Lock.acquire()
+        try:
+            Data.groupinfodesc.AppendLine(line)
+        except:
+            Data.Lock.release()
+            Utils.Error('Failed to change group password:\n'+line)
+            return Delegate('/errors/fatal.html',req,onlyhead)
+        g.passwd = passwd
+        Data.Lock.release()
+    
+    # Now password is changed (or not), decide about input request:
+    sheet = req.query.get('sheet',[''])[0]
+    sl = Exercises.SheetList()
+    i = 0
+    while i < len(sl) and sl[i][1] != sheet: i += 1
+    if i < len(sl):   # we know this sheet!
+        handler = EH_withGroupAndSheet_class(g,sl[i][2])
+        return Delegate('/edithomeworksheet.html',req,onlyhead,handler)
+
+    id = req.query.get('id',[''])[0]
+    if id == '':   # we do nothing
+        return Delegate('/tutors.html',req,onlyhead)
+
+    if not(Config.conf['IdCheckRegExp'].match(id)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(id)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[id]
+    if p.group != groupnr:
+        return Delegate('/errors/idnotingroup.html',req,onlyhead)
+
+    handler = EH_withGroupAndPerson_class(g,p)
+    return Delegate('/edithomeworkperson.html',req,onlyhead,handler)
+
+Site['/TutorRequest'] = FunWR(TutorRequest)
 
 #######################################################################
 # The following is for the administrator's pages:

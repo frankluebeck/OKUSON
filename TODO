@@ -1,19 +1,26 @@
-
-Mechanismus für Bilder in TeX
+Für letztes (3.) Prerelease:
 
 UTILITIES zur Administration:
-  Datenexport: Gruppen, Ergebnisse, Scheindaten, Scheine
-  Klausuranmeldungen
   Hiwi-Modus bzw. Hiwi-Seiten
+  ???Visitor-IDs getrennt, die nicht in Statistik eingehen
+      --> keine Passwort-Aenderung
+  Datenexport: Ergebnisse, Scheindaten, Scheine
+  Resubmit als Button im Admin Menu
+  Template fuer Fall ohne MC
+  Sortierung (numerisch, wenn moeglich) auslagern --> Utils, 
+     alle sort's aendern, die IDs sortieren
+
+Fragen:
+
+   Bei Homework mehr Angaben als Punktzahl?
+   maxscore?
+
+Für Release:
+  Mechanismus für Bilder in TeX
   Scheinanfertigung
   Aufkleber drucken (nur Export?)
-  Resubmit als Button im Admin Menu
-
   Statistik ueber Uebungsblaetter
   Statistik ueber Resultate
-
-  ???Visitor-IDs getrennt, die nicht in Statistik eingehen
-     --> eigentlich nicht notwendig
 
 Handbuch:
 
