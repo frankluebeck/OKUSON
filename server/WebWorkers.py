@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.20 2003/10/08 00:08:37 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.21 2003/10/08 09:29:30 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -119,12 +119,6 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write(str(len(Data.groups[nr].people)))
         else:
             out.write('0')
-    def handle_ExerciseclassDistribution(self,node,out): #??? delete ???
-        l = Data.people.keys()
-        l.sort()
-        for k in l:
-            out.write('<tr><td>'+k+'</td><td>'+str(Data.people[k].group)+
-                      '</td></tr>\n')
     def sortnumeralpha(self, l):
         'try converting entries of l to int, then sort and convert to str'
         ll = list(l)
@@ -484,9 +478,9 @@ one Person object as data.'''
                 if self.p.homework.has_key(name):
                     totalscore += self.p.homework[name].totalscore
         out.write(str(totalscore))
-    def handle_ScheinDecision(self,node,out):
-        if Config.conf['ScheinDecisionActive'] == 0 or \
-           Config.conf['ScheinDecisionFunction'] == None: return
+    def handle_Grade(self,node,out):
+        if Config.conf['GradingActive'] == 0 or \
+           Config.conf['GradingFunction'] == None: return
         sl = Exercises.SheetList()
         homescore = mcscore = 0
         for nr,na,s in sl:
@@ -502,13 +496,13 @@ one Person object as data.'''
             else:
                 exams.append(self.p.exams[i])
         try:
-            (msg,mark) = Config.conf['ScheinDecisionFunction']  \
-                          (self.p,sl,mcscore,homescore,exams)
-            out.write('<p>\n'+msg+'</p>')
+            (msg,grade) = Config.conf['GradingFunction']  \
+                           (self.p,sl,mcscore,homescore,exams)
+            out.write('<p>\n'+msg+'</p>\n')
         except:
             etype, value, tb = sys.exc_info()
             lines = traceback.format_exception(etype,value,tb)
-            Utils.Error('Call of ScheinDecisionFunction raised an exception, '
+            Utils.Error('Call of GradingFunction raised an exception, '
                         'ID: '+self.p.id+', message:\n'+string.join(lines))
     def handle_GeneralMessages(self,node,out):
         out.write(Config.conf['GeneralMessages'])
@@ -1049,7 +1043,7 @@ sorttable = {'ID': cmp, 'name': CmpByName, 'Studiengang': CmpByStudiengang,
              'group and ID': CmpByGroupAndID, 
              'group and name': CmpByGroupAndName}
 
-def ExportPeopleForExerciseClasses(req,onlyhead):
+def ExportPeopleForGroups(req,onlyhead):
     '''Export the list of all participants, sorted by ID, giving the
        following fields: 
          id:lname:fname:sem:stud:wishes 
@@ -1248,8 +1242,8 @@ Site['/Restart'] = FunWR(Restart)
 Site['/Restart'].access_list = Config.conf['AdministrationAccessList']
 Site['/Shutdown'] = FunWR(Shutdown)
 Site['/Shutdown'].access_list = Config.conf['AdministrationAccessList']
-Site['/ExportPeopleForExerciseClasses'] = FunWR(ExportPeopleForExerciseClasses)
-Site['/ExportPeopleForExerciseClasses'].access_list = \
+Site['/ExportPeopleForGroups'] = FunWR(ExportPeopleForGroups)
+Site['/ExportPeopleForGroups'].access_list = \
         Config.conf['AdministrationAccessList']
 Site['/ExportPeople'] = FunWR(ExportPeople)
 Site['/ExportPeople'].access_list = Config.conf['AdministrationAccessList']

@@ -3,16 +3,16 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: distribute.py,v 1.1 2003/10/05 14:03:35 neunhoef Exp $
+#   $Id: distribute.py,v 1.2 2003/10/08 09:29:30 neunhoef Exp $
 #
 # This script is part of OKUSON.
 #
-# It distributes people into exercise classes, according to their wishes.
+# It distributes people into tutoring groups, according to their wishes.
 # Input is an ASCII file with one line for each person in the format:
 #  id:last name:first name:semester:studiengang:wishlist
 # where wishlist is a list of id's of people, separated by commas.
 # Such a file is exported by OKUSON with the menu point 
-#  "Export people for exercises classes".
+#  "Export people for tutoring groups".
 # Empty lines indicate the separation of parts, like for example if you
 # export "separated by studiengang".
 # Lines beginning with a "#" sign are ignored as comments.

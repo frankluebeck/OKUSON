@@ -38,8 +38,8 @@ Parameters = {
   "User8":                    ["STRING",0],
   "User9":                    ["STRING",0],
   "IdCheckRegExp":            ["STRING",1],
-  "ScheinDecisionFunction":   ["STRING",0],
-  "ScheinDecisionActive":     ["INT",0],
+  "GradingFunction":          ["STRING",0],
+  "GradingActive":            ["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -54,7 +54,7 @@ Parameters = {
   "ExamFile":                 ["PATH",1],
   "GroupFile":                ["PATH",1],
   "MessageFile":              ["PATH",1],
-  "GroupInfoFile":            ["PATH",1],
+  "GroupInfoFile":            ["PATH",0],
   "PathToDTDs":               ["PATH",1],
   "PDFTemplate":              ["STRING",1],
 
@@ -255,19 +255,24 @@ into a usable form. Some values are changed into other data types.'''
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')
-    # Now parse the ScheinDecisionFunction if applicable:
-    if conf.has_key('ScheinDecisionFunction'):
+    # Give a default for GroupInfoFile:
+    if not(conf.has_key('GroupInfoFile')):
+        conf['GroupInfoFile'] = os.path.join(home,'data/groupinfo.txt')
+    # Now parse the GradingFunction if applicable:
+    if conf.has_key('GradingFunction'):
         d = {}
         try:
-            exec conf['ScheinDecisionFunction']+'\n' in d
-            conf['ScheinDecisionFunction'] = d['ScheinDecision']
+            exec conf['GradingFunction']+'\n' in d
+            conf['GradingFunction'] = d['Grade']
         except:
             etype, value, tb = sys.exc_info()
             lines = traceback.format_exception(etype,value,tb)
             Utils.Error('Cannot parse ScheinDecisionFunction.\n'+
                         string.join(lines))
-            conf['ScheinDecisionFunction'] = None
-    if not(conf.has_key('ScheinDecisionActive')):
-        conf['ScheinDecisionActive'] = 0
+            conf['GradingFunction'] = None
+    else:
+        conf['GradingFunction'] = None
+    if not(conf.has_key('GradingActive')):
+        conf['GradingActive'] = 0
 
 

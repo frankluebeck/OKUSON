@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.18 2003/10/08 00:08:37 neunhoef Exp $
+##  $Id: CHANGES,v 1.19 2003/10/08 09:29:30 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -23,10 +23,10 @@ Otherwise:
 
 Changes from 1.0-pre2  to  1.0-pre3
 -----------------------------------
-Attention: You should put the configuration option "DocumentRoot" from the
-           new Config.xml.sample into your Config.xml file!
-           You have to put the configuration option "GroupInfoFile" from the
-           new Config.xml.sample into your Config.xml file!
+Attention: The following four configuration options are new in the file
+           Config.xml.sample:
+             DocumentRoot, GroupInfoFile, GradingFunction, and GradingActive.
+           They are all optional and have sensible defaults.
 
 * removed bug with double use of <Semester/>.
 * introduced the 'openfrom' attribute for sheets, including admin
@@ -58,11 +58,11 @@ Attention: You should put the configuration option "DocumentRoot" from the
   entry GroupInfoFile in "Config.xml"!
 * added convenient deletion of private messages by administrator
 * new entry in OKUSON.css to remove border around validation icon
-* new optional configuration options "ScheinDecisionFunction" and
-  "ScheinDecisionActive", which allow automatic decision about who
-  gets the Schein.
-* display of Schein decision based on automatic decision via the
-  ScheinDecisionFunction in the result page.
+* new optional configuration options "GradingFunction" and
+  "GradingActive", which allow automatic grading.
+* display of grades based on automatic decision via the GradingFunction 
+  in the result page.
+
 Changes from 1.0-pre1  to  1.0-pre2
 -----------------------------------
 * removed bug with redisplaying sheets including previous submissions.

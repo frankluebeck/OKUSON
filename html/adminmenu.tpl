@@ -31,9 +31,9 @@
 
     <h3>Export of Data:</h3>
 
-    <form action="/ExportPeopleForExerciseClasses" method="post">
+    <form action="/ExportPeopleForGroups" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
-    Export people for exercise class distribution
+    Export people for tutoring group distribution
       <select name="together">
         <option selected="selected">all together</option>
         <option>by Studiengang</option>
@@ -97,5 +97,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.8 2003/10/06 22:44:18 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.9 2003/10/08 09:29:30 neunhoef Exp $ -->
 
