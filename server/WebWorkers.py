@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.93 2004/03/08 16:09:19 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.94 2004/03/08 17:01:58 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -2564,6 +2564,32 @@ def ShowCumulatedScoreStatistics(req,onlyhead):
 Site['/ShowCumulatedScoreStatistics'] = FunWR(ShowCumulatedScoreStatistics)
 Site['/ShowCumulatedScoreStatistics'].access_list = \
     Config.conf['AdministrationAccessList']
+
+# keys are '%X' for format strings, values are tuples
+#      (description, string function(p) )
+ExportHelper = {}
+
+ExportHelper['%i'] = ('Id of participant', 
+  lambda p: p.id)
+ExportHelper['%n'] = ('Last name', 
+  lambda p: p.lname)
+ExportHelper['%f'] = ('First name', 
+  lambda p: p.fname)
+ExportHelper['%s'] = ('Semester', 
+  lambda p: p.sem)
+ExportHelper['%a'] = ('Field of studies', 
+  lambda p: p.stud)
+ExportHelper['%g'] = ('Tutoring group', 
+  lambda p: p.group)
+ExportHelper['%p'] = ('Password (encrypted)', 
+  lambda p: p.passwd)
+ExportHelper['%w'] = ('Wishlist for group distribution', 
+  lambda p: p.wishes)
+ExportHelper['%e'] = ('Email address', 
+  lambda p: p.email)
+
+
+
 
 
 def ShowDetailedScoreTable(req,onlyhead):
