@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.31 2004/10/06 11:16:52 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.32 2005/04/02 19:52:38 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -324,7 +324,8 @@ otherwise.'''
                     else:  # type is string:
                         if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
                         else: ch = 'value = "" '
-                        f.write('<input size="12" maxlength="20" '
+                        f.write('<input size="12" maxlength="'+
+                                str(Config.conf['MaxStringInputLength'])+'" '+
                                 'name="%s" %s/> ' %
                                 ('B'+self.name+'Q'+str(counter),ch))
                     if closed and type(q.solutions[k]) == types.ListType:
@@ -430,7 +431,8 @@ the user.'''
                         val = query.get('B'+self.name+'Q'+str(counter),
                                         [''])[0].strip()
                         if val == '---': val = ''  # we say nothing!
-                        val = val[:20]   # limit size!
+                        # limit size!
+                        val = val[:Config.conf['MaxStringInputLength']]
                         sub.append(val)
                         if val == '': 
                             marks.append('0')
