@@ -46,6 +46,7 @@ Parameters = {
   "ExamGradingFunction":      ["STRING",0],
   "ExamGradingActive":        ["INT",0],
   "ConfigData":               ["STRING",0],
+  "MaxStringInputLength":     ["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -298,6 +299,9 @@ into a usable form. Some values are changed into other data types.'''
     # Give a default for Footer:
     if not(conf.has_key('Footer')):
         conf['Footer'] = ''
+    # Give a default for MaxStringInputLength:
+    if not(conf.has_key('MaxStringInputLength')):
+        conf['MaxStringInputLength'] = 20
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')

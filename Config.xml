@@ -48,7 +48,7 @@
      
      The default setting is secret, so you must change it! -->
 <AdministratorPassword>
-GrurqtDBINB7o
+xvPTFipiaskI.
 </AdministratorPassword>
 
 <!-- The name of the course served by this directories' server: -->
@@ -164,7 +164,10 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 </IndividualSheets>
 
 <!-- The following switch decides, whether new registrations are possible 
-     (value 1) or not (value 0). -->
+     (value 1) or not (value 0). Note that the administrator can still
+     register people over the web interface, if he gives the administrator
+     password as the first of the two passwords, even when registration
+     is switched off for regular participants. -->
 <RegistrationPossible>
 1
 </RegistrationPossible>
@@ -263,6 +266,12 @@ def Grade(p,examnr):
 <ExamGradingActive>
 0
 </ExamGradingActive>
+
+<!-- The following entry gives the (global) maximal length of inputs
+     in string entries in MC questions. -->
+<MaxStringInputLength>
+20
+</MaxStringInputLength>
 
 
 <!-- ==================================================================== 

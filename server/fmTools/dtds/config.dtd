@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.11 2004/03/05 14:31:54 luebeck Exp $ -->
+<!-- $Id: config.dtd,v 1.12 2005/04/02 19:55:59 neunhoef Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -32,6 +32,7 @@
 <!ELEMENT GradingActive (#PCDATA)>
 <!ELEMENT ExamGradingFunction (#PCDATA)>
 <!ELEMENT ExamGradingActive (#PCDATA)>
+<!ELEMENT MaxStringInputLength (#PCDATA)>
 <!-- a container for extra data, use the 'key' attribute: -->
 <!ELEMENT ConfigData (#PCDATA)>
 <!ATTLIST ConfigData key CDATA #REQUIRED>
