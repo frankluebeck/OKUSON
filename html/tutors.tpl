@@ -42,7 +42,24 @@
          <input type="submit" name="Action" value="Los" />
       </p>
     </form>
-               
+   
+    <p><br /></p>
+    <p><br /></p>
+
+    <h3>Statistik für die Ergebnisse der eigenen Gruppe</h3>
+    
+    <form action="/ShowGlobalStatistics" method="post">
+    <p>
+    Gruppennummer:
+    <input  name="group" size="4" maxlength="4" />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="password" size="16" maxlength="16" name="passwd" 
+                value="" />
+    </p>
+    <p><input type="submit" name="Action" value="Anzeigen" />
+    (Ergebnisseite ist auf Englisch)
+    </p>
+    </form>
     <hr />
 
     <p><a href="/index.html">Zurück zur Startseite</a></p>
@@ -59,5 +76,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: tutors.tpl,v 1.3 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: tutors.tpl,v 1.4 2004/10/04 15:30:42 luebeck Exp $ -->
 

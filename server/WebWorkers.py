@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.105 2004/08/09 20:28:30 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.106 2004/10/04 15:30:42 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -2582,18 +2582,28 @@ Site['/ShowGlobalStatisticsPerGroup'] = FunWR(ShowGlobalStatisticsPerGroup)
 Site['/ShowGlobalStatisticsPerGroup'].access_list = \
      Config.conf['AdministrationAccessList']
 
-
+# we allow access for admin and tutor of that group
 def ShowGlobalStatistics(req,onlyhead):
     '''This function handles the request for the global statistics '''
-    if Authenticate(None,req,onlyhead) < 0:
-        return Delegate('/errors/notloggedin.html',req,onlyhead)
+    # First verify validity of group number:
+    groupnr = req.query.get('group',['0'])[0]
     try:
-        grp = Data.groups[req.query['group'][0]]
+        groupnr = int(groupnr)
     except:
-        grp = None
-    handler = EH_withGroupInfo_class(grp)
+        groupnr = 0
+    if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    g = Data.groups[str(groupnr)]
+    # Now verify the password for this group:
+    # We use the function for people, this is possible because g as a
+    # data field "passwd".
+    if AuthenticateTutor(g,req,onlyhead) < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+    
+    handler = EH_withGroupInfo_class(Data.groups[str(groupnr)])
     handler.iamadmin = 1
-    return Delegate('/globalstatistics.html',req,onlyhead, handler)
+    return Delegate('/globalstatistics.html', req, onlyhead, handler)
         
         
 Site['/ShowGlobalStatistics'] = FunWR(ShowGlobalStatistics)

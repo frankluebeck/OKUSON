@@ -20,6 +20,9 @@
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
+    <h2>Group number: <GroupNumber/>
+    </h2>
+
     <ScoresTable />
     
     <hr />
