@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.20 2003/10/09 12:02:30 neunhoef Exp $
+% $Id: manual.tex,v 1.21 2003/10/09 13:00:06 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1392,10 +1392,99 @@ data for customization.
 \chapter{Security and Backup}\label{ch:security}
 \chapter{Schedule of Events for one Course}\label{ch:semsched}
 \chapter{Administration via the Web Interface}
-
 \label{adminpages}
 
+The configuration of the {\OKUSON} system and the creation of exercises and
+sheets works with an ASCII text editor. For some other administrative tasks
+however, the {\OKUSON} server offers a convenient web interface. You can
+reach this by pointing your browser to the following URL, when the {\OKUSON} 
+server is running:
+
+\hspace*{5mm}\texttt{http://localhost:8000/adminmenu.html}
+
+This assumes, that the {\OKUSON} server is running on the same machine than 
+your web browser. If this is not the case, you have to substitute the name
+of the server machine vor ``\texttt{localhost}''. The same applies for the
+port number \texttt{8000}, if you have configured your {\OKUSON} server
+to listen to another port.
+
+Note that there is an extra configuration option 
+\texttt{AdministrationAccessList} to limit the IP range of machines, from
+where the administration pages can be accessed (see 
+\ref{AdministrationAccessList}). The default setting is to allow administrator
+access only from the local machine.
+
+In addition you have to authenticate yourself to the {\OKUSON} server
+for every administrator operation. You can do this by entering the 
+administrator password every time you start an operation. To make live
+a bit easier we offer a cookie-based login procedure for this purpose to
+avoid repeated password input. This works as follows:
+
+To log in you have to visit the URL
+
+\hspace*{5mm}\texttt{http://localhost:8000/adminlogin.html}
+
+and type the administrator password. After login you are led to the
+administrator menu, however, a secret number for this login session is
+stored in your browser in a cookie. As long as the {\OKUSON} server is
+not terminated and your browser still has this cookie value and you do
+not login anew, you can perform administrative tasks without further
+authentication. There is an option at the top of the administrator menu 
+to logout again.
+
+Note that the communication between your browser and the {\OKUSON} server is
+not encrypted, such that everybody listening along the way could possibly
+get administrator access. Therefore you should limit the administrator
+access via the abovementioned IP ranges and log out after you are done
+with administrative tasks.
+
+\section{Administrative Tasks in the Administrator Menu}
+
+You have the following options in the administrator menu:
+
+\begin{itemize}
+\item \textbf{Restart server}. This stops the {\OKUSON} server gracefully
+and restarts it immediately. This is the same as launching the \texttt{restart}
+script in the {\OKUSON} home directory. Note that you have to log in again
+for further administrative tasks, as the login session is terminated 
+automatically.
+\item \textbf{Stop server}. This stops the {\OKUSON} server gracefully.
+This is the same as launching the \texttt{stop} script in the {\OKUSON}
+home directory.
+\item \textbf{Export people for tutoring group distribution.} With this option
+you can export data about all registered participants for the purpose of
+distributing them into smaller tutoring groups. Usually this will be 
+a semi-automatic process, that is described in chapter \ref{Managing}
+below.
+\item \textbf{Export people.} With this option you can export the personal
+data of all registered participants into a single ASCII file. See
+section \ref{ExportPersData} for a description of the data format produced.
+You can choose among a number of orderings. There seems to be no immediate
+application of this export facility, but it offers easy access to the
+available personal data for private scripts and standard UNIX text
+tools.
+\item \textbf{Export participants of exam.} This export facility is to get
+information about the registration situation for exams. Therefore the
+exported data is restricted to ID, name, first name and the time stamp 
+of the registration. See section \ref{ExportExamReg} for a description of
+the data format and section \ref{ExamReg} for a description of how to
+organize registration for exams conveniently.
+\item \textbf{Export results.} This export facility produces information
+about all the results of the participants, including multiplce choice
+exercises, homework exercises, and exams. For the data format see section
+\ref{ExportResults}. The obvious application of this export is at the
+end of the semester to produce certificates for successful participants.
+\item \textbf{Display available and future sheets.} This option gives
+the administrator access to a page to display sheets exactly as the
+page for regular participants, except, that also future sheets (which
+have not yet reached their \texttt{openfrom} date) are accessible.
+\item \textbf{Send message.} With this option one can send an individual
+message to a certain participant. This message will appear on the page
+where the participant queries his results. More
+\end{itemize}
+
 \chapter{Managing Participants}\label{ch:managepeople}
+\label{Managing}
 
 \section{Registration of Participants}
 
@@ -1567,6 +1656,7 @@ In all cases we send sensible default names along.
 In this chapter we quickly go through the different options.
 
 \section{Export of Personal Data of Participants}
+\label{ExportPersData}
 
 This export facility can be reached with the button marked ``Export
 people'' in the administrator's menu. You can choose the data fields,
