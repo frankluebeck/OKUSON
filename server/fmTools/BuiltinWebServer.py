@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.13 2004/03/08 13:03:46 neunhoef Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.14 2004/07/19 23:35:07 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -140,7 +140,7 @@ In this implementation it does the following:
       req.path += 'index.html'
       # recurse
       try:
-        res = DeliverResponseMethod(req, onlyhead)
+        res = DefaultWebResponse.getresult(req, onlyhead)
         res[0]['Location'] = req.path
         return res
       except:
