@@ -245,8 +245,13 @@ into a usable form. Some values are changed into other data types.'''
             if pos < 0:
                 Utils.Error('Range in AccessList must contain a slash:\n'+s)
                 FailMiserably()
-            conf['AccessList'][i] = (socket.inet_aton(s[:pos]),
-                                     socket.inet_aton(s[pos+1:]))
+            # Handle a bug in Python 2.2:
+            if s[pos+1:] == '255.255.255.255':
+                conf['AccessList'][i] = (socket.inet_aton(s[:pos]),
+                                         '\xff\xff\xff\xff')
+            else:
+                conf['AccessList'][i] = (socket.inet_aton(s[:pos]),
+                                         socket.inet_aton(s[pos+1:]))
         except:
             traceback.print_exc()
             Utils.Error('Cannot parse IP range for AccessList: '+s)
@@ -259,8 +264,13 @@ into a usable form. Some values are changed into other data types.'''
                 Utils.Error('Range in AdministrationAccessList must contain '
                             'a slash:\n'+s)
                 FailMiserably()
-            conf['AdministrationAccessList'][i] = (socket.inet_aton(s[:pos]),
-                                                   socket.inet_aton(s[pos+1:]))
+            # Handle a bug in Python 2.2:
+            if s[pos+1:] == '255.255.255.255':
+                conf['AdministrationAccessList'][i] = \
+                      (socket.inet_aton(s[:pos]),'\xff\xff\xff\xff')
+            else:
+                conf['AdministrationAccessList'][i] = \
+                      (socket.inet_aton(s[:pos]),socket.inet_aton(s[pos+1:]))
         except:
             traceback.print_exc()
             Utils.Error('Cannot parse IP range for AdministrationAccessList: '+
