@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.18 2003/11/11 10:13:50 luebeck Exp $'
+CVS = '$Id: Exercises.py,v 1.19 2003/11/16 14:09:55 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -725,27 +725,24 @@ of the sheet with seed "seed" and returns the result as a string.
         submissionCount = 0
         peopleCount = 0
         for k in peopleKeys:
-                p = Data.people[k]
-                if not(Config.conf['GuestIdRegExp'].match(k)):
-                    personalExercises = self.ChooserFunction(hash(k))
-                    countOfQuestions = 0
-                    peopleCount += 1
-                    if p.mcresults.has_key(self.name): submissionCount+=1
-                    for i in range(len(personalExercises)):
-                        if isinstance(self.list[i], Exercise):
-                            exKey = self.list[i].key
-#                            if not presented.has_key(exKey):
-#                                presented[exKey] = {}
-#                                tried[]
-                            exerciseList = personalExercises[i]
-                            for exerciseIndex,variantNumber in exerciseList:
-                                if p.mcresults.has_key(self.name):
-                                    presented[exKey][exerciseIndex][variantNumber] += 1
-                                    if p.mcresults[self.name].marks[countOfQuestions] != '0':
-                                        tried[exKey][exerciseIndex][variantNumber] += 1
-                                    if p.mcresults[self.name].marks[countOfQuestions] == '+':
-                                        solved[exKey][exerciseIndex][variantNumber] += 1
-                                    countOfQuestions += 1
+          p = Data.people[k]
+          if not(Config.conf['GuestIdRegExp'].match(k)):
+            personalExercises = self.ChooserFunction(hash(k))
+            countOfQuestions = 0
+            peopleCount += 1
+            if p.mcresults.has_key(self.name): submissionCount+=1
+            for i in range(len(personalExercises)):
+              if isinstance(self.list[i], Exercise):
+                exKey = self.list[i].key
+                exerciseList = personalExercises[i]
+                for exerciseIndex,variantNumber in exerciseList:
+                  if p.mcresults.has_key(self.name):
+                      presented[exKey][exerciseIndex][variantNumber] += 1
+                      if p.mcresults[self.name].marks[countOfQuestions]!='0':
+                        tried[exKey][exerciseIndex][variantNumber] += 1
+                      if p.mcresults[self.name].marks[countOfQuestions]=='+':
+                        solved[exKey][exerciseIndex][variantNumber] += 1
+                      countOfQuestions += 1
 
         res = []
         for i in range(len(self.list)):
@@ -758,7 +755,8 @@ of the sheet with seed "seed" and returns the result as a string.
                         qunr = qunr+1
                         for k in range(qu.nrvariants):
                             res.append( (self.exnr[i], qunr, k+1, \
-                                 presented[ex.key][j][k] , tried[ex.key][j][k], solved[ex.key][j][k] ) )
+                                 presented[ex.key][j][k] , 
+                                 tried[ex.key][j][k], solved[ex.key][j][k] ) )
 
         return (peopleCount, submissionCount, res)
 
