@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.70 2003/11/16 20:40:08 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.71 2003/11/17 10:10:40 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,Cookie,signal,cStringIO
 
@@ -875,7 +875,8 @@ a Person object and a Sheet object as data.'''
         out.write('<tr><th>Ex</th><th>Qu</th><th>Var</th>'
             + '<th colspan="2">Seen By</th><th colspan="2">Tried By</th>'
               '<th colspan="2">Solved By</th></tr>')
-        exnr_old, qnr_old, vnr, presented, tried, solved = statistics[0]
+        if len(statistics) > 0:
+            exnr_old, qnr_old, vnr, presented, tried, solved = statistics[0]
         for exnr, qnr, vnr, presented, tried, solved in statistics:
             out.write('<tr')
             if exnr > exnr_old:
