@@ -76,6 +76,15 @@ ja von den korrigierten Zetteln.):</p>
     <ExamGrade nr="0" /> 
          for only exam number 0 -->
 
+    <!-- To display the registration status of participants use something
+         like: -->
+    <!--
+    <IfExamRegistered nr="0">Sie sind zur Klausur angemeldet.
+    </IfExamRegistered>
+    <IfNotExamRegistered nr="0">Sie sind nicht zur Klausur angemeldet.
+    </IfNotExamRegistered>
+    -->
+
     <Grade />
 
     <GeneralMessages />
@@ -98,5 +107,5 @@ ja von den korrigierten Zetteln.):</p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: results.tpl,v 1.10 2004/03/08 21:35:49 neunhoef Exp $ -->
+     $Id: results.tpl,v 1.11 2004/03/09 13:35:29 neunhoef Exp $ -->
 
