@@ -27,8 +27,11 @@ To upgrade to 1.0-pre3 you have to do the following:
      index.tpl
      messages/subsuccess.tpl
      OKUSON.css
+     OKUSONAdmin.css
+     OKUSONSheet.css
      results.tpl
      sheet.tpl
+     techinfo.tpl
 
    If you have edited them, you have to reapply your changes.
    

@@ -2,7 +2,8 @@
 # Upgrade script from 1.0-pre2 to 1.0-pre3:
 cd html.sample
 cp --parents adminlogin.tpl adminmenu.tpl generalinfo.tpl \
-    index.tpl messages/subsuccess.tpl OKUSON.css results.tpl sheet.tpl \
+    index.tpl messages/subsuccess.tpl OKUSON.css OKUSONAdmin.css \
+    OKUSONSheet.css results.tpl sheet.tpl \
     edithomeworkperson.tpl edithomeworksheet.tpl errors/admunknownsheet.tpl \
     errors/badgroupnr.tpl errors/idnotingroup.tpl errors/tutunknownsheet.tpl \
     errors/unknowngroup.tpl examregistration.tpl groupinfo.tpl \
