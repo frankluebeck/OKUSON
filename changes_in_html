@@ -6,9 +6,12 @@ cp --parents adminlogin.tpl adminmenu.tpl generalinfo.tpl \
     errors/badgroupnr.tpl errors/idnotingroup.tpl errors/tutunknownsheet.tpl \
     errors/unknowngroup.tpl examregistration.tpl groupinfo.tpl \
     groupoverview.tpl messages/examregsucc.tpl messages/resubsuccess.tpl \
-    showmessages.tpl tutors.tpl html
+    showmessages.tpl tutors.tpl ../html
 cd ..
 rm html/exercisesclasses.tpl html/group1.tpl
+cp data/empty/groupinfo.txt data
+cp data/empty/homework.txt data
+cp data/empty/examregistrations.txt data
 
 exit 0
 
