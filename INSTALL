@@ -1,4 +1,4 @@
-$Id: INSTALL,v 1.4 2003/10/10 00:18:50 luebeck Exp $
+$Id: INSTALL,v 1.5 2003/10/10 13:00:31 luebeck Exp $
 
                    Installation instructions for OKUSON
                   ======================================
@@ -11,7 +11,7 @@ $Id: INSTALL,v 1.4 2003/10/10 00:18:50 luebeck Exp $
  * Download okuson-XXX.tar.gz from:
       http://www.math.rwth-aachen.de/~OKUSON/
  * Extract archive with: 
-      gzip -dc okuson-XXX.tar.gz | tar xvf -}
+      gzip -dc okuson-XXX.tar.gz | tar xvf -
  * Compile pyRXP with: 
       cd okuson/server ; ./makepyRXP
  * Leave the server directory with: 
