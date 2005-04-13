@@ -8,7 +8,7 @@ a Python application.
 """
 
 
-CVS = '$Id: BuiltinWebServer.py,v 1.16 2005/04/01 16:10:59 luebeck Exp $'
+CVS = '$Id: BuiltinWebServer.py,v 1.17 2005/04/13 08:21:20 luebeck Exp $'
 
 
 __version__ = "0.2"
@@ -50,7 +50,7 @@ TypeDict = { 'html' : 'text/html',
              'jpg'  : 'image/jpeg',
              'ico'  : 'image/ico',
              'pdf'  : 'application/pdf',
-             'ps'   : 'application/ps',
+             'ps'   : 'application/postscript',
              'dvi'  : 'application/dvi',
              'avi'  : 'video/x-msvideo',
              'rm'   : 'application/vnd.rn-realmedia',
