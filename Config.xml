@@ -284,6 +284,14 @@ def Grade(p,examnr):
 </InteractiveMode>
 
 
+<!-- The following entry switches, whether one tutor is allowed to enter
+     homework results of people in other groups than his own in the free form
+     input page /HomeworkFree. The default is 1 for "not allowed". -->
+<RestrictToOwnGroup>
+1
+</RestrictToOwnGroup>
+
+
 <!-- ==================================================================== 
                           Installation section
      ==================================================================== -->

@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.71 2005/04/04 11:28:40 neunhoef Exp $
+% $Id: manual.tex,v 1.72 2005/10/10 21:50:05 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2507,6 +2507,30 @@ Each result must be given in form of a total score and (maybe optionally) a
 comma separated  list of partial results. You may specify the optional
 \texttt{maxhomescore} attribute for your exercise sheets for later use with
 grading or statistics.
+
+The above mentioned input page allows tutors only to enter points for
+participants in their own group. If this is too hard a restriction for
+your purposes, you should consider using the free input form which
+is available under \texttt{/HomeworkFree}. It allows not only a less
+redundant input in case you have several participants handing in one
+sheet as teamwork but may also be configured such that every
+tutor is able to enter points for any participant of the course. In
+order to keep the system "safe", this feature is not enabled by default;
+if you want to use it, be sure to change the \texttt{RestrictToOwnGroup} 
+value to \texttt{no} in the main configuration file.
+
+The free input form presents several rows of input fields. The fields
+in the first column accept comma-separated lists of ID's (in case one
+sheet has been handed in as teamwork) or one single ID, the following
+two columns for entering points are the same as in all other such input
+forms.
+
+After submitting the form, the entered data is checked. If any error
+occurs (unknown sheet number, ID, etc.), the wrong entry is marked
+by a red star and the tutor is asked to correct it. Otherwise, the form
+is displayed once again (without any editing possibilities) and the
+tutor is asked to confirm the data. Following the confirmation, the data
+is stored in the system.
 
 
 \chapter{Managing Exams}

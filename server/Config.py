@@ -48,6 +48,7 @@ Parameters = {
   "ConfigData":               ["STRING",0],
   "MaxStringInputLength":     ["INT",0],
   "InteractiveMode":          ["INT",0],
+  "RestrictToOwnGroup":       ["INT",1],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],

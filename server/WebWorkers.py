@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.118 2005/04/04 12:37:46 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.119 2005/10/10 21:50:05 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -2244,6 +2244,328 @@ def SubmitHomeworkPerson(req,onlyhead):
     return Delegate('/tutors.html',req,onlyhead)
 
 Site['/SubmitHomeworkPerson'] = FunWR(SubmitHomeworkPerson)
+
+class EH_withHomeworkFreeData_class (EH_Generic_class):
+    '''This event handler class serves to fill data into the free input
+       form for homework points and to store the given data in the system.'''
+    s = None
+    sheet = ""
+    datalist = []
+    group = -1
+    rtog = True # Stores whether tutors are restricted to their own group
+                # while entering points.
+    status = 0  # status 0: data has to be entered or corrected
+                # status 1: data has been verified but still needs a
+                #           confirmation
+                # status 2: data has been verified and confirmed
+    def __init__ (self,s,sheet,dl,g,st):
+        self.s = s
+        self.sheet = sheet
+        self.datalist = dl
+        self.group = g
+        self.status = st
+    def handle_Sheet(self,node,out):
+        # Shows number of sheet in question (if already given correctly)
+        # or offers an input field for this data.
+        if self.s <> None:
+            if self.status == 0:
+                out.write(('<input size="8" name="sheet" value="%d" ' + \
+                           'maxlength="8" />') % self.s.nr)
+            else:
+                out.write('%d<input type="hidden" name="sheet" value="%d" />' \
+                          % (self.s.nr, self.s.nr))
+        else:
+            out.write(('<input size="8" name="sheet" value="%s" ' + \
+                       'maxlength="8" />') % self.sheet)
+            if self.datalist <> []:
+                out.write('<span style="color:#ff0000;">*</span>')
+    def handle_FreeHomeworkInput(self,node,out):
+        # If self.status is 0 (data needs to be entered or corrected), this
+        #   function presents the free input form for homework points.
+        # If self.status is 1 or 2 (data has been verified), this function
+        #   presents the free form for homework points where editing is no
+        #   longer possible.
+        # If self.status is 2 (data has been verified and confirmed), this
+        #   function finally stores the given data.
+        try:
+            rownr = int(node[1]['rows'])
+        except:
+            rownr = 20
+        if self.status == 0:
+            row = 0
+            # First fill form with already given data.
+            # If necessary, mark input errors by red stars.
+            for data in self.datalist:
+                row += 1
+                out.write('<tr>\n')
+                # Build name list and check whether the given ID's are OK.
+                namelist = []
+                idokstring = ''
+                if data[0] <> '':
+                    for id in data[0].split(";"):
+                        id = id.strip()
+                        if not(Data.people.has_key(id)):
+                            namelist.append (id)
+                            idokstring = '<span style="color:#ff0000;">*</span>'
+                        else:
+                            p = Data.people[id]
+                            if not self.rtog or p.group == self.group:
+                                namelist.append (p.fname + ' ' + p.lname)
+                            else:
+                                namelist.append (id)
+                                idokstring = '<span style="color:#ff0000;">' + \
+                                             '*</span>'
+                out.write(('  <td><input name="m%02d" value="%s" size="29" ' + \
+                          '/>%s</td>\n') % (row, data[0], idokstring))
+                out.write('  <td>%s</td>\n' % string.join(namelist, ", "))
+                # Check whether the given points are OK.
+                scoreokstring = ''
+                if data[1] <> '':
+                    try:
+                        if '.' in data[1]:
+                            totalscore = float(data[1])
+                        else:
+                            totalscore = int(data[1])
+                    except:
+                        scoreokstring ='<span style="color:#ff0000;">*</span>'
+                out.write (('  <td><input name="p%02d" value="%s" size="4" ' + \
+                           '/>%s</td>\n') % (row, data[1], scoreokstring))
+                out.write (('  <td><input name="d%02d" value="%s" ' + \
+                            'size="20" /></td>\n') % (row, data[2]))
+                out.write('</tr>\n')
+            # Then complete form by adding free rows.
+            while row < rownr:
+              row += 1
+              out.write('<tr>\n')
+              out.write(('  <td><input name="m%02d" value="" size="29" ' + \
+                         '/></td>\n') % row)
+              out.write('  <td></td>\n')
+              out.write(('  <td><input name="p%02d" value="" size="4" ' + \
+                         '/></td>\n') % row)
+              out.write(('  <td><input name="d%02d" value="" size="20" ' + \
+                         '/></td>\n') % row)
+              out.write('</tr>\n')
+        else:
+            # Show given data without editing possibilities.
+            row = 0
+            for data in self.datalist:
+                if data[0] <> '':
+                    row += 1
+                    firstid = True
+                    for id in data[0].split(";"):
+                        p = Data.people[id]
+                        fullname = p.fname + ' ' + p.lname
+                        out.write ('<tr>\n')
+                        if firstid:
+                            out.write (('  <td>%s<input type="hidden" ' + \
+                                        'name="m%02d" value="%s" /></td>\n') \
+                                       % (id, row, data[0]))
+                            out.write ('  <td>%s</td>\n' % fullname)
+                            out.write (('  <td>%s<input type="hidden" ' + \
+                                        'name="p%02d" value="%s" /></td>\n') \
+                                       % (data[1], row, data[1]))
+                            out.write (('  <td>%s<input type="hidden" ' + \
+                                        'name="d%02d" value="%s" /></td>\n') \
+                                       % (data[2], row, data[2]))
+                        else:
+                            out.write ('  <td>%s</td>\n' % id)
+                            out.write ('  <td>%s</td>\n' % fullname)
+                            out.write ('  <td>%s</td>\n' % data[1])
+                            out.write ('  <td>%s</td>\n' % data[2])
+                        out.write ('</tr>\n')
+                        firstid = False
+        if self.status == 2:
+            # Store confirmed data in the system.
+            Data.Lock.acquire()
+            for data in self.datalist:
+                if data[0] <> '':
+                    for id in data[0].split(";"):
+                        p = Data.people[id]
+                        # allow the usage of ',' instead of '.' for decimal
+                        # numbers
+                        score = data[1]
+                        scores = data[2]
+                        if score == '':
+                            totalscore = -1 # no homework points
+                        else:
+                            try:
+                                if '.' in score:
+                                    totalscore = float(score)
+                                else:
+                                    totalscore = int(score)
+                            except:
+                                totalscore = 0
+                        if ( p.homework.has_key(self.s.name) and
+                             p.homework[self.s.name].totalscore != -1 ) or \
+                               score != '':
+                            # We only work, if either the input is non-empty or
+                            # if there was already a result. This allows for
+                            # deletion of results.
+                            line = AsciiData.LineTuple(
+                                (p.id, self.s.name, str(totalscore),scores) )
+                            try:
+                                Data.homeworkdesc.AppendLine(line)
+                            except:
+                                Data.Lock.release()
+                                Utils.Error('['+LocalTimeString()+
+                                       '] Failed store homework result:\n'+line)
+                                return Delegate('/errors/fatal.html',req,\
+                                                onlyhead)
+                            if not(p.homework.has_key(self.s.name)):
+                                p.homework[self.s.name] = Data.Homework()
+                            p.homework[self.s.name].totalscore = totalscore
+                            p.homework[self.s.name].scores = scores
+            Data.Lock.release()
+    def handle_HiddenStatus(self,node,out):
+        # Writes the current input status to the input form
+        out.write('<input type="hidden" name="status" value="%d" />' \
+                  % self.status)
+    def handle_IfDataValidated(self,node,out):
+        # Displays text depending on the data validation status
+        try:
+            truetext = node[1]['true'].encode('ISO-8859-1','replace')
+        except:
+            truetext = ""
+        try:
+            falsetext = node[1]['false'].encode('ISO-8859-1','replace')
+        except:
+            falsetext = ""
+        if self.status == 0 and falsetext <> '':
+            out.write('<p>%s</p>\n' % falsetext)
+        elif self.status == 1 and truetext <> '':
+            out.write('<p>%s</p>\n' % truetext)
+    def handle_IfDataConfirmed(self,node,out):
+        # Displays text depending on the data confirmation status
+        try:
+            truetext = node[1]['true'].encode('ISO-8859-1','replace')
+        except:
+            truetext = ""
+        try:
+            falsetext = node[1]['false'].encode('ISO-8859-1','replace')
+        except:
+            falsetext = ""
+        if self.status == 2 and truetext <> '':
+            out.write('<p>%s</p>\n' % truetext)
+        elif falsetext <> '':
+            out.write('<p>%s</p>\n' % falsetext)
+    def handle_GroupNumberInputIfRequired(self,node,out):
+        # Displays an input field for the group number if an
+        # authorisation is required.
+        if self.status < 2:
+            try:
+                title = node[1]['title'].encode('ISO-8859-1','replace')
+            except:
+                title = "Group number"
+            out.write(title + ": ")
+            if self.group < 0:
+                out.write('<input size="4" maxlength="2" name="group" ' + \
+                          'value="" />')
+            else:
+                out.write(('%d&nbsp;&nbsp;<input type="hidden" ' + \
+                           'name="group" value="%d" />') \
+                          % (self.group, self.group))
+    def handle_PasswordInputIfRequired(self,node,out):
+        # Displays an input field for the group password if an
+        # authorisation is required.
+        if self.status < 2:
+            try:
+                title = node[1]['title'].encode('ISO-8859-1','replace')
+            except:
+                title = "Password"
+            out.write(title + ": ")
+            out.write('<input type="password" size="16" maxlength="12" ' + \
+                      'name="passwd" value="" />')
+    def handle_SubmitButtonIfRequired(self,node,out):
+        # Displays a submit button if an authorisation is required.
+        if self.status < 2:
+            try:
+                title = node[1]['title'].encode('ISO-8859-1','replace')
+            except:
+                title = "Submit"
+            out.write('<input type="submit" name="action" value="%s" />' \
+                      % title)
+
+def HomeworkFree(req,onlyhead):
+    '''This presents an empty free input form for homework points'''
+    # Delegate to the input form
+    handler = EH_withHomeworkFreeData_class(None,"",[],-1,0)
+    return Delegate('/edithomeworkfree.html',req,onlyhead,handler)
+
+Site['/HomeworkFree'] = FunWR(HomeworkFree)
+
+def SubmitHomeworkFree(req,onlyhead):
+    '''This accepts the free input form for homework points'''
+    # Get group number
+    groupnr = req.query.get('group',['0'])[0]
+    try:
+        groupnr = int(groupnr)
+    except:
+        groupnr = 0
+    if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
+        return Delegate('/errors/badgroupnr.html',req,onlyhead)
+
+    g = Data.groups[str(groupnr)]
+    # Now verify the password for this group:
+    iamadmin = AuthenticateTutor(g,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    # Now look for the sheet:
+    sheet = req.query.get('sheet',[''])[0]
+    sl = Exercises.SheetList()
+    i = 0
+    s = None
+    while i < len(sl) and sl[i][1] != sheet: i += 1
+    if i < len(sl):   # we know this sheet!
+        s = sl[i][2]
+        if s.openfrom > time.time(): s = None  # ... and it has already been
+                                               # published
+
+    # Form list out of submitted data
+    dl = []
+    for i in range(1, 21):
+        idstring = req.query.get('m%02d' % i, [''])[0].strip()
+        idstring = idstring.replace(',',';')
+        idstring = idstring.replace(' ',';')
+        while idstring.find(';;') >= 0:
+            idstring = idstring.replace(';;',';')
+        score = req.query.get('p%02d' % i, [''])[0].strip().replace(',','.')
+        scores = req.query.get('d%02d' % i, [''])[0].strip()
+        dl.append ([idstring, score, scores])
+    st = req.query.get('status', [''])[0]
+    try:
+        st = int(st)
+    except:
+        st = 0
+
+    # Determines whether a submission contains errors and
+    # thus needs to be corrected.
+    rtog = (Config.conf['RestrictToOwnGroup'] != 0)
+    if st == 1: st = 2
+    if st == 0: st = 1
+    if s == None: st = 0
+    for data in dl:
+        if data[0] <> '':
+            for id in data[0].split(";"):
+                id = id.strip()
+                if not(Data.people.has_key(id)):
+                    st = 0
+                elif rtog and Data.people[id].group <> groupnr:
+                    st = 0
+        if data[1] <> '':
+            try:
+                if '.' in data[1]:
+                    totalscore = float(data[1])
+                else:
+                    totalscore = int(data[1])
+            except:
+                st = 0
+
+    # Delegate to the input form
+    handler = EH_withHomeworkFreeData_class(s,sheet,dl,groupnr,st)
+    return Delegate('/edithomeworkfree.html',req,onlyhead,handler)
+
+Site['/SubmitHomeworkFree'] = FunWR(SubmitHomeworkFree)
 
 
 #######################################################################

@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.97 2005/04/13 08:24:52 luebeck Exp $
+##  $Id: CHANGES,v 1.98 2005/10/10 21:50:05 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -11,9 +11,12 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
-Changes from 1.1-fix4 to ...
+Changes from 1.1-fix4 to 1.1-fix5
 
 * Changed MIME type for *.ps files to 'application/postscript'.
+* Incorporated Mark's free homowork input form. This is available under
+  /HomeworkFree and uses one more configuration switch "RestrictToOwnGroup".
+
 
 Changes from 1.1-fix3 to 1.1-fix4
 
