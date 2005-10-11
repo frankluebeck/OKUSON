@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.119 2005/10/10 21:50:05 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.120 2005/10/11 22:53:57 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -331,6 +331,46 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
           out.write('<tr><th style="vertical-align: top;">'+\
                     k+'</th><td>'+ExportHelper[k][0]+'</td></tr>\n')
         out.write('</table>\n');
+    def handle_PersonDataField(self,node,out):
+        try:
+          key = node[1]['key']
+          out.write('<input size="16" maxlength="256" name="persondata.' + \
+                  key+'" value="" />')
+        except:
+          #pass
+          traceback.print_exc()
+    def handle_PersonDataRadioButton(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+        except:
+            traceback.print_exc()
+            return
+        res = ['<input type="radio" name="', name, '" value="', val, '" ']
+        res.append('/>')
+        out.write(string.join(res, ''));
+    def handle_PersonDataCheckBox(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+        except:
+            return
+        res = ['<input type="checkbox" name="', name, '" value="', val, '" ']
+        res.append('/>')
+        out.write(string.join(res, ''));
+    def handle_PersonDataSelectOption(self, node, out):
+        try:
+            name = node[1]['name'].encode('ISO-8859-1','replace')
+            val = node[1]['value'].encode('ISO-8859-1','replace')
+            if node[1].has_key('content'):
+                cont = node[1]['content'].encode('ISO-8859-1','replace')
+            else:
+                cont = val
+        except:
+            return
+        res = ['<option value="'+val+'" ']
+        res.append('>'+cont+'</option>\n')
+        out.write(string.join(res, ''));
 
 EH_Generic = EH_Generic_class()
 
