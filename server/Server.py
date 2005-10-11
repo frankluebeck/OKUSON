@@ -144,6 +144,10 @@ WebWorkers.RegisterAllTpl()
 Utils.Error('Formatting current time on sheets like: ' + 
             WebWorkers.LocalTimeString(), prefix = 'Info: ')
 
+# Load plugins
+import Plugins
+Plugins.dumpExtensions()
+
 # We are ready, service can begin:
 try:
     Utils.Error(time.asctime(time.localtime(time.time()))+

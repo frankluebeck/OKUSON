@@ -5,9 +5,9 @@
    ...
 """
 
-CVS = '$Id: Utils.py,v 1.2 2003/10/22 22:21:54 neunhoef Exp $'
+CVS = '$Id: Utils.py,v 1.3 2005/10/11 23:55:09 neunhoef Exp $'
 
-import string, sys, re, exceptions, traceback, types
+import string, sys, re, exceptions, traceback, types, time
 
 #
 # We have our own Exception type:
@@ -135,6 +135,25 @@ def FileString(fname, s, reporterror=Error):
 # whitespace by single space
 def NormalizedWhitespace(s, reporterror=Error):
   return string.strip(re.sub('['+string.whitespace+']+',' ',s))
+
+def CleanWeb(st):
+    '''Function to avoid cross site scripting. We simply replace < by &lt;
+    and > by &gt; and & by &amp; . This should avoid that user input creates
+    tags in web output.'''
+    st = st.replace('&','&amp;')
+    st = st.replace('<','&lt;')
+    st = st.replace('>','&gt;')
+    return st
+
+def Protect(st):
+    '''Protects a string by deleting all colons and substituting spaces
+       for newlines. Necessary for export purposes to avoid malformed
+       export files.'''
+    return st.replace(':','').replace('\n',' ')
+
+def LocalTimeString(t = None):
+  if t == None: t = time.time()
+  return time.strftime("%c", time.localtime(t))
 
 # generic __repr__ method for class instances
 indent = 0

@@ -5,19 +5,17 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.121 2005/10/11 23:06:04 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.122 2005/10/11 23:55:09 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
 
-import Config,Data,Exercises
+import Config,Data,Exercises,Plugins
 
 from fmTools import BuiltinWebServer, XMLRewrite, Utils, AsciiData
 from fmTools import SimpleTemplate, LatexImage
 
-def LocalTimeString(t = None):
-  if t == None: t = time.time()
-  return time.strftime("%c", time.localtime(t))
+from fmTools.Utils import LocalTimeString, CleanWeb, Protect
 
 LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -190,10 +188,15 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write('There is somebody logged in. ')
         else:
             out.write('Nobody logged in. ')
+    def AdminPasswdField( self ):
+        if currentcookie == None:
+            return ( '<input type="password" size="16" maxlength="16" '
+                     'name="passwd" value="" />\n' )
+        else:
+            return ''
     def handle_AdminPasswdField(self,node,out):
         if currentcookie == None:
-            out.write('<input type="password" size="16" maxlength="16" '
-                      'name="passwd" value="" />\n')
+            out.write( self.AdminPasswdField() )
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
        for nr,name,s in l:
@@ -394,6 +397,33 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write('</select>\n')
         else:
             out.write('Wahl der &Uuml;bungsgruppe nicht m&ouml;glich')
+    def handle_ExtensionList( self, node, out ):
+        out.write( Plugins.listExtensions( self ) )
+    def handle_AdminExtensionList( self, node, out ):
+        out.write( Plugins.listExtensions( self, admin = True ) )
+    def handle_ExtensionForm( self, node, out ):
+        extensionName = ''
+        try:
+            extensionName = node[1]['name'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <ExtensionForm /> tag without "name" '
+                         'attribute. Ignoring.', prefix='Warning: ' ) 
+            return
+        out.write( Plugins.extensionForm( extensionName, self ) )
+    def handle_ExtensionCode( self, node, out ):
+        extensionName = ''
+        try:
+            extensionName = node[1]['name'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <ExtensionCode /> tag without "name" '
+                         'attribute. Ignoring.', prefix='Warning: ' ) 
+            return
+        # get arguments of the element
+        options = {}
+        for k, v in node[1].iteritems():
+            if k != 'name':
+                options[k] = [ v.encode( 'ISO-8859-1', 'replace' ) ]
+        out.write( Plugins.extensionCode( extensionName, options ) )
 
 EH_Generic = EH_Generic_class()
 
@@ -402,15 +432,6 @@ EH_Generic = EH_Generic_class()
 #
 def CleanQuotes(st):
     return st.replace('"','')
-
-def CleanWeb(st):
-    '''Function to avoid cross site scripting. We simply replace < by &lt;
-    and > by &gt; and & by &amp; . This should avoid that user input creates
-    tags in web output.'''
-    st = st.replace('&','&amp;')
-    st = st.replace('<','&lt;')
-    st = st.replace('>','&gt;')
-    return st
 
 def Delegate(path,req,onlyhead,handler = None,addheader = []):
     '''This delegates to another path.'''
@@ -608,6 +629,24 @@ and either send an error message or a report.'''
     return Delegate('/messages/regsuccess.html',req,onlyhead)
 
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
+
+def Extension( req, onlyhead ):
+    extension = None
+    try:
+        extension = req.query['extension'][0]
+    except:
+        return Delegate( '/extensions.html', req, onlyhead )
+    options = req.query
+    if Plugins.returnType( extension, options ) == Plugins.HTML:
+        handler = EH_withExtensionAndOptions_class( extension, options )
+        return Delegate( '/extension.html', req, onlyhead, handler )
+    else:
+        ( head, body ) = Plugins.createHeadAndBody( extension, options )
+        if not head.has_key( 'Last-modified'):
+            head['Last-modified'] = req.date_time_string( time.time() )
+        return ( head, body )
+
+Site['/Extension'] = FunWR( Extension )
 
 class EH_withPersData_class(EH_Generic_class):
     '''This class exists to produce handlers that can fill in personal data
@@ -2667,6 +2706,28 @@ Site['/SubmitHomeworkFree'] = FunWR(SubmitHomeworkFree)
 #######################################################################
 # The following is for the administrator's pages:
 
+def AdminExtension( req, onlyhead ):
+    if Authenticate( None, req, onlyhead ) < 0:
+        return Delegate( '/errors/notloggedin.html', req, onlyhead )
+    extension = None
+    try:
+        extension = req.query['extension'][0]
+    except:
+        return Delegate( '/adminextensions.html', req, onlyhead )
+    options = req.query
+    if Plugins.returnType( extension, options ) == Plugins.HTML:
+        handler = EH_withExtensionAndOptions_class( extension, options )
+        handler.iamadmin = 1
+        return Delegate( '/adminextension.html', req, onlyhead, handler )
+    else:
+        ( head, body ) = Plugins.createHeadAndBody( extension, options )
+        if not head.has_key( 'Last-modified'):
+            head['Last-modified'] = req.date_time_string( time.time() )
+        return ( head, body )
+
+Site['/AdminExtension'] = FunWR( AdminExtension )
+Site['/AdminExtension'].access_list = Config.conf['AdministrationAccessList']
+
 def AdminLogin(req,onlyhead):
     global currentcookie
     passwd = req.query.get('passwd',[''])[0]
@@ -2737,6 +2798,22 @@ def Shutdown(req,onlyhead):
 Site['/Shutdown'] = FunWR(Shutdown)
 Site['/Shutdown'].access_list = Config.conf['AdministrationAccessList']
 
+#######################################################################
+# This handler is used for the extensions
+
+class EH_withExtensionAndOptions_class( EH_Generic_class ):
+    extensionName = None
+    options = {}
+    def __init__( self, extensionName, options ):
+        self.extensionName = extensionName
+        self.options = options
+    def handle_ExtensionTitle( self, node, out ):
+        out.write( Plugins.extensionTitle( self.extensionName, self.options  ) )
+    def handle_ExtensionCSS( self, node, out ):
+        out.write( Plugins.extensionCSS( self.extensionName, self.options ) )
+    def handle_ExtensionCode( self, node, out ):
+        out.write( Plugins.extensionCode( self.extensionName, self.options ) )
+
 def NormalizeWishes(w):
     '''Normalizes a wishlist. First the string is split at space and commas,
        then only those chunks are taken, that are a valid ID of some
@@ -2747,12 +2824,6 @@ def NormalizeWishes(w):
       for www in ww.split(','):
         if Data.people.has_key(www): wishlist.append(www)
     return string.join(wishlist,',')
-
-def Protect(st):
-    '''Protects a string by deleting all colons and substituting spaces
-       for newlines. Necessary for export purposes to avoid malformed
-       export files.'''
-    return st.replace(':','').replace('\n',' ')
 
 # Some sort functions:
 

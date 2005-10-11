@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.100 2005/10/11 23:06:04 neunhoef Exp $
+##  $Id: CHANGES,v 1.101 2005/10/11 23:55:09 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -20,6 +20,9 @@ Changes from 1.1-fix4 to 1.1-fix5
   generic pages without available personal data.
 * Incorporated Ingo's patch ik3 for a tag <GroupSelection/> which allows
   for mouse selection of the group. Added documentation.
+* Incorporated Ingo's patches ik4 to ik6 to add a framework for extensions
+  called "plugins". See okuson/server/plugins.sample for examples. Note that
+  there is no documentation for this available apart from the code itself. :-)
 
 
 Changes from 1.1-fix3 to 1.1-fix4
