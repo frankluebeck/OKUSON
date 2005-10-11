@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.120 2005/10/11 22:53:57 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.121 2005/10/11 23:06:04 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -371,6 +371,29 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         res = ['<option value="'+val+'" ']
         res.append('>'+cont+'</option>\n')
         out.write(string.join(res, ''));
+    def handle_GroupSelection(self,node,out):
+        if Config.conf['GroupChoicePossible']:
+            out.write('<select name="groupnr">\n')
+            s = ['<option value="0" ']
+            s.append('>Keine &Uuml;bungsgruppe</option>\n')
+            l = Utils.SortNumerAlpha(Data.groups.keys())
+            fields = ['time','place']
+            for nr in l:
+                if nr == '0':
+                    continue
+                g = Data.groups[nr]
+                s.append('<option value="' + str(nr) + '" ')
+                s.append('>' + str(g.time).strip() + ', H&ouml;rsaal ' 
+                             + str(g.place).strip() + ', freie Pl&auml;tze: ' )
+                if len(g.people) >= g.maxsize:
+                    s.append('0')
+                else:
+                    s.append( str(g.maxsize - len(g.people)) )
+                s.append('</option>\n')
+            out.write(string.join(s,''))
+            out.write('</select>\n')
+        else:
+            out.write('Wahl der &Uuml;bungsgruppe nicht m&ouml;glich')
 
 EH_Generic = EH_Generic_class()
 
@@ -717,6 +740,39 @@ one Person object as data.'''
                   str(self.p.group)+'" />')
         else:
             out.write(str(self.p.group))
+    def handle_GroupSelection(self,node,out):
+        if Config.conf['GroupChangePossible'] or \
+           (Config.conf['GroupChoicePossible'] and self.p.group == 0 ):
+            out.write('<select name="groupnr">\n')
+            s = ['<option value="0" ']
+            if self.p.group == 0:
+                s.append(' selected="selected" ')
+            s.append('>Keine &Uuml;bungsgruppe</option>\n')
+            l = Utils.SortNumerAlpha(Data.groups.keys())
+            fields = ['time','place']
+            for nr in l:
+                if nr == '0':
+                    continue
+                g = Data.groups[nr]
+                s.append('<option value="' + str(nr) + '" ')
+                if str(self.p.group) == nr:
+                    s.append(' selected="selected" ')
+                s.append('>' + str(g.time).strip() + ', H&ouml;rsaal ' 
+                             + str(g.place).strip() + ', freie Pl&auml;tze: ' )
+                if len(g.people) >= g.maxsize:
+                    s.append('0')
+                else:
+                    s.append( str(g.maxsize - len(g.people)) )
+                s.append('</option>\n')
+            out.write(string.join(s,''))
+            out.write('</select>\n')
+        else:
+            if self.p.group == 0:
+                out.write('Keine &Uuml;bungsgruppe')
+            else:
+                g = Data.groups[str(self.p.group)]
+                out.write( str(g.time).strip() + ', H&ouml;rsaal ' 
+                              + str(g.place).strip() )
     def handle_Email(self,node,out):
         out.write(CleanWeb(str(self.p.email)))
     def handle_EmailField(self,node,out):
@@ -967,7 +1023,7 @@ and either send an error message or a report.'''
     if lname == '' or fname == '' or stud == '':
         return Delegate('/errors/emptyfields.html',req,onlyhead)
 
-    if Config.conf['GroupChangePossible']:
+    if Config.conf['GroupChangePossible'] or Config.conf['GroupChoicePossible'] and ( p.group == 0 ):
         groupnr = req.query.get('groupnr',['0'])[0].strip()[:3]
         try:
             groupnr = int(groupnr)
