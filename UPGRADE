@@ -1,9 +1,9 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON 1.1-fix3
-                                             to OKUSON 1.1-fix4:
+ This file describes the upgrade procedure from OKUSON 1.1-fix4
+                                             to OKUSON 1.1-fix5:
 ===============================================================================
 
-$Id: UPGRADE,v 1.18 2005/04/04 11:36:11 neunhoef Exp $
+$Id: UPGRADE,v 1.19 2005/10/11 23:59:04 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -11,9 +11,9 @@ restart the server:
   cd okuson
   ./stop
   cd ..
-  tar xzvf okuson-1.1-fix4.tar.gz
+  tar xzvf okuson-1.1-fix5.tar.gz
   cd okuson
-  cp html.sample/messages/subdubious.tpl html/messages
+  cp html.sample/{adminextensions,edithomeworkfree,extension,adminextension,extensions}.tpl html
   ./start
 
 Unpacking the archive does *not* overwrite the following customizable files:
@@ -21,11 +21,10 @@ Unpacking the archive does *not* overwrite the following customizable files:
   Config.xml
   data/*.txt
 
-Note that there are two new configuration options in Config.xml, namely:
-  MaxStringInputLength
-  InteractiveMode
+Note that there is a new configuration option in Config.xml, namely:
+  RestrictToOwnGroup
 
-However, they have sensible default values, such that an old Config.xml
+However, it has a sensible default value, such that an old Config.xml
 will still work as before.
 
 If you applied any patches to the server programs, make sure to reapply them.
