@@ -48,7 +48,7 @@ Parameters = {
   "ConfigData":               ["STRING",0],
   "MaxStringInputLength":     ["INT",0],
   "InteractiveMode":          ["INT",0],
-  "RestrictToOwnGroup":       ["INT",1],
+  "RestrictToOwnGroup":       ["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -307,6 +307,9 @@ into a usable form. Some values are changed into other data types.'''
     # Give a default for InteractiveMode:
     if not(conf.has_key('InteractiveMode')):
         conf['InteractiveMode'] = 0
+    # Give a default for RestrictToOwnGroup:
+    if not(conf.has_key('RestrictToOwnGroup')):
+        conf['RestrictToOwnGroup'] = 1
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')
