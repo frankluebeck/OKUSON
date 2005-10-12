@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.122 2005/10/11 23:55:09 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.123 2005/10/12 15:44:46 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -2072,7 +2072,8 @@ def ExamRegistration(req, onlyhead):
     # At last write out a sensible response:
     Utils.Error('['+LocalTimeString()+'] registered '+id+' for exam '+
                 str(examnr), prefix='ExamRegistration: ' )
-    return Delegate('/messages/examregsucc.html',req,onlyhead)
+    currentHandler = EH_withPersData_class(p)
+    return Delegate('/messages/examregsucc.html',req,onlyhead,currentHandler)
 
 Site['/ExamRegistration'] = FunWR(ExamRegistration)
 

@@ -24,6 +24,7 @@
     
     <!--
     DO NOT FORGET TO SWITCH ON <ExamRegistrationPossible> in Config.xml!!!
+    -->
     <form action="ExamRegistration" method="post">
      <p><input type="hidden" name="examnr" value="0" /> ***please edit***
        Matrikelnummer: <input size="8" maxlength="6" name="id" value="" />
@@ -36,7 +37,6 @@
        <input type="submit" name="action" value="Los" />
      </p>
     </form>
-    -->
  
     <hr />
 
@@ -55,5 +55,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregistration.tpl,v 1.6 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id: examregistration.tpl,v 1.7 2005/10/12 15:44:46 luebeck Exp $ -->
 
