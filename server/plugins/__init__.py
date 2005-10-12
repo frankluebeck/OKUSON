@@ -22,7 +22,7 @@ import os, sys
 
 from fmTools import Utils
 
-Utils.Error( 'Loading extentions...', prefix='Info: ' )
+Utils.Error( 'Loading extensions...', prefix='Info: ' )
 
 import plugins
 
