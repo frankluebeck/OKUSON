@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.104 2005/10/26 14:44:22 ingo Exp $
+##  $Id: CHANGES,v 1.105 2005/10/26 14:56:00 ingo Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -16,6 +16,7 @@ Changes from 1.1-fix5 to ...
 * Add the possibility to customize the date/time format that is used for
   displaying date and time. The format can be specified with the configuration
   option "DateTimeFormat".
+* Fix display problem of the table on the global statistics page(s).
 
 
 Changes from 1.1-fix4 to 1.1-fix5

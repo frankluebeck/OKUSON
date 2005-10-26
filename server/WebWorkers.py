@@ -5,9 +5,9 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.124 2005/10/26 14:44:22 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.125 2005/10/26 14:56:01 ingo Exp $'
 
-import os,sys,time,locale,traceback,random,crypt,string
+import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
 
 import Config,Data,Exercises,Plugins
@@ -1563,8 +1563,8 @@ class EH_withGroupInfo_class(EH_Generic_class):
 
     def handle_ScoresTable(self, node, out):
         out.write('<table class="scorestable">\n')
-        out.write('<tr><th></th><th colspan="4">Homework Scores</th>'
-                  '<th colspan="4">Multiple Choice Scores</th></tr>')
+        out.write('<tr><th></th><th colspan="5">Homework Scores</th>'
+                  '<th colspan="5">Multiple Choice Scores</th></tr>')
         out.write('<tr><th>Sheet</th><th>#Subm.</th><th>Avg.</th>' )
         out.write( '<th>Median</th><th>Highest</th><th>Max</th>')
         out.write(' <th>#Subm.</th><th>Avg.</th>' )
@@ -1623,7 +1623,7 @@ def DistributionTable(num, maxPts, list):
                 scalefactor = 1
         except:
             scalefactor = 1
-        for i in range(maxPts+1):
+        for i in range(int(math.ceil(maxPts)+1)):
             if i < len(list):
                 count = list[i]
             else:
