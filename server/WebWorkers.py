@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.125 2005/10/26 14:56:01 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.126 2005/10/26 15:08:59 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -2388,8 +2388,6 @@ class EH_withHomeworkFreeData_class (EH_Generic_class):
     sheet = ""
     datalist = []
     group = -1
-    rtog = True # Stores whether tutors are restricted to their own group
-                # while entering points.
     status = 0  # status 0: data has to be entered or corrected
                 # status 1: data has been verified but still needs a
                 #           confirmation
@@ -2445,7 +2443,7 @@ class EH_withHomeworkFreeData_class (EH_Generic_class):
                             idokstring = '<span style="color:#ff0000;">*</span>'
                         else:
                             p = Data.people[id]
-                            if not self.rtog or p.group == self.group:
+                            if ( Config.conf['RestrictToOwnGroup'] != 1 ) or p.group == self.group:
                                 namelist.append (p.fname + ' ' + p.lname)
                             else:
                                 namelist.append (id)
@@ -2676,7 +2674,6 @@ def SubmitHomeworkFree(req,onlyhead):
 
     # Determines whether a submission contains errors and
     # thus needs to be corrected.
-    rtog = (Config.conf['RestrictToOwnGroup'] != 0)
     if st == 1: st = 2
     if st == 0: st = 1
     if s == None: st = 0
@@ -2686,7 +2683,7 @@ def SubmitHomeworkFree(req,onlyhead):
                 id = id.strip()
                 if not(Data.people.has_key(id)):
                     st = 0
-                elif rtog and Data.people[id].group <> groupnr:
+                elif ( Config.conf['RestrictToOwnGroup'] == 1 ) and Data.people[id].group <> groupnr:
                     st = 0
         if data[1] <> '':
             try:
