@@ -142,7 +142,7 @@ WebWorkers.RegisterAllTpl()
 
 # Just an info:
 Utils.Error('Formatting current time on sheets like: ' + 
-            WebWorkers.LocalTimeString(), prefix = 'Info: ')
+            WebWorkers.LocalTimeString(format = Config.conf['DateTimeFormat']), prefix = 'Info: ')
 
 # Load plugins
 import Plugins

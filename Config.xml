@@ -552,6 +552,19 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
      This must be a comma separated list of positive integers. -->
 <Resolutions> 96, 126, 148 </Resolutions>
 
+<!-- Here you can change the format which is used for displaying date and
+     time. The format is passed to the Python method time.strftime (cf.
+     http://docs.python.org/lib/module-time.html). By default "%c" is used
+     as format.
+     Examples:
+     <DateTimeFormat> %c </DateTimeFormat> results in a human readable
+     (but not very nice) date and time, e.g. in German locale it looks like
+     "Mi 19 Okt 2005 15:46:59 CEST".
+     <DateTimeFormat> %A, %d. %B %Y, %H.%M Uhr </DateTimeFormat> results in
+     German locale in something like the following:
+     "Mittwoch, 19. Oktober 2005, 15.46 Uhr"
+-->
+
 <!-- The following template is used by the LatexImage module to make a
      LaTeX string into an image for the web version. Note that this 
      template must contain three occurances of "%s", which will be replaced

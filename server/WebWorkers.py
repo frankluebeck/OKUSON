@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.123 2005/10/12 15:44:46 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.124 2005/10/26 14:44:22 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string
 import types,Cookie,signal,cStringIO
@@ -98,7 +98,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         for opt in Config.conf['PossibleStudies']:
             out.write('  <option>'+opt+'</option>\n')
     def handle_CurrentTime(self,node,out):
-        out.write(LocalTimeString())
+        out.write(LocalTimeString(format = Config.conf['DateTimeFormat']))
     def handle_ValidatorIcon(self,node,out):
         out.write(ValidatorIconText)
     def handle_GroupSize(self,node,out):
@@ -1179,10 +1179,10 @@ a Person object and a Sheet object as data.'''
         else:
             self.s.WebSheetTable(self.r,SeedFromId(self.p.id),out,None)
     def handle_OpenTo(self,node,out):
-        out.write(LocalTimeString(self.s.opento))
+        out.write(LocalTimeString(self.s.opento, format = Config.conf['DateTimeFormat']))
     def handle_OpenFrom(self,node,out):
         if self.s.openfrom:
-            out.write(LocalTimeString(self.s.openfrom))
+            out.write(LocalTimeString(self.s.openfrom, format = Config.conf['DateTimeFormat']))
     def handle_StatisticsTable(self, node, out):
         if not(self.iamadmin):
             out.write('<p>Not logged in: Statistics not displayed.</p>')
@@ -1416,12 +1416,12 @@ def QuerySheet(req,onlyhead):
         if Config.conf.has_key('ConfigData'):
           for a in Config.conf['ConfigData'].keys():
             values['ConfigData.'+a] = Config.conf['ConfigData'][a]
-        values['OpenTo'] = LocalTimeString(sheet[2].opento)
+        values['OpenTo'] = LocalTimeString(sheet[2].opento, format = Config.conf['DateTimeFormat'])
         if sheet[2].openfrom:
-            values['OpenFrom'] = LocalTimeString(sheet[2].openfrom)
+            values['OpenFrom'] = LocalTimeString(sheet[2].openfrom, format = Config.conf['DateTimeFormat'])
         else:
             values['OpenFrom'] = ''
-        values['CurrentTime'] = LocalTimeString()
+        values['CurrentTime'] = LocalTimeString(format = Config.conf['DateTimeFormat'])
         if indiv:
             # find values of custom variables for persons
             values['IdOfPerson'] = id

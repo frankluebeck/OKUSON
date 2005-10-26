@@ -89,12 +89,12 @@ for a in files:
     if Config.conf.has_key('ConfigData'):
       for a in Config.conf['ConfigData'].keys():
         values['ConfigData.'+a] = Config.conf['ConfigData'][a]
-    values['OpenTo'] = LocalTimeString(sheet.opento)
+    values['OpenTo'] = LocalTimeString(sheet.opento, format = Config.conf['DateTimeFormat'])
     if sheet.openfrom:
-      values['OpenFrom'] = LocalTimeString(sheet.openfrom)
+      values['OpenFrom'] = LocalTimeString(sheet.openfrom, format = Config.conf['DateTimeFormat'])
     else:
       values['OpenFrom'] = ''
-    values['CurrentTime'] = LocalTimeString()
+    values['CurrentTime'] = LocalTimeString(format = Config.conf['DateTimeFormat'])
     # we add a further page with the solutions
     sol = sheet.AllSolutions().strip()
     values['ExercisesTable'] = sheet.LatexSheetTable('')

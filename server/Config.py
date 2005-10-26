@@ -76,6 +76,7 @@ Parameters = {
   "WidthOfQuestionsPDF":      ["FLOAT",1],
   "Resolutions":              ["STRING",1],   # a comma separated list of ints
   "LaTeXTemplate":            ["STRING",1],
+  "DateTimeFormat":           ["STRING",0],
 }
 
 # Some stuff is needed:
@@ -357,5 +358,6 @@ into a usable form. Some values are changed into other data types.'''
         conf['ExamGradingFunction'] = None
     if not(conf.has_key('ExamGradingActive')):
         conf['ExamGradingActive'] = 0
-
+    if not(conf.has_key('DateTimeFormat')):
+        conf['DateTimeFormat'] = '%c'
 

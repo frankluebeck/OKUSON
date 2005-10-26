@@ -5,7 +5,7 @@
    ...
 """
 
-CVS = '$Id: Utils.py,v 1.3 2005/10/11 23:55:09 neunhoef Exp $'
+CVS = '$Id: Utils.py,v 1.4 2005/10/26 14:44:22 ingo Exp $'
 
 import string, sys, re, exceptions, traceback, types, time
 
@@ -151,9 +151,9 @@ def Protect(st):
        export files.'''
     return st.replace(':','').replace('\n',' ')
 
-def LocalTimeString(t = None):
+def LocalTimeString(t = None, format = "%c"):
   if t == None: t = time.time()
-  return time.strftime("%c", time.localtime(t))
+  return time.strftime(format, time.localtime(t))
 
 # generic __repr__ method for class instances
 indent = 0
