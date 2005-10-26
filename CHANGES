@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.102 2005/10/12 15:59:57 neunhoef Exp $
+##  $Id: CHANGES,v 1.103 2005/10/26 11:40:32 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -10,6 +10,10 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.1-fix5 to ...
+
+* ...
 
 Changes from 1.1-fix4 to 1.1-fix5
 
