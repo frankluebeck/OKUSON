@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.126 2005/10/26 15:08:59 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.127 2005/10/28 15:13:58 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -646,7 +646,9 @@ def Extension( req, onlyhead ):
             head['Last-modified'] = req.date_time_string( time.time() )
         return ( head, body )
 
-Site['/Extension'] = FunWR( Extension )
+# work around for security problem: disable Extension URL
+#Site['/Extension'] = FunWR( Extension )
+# end of work around
 
 class EH_withPersData_class(EH_Generic_class):
     '''This class exists to produce handlers that can fill in personal data
