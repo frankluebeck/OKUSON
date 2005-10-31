@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.106 2005/10/26 15:08:59 ingo Exp $
+##  $Id: CHANGES,v 1.107 2005/10/31 14:10:07 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -25,7 +25,7 @@ Changes from 1.1-fix4 to 1.1-fix5
 * Changed MIME type for *.ps files to 'application/postscript'.
 * Give a little bit more personal information back after successful
   registration to an exam to better detect caching bugs in browsers.
-* Incorporated Mark's free homework input form. This is available under
+* Incorporated Marc's free homework input form. This is available under
   /HomeworkFree and uses one more configuration switch "RestrictToOwnGroup".
 * Incorporated Ingo's patch ik2 to allow PersonDataField and friends in
   generic pages without available personal data.
