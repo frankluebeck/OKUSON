@@ -4,6 +4,7 @@
 
 BODY {
   background-color:#ffffff;
+  color: #000000;
   font-family: sans-serif, Helvetica, Arial, Geneva;
   margin: 2em;
 } 
@@ -79,4 +80,4 @@ span.ergnull {
 img {
   border: 0pt;
 }
-/*  $Id: OKUSONSheet.css,v 1.3 2003/10/16 13:48:30 luebeck Exp $  */ 
+/*  $Id: OKUSONSheet.css,v 1.4 2005/11/02 14:11:52 neunhoef Exp $  */ 

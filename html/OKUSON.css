@@ -4,6 +4,7 @@
 
 BODY {
   background-color:#B0E0E6;
+  color: #000000;
   font-family: sans-serif, Helvetica, Arial, Geneva;
   margin: 2em;
 } 
@@ -80,4 +81,4 @@ hr {
 img {
   border: 0pt;
 }
-/*  $Id: OKUSON.css,v 1.5 2003/10/20 23:14:46 neunhoef Exp $  */ 
+/*  $Id: OKUSON.css,v 1.6 2005/11/02 14:11:52 neunhoef Exp $  */ 
