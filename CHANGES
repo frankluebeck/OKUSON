@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.107 2005/10/31 14:10:07 neunhoef Exp $
+##  $Id: CHANGES,v 1.108 2005/11/02 14:12:40 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -18,6 +18,7 @@ Changes from 1.1-fix5 to ...
   option "DateTimeFormat".
 * Fix display problem of the table on the global statistics page(s).
 * Fix marking of wrong ids on the free homework input form.
+* Change css style sheets to foreground color black.
 
 
 Changes from 1.1-fix4 to 1.1-fix5
