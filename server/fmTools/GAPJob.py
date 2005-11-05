@@ -11,7 +11,7 @@ Basic usage:
    ReleaseGAPJob(job)   # give it back to the pool
 """
 
-CVS = '$Id: GAPJob.py,v 1.2 2003/10/31 17:05:01 luebeck Exp $'
+CVS = '$Id: GAPJob.py,v 1.3 2005/11/05 01:19:24 luebeck Exp $'
 
 import os, sys, time, types, cStringIO, threading 
 
@@ -79,7 +79,7 @@ def QueryToGAP(req):
     else:
       res.write(StringToGAP(k))
     res.write('"):="')
-    res.write(StringToGAP(str(qu[k])))
+    res.write(StringToGAP(str(qu[k][0])))
     res.write('";;')
   res.write('\n')
   s = res.getvalue()
