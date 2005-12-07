@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.38 2005/12/07 16:53:19 ingo Exp $'
+CVS = '$Id: Exercises.py,v 1.39 2005/12/07 17:01:28 ingo Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -396,7 +396,6 @@ probably by a buggy browser.'''
                     if q.type == 'r':     # a radio button
                         val = query.get('B'+self.name+'Q'+str(counter),[''])[0]
                         if val == '---': val = ''  # we say nothing!
-                        val = val[:20]   # limit size!
                         if val != '' and not(val in q.answers):
                             # something is wrong! Write a log entry and
                             # assume empty answer!
