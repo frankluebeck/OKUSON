@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.127 2005/10/28 15:13:58 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.128 2005/12/07 16:53:19 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -1286,10 +1286,11 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
                       (submissionCount-correctAnswerCount))
             out.write('</table>')
             out.write('<p>This is the question:</p>\n')
-            out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>'
-               % ('96dpi', str(questionText.md5sum),
-                  Exercises.CleanString(
-                     Exercises.CleanStringTeXComments(questionText.text))))
+            if questionText != None:
+                out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>'
+                    % ('96dpi', str(questionText.md5sum),
+                        Exercises.CleanString(
+                            Exercises.CleanStringTeXComments(questionText.text))))
             out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>' 
                 % ('96dpi', str(variantText.md5sum), 
                    Exercises.CleanString(
