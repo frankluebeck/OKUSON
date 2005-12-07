@@ -2,7 +2,6 @@
 # -*- coding: ISO-8859-1 -*-
 #  OKUSON Package
 #  Frank Lübeck and Max Neunhöffer
-#Bla
 
 '''This is the main executable for the OKUSON server.'''
 
