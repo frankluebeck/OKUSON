@@ -50,6 +50,12 @@ from fmTools import Utils
 HTML = 0
 File = 1
 
+# Credential values
+Anonymous = 0
+Student = 1
+Tutor = 2
+Admin = 3
+
 _registered_extensions_ = {}
 
 class error:
@@ -90,7 +96,7 @@ def dumpExtensions():
         p = extensionClass()
         Utils.Error( p.name(), prefix='- ' )
 
-def listExtensions( handler, admin = False ):
+def listExtensions( handler, which = Anonymous ):
     '''Creates HTML code containing the form code of all registered extensions.
        If admin is True then only extensions for admins are considered.
        Otherwise, only extensions which are not for admins are considered.'''
@@ -100,7 +106,7 @@ def listExtensions( handler, admin = False ):
         ( category, shortDesc, longDesc, author, copyright, date, 
           extensionClass ) = _registered_extensions_[extensionName]
         p = extensionClass()
-        if admin == p.isAdminExtension():
+        if which == p.necessaryCredentials():
             if not categories.has_key( category ):
                 categories[category] = []
             categories[category].append( extensionName )
@@ -124,6 +130,22 @@ def listExtensions( handler, admin = False ):
     return ( '<ul>\n<li>' + str('</li>\n<li>').join( toc ) + '</li>\n</ul>\n' +
              body )
 
+def extensionExists( extensionName ):
+    '''Returns True, if an extension with the given name exists,
+       and returns False otherwise.'''
+    return _registered_extensions_.has_key( extensionName )
+
+def necessaryCredentials( extensionName, options ):
+    '''Returns the credentials that are necessary for using the given extension
+       or None if there is no extension with the given name. Possible return
+       values are Anonymous, Student, Tutor, Admin.'''
+    if not extensionExists( extensionName ):
+        return None
+    ( category, shortDesc, longDesc, author, copyright, date,
+      extensionClass ) = _registered_extensions_[extensionName]
+    p = extensionClass()
+    return p.necessaryCredentials()
+
 def extensionForm( extensionName, handler ):
     '''Returns the form code of the extension with the given name.'''
     try:
@@ -133,7 +155,7 @@ def extensionForm( extensionName, handler ):
         return ''
     s = ''
     p = extensionClass()
-    if p.isAdminExtension():
+    if p.necessaryCredentials() == Admin:
         s = ( '<form action="/AdminExtension" method="post"><p>\n'
               '<input type="hidden" name="extension" value="' + 
               extensionName + '" />\n'
@@ -217,10 +239,14 @@ class OkusonExtension:
     def name( self ):
         '''Return the name of the extension.'''
         raise error, 'Implementation of "name" missing.'
-    def isAdminExtension( self ):
-        '''Return True if this is an extension for administrators and needs
-           authentication.'''
-        raise error, 'Implementation of "isAdminExtension" missing.'
+    def necessaryCredentials( self ):
+        '''Returns the credentials that are necessary for using this
+           extension. Possible values are:
+           Anonymous - Extension for everybody.
+           Student   - Extension for registered students.
+           Tutor     - Extension for tutors.
+           Admin     - Extension for administrators.'''
+        raise error, 'Implementation of "necessaryCredentials" missing.'
     def returnType( self ):
         '''Return Plugins.HTML if this extension returns HTML code. In this
            case you also have to implement title(), cssCode() and htmlCode().

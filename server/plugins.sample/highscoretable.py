@@ -33,8 +33,8 @@ class HighScoreTable( Plugins.OkusonExtension ):
             self.numberOfEntries = 10
     def name( self ):
         return self.__class__.__name__
-    def isAdminExtension( self ):
-        return False
+    def necessaryCredentials( self ):
+        return Plugins.Anonymous
     def returnType( self ):
         return Plugins.HTML
     def title( self ):

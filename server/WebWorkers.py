@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.129 2005/12/08 14:05:40 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.130 2005/12/08 14:23:16 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -399,8 +399,10 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write('Wahl der &Uuml;bungsgruppe nicht m&ouml;glich')
     def handle_ExtensionList( self, node, out ):
         out.write( Plugins.listExtensions( self ) )
+    def handle_TutorExtensionList( self, node, out ):
+        out.write( Plugins.listExtensions( self, which = Plugins.Tutor ) )
     def handle_AdminExtensionList( self, node, out ):
-        out.write( Plugins.listExtensions( self, admin = True ) )
+        out.write( Plugins.listExtensions( self, which = Plugins.Admin ) )
     def handle_ExtensionForm( self, node, out ):
         extensionName = ''
         try:
@@ -635,8 +637,38 @@ def Extension( req, onlyhead ):
     try:
         extension = req.query['extension'][0]
     except:
-        return Delegate( '/extensions.html', req, onlyhead )
+        return Delegate( '/errors/unknownextension.html', req, onlyhead )
+    if not Plugins.extensionExists( extension ):
+        return Delegate( '/errors/unknownextension.html', req, onlyhead )
     options = req.query
+    # which credentials are necessary for this extension?
+    cred = Plugins.necessaryCredentials( extension, options )
+    if cred == Plugins.Student:
+        # First check whether the id is valid:
+        id = req.query.get('id',[''])[0].strip()
+        if not(Data.people.has_key(id)):
+            return Delegate('/errors/idunknown.html',req,onlyhead)
+        p = Data.people[id]
+        # Now verify the password for this person:
+        if Authenticate(p,req,onlyhead) < 0:
+            return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+    elif cred == Plugins.Tutor:
+        # First verify validity of group number:
+        groupnr = req.query.get('group',['0'])[0]
+        try:
+            groupnr = int(groupnr)
+        except:
+            groupnr = 0
+        if groupnr < 0 or not(Data.groups.has_key(str(groupnr))):
+            return Delegate('/errors/badgroupnr.html',req,onlyhead)
+        g = Data.groups[str(groupnr)]
+        # Now verify the password for this group:
+        if AuthenticateTutor(g,req,onlyhead) < 0:
+            return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+    elif cred == Plugins.Admin:
+        if Authenticate( None, req, onlyhead ) != 1:
+            return Delegate( '/errors/notloggedin.html', req, onlyhead )
+
     if Plugins.returnType( extension, options ) == Plugins.HTML:
         handler = EH_withExtensionAndOptions_class( extension, options )
         return Delegate( '/extension.html', req, onlyhead, handler )
@@ -646,9 +678,7 @@ def Extension( req, onlyhead ):
             head['Last-modified'] = req.date_time_string( time.time() )
         return ( head, body )
 
-# work around for security problem: disable Extension URL
-#Site['/Extension'] = FunWR( Extension )
-# end of work around
+Site['/Extension'] = FunWR( Extension )
 
 class EH_withPersData_class(EH_Generic_class):
     '''This class exists to produce handlers that can fill in personal data
@@ -2703,12 +2733,11 @@ def SubmitHomeworkFree(req,onlyhead):
 
 Site['/SubmitHomeworkFree'] = FunWR(SubmitHomeworkFree)
 
-
 #######################################################################
 # The following is for the administrator's pages:
 
 def AdminExtension( req, onlyhead ):
-    if Authenticate( None, req, onlyhead ) < 0:
+    if Authenticate( None, req, onlyhead ) != 1:
         return Delegate( '/errors/notloggedin.html', req, onlyhead )
     extension = None
     try:

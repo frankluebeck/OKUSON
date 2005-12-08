@@ -36,8 +36,8 @@ class KlausurTeilnehmer( Plugins.OkusonExtension ):
             pass
     def name( self ):
         return self.__class__.__name__
-    def isAdminExtension( self ):
-        return True
+    def necessaryCredentials( self ):
+        return Plugins.Admin
     def returnType( self ):
         if self.exportType == 'html':
             return Plugins.HTML
