@@ -6,6 +6,7 @@
       nr: a number, determines the ordering of sheets for the course
       name (optional): a name for the sheet, default is to use 'nr' as name
       first: the number of the first exercise on that sheet
+      maxhomescore (optional): maximal number of points in the homework
       opento: the time until which solutions can be submitted, 
               (format   hh:mm_dd.mm.yyyy)   
       openfrom: (optional, format as opento) if you want to put a sheet in
