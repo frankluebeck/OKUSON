@@ -118,7 +118,7 @@ class KlausurTeilnehmer( Plugins.OkusonExtension ):
         return ( head, s )
     def createTextFile( self ):
         s = '# All participants of exam number ' + str(self.examnr) + ':\n'
-        s += '# ID:name:fname\n'
+        s += '# ID:angemeldet?:name:fname\n'
         s += '# Time and date of export: ' + Utils.LocalTimeString() + '\n'
         l = Utils.SortNumerAlpha( Data.people.keys() )
         for k in l:
@@ -126,7 +126,10 @@ class KlausurTeilnehmer( Plugins.OkusonExtension ):
             if self.examnr < len( p.exams ) and \
                 p.exams[self.examnr] != None and \
                 p.exams[self.examnr].registration:
-                    s += ( k + ':' + Utils.Protect( p.lname ) + ':' +
+                    s += ( k + ':1:' + Utils.Protect( p.lname ) + ':' +
+                           Utils.Protect( p.fname ) + '\n' )
+            else:
+                    s += ( k + ':0:' + Utils.Protect( p.lname ) + ':' +
                            Utils.Protect( p.fname ) + '\n' )
         return s
     def createPDFFile( self ):
@@ -176,7 +179,6 @@ class KlausurTeilnehmer( Plugins.OkusonExtension ):
                 s += tablefootshort
             offset += 2 * maxRows
         latexInput = LatexTemplate % ( s )
-        #return latexInput
         pdf = LatexImage.LatexToPDF( latexInput )
         if not pdf:
             return ''
