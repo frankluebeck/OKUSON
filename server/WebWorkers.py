@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.128 2005/12/07 16:53:19 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.129 2005/12/08 14:05:40 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -2406,14 +2406,14 @@ class EH_withHomeworkFreeData_class (EH_Generic_class):
         # or offers an input field for this data.
         if self.s <> None:
             if self.status == 0:
-                out.write(('<input size="8" name="sheet" value="%d" ' + \
-                           'maxlength="8" />') % self.s.nr)
+                out.write('<input size="8" name="sheet" value="' +
+                          self.s.name + '" maxlength="8" />')
             else:
-                out.write('%d<input type="hidden" name="sheet" value="%d" />' \
-                          % (self.s.nr, self.s.nr))
+                out.write(self.s.name + '<input type="hidden" '
+                          'name="sheet" value="' + self.s.name + '" />')
         else:
-            out.write(('<input size="8" name="sheet" value="%s" ' + \
-                       'maxlength="8" />') % self.sheet)
+            out.write('<input size="8" name="sheet" value="' +
+                      self.sheet + '" maxlength="8" />')
             if self.datalist <> []:
                 out.write('<span style="color:#ff0000;">*</span>')
     def handle_FreeHomeworkInput(self,node,out):
