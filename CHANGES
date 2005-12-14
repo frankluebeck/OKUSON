@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.108 2005/11/02 14:12:40 neunhoef Exp $
+##  $Id: CHANGES,v 1.109 2005/12/14 16:36:02 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,9 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix5 to ...
 
+* Fixed a bug that two threads running in parallel could use the same
+  "uniquename" for file locking. This bug could lead to crashes of the
+  server!
 * Add the possibility to customize the date/time format that is used for
   displaying date and time. The format can be specified with the configuration
   option "DateTimeFormat".
