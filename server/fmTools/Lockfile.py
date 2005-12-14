@@ -4,7 +4,7 @@
 '''Implements locking via files in an NFS-safe way using "link" as
 atomic file system operation.'''
 
-CVS = '$Id: Lockfile.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
+CVS = '$Id: Lockfile.py,v 1.2 2005/12/14 16:34:43 neunhoef Exp $'
 
 ##########################################################################
 ##  
@@ -17,7 +17,7 @@ CVS = '$Id: Lockfile.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
 ##  
 ##########################################################################
 
-import os,time,sys
+import os,time,sys,thread
 import Utils
 
 timeout = 60
@@ -28,7 +28,8 @@ def Lock(filename,printing = 0, reporterror = Utils.Error):
        if an error occurs. If the lock does not succeed until timeout,
        -2 is returned.'''
     counter = 0
-    uniquename = filename+".LOCK."+str(os.getpid())+str(time.time())
+    uniquename = filename+".LOCK."+str(os.getpid())+str(time.time())+ \
+                 str(thread.get_ident())
     try:
         open(uniquename,"w").close()
     except:
