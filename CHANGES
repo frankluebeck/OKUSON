@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.109 2005/12/14 16:36:02 neunhoef Exp $
+##  $Id: CHANGES,v 1.110 2006/03/10 09:37:59 ingo Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -22,6 +22,7 @@ Changes from 1.1-fix5 to ...
 * Fix display problem of the table on the global statistics page(s).
 * Fix marking of wrong ids on the free homework input form.
 * Change css style sheets to foreground color black.
+* Fixed compilation of pyRXP with gcc 4.0 and later.
 
 
 Changes from 1.1-fix4 to 1.1-fix5

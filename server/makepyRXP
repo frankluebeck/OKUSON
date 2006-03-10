@@ -3,6 +3,9 @@ if [ ! -x pyRXP ]; then
   gzip -dc daily-pyRXP.tgz | tar xvf -
 fi
 
+# apply patch to fix compilation with gcc 4.0+
+patch pyRXP/pyRXP.c <$0
+
 cd pyRXP
 python setup.py build_ext
 cp "`find build -name pyRXP.so`" ..
@@ -14,3 +17,18 @@ echo
 echo
 echo You should find two files \"pyRXP.so\" and \"pyRXPU.so\" in this 
 echo directory. Otherwise, please look for error messages above.
+
+exit
+
+--- pyRXP.c~	2003-11-07 10:47:12.000000000 +0100
++++ pyRXP.c	2006-02-07 16:39:47.000000000 +0100
+@@ -882,7 +882,8 @@
+ 
+ 	if(!PyArg_ParseTuple(args, ":Parser")) return NULL;
+ 	if(!(self = PyObject_NEW(pyRXPParserObject, &pyRXPParserType))) return NULL;
+-	self->warnCB = self->eoCB = self->fourth = (void*)self->srcName = NULL;
++        self->srcName = NULL;
++	self->warnCB = self->eoCB = self->fourth = (void*) NULL;
+ 	if(!(self->srcName=PyString_FromString("[unknown]"))){
+ 		PyErr_SetString(moduleError,"Internal error, memory limit reached!");
+ Lfree:	pyRXPParserFree(self);
