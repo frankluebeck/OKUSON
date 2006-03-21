@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.14 2005/10/10 21:50:05 neunhoef Exp $ -->
+<!-- $Id: config.dtd,v 1.15 2006/03/21 10:46:33 ingo Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -69,6 +69,7 @@
 <!ELEMENT WidthOfQuestionsPDF (#PCDATA)>
 <!ELEMENT Resolutions (#PCDATA)>
 <!ELEMENT LaTeXTemplate (#PCDATA)>
+<!ELEMENT DateTimeFormat (#PCDATA)>
 
 <!-- The following is used for lists of directory names: -->
 
