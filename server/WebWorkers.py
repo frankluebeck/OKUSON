@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.130 2005/12/08 14:23:16 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.131 2006/03/22 13:01:20 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -412,6 +412,22 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                          'attribute. Ignoring.', prefix='Warning: ' ) 
             return
         out.write( Plugins.extensionForm( extensionName, self ) )
+    def handle_ExtensionCSS( self, node, out ):
+        extensionName = ''
+        try:
+            extensionName = node[1]['name'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <ExtensionCSS /> tag without "name" '
+                         'attribute. Ignoring.', prefix='Warning: ' ) 
+            return
+        # get arguments of the element
+        options = {}
+        for k, v in node[1].iteritems():
+            if k != 'name':
+                options[k] = [ v.encode( 'ISO-8859-1', 'replace' ) ]
+        css = Plugins.extensionCSS( extensionName, options )
+        if css != None:
+            out.write( css )
     def handle_ExtensionCode( self, node, out ):
         extensionName = ''
         try:
@@ -2840,7 +2856,10 @@ class EH_withExtensionAndOptions_class( EH_Generic_class ):
     def handle_ExtensionTitle( self, node, out ):
         out.write( Plugins.extensionTitle( self.extensionName, self.options  ) )
     def handle_ExtensionCSS( self, node, out ):
-        out.write( Plugins.extensionCSS( self.extensionName, self.options ) )
+        css = Plugins.extensionCSS( self.extensionName, self.options )
+        if css != None:
+            out.write( '<meta http-equiv="Content-Style-Type" content="text/css" />\n'
+                       '<style type="text/css">\n' + css + '\n</style>\n' )
     def handle_ExtensionCode( self, node, out ):
         out.write( Plugins.extensionCode( self.extensionName, self.options ) )
 

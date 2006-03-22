@@ -2,7 +2,7 @@
 #
 #   Extension framework for Okuson
 #
-#   Copyright (C) 2005  Ingo Klöcker <ingo.kloecker@mathA.rwth-aachen.de>
+#   Copyright (C) 2005,2006  Ingo Klöcker <ingo.kloecker@mathA.rwth-aachen.de>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -77,39 +77,48 @@ def register( extensionName, category, shortDesc, longDesc, author, copyright,
     if not letterCheck( extensionName ):
         raise error, 'extension name contains illegal characters'
 
-    # check whether the extension is a subclass of OkusonExtension
+    # check whether the extension is a subclass of OkusonSimpleExtension
     try:
-        issubclass( extensionClass, OkusonExtension )
-    except:
+        issubclass( extensionClass, OkusonSimpleExtension )
+    except TypeError:
         return 1
+    # check whether the extension is an OkusonExtension
+    try:
+        isSimpleExtension = not issubclass( extensionClass, OkusonExtension )
+    except TypeError:
+        isSimpleExtension = True
 
     _registered_extensions_[ extensionName ] = \
         ( category, shortDesc, longDesc, author, copyright, date,
-          extensionClass )
+          isSimpleExtension, extensionClass )
 
 def dumpExtensions():
     '''Writes the list of registered extensions to stderr.'''
     Utils.Error( 'List of registered extensions:', prefix='Info: ' )
     for extensionName in _registered_extensions_.keys():
         ( category, shortDesc, longDesc, author, copyright, date,
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
         p = extensionClass()
         Utils.Error( p.name(), prefix='- ' )
 
 def listExtensions( handler, which = Anonymous ):
-    '''Creates HTML code containing the form code of all registered extensions.
-       If admin is True then only extensions for admins are considered.
-       Otherwise, only extensions which are not for admins are considered.'''
+    '''Creates HTML code containing the form code of all registered (non-simple)
+       extensions with necessary credentials @p which.'''
     # sort all extensions by category
     categories = {}
     for extensionName in _registered_extensions_.keys():
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
+        # skip simple extensions
+        if isSimpleExtension:
+            continue
         p = extensionClass()
         if which == p.necessaryCredentials():
             if not categories.has_key( category ):
                 categories[category] = []
             categories[category].append( extensionName )
+    if len( categories ) == 0: # no matching extensions found
+        return '<p><em>No extensions found.</em></p>\n'
     toc = []
     body = ''
     catList = categories.keys()
@@ -125,7 +134,7 @@ def listExtensions( handler, which = Anonymous ):
         extList.sort()
         for extensionName in extList:
             ( category, shortDesc, longDesc, author, copyright, date, 
-              extensionClass ) = _registered_extensions_[extensionName]
+              isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
             body += extensionForm( extensionName, handler )
     return ( '<ul>\n<li>' + str('</li>\n<li>').join( toc ) + '</li>\n</ul>\n' +
              body )
@@ -142,7 +151,9 @@ def necessaryCredentials( extensionName, options ):
     if not extensionExists( extensionName ):
         return None
     ( category, shortDesc, longDesc, author, copyright, date,
-      extensionClass ) = _registered_extensions_[extensionName]
+      isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
+    if isSimpleExtension:
+        return None
     p = extensionClass()
     return p.necessaryCredentials()
 
@@ -150,8 +161,10 @@ def extensionForm( extensionName, handler ):
     '''Returns the form code of the extension with the given name.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
+        return ''
+    if isSimpleExtension:
         return ''
     s = ''
     p = extensionClass()
@@ -177,8 +190,10 @@ def returnType( extensionName, options ):
        given options. This is either HTML or File.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
+        return 'Error: Unknown Extension'
+    if isSimpleExtension:
         return 'Error: Unknown Extension'
     p = extensionClass( options )
     return p.returnType()
@@ -187,8 +202,10 @@ def extensionTitle( extensionName, options ):
     '''Returns the (HTML) title of the extension with the given name.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
+        return 'Error: Unknown Extension'
+    if isSimpleExtension:
         return 'Error: Unknown Extension'
     p = extensionClass( options )
     return p.title()
@@ -197,23 +214,18 @@ def extensionCSS( extensionName, options ):
     '''Returns optional CSS for the extension with the given name.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
         return 'Error: Unknown Extension'
     p = extensionClass( options )
-    css = p.cssCode()
-    if css != None:
-        return ( '<meta http-equiv="Content-Style-Type" content="text/css" />\n'
-                 '<style type="text/css">\n' + css + '\n</style>\n' )
-    else:
-        return ''
+    return p.cssCode()
 
 def extensionCode( extensionName, options ):
     '''Returns the HTML code for the extension with the given name for the
        given options.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
         return '<p>Error: Unknown extension</p>'
     p = extensionClass( options )
@@ -224,21 +236,41 @@ def createHeadAndBody( extensionName, options ):
        the given name for the given options.'''
     try:
         ( category, shortDesc, longDesc, author, copyright, date, 
-          extensionClass ) = _registered_extensions_[extensionName]
+          isSimpleExtension, extensionClass ) = _registered_extensions_[extensionName]
     except:
+        return '<p>Error: Unknown extension</p>'
+    if isSimpleExtension:
         return '<p>Error: Unknown extension</p>'
     p = extensionClass( options )
     return p.headAndBody()
 
 
-class OkusonExtension:
-    '''This is the base class for all Okuson extensions.'''
+class OkusonSimpleExtension:
+    '''This is the base class for simple Okuson extensions. Simple Okuson
+       extensions are used to replace <Extension name="foo" /> tags with some HTML
+       code.'''
     def __init__( self, options = {} ):
-        '''Initialize the extension with the options from the HTML form.'''
-        raise error, 'Implementation of "__init__" missing.'
+        pass
     def name( self ):
         '''Return the name of the extension.'''
         raise error, 'Implementation of "name" missing.'
+    def cssCode( self ):
+        '''The cssCode is inserted in place of a <ExtensionCSS extension="foo" />
+           tag.
+           This method should return any CSS definitions you need for the
+           extension's HTML code.'''
+        raise error, 'Implementation of "cssCode" missing.'
+    def htmlCode( self ):
+        '''The htmlCode is inserted in place of a <ExtensionCode extension="foo" />
+           tag.
+           This method should return the extension's HTML code.'''
+        raise error, 'Implementation of "htmlCode" missing.'
+
+class OkusonExtension( OkusonSimpleExtension ):
+    '''This is the base class for normal Okuson extensions.'''
+    def __init__( self, options = {} ):
+        '''Initialize the extension with the options from the HTML form.'''
+        raise error, 'Implementation of "__init__" missing.'
     def necessaryCredentials( self ):
         '''Returns the credentials that are necessary for using this
            extension. Possible values are:
@@ -268,7 +300,8 @@ class OkusonExtension:
         raise error, 'Implementation of "formCode" missing.'
     def cssCode( self ):
         '''The cssCode is inserted into a <style> element in the HTML header
-           of the webpage for this extension.
+           of the webpage for this extension or in place of a
+           <ExtensionCSS extension="foo" /> tag.
            This method should return any CSS definitions you need for the
            extension's HTML code.'''
         raise error, 'Implementation of "cssCode" missing.'
@@ -276,7 +309,7 @@ class OkusonExtension:
         '''The htmlCode is inserted into the body of the webpage for this
            extension or in place of a <ExtensionCode extension="foo" /> tag.
            This method should return the extension's HTML code.'''
-        raise error, 'Implementation of "cssCode" missing.'
+        raise error, 'Implementation of "htmlCode" missing.'
     def headAndBody( self ):
         '''This method should return a pair consisting of the HTTP header and
            the data this extension creates.'''
