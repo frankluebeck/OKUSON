@@ -22,7 +22,7 @@ import locale
 
 import Data, Plugins
 
-class HighScoreTable( Plugins.OkusonExtension ):
+class HighScoreTable( Plugins.OkusonSimpleExtension ):
     numberOfEntries = 10
     def __init__( self, options = {} ):
         try:
@@ -33,32 +33,20 @@ class HighScoreTable( Plugins.OkusonExtension ):
             self.numberOfEntries = 10
     def name( self ):
         return self.__class__.__name__
-    def necessaryCredentials( self ):
-        return Plugins.Anonymous
-    def returnType( self ):
-        return Plugins.HTML
-    def title( self ):
-        return 'Highscore Tabelle'
-    def formCode( self ):
-        s = 'Highscore Tabelle, Anzahl Einträge: <input name="entries" value="10" />\n'
-        return s
     def cssCode( self ):
-        return ''
+        return ( 'table.highscore th { text-align: center; }\n'
+                 'table.highscore td { text-align: center; }\n')
     def htmlCode( self ):
         totalScore = []
         for k in Data.people.keys():
             totalScore.append( Data.people[k].TotalScore() )
         totalScore.sort()
         totalScore.reverse()
-        s = ( '\n<table><tr><th style="text-align: center;">' +
-              'Höchstpunktzahlen</th></tr>\n' )
+        s = ( '\n<table class="highscore"><tr><th>Höchstpunktzahlen</th></tr>\n' )
         for t in totalScore[:self.numberOfEntries]:
-            s += ( '<tr><td style="text-align: center;">' +
-                   locale.str(t) + '</td></tr>\n' )
+            s += ( '<tr><td>' + locale.str(t) + '</td></tr>\n' )
         s += '</table>\n'
         return s
-    def headAndBody( self ):
-        pass # unneeded
 
 Plugins.register( HighScoreTable.__name__,
                   'Statistik',
