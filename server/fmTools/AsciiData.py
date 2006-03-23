@@ -10,7 +10,7 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.8 2004/03/05 08:40:51 luebeck Exp $'
+CVS = '$Id: AsciiData.py,v 1.9 2006/03/23 15:22:57 ingo Exp $'
 
 import string, os, sys, types, exceptions, threading
 import Utils
@@ -33,7 +33,7 @@ encoded string.
 '''
     l = []
     for s in t:
-        # we first protect backspaces:
+        # we first protect backslashes:
         ss = s.replace('\\','\\e')
         ss = ss.replace(delimiter,'\\d')
         ss = ss.replace('\n','\\n')
