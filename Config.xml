@@ -564,6 +564,7 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
      German locale in something like the following:
      "Mittwoch, 19. Oktober 2005, 15.46 Uhr"
 -->
+<DateTimeFormat> %c </DateTimeFormat>
 
 <!-- The following template is used by the LatexImage module to make a
      LaTeX string into an image for the web version. Note that this 
