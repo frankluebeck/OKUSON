@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.131 2006/03/22 13:01:20 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.132 2006/04/03 18:09:26 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -336,7 +336,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         out.write('</table>\n');
     def handle_PersonDataField(self,node,out):
         try:
-          key = node[1]['key']
+          key = node[1]['key'].encode('ISO-8859-1','replace')
           out.write('<input size="16" maxlength="256" name="persondata.' + \
                   key+'" value="" />')
         except:
@@ -725,7 +725,7 @@ one Person object as data.'''
           pass
     def handle_PersonDataField(self,node,out):
         try:
-          key = node[1]['key']
+          key = node[1]['key'].encode('ISO-8859-1','replace')
           out.write('<input size="30" maxlength="256" name="persondata.' + \
                   key+'" value="'+ \
                   CleanQuotes(self.p.persondata.get(key,''))+'" />')
