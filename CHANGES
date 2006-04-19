@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.110 2006/03/10 09:37:59 ingo Exp $
+##  $Id: CHANGES,v 1.111 2006/04/19 11:59:33 ingo Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -23,6 +23,8 @@ Changes from 1.1-fix5 to ...
 * Fix marking of wrong ids on the free homework input form.
 * Change css style sheets to foreground color black.
 * Fixed compilation of pyRXP with gcc 4.0 and later.
+* Allow the administrator to put people into overbooked groups by ignoring the
+  maximal group size.
 
 
 Changes from 1.1-fix4 to 1.1-fix5

@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.132 2006/04/03 18:09:26 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.133 2006/04/19 11:59:33 ingo Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -1120,7 +1120,8 @@ and either send an error message or a report.'''
             else:      # Check for maximal number of group members:
                 if groupnr != p.group:   # This is a group change
                     g = Data.groups[groupnrst]
-                    if len(g.people) >= g.maxsize:
+                    # the admin can choose any group
+                    if ( len(g.people) >= g.maxsize ) and ( iamadmin != 1 ):
                         return Delegate('/errors/groupfull.html',req,onlyhead)
         except:
             groupnr = p.group
