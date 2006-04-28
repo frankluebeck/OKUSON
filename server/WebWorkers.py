@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.133 2006/04/19 11:59:33 ingo Exp $'
+CVS = '$Id: WebWorkers.py,v 1.134 2006/04/28 09:21:48 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -1329,7 +1329,7 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
                       submissionCount)
             out.write('<tr><td>Correct answers:</td><td>%d</td></tr>' % 
                       correctAnswerCount)
-            out.write('<tr><td>Inorrect answers:</td><td>%d</td></tr>' % 
+            out.write('<tr><td>Incorrect answers:</td><td>%d</td></tr>' % 
                       (submissionCount-correctAnswerCount))
             out.write('</table>')
             out.write('<p>This is the question:</p>\n')
