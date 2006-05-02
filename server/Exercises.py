@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.39 2005/12/07 17:01:28 ingo Exp $'
+CVS = '$Id: Exercises.py,v 1.40 2006/05/02 12:43:01 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -1340,13 +1340,13 @@ def ReadSheetsFile(fname):
                try:
                    MakeSheet(a)
                except:   # may fail, error is already reported
-                   #traceback.print_exc()
+                   traceback.print_exc()
                    Utils.Error("Exception raised.")
   elif tree[0] == 'SHEET':
       try:
           MakeSheet(tree)
       except:   # may fail, error is already reported
-          #traceback.print_exc()
+          traceback.print_exc()
           Utils.Error("Exception raised.")
 
 # Read all *.bla files in a directory. 
