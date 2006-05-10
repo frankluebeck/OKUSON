@@ -15,7 +15,7 @@ if len(sys.argv) == 1:
 Usage: makestickers.py [-t DELIMITER] [-f FIELDS] [-l LECTURER]
                        [-c COURSE] [-s SEMESTER] [-r RANGE]
        where: DELIMITER:   field delimiter for input lines
-              FIELDS:      for id, name, first name, score
+              FIELDS:      for id, name, first name, score (one based)
               LECTURER:    lecturer of course
               COURSE:      course
               SEMESTER:    semester
@@ -53,9 +53,9 @@ for (k,v) in optlist:
             else:
                 for i in range(int(s[:p])-1,int(s[p+1:])): fields.append(i)
     elif k == "-r":
-        p = string.find(v,"-")
+        p = string.find(v,",")
         if p == -1:
-            sys.stderr.write("Range has no - !\n")
+            sys.stderr.write("Range has no , !\n")
         else:
             rangelow = int(v[:p])
             rangehigh = int(v[p+1:])
