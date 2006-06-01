@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2005 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: RWTHLehrevaluationMessages.py,v 1.1 2005/01/26 16:11:17 luebeck Exp $
+#   $Id: RWTHLehrevaluationMessages.py,v 1.2 2006/06/01 12:03:26 luebeck Exp $
 #
 # This script is part of OKUSON.
 #
@@ -39,6 +39,13 @@ Ausdrucken, Ausschneiden und Verteilen geschickt, diese heiße 'TAN.pdf'.
 Dann kann mit folgender langer Zeile 
 
    pdftotext TAN.pdf - | sed -e "s/Ihre TAN/\nIhre TAN/g" | grep "^Ihre TAN" | cut -d : -f 2 | sed -e "s/ //g" | sed -e "s/^/http:\/\/www.campus.rwth-aachen.de\/evasys\/indexstud.php?typ=html\&amp;user_tan=/" > TAN_URLs
+
+[ EINSCHUB
+ Die obige Zeile muss jedes Semester angepasst werden, man schaue dazu in den
+ Output von "pdftotext TAN.pdf -". Im SS06 etwa muss es so geändert werden:
+
+    pdftotext TAN.pdf - | g -v ^Your | g -v ^http | grep -v Surve | grep -v Diese | g -v PSWD | g -v '^$' | g -v '^L'  | sed -e "s/^/http:\/\/www.campus.rwth-aachen.de\/evasys\/indexstud.php?typ=html\&amp;user_tan=/" > TAN_URLs
+]
 
 eine Datei 'TAN_URLs' erzeugt werden, die oben als Argument 'tan_url_file'
 benutzt werden kann. (Beachte das '&amp;' in der URL, damit bei der
