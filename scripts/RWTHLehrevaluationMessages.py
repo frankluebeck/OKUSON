@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2005 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: RWTHLehrevaluationMessages.py,v 1.2 2006/06/01 12:03:26 luebeck Exp $
+#   $Id: RWTHLehrevaluationMessages.py,v 1.3 2006/06/16 14:31:34 luebeck Exp $
 #
 # This script is part of OKUSON.
 #
@@ -44,7 +44,7 @@ Dann kann mit folgender langer Zeile
  Die obige Zeile muss jedes Semester angepasst werden, man schaue dazu in den
  Output von "pdftotext TAN.pdf -". Im SS06 etwa muss es so geändert werden:
 
-    pdftotext TAN.pdf - | g -v ^Your | g -v ^http | grep -v Surve | grep -v Diese | g -v PSWD | g -v '^$' | g -v '^L'  | sed -e "s/^/http:\/\/www.campus.rwth-aachen.de\/evasys\/indexstud.php?typ=html\&amp;user_tan=/" > TAN_URLs
+    pdftotext TAN.pdf - | grep -v ^Your | grep -v ^http | grep -v Surve | grep -v Diese | grep -v PSWD | grep -v '^$' | grep -v '^L'  | sed -e "s/^/http:\/\/www.campus.rwth-aachen.de\/evasys\/indexstud.php?typ=html\&amp;user_tan=/" > TAN_URLs
 ]
 
 eine Datei 'TAN_URLs' erzeugt werden, die oben als Argument 'tan_url_file'
