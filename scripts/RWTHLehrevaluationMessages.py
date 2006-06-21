@@ -3,7 +3,7 @@
 #
 #   Copyright (C) 2005 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: RWTHLehrevaluationMessages.py,v 1.3 2006/06/16 14:31:34 luebeck Exp $
+#   $Id: RWTHLehrevaluationMessages.py,v 1.4 2006/06/21 12:17:24 luebeck Exp $
 #
 # This script is part of OKUSON.
 #
@@ -18,7 +18,7 @@ Erzeugung von 'messages' zur Online-Abgabe der Lehrevaluationsfragebögen
 ========================================================================
                  (Stand WS 04/05)
 
-Usage:
+Aufruf:
      RWTHLehrevaluationMessages.py id_file tan_url_file message_text
 
 wobei die Argumente folgende Dateien sind:
@@ -63,6 +63,10 @@ Ihre Daten werden anonym an das 'Evasys' System geschickt. Jeder bekommt nur
 eine, einmalig nutzbare Zugangsnummer pro Veranstaltung. Wir bekommen nur
 eine statistische Gesamtauswertung und die anonyme Liste Ihrer Kommentare.
 --------------------------------------------------------------
+
+Die Ausgabe des Skriptes kann dann als 'messages' an die Datei
+data/messages.txt benutzt werden. Dadurch bekommt jeder Teilnehmer auf
+seiner Ergebnisseite einen Link auf eine Evaluationsseite.
 
 """
     sys.exit(0)
