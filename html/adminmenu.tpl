@@ -143,7 +143,7 @@
     <p>Use the following format options for a customized export file.</p>
     
     <ExportFormatOptions/>
-    <p><input type="submit" name="Action" value="Go" />
+    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
         Format string: <input size="50" maxlength="100" name="expformat"
         value="%i:%n:%f:%s:%a:%g:%C:%H:%T" />
     </p>
@@ -228,5 +228,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.23 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id: adminmenu.tpl,v 1.24 2006/06/21 12:19:16 luebeck Exp $ -->
 
