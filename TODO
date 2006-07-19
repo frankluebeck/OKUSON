@@ -1,4 +1,11 @@
+SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
+pyRXP patchen
+
+Tutoren koennen beliebigen Leuten in Gruppe Punkte geben...
+starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
+
 Ideen: 
+  - Gewichtung von multiple choice Aufgaben
   - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
      generischem Drumherum hinzufügen kann.   (besser 'mixer' o.ä,
      im Vorschlag nicht sinnvoll, da kaputtes HTML im Ergebnis).
@@ -16,7 +23,9 @@ Ideen:
   - * oder so etwas als "solution" fuehrt zu Punkt egal bei welcher Antwort.
   - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
   - Custom Export exportiert auch Gastnummern
-
+  - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man 
+    nicht <TEXT>\mbox{}\newpage</TEXT> machen muss.
+    
 Spaeter: 
 
   - Webinterface fuer Config.xml-Edit
