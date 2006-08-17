@@ -314,6 +314,3 @@ class OkusonExtension( OkusonSimpleExtension ):
         '''This method should return a pair consisting of the HTTP header and
            the data this extension creates.'''
         raise error, 'Implementation of "headAndBody" missing.'
-
-
-from plugins import *

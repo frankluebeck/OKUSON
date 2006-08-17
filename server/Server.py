@@ -146,6 +146,7 @@ Utils.Error('Formatting current time on sheets like: ' +
 
 # Load plugins
 import Plugins
+from plugins import *
 Plugins.dumpExtensions()
 
 # We are ready, service can begin:
