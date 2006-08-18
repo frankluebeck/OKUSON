@@ -39,5 +39,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id $ -->
+     $Id: tutorextensions.tpl,v 1.2 2006/08/18 16:09:43 ingo Exp $ -->
 
