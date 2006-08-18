@@ -27,6 +27,10 @@ class EditExamResults( Plugins.OkusonExtension ):
     state = 0  # this plugin is implemented as finite state machine
     examnr = -1
     options = {}
+    maxscore = -1
+    scores = {}
+    oldscores = {}
+    overwrite = {}
     def __init__( self, options = {} ):
         try:
             self.state = int(options['state'][0])
@@ -37,6 +41,8 @@ class EditExamResults( Plugins.OkusonExtension ):
         except:
             self.examnr = -1
         self.options = options
+        self.scores = {}
+        self.oldscores = {}
     def name( self ):
         return self.__class__.__name__
     def necessaryCredentials( self ):
@@ -88,7 +94,42 @@ class EditExamResults( Plugins.OkusonExtension ):
         if self.state == 0:
             return self.createExamResultInputMask()
         else:
+            errorMsg = self.parseValues()
+            if ( errorMsg != None ):
+                return errorMsg
             return self.createSummary()
+
+    def parseValues( self ):
+        examnr = self.examnr
+        # get the maxscore
+        maxscore = self.getNumber( 'maxscore' )
+        if maxscore == None:
+            return '<em>Error: Invalid maximal score.</em>'
+        elif maxscore == '':
+            return '<em>Error: Missing maximal score.</em>'
+        else:
+            self.maxscore = maxscore
+        # get the individual scores
+        self.scores = {}
+        self.oldscores = {}
+        l = Utils.SortNumerAlpha( Data.people.keys() )
+        for k in l:
+            p = Data.people[k]
+            if ( examnr < len( p.exams ) and p.exams[examnr] != None and
+                 p.exams[examnr].registration == 1 ):
+                score = self.getNumber( 'P' + str(examnr) + '_' + k, default = -1 )
+                if score == None:
+                    return '<em>Error: Invalid score for ' + k + '.</em>'
+                else:
+                    if score > maxscore:
+                        return ( '<em>Error: Score for ' + k + ' exceeds the '
+                                'maximal score.</em>' )
+                    self.scores[k] = [ score,
+                                    self.getString( 'S' + str(examnr) + '_' + k ) ]
+                    self.oldscores[k] = [ self.getNumber( 'Pold' + str(examnr) + '_' + k,
+                                                        default = -1 ),
+                                        self.getString( 'Sold' + str(examnr) + '_' + k ) ]
+
     def createExamResultInputMask( self ):
         examnr = self.examnr
         s = '<h3>Eingabe der Ergebnisse von Klausur ' + str(examnr) + '</h3>\n'
@@ -110,8 +151,7 @@ class EditExamResults( Plugins.OkusonExtension ):
         for k in l:
             p = Data.people[k]
             checked = ''
-            if ( examnr < len( p.exams ) and
-                 p.exams[examnr] != None ):
+            if ( examnr < len( p.exams ) and p.exams[examnr] != None ):
                 exam = p.exams[examnr]
                 if ( exam.maxscore != 0 ):
                     oldmaxscore = locale.str( exam.maxscore )
@@ -121,15 +161,22 @@ class EditExamResults( Plugins.OkusonExtension ):
                     if ( exam.totalscore != -1 ):
                         oldtotalscore = locale.str( exam.totalscore )
                     table.append( [ str(counter), k,
-                                Utils.CleanWeb( p.lname ) + ', ' +
-                                Utils.CleanWeb( p.fname ),
-                                '<input size="6" maxlength="6" '
-                                'name="P' + str(examnr) + '_' + k + '" '
-                                'value="' + oldtotalscore + '" />',
-                                '<input size="40" maxlength="100" '
-                                'name="S' + str(examnr) + '_' + k + '" '
-                                'value="' + Utils.CleanWeb( exam.scores ) +
-                                '" />' ] )
+                                    Utils.CleanWeb( p.lname ) + ', ' +
+                                    Utils.CleanWeb( p.fname ),
+                                    '<input type="hidden" '
+                                    'name="Pold' + str(examnr) + '_' + k + '" '
+                                    'value="' + oldtotalscore + '" />'
+                                    '<input size="6" maxlength="6" '
+                                    'name="P' + str(examnr) + '_' + k + '" '
+                                    'value="' + oldtotalscore + '" />',
+                                    '<input type="hidden" '
+                                    'name="Sold' + str(examnr) + '_' + k + '" '
+                                    'value="' + Utils.CleanWeb( exam.scores ) +
+                                    '" />'
+                                    '<input size="40" maxlength="100" '
+                                    'name="S' + str(examnr) + '_' + k + '" '
+                                    'value="' + Utils.CleanWeb( exam.scores ) +
+                                    '" />' ] )
         s += ( '<p>Maximal erreichbare Punktzahl: '
                '<input name="maxscore" value="' + oldmaxscore + '" '
                'size="4" maxlength="4" /></p>\n' )
@@ -143,56 +190,98 @@ class EditExamResults( Plugins.OkusonExtension ):
                'name="passwd" value="" /></p>\n'
                '</form>\n' )
         return s
+
     def createSummary( self ):
         examnr = self.examnr
-        # get the maxscore
-        maxscore = self.getNumber( 'maxscore' )
-        if maxscore == None:
-            return '<em>Error: Invalid maximal score.</em>'
-        elif maxscore == '':
-            return '<em>Error: Missing maximal score.</em>'
-        # get the individual scores
-        scores = {}
-        l = Utils.SortNumerAlpha( Data.people.keys() )
-        for k in l:
-            score = self.getNumber( 'P' + str(examnr) + '_' + k, default = -1 )
-            if score == None:
-                return '<em>Error: Invalid score for ' + k + '.</em>'
-            else:
-                if score > maxscore:
-                    return ( '<em>Error: Score for ' + k + ' exceeds the '
-                             'maximal score.</em>' )
-                scores[k] = [ score,
-                              self.getString( 'S' + str(examnr) + '_' + k ) ]
+        maxscore = self.maxscore
+        scores = self.scores
+        oldscores = self.oldscores
 
         # put the changes into the database
         table = []
-        table.append( ['', 'Matr.-Nr.', 'Name', 'Punkte', 
+        table.append( ['', 'Matr.-Nr.', 'Name', 'Punkte',
                        'Punkte in den einzelnen Aufgaben'] )
+        unchanged = []
+        unchanged.append( ['', 'Matr.-Nr.', 'Name', 'Punkte (alt)',
+                           'Punkte (aktuell)', 'Punkte (Ihre Angabe)',
+                           'Details (alt)', 'Details (aktuell)',
+                           'Details (Ihre Angabe)'] )
         counter = 0
+        unchangedcount = 0
         Data.Lock.acquire()
         for k in Utils.SortNumerAlpha( scores.keys() ):
             p = Data.people[k]
             while len( p.exams ) < examnr + 1:
                 p.exams.append( None )
+            exam = p.exams[examnr]
             newOrChanged = False
             # we only have to save non-default values for not yet existing
             # entries or changed values for existing entries
-            if ( p.exams[examnr] == None or p.exams[examnr].maxscore == 0 ):
+            newtotalscore = scores[k][0]
+            newdetails = scores[k][1]
+            oldtotalscore = oldscores[k][0]
+            olddetails = oldscores[k][1]
+            # if ( exam == None ):       # only needed for the following print
+            #     curtotalscore = -1
+            #     curdetails = '<None>'
+            # else:
+            #     curtotalscore = exam.totalscore
+            #     curdetails = exam.scores
+            # print ( k + ': totalscore (old/cur/new): ' + str(oldtotalscore) +
+            #             '/' + str(curtotalscore) + '/' + str(newtotalscore) +
+            #             ' -- details (old/cur/new): "' + olddetails + '"/"' +
+            #             curdetails + '"/"' + newdetails + '"' )
+            if ( exam == None ):
                 # do we have non-default values?
-                if ( scores[k][0] != -1 or scores[k][1] != '' ):
-                    p.exams[examnr] = Data.Exam()
+                if ( newtotalscore != -1 or newdetails != '' ):
+                    exam = Data.Exam()
                     newOrChanged = True
-            elif ( p.exams[examnr].totalscore != scores[k][0] or
-                   p.exams[examnr].scores != scores[k][1] or
-                   p.exams[examnr].maxscore != maxscore ):
-                newOrChanged = True
+            else:
+                # has the user made changes?
+                valuesChanged = ( ( newtotalscore != oldtotalscore ) or
+                                  ( newdetails != olddetails ) )
+                # are there changes with respect to the currently stored values
+                # (because of changes by another user while the first user editted
+                # the values)
+                needsSaving = ( ( newtotalscore != exam.totalscore ) or
+                                ( newdetails != exam.scores ) )
+                # have there been changes behind our back
+                changedBehindBack = ( ( oldtotalscore != exam.totalscore ) or
+                                      ( olddetails != exam.scores ) )
+                if ( valuesChanged and needsSaving and changedBehindBack ):
+                    # the user has changed a value and additionally this value has
+                    # been changed by another user while the first user editted
+                    # the values; in this case we don't save our values
+                    unchangedcount += 1
+                    if newtotalscore == -1:
+                        newtotalscorestr = '-'
+                    else:
+                        newtotalscorestr = locale.str( newtotalscore )
+                    if oldtotalscore == -1:
+                        oldtotalscorestr = '-'
+                    else:
+                        oldtotalscorestr = locale.str( oldtotalscore )
+                    if exam.totalscore == -1:
+                        curtotalscorestr = '-'
+                    else:
+                        curtotalscorestr = locale.str( exam.totalscore )
+                    unchanged.append( [ str(unchangedcount), k,
+                                        Utils.CleanWeb( p.lname ) + ', ' +
+                                        Utils.CleanWeb( p.fname ),
+                                        oldtotalscorestr, curtotalscorestr,
+                                        newtotalscorestr, olddetails,
+                                        exam.scores, newdetails ] )
+                elif ( valuesChanged ):
+                    newOrChanged = True
+                elif ( exam.maxscore != maxscore and
+                       ( oldtotalscore != -1 or olddetails != '' ) ):
+                    newOrChanged = True
             if newOrChanged:
-                p.exams[examnr].totalscore = scores[k][0]
-                p.exams[examnr].scores = scores[k][1]
-                p.exams[examnr].maxscore = maxscore
-                line = AsciiData.LineTuple( ( k, str(examnr), str(scores[k][0]),
-                                              str(maxscore), scores[k][1] ) )
+                exam.totalscore = newtotalscore
+                exam.scores = newdetails
+                exam.maxscore = maxscore
+                line = AsciiData.LineTuple( ( k, str(examnr), str(newtotalscore),
+                                              str(maxscore), newdetails ) )
                 try:
                     Data.examdesc.AppendLine( line )
                 except:
@@ -200,21 +289,32 @@ class EditExamResults( Plugins.OkusonExtension ):
                     Utils.Error( '[' + Utils.LocalTimeString() +
                                  '] Failed to store exam result:\n' + line )
                     return '<em>Error: The results could not be saved.</em>'
-            if scores[k][0] != -1:
+                p.exams[examnr] = exam
                 counter += 1
+                if newtotalscore == -1:
+                    newtotalscorestr = '-'
+                else:
+                    newtotalscorestr = locale.str( newtotalscore )
                 table.append( [ str(counter), k,
                                 Utils.CleanWeb( p.lname ) + ', ' +
                                 Utils.CleanWeb( p.fname ),
-                                locale.str(scores[k][0]),
-                                scores[k][1] ] )
+                                newtotalscorestr,
+                                newdetails ] )
         Data.Lock.release()
 
         Utils.Error( '[' + Utils.LocalTimeString() + '] Changed results '
                      'for exam ' + str(examnr),
                      prefix = self.name() + ': ' )
         s = '<h3>Ergebnisse von Klausur ' + str(examnr) + '</h3>\n'
+        if len(unchanged) > 1:
+            s += ( '<p>Einige Werte wurden geändert, während Sie die Werte editiert '
+                   'haben. Daher wurden die folgenden Änderungen <strong>nicht</strong> '
+                   'gespeichert.' )
+            s += createHTMLTable( unchanged )
+        s += '<p>Die folgenden Änderungen wurden gespeichert.</p>'
         s += createHTMLTable( table )
         return s
+
     def getNumber( self, optionName, default = '' ):
         ''' Returns the number corresponding to the query option @p optionName
             or returns an empty string if the query option does not exist or is
@@ -235,6 +335,7 @@ class EditExamResults( Plugins.OkusonExtension ):
         except:
             return None
         return t
+
     def getString( self, optionName ):
         if optionName not in self.options:
             return ''

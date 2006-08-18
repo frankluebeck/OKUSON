@@ -1,6 +1,6 @@
 # -*- coding: ISO-8859-1 -*-
 #
-#   Okuson extension for listing the participants of an examination
+#   Okuson extension for listing the participants of an exam
 #
 #   Copyright (C) 2005  Ingo Klöcker <ingo.kloecker@mathA.rwth-aachen.de>
 #

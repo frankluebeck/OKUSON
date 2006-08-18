@@ -26,27 +26,30 @@ Utils.Error( 'Loading extensions...', prefix='Info: ' )
 
 import plugins
 
-pluginNames = os.listdir( os.path.join( plugins.__path__[0] ) )
-for pluginName in pluginNames:
-    name, ext = os.path.splitext( pluginName )
-    if name != '__init__' and ext == '.py':
-        module = None
-        try:
-            module = __import__( plugins.__name__ + '.' + name )
-        except ImportError:
-            Utils.Error( 'Importing plugin ' + name + ' failed' )
-            # if the ImportError happened in the module being imported,
-            # this is a failure that should be handed to our caller.
-            # count stack frames to tell the difference.
-            import traceback
-            exc_info = sys.exc_info()
-            if len( traceback.extract_tb( exc_info[2] ) ) > 1:
-                try:
-                    # Clean up garbage left in sys.modules.
-                    del sys.modules[name]
-                except KeyError:
-                    # Python 2.4 has fixed this.  Yay!
-                    pass
-                raise exc_info[0], exc_info[1], exc_info[2]
+pluginsPath = os.path.join( plugins.__path__[0] )
+for pluginDir in os.listdir( pluginsPath ):
+    if pluginDir == 'CVS':
+        continue # skip the CVS directory
+    if not os.path.isdir( os.path.join( pluginsPath, pluginDir ) ):
+        continue # skip non-directories
+    # load modules in this directory
+    module = None
+    try:
+        module = __import__( plugins.__name__ + '.' + pluginDir )
+    except ImportError:
+        Utils.Error( 'Importing plugin ' + pluginDir + '.' + name + ' failed' )
+        # if the ImportError happened in the module being imported,
+        # this is a failure that should be handed to our caller.
+        # count stack frames to tell the difference.
+        import traceback
+        exc_info = sys.exc_info()
+        if len( traceback.extract_tb( exc_info[2] ) ) > 1:
+            try:
+                # Clean up garbage left in sys.modules.
+                del sys.modules[name]
+            except KeyError:
+                # Python 2.4 has fixed this.  Yay!
+                pass
+            raise exc_info[0], exc_info[1], exc_info[2]
 
 __all__ = []
