@@ -34,6 +34,8 @@ M - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man
     
 Spaeter: 
 
+  - Export von den Klausurergebnissen (auch wenn nicht teilgenommen)
+    aller *angemeldeten* Leute (Anmelden ginge mit Excel->examregistration)
   - Webinterface fuer Config.xml-Edit
   - ISO-8859-1 konfigurierbar?
     Problem dabei: TeX muss analog konfiguriert werden.
