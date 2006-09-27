@@ -1,30 +1,36 @@
-SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
-pyRXP patchen
-
-Tutoren koennen beliebigen Leuten in Gruppe Punkte geben...
-starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
+M SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
+M pyRXP patchen, in Dokumentation erwaehnen, ev. sogar Stelle
+M starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
 
 Ideen: 
-  - Gewichtung von multiple choice Aufgaben
-  - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
+? - Gewichtung von multiple choice Aufgaben
+    QUESTION element bekommt optionale Attribute "scorecorrect" und 
+    "scorewrong" -> entsprechend in Datenstruktur
+    Config.xml hat default-Werte, defaults +1/-1
+    Exercises.py anpassen
+    Problem, dass in einem Exercises mitunter eine Auswahl der QUESTIONS
+    getroffen wird, wird ignoriert. Nur in Dokumentation.
+    EXERCISE element bekommt minimalpunktzahl?
+    maxmcscore bei Exercise speichern
+- - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
      generischem Drumherum hinzufügen kann.   (besser 'mixer' o.ä,
      im Vorschlag nicht sinnvoll, da kaputtes HTML im Ergebnis).
-  - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
+- - Upload von Dateien mit schriftlichen Lösungen erlauben? (Geht mit
     <input type="file" ...>.) (nicht dringend, besser per Email Stud<->Hiwi
     regeln)
-  - Goetz: Vorlesungsbefragung als extra Blatt?
+- - Goetz: Vorlesungsbefragung als extra Blatt?
     ev.: "anonyme Abgabe", oder "Script zum Erstellen von neuen IDs fuer die
     angemeldeten mit Passwort-Generierung und -Ausdruck"
-  - Ingo's Datumsformat-Konfiguration
-  - Seitenformat bei PDF kleiner machen zum Abheften
-  - RestrictToOwnGroup auch bei Eingabeseiten bei Teilnehmer ueber
-    Matrikelnummer
-  - PublicStatistic von Marc
-  - * oder so etwas als "solution" fuehrt zu Punkt egal bei welcher Antwort.
-  - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
-  - Custom Export exportiert auch Gastnummern
-  - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man 
-    nicht <TEXT>\mbox{}\newpage</TEXT> machen muss.
+F - Ingo's Datumsformat-Konfiguration, ins Handbuch???
+F - Seitenformat bei PDF kleiner machen zum Abheften
+M - RestrictToOwnGroup auch bei Eingabeseiten bei Teilnehmer ueber
+    Matrikelnummer, dokumentieren
+M - PublicStatistic von Marc
+- - * oder so etwas als "solution" fuehrt zu Punkt egal bei welcher Antwort.
+F - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
+F - Custom Export exportiert auch Gastnummern
+M - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man 
+    nicht <TEXT>\mbox{}\newpage</TEXT> machen muss.   -> nur ins Handbuch
     
 Spaeter: 
 
@@ -39,4 +45,3 @@ Spaeter:
        ==> Benutzer kann beliebige Seiten neu machen.
   - Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
     Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
-   
