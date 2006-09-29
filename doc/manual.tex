@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.75 2006/09/29 12:34:28 luebeck Exp $
+% $Id: manual.tex,v 1.76 2006/09/29 23:06:56 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -387,6 +387,8 @@ The next step is to compile the \texttt{pyRXP} extension module.
 
 As {\OKUSON} uses the Python extension module \texttt{pyRXP} which builts 
 on the XML parser \texttt{RXP} written in C, some compilation is necessary.
+Note that we have patched the parser code in one small place to allow
+compilation with the GNU \texttt{gcc} compiler versions 4.0 and above.
 Assuming that you have extracted the distribution as described in the 
 previous section, you can compile \texttt{pyRXP} with the following
 commands:
