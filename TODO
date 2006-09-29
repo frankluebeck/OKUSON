@@ -1,4 +1,4 @@
-M SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
+M ok - SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
 M pyRXP patchen, in Dokumentation erwaehnen, ev. sogar Stelle
 M starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
 
