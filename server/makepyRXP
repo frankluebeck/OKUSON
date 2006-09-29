@@ -4,7 +4,8 @@ if [ ! -x pyRXP ]; then
 fi
 
 # apply patch to fix compilation with gcc 4.0+
-patch pyRXP/pyRXP.c <$0
+# patch pyRXP/pyRXP.c <$0
+# patch is now included in version on Max's webpage
 
 cd pyRXP
 python setup.py build_ext
