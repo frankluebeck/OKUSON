@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.111 2006/04/19 11:59:33 ingo Exp $
+##  $Id: CHANGES,v 1.112 2006/09/29 12:40:49 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,14 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix5 to ...
 
+* Documented how to force a page break between exercises in a pdf-sheet.
+* Now the custom export returns a list sorted by ID's, and it excludes
+  the guest ID's (as promised for <GuestIdRegExp> in Config.xml).
+* Corrected bug that in custom export %0e included all exams instead
+  of exam number 0 only.
+* Made the text width for pdf-pages (and text images) a bit smaller 
+  such that filed exercise sheets are better readable and the punch holes
+  are outside the text.
 * Fixed a bug that two threads running in parallel could use the same
   "uniquename" for file locking. This bug could lead to crashes of the
   server!

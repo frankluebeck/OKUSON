@@ -3,7 +3,7 @@ M pyRXP patchen, in Dokumentation erwaehnen, ev. sogar Stelle
 M starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
 
 Ideen: 
-? - Gewichtung von multiple choice Aufgaben
+? - Gewichtung von multiple choice Aufgaben (und Dokumentation anpassen)
     QUESTION element bekommt optionale Attribute "scorecorrect" und 
     "scorewrong" -> entsprechend in Datenstruktur
     Config.xml hat default-Werte, defaults +1/-1
@@ -21,15 +21,15 @@ Ideen:
 - - Goetz: Vorlesungsbefragung als extra Blatt?
     ev.: "anonyme Abgabe", oder "Script zum Erstellen von neuen IDs fuer die
     angemeldeten mit Passwort-Generierung und -Ausdruck"
-F - Ingo's Datumsformat-Konfiguration, ins Handbuch???
-F - Seitenformat bei PDF kleiner machen zum Abheften
+F ok - Ingo's Datumsformat-Konfiguration, ins Handbuch???
+F ok - Seitenformat bei PDF kleiner machen zum Abheften
 M - RestrictToOwnGroup auch bei Eingabeseiten bei Teilnehmer ueber
     Matrikelnummer, dokumentieren
 M - PublicStatistic von Marc
 - - * oder so etwas als "solution" fuehrt zu Punkt egal bei welcher Antwort.
-F - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
-F - Custom Export exportiert auch Gastnummern
-M - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man 
+F ok - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
+F ok - Custom Export exportiert auch Gastnummern
+F ok - Ein Tag fuer Sheet files, das einen Seitenumbruch macht, damit man 
     nicht <TEXT>\mbox{}\newpage</TEXT> machen muss.   -> nur ins Handbuch
     
 Spaeter: 
