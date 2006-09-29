@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.134 2006/04/28 09:21:48 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.135 2006/09/29 12:01:13 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -3248,7 +3248,7 @@ def ExportHelper_e(p, d = ';', nr = None):
   try:
     t = p.exams
     res = ['']
-    if nr:
+    if nr != None:
       rg = [int(nr)]
     else:
       rg = xrange(len(t))
