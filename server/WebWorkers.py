@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.135 2006/09/29 12:01:13 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.136 2006/09/29 12:36:01 luebeck Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -2945,9 +2945,11 @@ def ExportCustom(req,onlyhead):
     format = req.query.get('expformat',['%i:%n:%f:%s:%a:%g:%C:%H:%T'])[0]
     pformat = ParsedExportFormat(format)
     res = ['# '+format]
-    for k in Data.people.keys():
-        p = Data.people[k]
-        res.append(ExportLine(p, pformat))
+    l = Utils.SortNumerAlpha(Data.people.keys())
+    for k in l:
+        if not(Config.conf['GuestIdRegExp'].match(k)):
+            p = Data.people[k]
+            res.append(ExportLine(p, pformat))
     res = string.join(res,'\n')
     head = {'Content-type':'text/okuson',
         'Content-Disposition':'attachment; filename="custompeopleexport.txt"',
