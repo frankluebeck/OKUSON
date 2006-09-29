@@ -426,7 +426,7 @@ dtd
 -->
 
 <PDFTemplate><![CDATA[
-\documentclass[german,12pt,a4paper]{article}
+\documentclass[german,12pt,twoside,a4paper]{article}
 
 \usepackage[latin1]{inputenc}
 \usepackage{babel}
@@ -436,10 +436,10 @@ dtd
 \usepackage{pslatex}
 
 \usepackage{a4wide}
-\setlength{\textwidth}{7.5in}
+\setlength{\textwidth}{7.0in}
 \setlength{\textheight}{10in}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0.7in}
+\setlength{\evensidemargin}{0.0in}
 \setlength{\hoffset}{-0.7in}
 \setlength{\voffset}{-0.7in}
 \setlength{\headheight}{0pt}
@@ -483,7 +483,7 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 
 
 <PDFTemplateNoTable><![CDATA[
-\documentclass[german,12pt,a4paper]{article}
+\documentclass[german,12pt,twoside,a4paper]{article}
 
 \usepackage[latin1]{inputenc}
 \usepackage{babel}
@@ -493,10 +493,10 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 \usepackage{pslatex}
 
 \usepackage{a4wide}
-\setlength{\textwidth}{7.5in}
+\setlength{\textwidth}{7.0in}
 \setlength{\textheight}{10in}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0.7in}
+\setlength{\evensidemargin}{0.0in}
 \setlength{\hoffset}{-0.7in}
 \setlength{\voffset}{-0.7in}
 \setlength{\headheight}{0pt}
@@ -537,16 +537,16 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
      ==================================================================== -->
 
 <!-- Width of texts on sheets before, between or after exercises in inch: -->
-<WidthOfSheetsHTML> 7.3 </WidthOfSheetsHTML>
-<WidthOfSheetsPDF> 7.3 </WidthOfSheetsPDF>
+<WidthOfSheetsHTML> 6.8 </WidthOfSheetsHTML>
+<WidthOfSheetsPDF> 6.8 </WidthOfSheetsPDF>
 
 <!-- Width of texts between questions in inch. -->
-<WidthOfExerciseTextsHTML> 7.0 </WidthOfExerciseTextsHTML>
-<WidthOfExerciseTextsPDF> 7.0 </WidthOfExerciseTextsPDF>
+<WidthOfExerciseTextsHTML> 6.5 </WidthOfExerciseTextsHTML>
+<WidthOfExerciseTextsPDF> 6.5 </WidthOfExerciseTextsPDF>
 
 <!-- Width of questions without the possible answers column in inch. -->
-<WidthOfQuestionsHTML> 5.5 </WidthOfQuestionsHTML>
-<WidthOfQuestionsPDF> 5.5 </WidthOfQuestionsPDF>
+<WidthOfQuestionsHTML> 5.0 </WidthOfQuestionsHTML>
+<WidthOfQuestionsPDF> 5.0 </WidthOfQuestionsPDF>
 
 <!-- Resolutions for question text images in sheets in dots per inch. 
      This must be a comma separated list of positive integers. -->
