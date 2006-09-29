@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.74 2005/10/12 14:52:07 neunhoef Exp $
+% $Id: manual.tex,v 1.75 2006/09/29 12:34:28 luebeck Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1495,6 +1495,13 @@ same meaning and default as for \texttt{EXERCISE} elements.
 The \texttt{TEXT} elements contain {\LaTeX} code of text which is included
 in the exercise sheets before, between or after the specified exercises.
 
+In rare cases a page break for sheets with several pages occurs in an
+ugly looking position. Then you can use a 
+
+\texttt{<TEXT>\symbol{92}mbox\symbol{123}\symbol{125}\symbol{92}newpage</TEXT>}
+
+to force a page break between certain exercises.
+
 \subsection*{Specifying Several Sheets in one File}
 
 On can put several \texttt{SHEET} elements in one \texttt{.bla} file, but
@@ -1705,7 +1712,10 @@ the local time of the delivery of a page. To get this string in a local
 layout set the environment variable \verb+LC_ALL+ of the user starting the
 {\OKUSON} server appropriately (say \verb+de_DE+ for German, see the
 \texttt{man} page of \texttt{locale} on your system, often \texttt{locale
--a} lists the available settings).
+-a} lists the available settings). It is possible to further customize the 
+printing format via the element \texttt{<DateTimeFormat>} in your
+configuration file (by specifying an argument for the Python function
+\texttt{time.strftime}).
 \end{description}
 
 A few other elements are available on all pages, but they are only sensible in
