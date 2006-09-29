@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.136 2006/09/29 12:36:01 luebeck Exp $'
+CVS = '$Id: WebWorkers.py,v 1.137 2006/09/29 22:45:04 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -1223,10 +1223,10 @@ a Person object and a Sheet object as data.'''
                   '" />\n')
     def handle_WebSheetTable(self,node,out):
         if self.p.mcresults.has_key(self.s.name):
-            self.s.WebSheetTable(self.r,SeedFromId(self.p.id),out,
+            self.s.WebSheetTable(self.r,Utils.SeedFromId(self.p.id),out,
                                  self.p.mcresults[self.s.name])
         else:
-            self.s.WebSheetTable(self.r,SeedFromId(self.p.id),out,None)
+            self.s.WebSheetTable(self.r,Utils.SeedFromId(self.p.id),out,None)
     def handle_OpenTo(self,node,out):
         out.write(LocalTimeString(self.s.opento, format = Config.conf['DateTimeFormat']))
     def handle_OpenFrom(self,node,out):
@@ -1384,10 +1384,6 @@ def ClassFromFraction(pc):
     return ' class="col' + str(col) + '" '
 
 
-def SeedFromId(id):
-    return hash(id)   # is this guaranteed to return the same number for
-                      # the same string?
-
 def QuerySheet(req,onlyhead):
     # We need personal data only if <IndividualSheets> is true.
     indiv = Config.conf['IndividualSheets']
@@ -1483,7 +1479,8 @@ def QuerySheet(req,onlyhead):
 
         # finally the actual exercises as longtable environment or text
         if indiv:
-            values['ExercisesTable'] = sheet[2].LatexSheetTable(SeedFromId(id))
+            values['ExercisesTable'] = sheet[2].LatexSheetTable( \
+                                                    Utils.SeedFromId(id))
             latexinput = SimpleTemplate.FillTemplate(
                                Config.conf['PDFTemplate'], values)
             pdf = LatexImage.LatexToPDF(latexinput)
@@ -1544,7 +1541,7 @@ submission as well as the results.'''
     if s.IsClosed() and not(iamadmin):
         return Delegate('/errors/sheetclosed.html',req,onlyhead)
 
-    ok = s.AcceptSubmission(p,SeedFromId(p.id),req.query)
+    ok = s.AcceptSubmission(p,Utils.SeedFromId(p.id),req.query)
     if not(ok):
         Utils.Error('['+LocalTimeString()+'] bad submission, id '+id+
                     ', sheet '+sheetname, prefix='SubmitSheet: ')
@@ -3719,7 +3716,7 @@ in the first place.'''
     # Now run through all participants:
     for k in Data.people:
         p = Data.people[k]
-        ok = s.Resubmit(p,SeedFromId(p.id))
+        ok = s.Resubmit(p,Utils.SeedFromId(p.id))
         if not(ok):
             return Delegate('/error/badsubmission.html',req,onlyhead)
     

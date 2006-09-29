@@ -5,7 +5,7 @@
    ...
 """
 
-CVS = '$Id: Utils.py,v 1.4 2005/10/26 14:44:22 ingo Exp $'
+CVS = '$Id: Utils.py,v 1.5 2006/09/29 22:45:04 neunhoef Exp $'
 
 import string, sys, re, exceptions, traceback, types, time
 
@@ -214,3 +214,9 @@ def SortNumerAlpha(l):
         ll[i] = str(ll[i])
     return ll
         
+# Used in both Exercises.py and WebWorkers.py:
+
+def SeedFromId(id):
+    return hash(id)   # is this guaranteed to return the same number for
+                      # the same string?
+
