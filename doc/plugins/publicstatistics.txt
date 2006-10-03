@@ -1,0 +1,114 @@
+publicstatistics -- a plugin for the OKUSON server
+
+
+GENERAL OVERVIEW
+================
+
+This plugin provides publicly accessible statistic functions for
+homework and exam points.
+
+
+INSTALLATION
+============
+
+Download the publicstatistics.tar.gz file to the okuson folder and
+unpack it via
+
+> gzip -dc publicstatistics.tar.gz | tar xvf -
+
+If you are already running the OKUSON server, restart it:
+
+> ./restart
+
+
+FILES
+=====
+                                        
+server/plugins/publicstatistics.py  ->  the plugin code
+
+html.sample/publicstatistics.tpl    ->  an example web page using the
+                                        provided statistic functions
+
+doc/plugins/publicstatistics.py     ->  the documentation you are currently
+                                        reading
+
+
+USAGE IN DETAIL
+===============
+
+Calling this plugin will yield a table depicting how many participants
+reached certain points in exercises or exams. No IDs are displayed, so you
+can consider this data to be anonymous (unless you are managing a course
+with two participants only ...).
+
+The publicstatistics extension can be accessed in .tpl files via the
+ExtensionCode tag. One example is
+
+<ExtensionCode name="PublicStatistics" field="totalscore" showmax="yes"
+ titles="points to reach up to now:points:frequencies:cumulated"
+ fracreturned="0.5" />
+
+(you will find more in html/publicstatistics.tpl). In the following we are
+going to explain the meaning of the arguments.
+
+name            the name of the extension to use; in order to refer to the
+                publicstatistics plugin, it has to be set to
+                "PublicStatistics"
+                
+field           the data used for the statistics; the following entries
+                are possible:
+                
+                * "totalscore":     the sum of points in all interactive and
+                                    homework exercises
+                * "totalmcscore":   the sum of points in all interactive
+                                    exercises
+                * "totalhomescore": the sum of points in all homework
+                                    exercises
+                * "examscore":      the sum of points over all exams
+                
+                These entries may be followed by a "+"-separated list of
+                sheet/exam numbers. This will restrict the statistics to the
+                specified sheets/exams. So "totalhomescore10" will yield a
+                table for the homework points reached in sheet number 10, and
+                "examscore0+1" will yield a table for the sum of points
+                reached in exams number 0 and 1 together.
+                                    
+showmax         determines whether the maximally attainable points are
+                displayed ("yes"/"no"); if this is activated, the points in
+                the table are also presented as percentage of this maximum
+                
+titles          the colon-separated list of table captions; the first title
+                is used for the maximally attainable points (if showmax is
+                "yes"), the next for the points, the third for the
+                displayed frequencies, and the last for the cumulated
+                frequencies
+
+fracreturned    the fraction of sheets/exams a participant had to return
+                to be included in this statistics (if you do not want to
+                include participants who just returned the first two or
+                three sheets and then left the course, you should for example
+                set this value to "0.4" -- then only those participants
+                who returned at least 40% of the sheets are considered;
+                for exams it may be sensible to set this value to "1" to
+                exclude those participants who did not take part in all
+                of the exams in question)
+
+
+LICENSE
+=======
+
+Copyright (C) 2006  Marc Ensenbach <Marc.Ensenbach@matha.rwth-aachen.de>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the license, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.

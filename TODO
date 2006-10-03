@@ -1,6 +1,8 @@
 M ok - SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
 M ok - pyRXP patchen, in Dokumentation erwaehnen, ev. sogar Stelle
-M starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
+M ok - starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
+       -> no problem found, note: starhomescore is the number of points
+          among maxhomescore that are optional!
 
 Ideen: 
 ? - Gewichtung von multiple choice Aufgaben (und Dokumentation anpassen)
@@ -23,9 +25,9 @@ Ideen:
     angemeldeten mit Passwort-Generierung und -Ausdruck"
 F ok - Ingo's Datumsformat-Konfiguration, ins Handbuch???
 F ok - Seitenformat bei PDF kleiner machen zum Abheften
-M - RestrictToOwnGroup auch bei Eingabeseiten bei Teilnehmer ueber
+M ok - RestrictToOwnGroup auch bei Eingabeseiten bei Teilnehmer ueber
     Matrikelnummer, dokumentieren
-M - PublicStatistic von Marc
+M ok - PublicStatistic von Marc
 - - * oder so etwas als "solution" fuehrt zu Punkt egal bei welcher Antwort.
 F ok - Export exams mit %ZAHLe nicht "ab ZAHL" sondern "nur ZAHL" exam
 F ok - Custom Export exportiert auch Gastnummern

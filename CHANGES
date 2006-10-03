@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.114 2006/09/29 23:06:56 neunhoef Exp $
+##  $Id: CHANGES,v 1.115 2006/10/03 02:13:20 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,10 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix5 to ...
 
+* Included Marc Ensenbachs publicstatistics plugin in the plugin samples.
+* Use the configuration option "RestrictToOwnGroup" also in the per person
+  homework score page for tutors. If this option is off, then a tutor may
+  also edit the homework scores of a participant not in his group.
 * Patched pyrxp.c on Max's web page to allow for compilation with GCC >=4.0
 * Moved "SeedFromId" to the Utils module such that Exercises does not need
   import WebWorkers
