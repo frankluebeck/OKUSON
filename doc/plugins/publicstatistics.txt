@@ -11,26 +11,31 @@ homework and exam points.
 INSTALLATION
 ============
 
-Download the publicstatistics.tar.gz file to the okuson folder and
-unpack it via
+Copy the plugin code from the plugins.sample directory to the plugins directory
+(in the okuson directory):
 
-> gzip -dc publicstatistics.tar.gz | tar xvf -
+  cp -r server/plugins.sample/publicstatistics server/plugins
 
-If you are already running the OKUSON server, restart it:
+If you did not do this already together with the other pages, do:
 
-> ./restart
+  cp html.sample/publicstatistics.tpl html
+
+and edit it to your needs. If you are already running the OKUSON server,
+restart it:
+
+  ./restart
 
 
 FILES
 =====
                                         
-server/plugins/publicstatistics.py  ->  the plugin code
+server/plugins.sample/publicstatistics.py  ->  the plugin code
 
-html.sample/publicstatistics.tpl    ->  an example web page using the
-                                        provided statistic functions
+html.sample/publicstatistics.tpl           ->  an example web page using the
+                                               provided statistic functions
 
-doc/plugins/publicstatistics.py     ->  the documentation you are currently
-                                        reading
+doc/plugins/publicstatistics.py            ->  the documentation you are 
+                                               currently reading
 
 
 USAGE IN DETAIL
