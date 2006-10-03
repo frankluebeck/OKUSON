@@ -1,9 +1,9 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON 1.1-fix4
-                                             to OKUSON 1.1-fix5:
+ This file describes the upgrade procedure from OKUSON 1.1-fix5
+                                             to OKUSON 1.2:
 ===============================================================================
 
-$Id: UPGRADE,v 1.19 2005/10/11 23:59:04 neunhoef Exp $
+$Id: UPGRADE,v 1.20 2006/10/03 02:38:40 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -11,9 +11,8 @@ restart the server:
   cd okuson
   ./stop
   cd ..
-  tar xzvf okuson-1.1-fix5.tar.gz
+  tar xzvf okuson-1.2.tar.gz
   cd okuson
-  cp html.sample/{adminextensions,edithomeworkfree,extension,adminextension,extensions}.tpl html
   ./start
 
 Unpacking the archive does *not* overwrite the following customizable files:
@@ -22,12 +21,16 @@ Unpacking the archive does *not* overwrite the following customizable files:
   data/*.txt
 
 Note that there is a new configuration option in Config.xml, namely:
-  RestrictToOwnGroup
+  ...
 
 However, it has a sensible default value, such that an old Config.xml
 will still work as before.
 
 If you applied any patches to the server programs, make sure to reapply them.
+
+If you want to use any of the new plugins, you will have to activate them
+by copying things from server/plugins.sample to server/plugins. For specific
+plugins see doc/plugins for further instructions.
 
 Have fun!
 
