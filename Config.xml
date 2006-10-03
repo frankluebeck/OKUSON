@@ -292,6 +292,22 @@ def Grade(p,examnr):
 </RestrictToOwnGroup>
 
 
+<!-- The following entries change the way multiple choice exercises are
+     scored, the default values for the score for a correct answer and for
+     a wrong answer as well as the lower limit for a whole exercise can
+     be specified. The default values are +1, -1, and 0 respectively. -->
+<MCScoreCorrectDefault>
+1
+</MCScoreCorrectDefault>
+
+<MCScoreWrongDefault>
+-1
+</MCScoreWrongDefault>
+
+<MCScoreExerciseLowerLimitDefault>
+0
+</MCScoreExerciseLowerLimitDefault>
+
 <!-- ==================================================================== 
                           Installation section
      ==================================================================== -->

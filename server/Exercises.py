@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.41 2006/09/29 22:45:03 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.42 2006/10/03 03:52:14 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -143,7 +143,18 @@ class Sheet(Utils.WithNiceRepr):
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,Exercise):
-                result += self.nrquestions[i]
+                nr = 0
+                j = 0
+                while nr < self.nrquestions[i] and j < len(o.list):
+                    if isinstance(o.list[j],Question):
+                        result += o.list[j].scorecorrect
+                        nr += 1
+                    j += 1
+                # Note that this provides nonsense, if nrquestions in the
+                # sheet is smaller than the actual number of questions 
+                # in the exercise and not all questions have the same 
+                # scorecorrect! It lies in the responsibility of the user
+                # to get this right.
         return result   
 
     def ChooserFunction(self,seed):
@@ -344,9 +355,11 @@ otherwise.'''
                        (closed or Config.conf['InteractiveMode'] != 0):
                         f.write('<span class=')
                         if marks[counter] == '+':
-                            f.write('"ergplus">&nbsp;&nbsp;(+1)')
+                            f.write('"ergplus">&nbsp;&nbsp;('+
+                                    str(q.scorecorrect)+')')
                         elif marks[counter] == '-':
-                            f.write('"ergminus">&nbsp;&nbsp;(-1)')
+                            f.write('"ergminus">&nbsp;&nbsp;('+
+                                    str(q.scorewrong)+')')
                         else:
                             f.write('"ergnull">&nbsp;&nbsp;(0)')
                         f.write('</span>\n')
@@ -410,10 +423,10 @@ probably by a buggy browser.'''
                         elif val in q.solutions[k]:   # this list has always
                                                       # length 1
                             marks.append('+')
-                            exscore += 1
+                            exscore += q.scorecorrect
                         else:
                             marks.append('-')
-                            exscore -= 1
+                            exscore += q.scorewrong
                     elif q.type == 'c':   # a choice question
                         # first get selected choice:
                         val = query.get('B'+self.name+'Q'+str(counter),
@@ -434,10 +447,10 @@ probably by a buggy browser.'''
                             marks.append('0')
                         elif innerchoice == q.solutions[k]:
                             marks.append('+')
-                            exscore += 1
+                            exscore += q.scorecorrect
                         else:
                             marks.append('-')
-                            exscore -= 1
+                            exscore += q.scorewrong
                     elif q.type == 's':   # a free form question
                         val = query.get('B'+self.name+'Q'+str(counter),
                                         [''])[0].strip()
@@ -451,19 +464,19 @@ probably by a buggy browser.'''
                             if type(q.solutions[k]) == types.ListType:
                                 if val in q.solutions[k]:
                                     marks.append('+')
-                                    exscore += 1
+                                    exscore += q.scorecorrect
                                 else:
                                     marks.append('-')
-                                    exscore -= 1
+                                    exscore += q.scorewrong
                             else:
                                 if q.solutions[k][1].search(val):
                                     marks.append('+')
-                                    exscore += 1
+                                    exscore += q.scorecorrect
                                 else:
                                     marks.append('-')
-                                    exscore -= 1
+                                    exscore += q.scorewrong
                     counter += 1
-                if exscore < 0: exscore = 0
+                if exscore < o.scorelowlim: exscore = o.scorelowlim
                 score += exscore
              
         subst = AsciiData.LineTuple(sub,delimiter='|')
@@ -532,10 +545,10 @@ disk full or manipulation by the user.'''
                         elif val in q.solutions[k]:   # this list has always
                                                       # length 1
                             marks.append('+')
-                            exscore += 1
+                            exscore += q.scorecorrect
                         else:
                             marks.append('-')
-                            exscore -= 1
+                            exscore += q.scorewrong
                     elif q.type == 'c':   # a choice question
                         # first get selected choice:
                         innerchoice = AsciiData.TupleLine(previoussub[counter],
@@ -546,10 +559,10 @@ disk full or manipulation by the user.'''
                             marks.append('0')
                         elif innerchoice == q.solutions[k]:
                             marks.append('+')
-                            exscore += 1
+                            exscore += q.scorecorrect
                         else:
                             marks.append('-')
-                            exscore -= 1
+                            exscore += q.scorewrong
                     elif q.type == 's':   # a free form question
                         val = previoussub[counter]
                         sub.append(val)
@@ -559,19 +572,19 @@ disk full or manipulation by the user.'''
                             if type(q.solutions[k]) == types.ListType:
                                 if val in q.solutions[k]:
                                     marks.append('+')
-                                    exscore += 1
+                                    exscore += q.scorecorrect
                                 else:
                                     marks.append('-')
-                                    exscore -= 1
+                                    exscore += q.scorewrong
                             else:
                                 if q.solutions[k][1].search(val):
                                     marks.append('+')
-                                    exscore += 1
+                                    exscore += q.scorecorrect
                                 else:
                                     marks.append('-')
-                                    exscore -= 1
+                                    exscore += q.scorewrong
                     counter += 1
-                if exscore < 0: exscore = 0
+                if exscore < o.scorelowlim: exscore = o.scorelowlim
                 score += exscore
              
         subst = AsciiData.LineTuple(sub,delimiter='|')
@@ -887,6 +900,7 @@ class Exercise(Utils.WithNiceRepr):
     filename = ""            # name of file containing the exercise
     position = (0,0,0,0)     # position EXERCISE element in that file
     keywords = ""            # a string with keywords for searching
+    scorelowlim = 0          # lower limit for complete score for exercise
     def __init__(self):
         self.list = []
     
@@ -905,6 +919,8 @@ class Question(Utils.WithNiceRepr):
                              # regexp to which the answer is matched.
                              # The latter is only possible for type "s".
     position = (0,0,0,0)     # position of QUESTION element in file
+    scorecorrect = 1         # score for a correct answer
+    scorewrong = -1          # score for a wrong answer
 
     def __init__(self):
         self.variants = []
@@ -1007,6 +1023,22 @@ def AnswersTuple(a):
 def MakeQuestion(t, defansw):
     res = Question()
     answ = None
+    res.scorecorrect = Config.conf['MCScoreCorrectDefault']
+    if t[1].has_key('scorecorrect'):
+        try:
+            res.scorecorrect = int(t[1]['scorecorrect'])
+        except:
+            Utils.Error('QUESTION element with unreadable scorecorrect ' +
+                        'attribute at ' + Utils.StrPos(t[3]),
+                        prefix = 'Warning: ')
+    res.scorewrong = Config.conf['MCScoreWrongDefault']
+    if t[1].has_key('scorewrong'):
+        try:
+            res.scorewrong = int(t[1]['scorewrong'])
+        except:
+            Utils.Error('QUESTION element with unreadable scorewrong ' +
+                        'attribute at ' + Utils.StrPos(t[3]),
+                        prefix = 'Warning: ')
     for a in t[2]:
       if type(a) == types.UnicodeType:
           pass   # this should not happen as we have "element content" here
@@ -1081,12 +1113,21 @@ def MakeExercise(t, prefix=''):
     ex.position = (t[3][0][1], t[3][0][2], t[3][1][1], t[3][1][2])
     if t[1].has_key('keywords'):
         ex.keywords = t[1]['keywords']
+    ex.scorelowlim = Config.conf['MCScoreExerciseLowerLimitDefault']
+    if t[1].has_key('mcscorelowerlimit'):
+        try:
+            ex.scorelowlim = int(t[1]['mcscorelowerlimit'])
+        except:
+            Utils.Error('EXERCISE element with unreadable mcscorelowerlimit ' +
+                        'attribute at ' + Utils.StrPos(t[3]),
+                        prefix = 'Warning: ')
     defansw = None
     for a in t[2]:
         if type(a) == types.UnicodeType:   # this will probably not happen!
             pass        # because we have "element content" here.
         elif a[0] == 'TEXT':
-            ex.list.append(MakeTeXText(a,Config.conf['WidthOfExerciseTextsHTML']))
+            ex.list.append(MakeTeXText(a,
+                                       Config.conf['WidthOfExerciseTextsHTML']))
         elif a[0] == 'ANSWERS':
             defansw = AnswersTuple(a)
         elif a[0] == 'QUESTION':

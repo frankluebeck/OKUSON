@@ -5,7 +5,7 @@ M ok - starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
           among maxhomescore that are optional!
 
 Ideen: 
-? - Gewichtung von multiple choice Aufgaben (und Dokumentation anpassen)
+M ok - Gewichtung von multiple choice Aufgaben (und Dokumentation anpassen)
     QUESTION element bekommt optionale Attribute "scorecorrect" und 
     "scorewrong" -> entsprechend in Datenstruktur
     Config.xml hat default-Werte, defaults +1/-1
@@ -13,7 +13,7 @@ Ideen:
     Problem, dass in einem Exercises mitunter eine Auswahl der QUESTIONS
     getroffen wird, wird ignoriert. Nur in Dokumentation.
     EXERCISE element bekommt minimalpunktzahl?
-    maxmcscore bei Exercise speichern
+    maxmcscore bei Exercise speichern --> doch nicht, da von sheet abhaengig
 - - (Konrad Waldorf) ein <include> tag, so dass man neue Seiten mit
      generischem Drumherum hinzufügen kann.   (besser 'mixer' o.ä,
      im Vorschlag nicht sinnvoll, da kaputtes HTML im Ergebnis).

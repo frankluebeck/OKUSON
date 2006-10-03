@@ -4,7 +4,7 @@
      Copyright 2003 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: config.dtd,v 1.17 2005/10/26 14:44:22 ingo Exp $ -->
+<!-- $Id: config.dtd,v 1.18 2006/10/03 03:52:14 neunhoef Exp $ -->
 
 <!ELEMENT Config ANY>
 
@@ -35,6 +35,9 @@
 <!ELEMENT MaxStringInputLength (#PCDATA)>
 <!ELEMENT InteractiveMode (#PCDATA)>
 <!ELEMENT RestrictToOwnGroup (#PCDATA)>
+<!ELEMENT MCScoreCorrectDefault (#PCDATA)>
+<!ELEMENT MCScoreWrongDefault (#PCDATA)>
+<!ELEMENT MCScoreExerciseLowerLimitDefault (#PCDATA)>
 <!-- a container for extra data, use the 'key' attribute: -->
 <!ELEMENT ConfigData (#PCDATA)>
 <!ATTLIST ConfigData key CDATA #REQUIRED>

@@ -49,6 +49,9 @@ Parameters = {
   "MaxStringInputLength":     ["INT",0],
   "InteractiveMode":          ["INT",0],
   "RestrictToOwnGroup":       ["INT",0],
+  "MCScoreCorrectDefault":    ["INT",0],
+  "MCScoreWrongDefault":      ["INT",0],
+  "MCScoreExerciseLowerLimit":["INT",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -311,6 +314,15 @@ into a usable form. Some values are changed into other data types.'''
     # Give a default for RestrictToOwnGroup:
     if not(conf.has_key('RestrictToOwnGroup')):
         conf['RestrictToOwnGroup'] = 1
+    # Give a default for MCScoreCorrectDefault:
+    if not(conf.has_key('MCScoreCorrectDefault')):
+        conf['MCScoreCorrectDefault'] = 1
+    # Give a default for MCScoreWrongDefault:
+    if not(conf.has_key('MCScoreWrongDefault')):
+        conf['MCScoreWrongDefault'] = -1
+    # Give a default for MCScoreExerciseLowerLimit:
+    if not(conf.has_key('MCScoreExerciseLowerLimit')):
+        conf['MCScoreExerciseLowerLimit'] = 0
     # Give a default for the DocumentRoot:
     if not(conf.has_key('DocumentRoot')):
         conf['DocumentRoot'] = os.path.join(home,'html')

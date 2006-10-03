@@ -4,12 +4,13 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: exercise.dtd,v 1.1 2003/09/23 08:14:40 neunhoef Exp $ -->
+<!-- $Id: exercise.dtd,v 1.2 2006/10/03 03:52:14 neunhoef Exp $ -->
 
 <!ELEMENT EXERCISES (EXERCISE)*>
 <!ELEMENT EXERCISE (ANSWERS | TEXT | QUESTION)*>
 <!ATTLIST EXERCISE key CDATA #REQUIRED
-                   keywords CDATA #IMPLIED>
+                   keywords CDATA #IMPLIED
+                   mcscorelowerlimit CDATA #IMPLIED>
 
 <!ELEMENT ANSWERS (#PCDATA)>
    <!-- Content must be a | separated list of possible answers. -->
@@ -21,6 +22,8 @@
 <!ELEMENT TEXT (#PCDATA)>
 
 <!ELEMENT QUESTION (ANSWERS | VARIANT)*>
+<!ATTLIST QUESTION scorecorrect CDATA #IMPLIED
+                   scorewrong   CDATA #IMPLIED >
 
 <!ELEMENT VARIANT (#PCDATA)>
 <!-- of course, one of the following attributes is #REQUIRED    -->
