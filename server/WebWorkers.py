@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.137 2006/09/29 22:45:04 neunhoef Exp $'
+CVS = '$Id: WebWorkers.py,v 1.138 2006/10/03 02:12:52 neunhoef Exp $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -2281,7 +2281,7 @@ def TutorRequest(req,onlyhead):
         return Delegate('/errors/idunknown.html',req,onlyhead)
         
     p = Data.people[id]
-    if p.group != groupnr:
+    if Config.conf['RestrictToOwnGroup'] == 1 and p.group != groupnr:
         return Delegate('/errors/idnotingroup.html',req,onlyhead)
 
     handler = EH_withGroupAndPerson_class(g,p)
@@ -2490,7 +2490,8 @@ class EH_withHomeworkFreeData_class (EH_Generic_class):
                             idokstring = '<span style="color:#ff0000;">*</span>'
                         else:
                             p = Data.people[id]
-                            if ( Config.conf['RestrictToOwnGroup'] != 1 ) or p.group == self.group:
+                            if ( Config.conf['RestrictToOwnGroup'] != 1 ) or \
+                               p.group == self.group:
                                 namelist.append (p.fname + ' ' + p.lname)
                             else:
                                 namelist.append (id)
@@ -2730,7 +2731,8 @@ def SubmitHomeworkFree(req,onlyhead):
                 id = id.strip()
                 if not(Data.people.has_key(id)):
                     st = 0
-                elif ( Config.conf['RestrictToOwnGroup'] == 1 ) and Data.people[id].group <> groupnr:
+                elif ( Config.conf['RestrictToOwnGroup'] == 1 ) and \
+                     Data.people[id].group <> groupnr:
                     st = 0
         if data[1] <> '':
             try:
