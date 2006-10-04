@@ -56,6 +56,9 @@ class PublicStatistics (Plugins.OkusonExtension):
     def isAdminExtension (self):
         return False
 
+    def necessaryCredentials( self ):
+        return Plugins.Anonymous
+
     def onlyTag (self):
         return True
 
@@ -66,7 +69,7 @@ class PublicStatistics (Plugins.OkusonExtension):
         return 'Punktestatistik'
 
     def formCode (self):
-        return ''
+        return 'Punktestatistik has no options'
 
     def cssCode (self):
         return '@import url(/OKUSONStatistics.css);'
@@ -230,7 +233,8 @@ class PublicStatistics (Plugins.OkusonExtension):
     def headAndBody (self):
         return ''
 
-Plugins.register (PublicStatistics.__name__, '', 'Punktestatistik', \
+Plugins.register (PublicStatistics.__name__, 'Public', 'Punktestatistik', \
   'Dieses Plugin dient der Erzeugung einer Statistik zu Übungs- und ' + \
   'Klausurpunkten', 'Marc Ensenbach', 'Marc Ensenbach', '2006', \
   PublicStatistics)
+
