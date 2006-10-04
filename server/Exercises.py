@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.42 2006/10/03 03:52:14 neunhoef Exp $'
+CVS = '$Id: Exercises.py,v 1.43 2006/10/04 03:02:35 neunhoef Exp $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -1024,7 +1024,7 @@ def MakeQuestion(t, defansw):
     res = Question()
     answ = None
     res.scorecorrect = Config.conf['MCScoreCorrectDefault']
-    if t[1].has_key('scorecorrect'):
+    if type(t[1]) == types.DictType and t[1].has_key('scorecorrect'):
         try:
             res.scorecorrect = int(t[1]['scorecorrect'])
         except:
@@ -1032,7 +1032,7 @@ def MakeQuestion(t, defansw):
                         'attribute at ' + Utils.StrPos(t[3]),
                         prefix = 'Warning: ')
     res.scorewrong = Config.conf['MCScoreWrongDefault']
-    if t[1].has_key('scorewrong'):
+    if type(t[1]) == types.DictType and t[1].has_key('scorewrong'):
         try:
             res.scorewrong = int(t[1]['scorewrong'])
         except:
