@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.76 2006/09/29 23:06:56 neunhoef Exp $
+% $Id: manual.tex,v 1.77 2006/10/04 05:26:25 neunhoef Exp $
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -1036,7 +1036,7 @@ this chapter.
 \section{Scoring the solutions}
 
 The scores for the interactive exercises which are graded by the {\OKUSON}
-server, are computed as follows:
+server, are by default computed as follows:
 
 \begin{itemize}
 \item each correct answer gives $+1$ point
@@ -1053,6 +1053,21 @@ If you combine interactive exercise with other homework exercises, then
 adjust the scores for the latter such that you get the intended relation
 between the two types of exercises. Partial points (in decimal notation for 
 {\OKUSON}) can be given. 
+
+The scores for a correct or wrong answer respectively can be configured
+by using the \texttt{scorecorrect} and \texttt{scorewrong} attributes of
+the \texttt{QUESTION} element, see~\ref{sec:writeEx}, and by using the
+configuration options \texttt{MCScoreCorrectDefault} and 
+\texttt{MCScoreWrongDefault} in the \texttt{Config.xml} file. The 
+minimal score for a complete exercise can be configured using the
+\texttt{mcscorelowerlimit} attribute of the \texttt{EXERCISE} element 
+and the configuration option \texttt{MCScoreExerciseLowerLimitDefault}.
+
+Note however, that it is the responsibility of the user that in the case
+that the \texttt{nrquestions} attribute in the \texttt{EXERCISE} element
+of a sheet file is used and makes {\OKUSON} choose a subset of questions
+every possible such subset has the same maximal score!
+
 
 \section{Generalities on the Exercise and Sheet Files}
 
@@ -1261,6 +1276,11 @@ explanations include the rules given in the document type definition.
 The \texttt{EXERCISE} element  marks one exercise. Its content is a sequence
 of \texttt{ANSWERS}, \texttt{TEXT} and \texttt{QUESTION} elements. 
 
+An \texttt{EXERCISE} element can have the optional attribute
+\texttt{mcscorelowerlimit} which changes the minimal score a participant
+can get (default is $0$, this default can be overwritten with the
+configuration option \texttt{MCScoreExerciseLowerLimitDefault}).
+
 \texttt{TEXT} elements are used for text appearing before
 the actual questions of the exercise. Their content consists of
 {\LaTeX} code. \texttt{TEXT} elements are considered only, if they are in
@@ -1292,7 +1312,14 @@ expected as a string (that has to be typed into an input field). In this
 case the content of the \texttt{ANSWERS} element should be empty.
 \end{description}
 
-The \texttt{QUESTION} elements are for the actual questions. Their content
+The \texttt{QUESTION} elements are for the actual questions. Such an element
+can have the two optional attributes \texttt{scorecorrect} and 
+\texttt{scorewrong} determining the score for a correct answer 
+(default is $+1$, this default can be overwritten using the
+configuration option \texttt{MCScoreCorrectDefault}) and a wrong answer 
+(default is $-1$, this default can be overwritten using the
+configuration option \texttt{MCScoreWrongDefault}) respectively.
+The content of a \texttt{QUESTION} element
 is a sequence of at most one \texttt{ANSWERS} element and at least one
 \texttt{VARIANT} element. In case there is an \texttt{ANSWERS} element, this
 must have the same syntax as just described and it is taken as description
