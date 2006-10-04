@@ -3,7 +3,7 @@
                                              to OKUSON 1.2:
 ===============================================================================
 
-$Id: UPGRADE,v 1.20 2006/10/03 02:38:40 neunhoef Exp $
+$Id: UPGRADE,v 1.21 2006/10/04 05:44:37 neunhoef Exp $
 
 Just stop the server, unpack the new archive over your installation and
 restart the server:
@@ -20,13 +20,31 @@ Unpacking the archive does *not* overwrite the following customizable files:
   Config.xml
   data/*.txt
 
-Note that there is a new configuration option in Config.xml, namely:
-  ...
+Note that there are 3 new configuration options in Config.xml, namely:
+  MCScoreCorrectDefault
+  MCScoreWrongDefault
+  MCScoreExerciseLowerLimitDefault
 
-However, it has a sensible default value, such that an old Config.xml
+However, they have sensible default values, such that an old Config.xml
 will still work as before.
 
-If you applied any patches to the server programs, make sure to reapply them.
+There is a changed template file in html.sample:
+  adminmenu.tpl
+You should copy this to your html directory:
+  cp html.sample/adminmenu.tpl html
+
+There are a number of new template files in html.sample:
+  errors/unknownextension.tpl
+  publicstatistics.tpl
+  tutorextensions.tpl
+  highscoretable.tpl
+  extension.tpl
+
+You have to copy these files to the html directory, if you want to use some
+of the new plugins (see below).
+
+If you have applied any patches to the server programs, make sure to 
+reapply them.
 
 If you want to use any of the new plugins, you will have to activate them
 by copying things from server/plugins.sample to server/plugins. For specific
