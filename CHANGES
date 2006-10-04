@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.117 2006/10/03 23:44:28 luebeck Exp $
+##  $Id: CHANGES,v 1.118 2006/10/04 05:00:48 neunhoef Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -13,6 +13,7 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.1-fix5 to 1.2
 
+* Change highscoretable sample plugin to only consider non-guest IDs
 * Allow configuration of multiple choice scores for wrong and correct answers.
   Allow default values in the configuration file. Make lower limit of score
   for a multiple choice exercise configurable in the Exercise element with 

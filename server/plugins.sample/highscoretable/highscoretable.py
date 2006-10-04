@@ -20,7 +20,7 @@
 
 import locale
 
-import Data, Plugins
+import Config, Data, Plugins
 
 class HighScoreTable( Plugins.OkusonSimpleExtension ):
     numberOfEntries = 10
@@ -39,7 +39,8 @@ class HighScoreTable( Plugins.OkusonSimpleExtension ):
     def htmlCode( self ):
         totalScore = []
         for k in Data.people.keys():
-            totalScore.append( Data.people[k].TotalScore() )
+            if not(Config.conf['GuestIdRegExp'].match(k)):
+                totalScore.append( Data.people[k].TotalScore() )
         totalScore.sort()
         totalScore.reverse()
         s = ( '\n<table class="highscore"><tr><th>Höchstpunktzahlen</th></tr>\n' )
