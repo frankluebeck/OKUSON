@@ -1,7 +1,7 @@
 ##  CHANGES                                                     OKUSON package
 ##                                               Frank Lübeck / Max Neunhöffer
 ##
-##  $Id: CHANGES,v 1.119 2006/10/04 14:59:37 luebeck Exp $
+##  $Id: CHANGES,v 1.120 2006/10/16 09:58:39 luebeck Exp $
 
 
 This file documents the changes between released versions of OKUSON.
@@ -10,6 +10,12 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.2 to 1.2-fix1
+
+* Problems with compiling the rxp parser with gcc 4 and with python 2.5
+  seem to be resolved by newest svn-version of pyRXP (provided by
+  Robin Becker).
 
 Changes from 1.1-fix5 to 1.2
 
