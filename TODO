@@ -1,3 +1,7 @@
+Ohne Passwort Gruppe 0 auf tutors.html Problem loesen:
+  mind. Default entry bei groupinfo.txt fuer Gruppe 0 mit passwd * ausliefern
+
+
 M ok - SeedFromId in Utils und Exercises soll nicht WebWorkers importieren
 M ok - pyRXP patchen, in Dokumentation erwaehnen, ev. sogar Stelle
 M ok - starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
