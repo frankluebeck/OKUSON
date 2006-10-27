@@ -1,0 +1,370 @@
+%\documentclass[portrait,a0,draft]{a0poster}
+\documentclass[portrait,a0]{a0poster}
+%\usepackage{german,epsf,psfig,pstricks,multicol,pst-grad,color}
+\usepackage{german,pstricks,multicol,pst-grad,color}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage{helvetic}
+
+\begin{document}
+
+% Fliessenden Hintergrund von RGB-Farbe 1. .98 .98 nach 1. .85 .85 
+% und wieder nach  1. .98 .98 (1. .85 .85 wird nach 0.1=10% des Hinter-
+% grunds angenommen)
+% Achtung Werte unter .8 verbrauchen zu viel Tinte!!!
+%\background{1. .98 .98}{1. .85 .85}{0.1}
+% Hier haben wir ein paar Experimente gemacht und uns schliesslich auf
+\background{.98 .98 1.}{0.698 .819 0.941}{0.05}
+% geeinigt. Andere Versuche:
+%\background{.98 .98 1.}{.0 .39 0.65}{0.1}
+%\background{.98 .98 1.}{.0 .57 0.95}{0.1}
+%\background{.98 .98 1.}{0.741 .870 0.941}{0.05}
+%\background{.85 .85 1.}{.98 .98 1.}{-0.1}
+
+% Groesse der einzelnen Spalten als Anteil der Gesamt-Textbreite
+\renewcommand{\columnfrac}{.3}
+
+
+% Posterueberschrift, optional mit RGB-Hintergrundfarbe (hier .99 .99 1.)
+\begin{header}[1. .98 .98]
+\begin{tabular}{|p{9.5in}|p{19.5in}|}
+\hline
+\begin{minipage}[t]{9.5in}
+ \vspace*{0mm}
+ \begin{center}
+ \includegraphics[width=7in]{rwthaachenlogo.eps}
+ \end{center}
+
+ \vspace*{-0.8ex}
+ \rule{9.5in}{0.05ex}
+
+ \vspace*{0.6ex}
+ \begin{tabular}{cp{6.5in}}
+ \sf\veryHuge \raisebox{-0.35ex}{LDfM} &
+ \renewcommand{\baselinestretch}{0.8}\sf\Large
+  \hspace*{0.5in} Lehrstuhl D für Mathematik
+ \end{tabular}
+ \renewcommand{\baselinestretch}{1}
+ \vspace*{0.3ex}
+\end{minipage}
+&
+\begin{minipage}[t]{19.5in}
+ \vspace*{0mm}
+\begin{center}
+\vspace*{2ex}
+\Huge OKUSON - ein System zur Organisation des Übungsbetriebs zu großen
+Vorlesungen
+
+\vspace*{0.8ex}
+\Large Frank Lübeck und Max Neunhöffer
+\end{center}
+\end{minipage} \\
+\hline
+\end{tabular}
+
+\end{header}
+
+\begin{poster}
+%
+% Erste Spalte:
+%
+\begin{pcolumn}
+\begin{pbox}
+\section{Motivation}
+
+In Deutschland gibt es, im Gegensatz zu den meisten anderen Ländern,
+an Universitäten recht viele Vorlesungen mit etlichen hundert bis über
+1000 Hörern. Meist wird dazu ein Übungsbetrieb in kleinen oder zumindest
+kleineren Gruppen angeboten, bei dem regelmäßig Hausaufgaben gestellt,
+eingesammelt, korrigiert und besprochen werden.
+
+Die Organisation und Durchführung solch eines Übungsbetriebs ist aufwendig:
+zum Einen werden viele Tutoren benötigt, um die Hausaufgaben zu korrigieren
+und in den Übungsstunden zu besprechen, zum Anderen stellt schon die
+Organisation selbst eine gewisse Herausforderung dar, da die Aufgaben
+verteilt und die Ergebnisse erfasst und verarbeitet werden müssen.
+
+Das System {\sf OKUSON} ist entwickelt worden, diesen Übungsbetrieb
+zu unterstützen. Dies geschieht einerseits, indem ein Teil der
+Hausaufgaben durch Multiple-Choice-Aufgaben oder andere Aufgaben, die
+automatisch bewertet werden können, ersetzt werden. Dadurch, dass dieser
+Teil der Aufgaben komplett von {\sf OKUSON} verarbeitet wird, haben
+die Tutoren mehr Zeit, die verbleibenden, schriftlich abzugebenden
+Aufgaben zu korrigieren. Andererseits unterstützt {\sf OKUSON} auch
+Verwaltungsaufgaben wie zum Beispiel die Anmeldung zu den Übungen oder
+die Bekanntgabe von Übungsaufgaben, Neuigkeiten und Ergebnissen über das
+Internet.
+
+Am Lehrstuhl D für Mathematik kann die große Lineare
+Algebra~I Vorlesung für Informatiker, Mathematiker und Physiker mit
+über $1000$ Hörern in der jetzigen Form nur noch mit Hilfe des {\sf
+OKUSON}-Systems durchgeführt werden.
+\end{pbox}
+\begin{pbox}
+\section{Was kann OKUSON?}
+
+Das {\sf OKUSON}-System erlaubt,
+
+\begin{itemize}
+\item {\bf Aufgaben zu stellen}, die automatisch bewertet werden können 
+(Multiple-Choice-Aufgaben, Ja/Nein-Fragen und Fragen, deren Antwort 
+aus einer einfach zu erkennende Zeichenkette wie zum Beispiel einer Zahl
+bestehen). 
+\item Teilnehmern {\bf individuelle Aufgabenblätter} zu stellen, indem
+das System automatisch aus einer Menge von Varianten von Aufgaben in 
+Abhängigkeit der Identität des Benutzers ein Aufgabenblatt zusammenstellt.
+\item die {\bf Verwaltung der Teilnehmer} zu automatisieren, indem von der
+{\bf Anmeldung} über die {\bf Einteilung in kleine Übungsgruppen}, die 
+{\bf Verteilung der Aufgabenblätter}, die {\bf Bekanntgabe der Ergebnisse} 
+von Hausaufgaben und Klausuren bis hin zur {\bf Entscheidung über die 
+Scheinvergabe} alle Arbeitsschritte {\bf weitgehend automatisch} über das
+Internet abgewickelt werden.
+\end{itemize}
+\end{pbox}
+\begin{pbox}[1. .98 .98]
+\section{Aufgabentypen}
+
+{\sf OKUSON} bietet neben der Tatsache, das schriftlich zu lösende Aufgaben
+über das Internet verbreitet werden können, die folgenden drei Typen von
+automatisch bewerteten Aufgaben:
+
+\begin{enumerate}
+\item {\bf Single-Choice-Aufgaben}
+
+Hier hat der Teilnehmer die Wahl zwischen einer Auswahl an 
+Antworten, von denen er sich genau für die richtige entscheiden muss, damit
+die Antwort als korrekt gewertet wird.
+\item {\bf Multiple-Choice-Aufgaben}
+
+Hier hat der Teilnehmer aus einer Menge von Aussagen die Teilmenge
+der richtigen auszuwählen, muss also für jede mögliche Aussage einzeln
+entscheiden, ob sie richtig ist oder nicht, damit die Antwort als
+korrekt gewertet wird.
+\item {\bf Aufgaben mit einer eindeutigen, kurzen Ergebniszeichenkette}
+
+Hier hat der Teilnehmer eine kurze Zeichenkette, beispielsweise eine ganze
+Zahl, einzugeben, die exakt stimmen muss (nach Beseitigung von White Space
+an Anfang und Ende), damit die Antwort als korrekt gewertet wird.
+\end{enumerate}
+
+Bei jedem Aufgabentyp gibt eine Antwort, die als {\bf korrekt} gewertet
+wurde, {\bf einen Punkt}, eine Antwort, die als {\bf nicht korrekt}
+gewertet wurde, ergibt {\bf einen Minuspunkt}. Zusätzlich hat der
+Teilnehmer bei jeder Frage die Möglichkeit, sich {\bf bewusst dafür zu
+entscheiden, nicht zu antworten,} dann gibt es für diese Frage {\bf Null
+Punkte}.
+
+Negative Punkte sind bei diesen Aufgabentypen essentiell, damit Raten keinen
+Erfolg verspricht. Die Möglichkeit, bewusst nicht zu antworten soll die
+Teilnehmer dazu erziehen, sich klar zu machen, ob sie eine Antwort wissen
+oder nicht.
+\end{pbox}
+\end{pcolumn}
+%
+% Zweite Spalte:
+%
+\begin{pcolumn}
+\begin{pbox}
+\section{Erfassen von Aufgabenblättern}
+
+Die Eingabe von Aufgaben und die Zusammenstellung von Aufgaben zu 
+Aufgabenblättern erfolgt mit einem Texteditor in Form von XML-Dateien.
+Dazu wurden zwei Dokumenttypen definiert, einer für automatisch bewertete
+Aufgaben (siehe Kasten "`Aufgabentypen"') und einer für Aufgabenblätter.
+Die Texte der Aufgaben werden als \TeX-Quelltext eingegeben, so dass auch
+mathematische Formeln in hoher Qualität benutzt werden können.
+
+Wir zeigen ein Beispiel für eine Aufgabe und eines für ein Aufgabenblatt:
+
+{\small\blue
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE EXERCISE SYSTEM "exercise.dtd">
+
+<EXERCISE key="B0_Mengen" keywords="Menge Abbildung">
+<ANSWERS type="r"> Ja|Nein </ANSWERS>
+
+<TEXT>
+Beantworten Sie die folgenden Fragen über Mengen:
+</TEXT>
+
+<QUESTION>
+<VARIANT solution="Nein"> 
+Ist die Menge $\{ 1, \{2, 3\}\}$ eine Teilmenge der 
+Menge $\{ 1, \{ 2,3,4 \}, 5\}$? 
+</VARIANT>
+<VARIANT solution="Ja">
+Ist die Menge $\{ 1, \{2, 3,4 \}\}$ eine Teilmenge der 
+Menge $\{ 1, \{ 2,3,4 \}, 5\}$? 
+</VARIANT>
+</QUESTION>
+
+<QUESTION>
+<VARIANT solution="2|3|5|7">
+Welche der natürlichen Zahlen von $1$ bis $10$ sind 
+Primzahlen?
+</VARIANT>
+<VARIANT solution="1|4|6|8|9|10">
+Welche der natürlichen Zahlen von $1$ bis $10$ sind 
+keine Primzahlen?
+</VARIANT>
+
+<QUESTION>
+<ANSWERS type="s"> </ANSWERS>
+<VARIANT solution="3"> 
+Wieviele Elemente hat die Menge $\{ 1,\{2,3,4\},5\}$?  
+</VARIANT>
+<VARIANT solution="3"> 
+Wieviele Elemente hat die Menge $\{ 5,\{4,3,2\},1\}$?
+</VARIANT>
+</QUESTION>
+
+</EXERCISE>
+\end{verbatim}
+}
+
+Dies ist ein Beispiel für ein Aufgabenblatt:
+
+{\small
+\begin{verbatim}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE SHEET SYSTEM "sheet.dtd">
+
+<SHEET counts="0" magic="2001" nr="0" first="1"
+       opento="14:00_19.10.2003" 
+       openfrom="14:00_12.10.2003">
+
+<TEXT>Dieses Blatt ist bis auf Weiteres wieder für 
+Demo-Zwecke geöffnet.</TEXT>
+
+<EXERCISE key="B0_Mengen"/>
+<EXERCISE key="B0_PunktvorStrich"/>
+
+<TEXT>Die folgende Aufgabe ist schriftlich zu bearbeiten.
+</TEXT>
+<INCLUDE file="B0_Affen.tex"/>
+<TEXT>
+Abgabe bis spätestens am Freitag, dem 19. Oktober 2003, 
+um 14 Uhr.
+</TEXT>
+</SHEET>
+\end{verbatim}
+}
+\end{pbox}
+\begin{pbox}
+\section{Anwendungsbeispiele}
+{\sf OKUSON} wurde bisher in Aachen an mehreren Mathematik-Lehrstühlen
+für (unter anderem) die folgenden Vorlesungen erfolgreich eingesetzt:
+
+\begin{itemize}
+\item Lineare Algebra I ($1000$--$1200$ Hörer)
+\item Lineare Algebra II ($250$ Hörer)
+\item Algebra I ($120$ Hörer)
+\item Diskrete Strukturen ($450$ Hörer)
+\item Analysis für Informatiker ($450$ Hörer)
+\item Höhere Mathematik I
+\item Analysis I
+\end{itemize}
+
+\end{pbox}
+\end{pcolumn}
+%
+% Dritte Spalte:
+%
+\begin{pcolumn}
+%\begin{pbox}[1. .98 .98]
+%\section{Multiple-Choice-Aufgaben in der Lehre}
+%
+%Bereits vor der Einführung von {\sf OKUSON} haben wir Erfahrungen mit
+%Multiple-Choice- bzw.~Multiple-Choice-ähnlichen Fragen in Klausuren
+%gemacht. Es hat sich gezeigt, dass es zumindest in Mathematik
+%möglich ist, Multiple-Choice-Fragen zu stellen, die relativ leicht
+%zu beantworten sind, wenn man den Vorlesungsstoff verstanden hat, die
+%aber praktisch nicht zu erraten sind, wenn man nichts verstanden hat.
+%Dabei ist es wichtig, dass falsche Antworten Minuspunkte geben, damit
+%Raten nichts hilft.
+%
+%Weiterhin haben wir beobachtet, dass die Ergebnisse in 
+%Multiple-Choice-Aufgaben ziemlich gut mit den Ergebnissen in schriftlich
+%zu beantwortenden Fragen korrelieren: Dieselben Leute, die gute und gut 
+%formulierte schriftliche Lösungen abliefern, bekommen viele Punkte bei den
+%Multiple-Choice-Aufgaben.
+%
+%Insofern scheinen Multiple-Choice-ähnliche Aufgaben eine gute Ergänzung
+%des bisher üblichen Übungsbetriebs zu sein bzw.~sogar einen Teil der
+%schriftlichen Aufgaben sinnvoll ersetzen zu können.
+%
+%Es darf jedoch nicht vergessen werden, dass ein wichtiger Teil insbesondere
+%der Mathematik-Ausbildung ist, dass man lernt, eigene Gedanken und Ergebnisse
+%zu formulieren und verständlich anderen mitteilen zu können. Deswegen ist
+%es unmöglich, den gesamten Übungsbetrieb durch automatisch bewertete
+%Aufgaben zu ersetzen.
+%
+%Beim tatsächlichen Einsatz von {\sf OKUSON} konnten wir feststellen,
+%dass die Teilnehmer offenbar Spaß daran hatten, den Vorlesungsstoff
+%auf diese Weise nachzuarbeiten und über die Multiple-Choice-Aufgaben
+%nachzudenken.
+%\end{pbox}
+\begin{pbox}
+\section{Implementation}
+
+{\sf OKUSON} ist vollständig in {\sf Python} implementiert und benutzt
+den {\tt pyRXP} XML-Parser, der als C-Modul geschrieben ist. Es ist ein
+einfacher Webserver in {\sf OKUSON} eingebaut, so dass die Installation
+ohne Administratorrechte von jedem beliebigen Benutzer problemlos
+durchgeführt werden kann.
+
+Die folgenden Technologien/Standards bzw. Software wurden benutzt:
+\begin{itemize}
+\item {\bf XML - eXtentible Markup Language}
+    Zur Kodierung der Aufgaben und Aufgabenblätter. Aufgabentexte in
+LaTeX. Webseiten durch Verwendung von XHTML voll XML-konform.
+\item {\bf  XHTML 1.0}
+    Alle Webseiten entsprechen dem XHTML 1.0 Standard, gecheckt mit 
+    W3C-Validierer.
+\item {\bf  CSS 2.0}
+    Seitenlayoutinformationen zur besseren Lesbarkeit mit modernen Browsern.
+\item {\bf  LaTeX/PDF-LaTeX}
+    Das Setzen der Aufgabentexte erfolgt mit LaTeX bzw.~PDF-LaTeX. Die
+HTML-Version der Aufgaben enthält die Aufgabentexte als Bilder.
+\item {\bf  Ghostscript}
+    Zur Wandlung von LaTeX-generierten Postscriptdokumenten in
+PNG-Grafiken kommt das Programm Ghostscript zum Einsatz.
+\item {\bf  Erfolgreich getestet mit:}
+    Galeon 1.2.7 auf Linux (mozilla 1.2.1), Mozilla 1.2.1 auf Linux,
+Internet Explorer 5.5 auf Windows, Internet Explorer 6.0 auf Windows,
+Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows, Konqueror
+3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1 auf Linux,
+Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows, W3M 0.3 auf Linux,
+Netscape 7.01 auf Linux.
+\end{itemize}
+\end{pbox}
+%\begin{pbox}
+%\section{Eingebauter Webserver}
+%\end{pbox}
+\begin{pbox}
+\section{Screenshot}
+\begin{center}
+\includegraphics[width=0.83\textwidth]{screenshot.eps}
+\end{center}
+\end{pbox}
+\begin{pbox}
+\section{Lizenz}
+
+{\sf OKUSON} ist freie Software. Es steht unter dem Copyright von Frank 
+Lübeck und Max Neunhöffer und kann unter den Bedingungen der GNU Public
+license, Version 2 oder höher, lizensiert werden.
+
+\smallskip
+Die offizielle Webseite von {\sf OKUSON} ist
+
+\bigskip
+\hspace*{1cm} \verb!http://www.math.rwth-aachen.de/~OKUSON!
+\end{pbox}
+\end{pcolumn}
+%
+\end{poster}
+
+\end{document}
+
