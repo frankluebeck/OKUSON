@@ -8,7 +8,7 @@ Small HOWTO for releasing versions.
      The environment variable SVNREP must be set to 
      svn://thuban.math.rwth-aachen.de/home2/thuban/svnuser
 3) Export the whole tree (somewhere else) with:
-     svn co $SVNREP/okuson/tags/tag-1r2 okuson
+     svn export $SVNREP/okuson/tags/tag-1r2 okuson
      (this generates a directory "okuson" in the current directory).
 4) Go to this new directory:
    cd okuson

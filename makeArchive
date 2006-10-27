@@ -8,7 +8,7 @@
 # in this exported directory.
 
 # Safety check:
-if [ -x CVS ] ; then
+if [ -x .svn ] ; then
   echo Please execute me only in an exported tree, not in a checked out one.
   exit 0
 fi
@@ -58,5 +58,5 @@ rm -f makeArchive
 
 # Now put together things:
 cd ..
-tar czvf okuson-`cat okuson/VERSION`.tar.gz --exclude='.nfs*' --exclude='.svn' okuson
+tar czvf okuson-`cat okuson/VERSION`.tar.gz --exclude='.nfs*' okuson
 
