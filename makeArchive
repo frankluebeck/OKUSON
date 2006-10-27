@@ -1,7 +1,6 @@
 #!/bin/sh
 # Part of the OKUSON project
 # Copyright (C) 2003 by Frank Lübeck and Max Neunhöffer
-# $Id: makeArchive,v 1.10 2006/10/04 11:15:14 luebeck Exp $
 
 # This script is used to make a zipped tar archive with the distribution
 # and a pdf version of the manual outside this directory. For this
@@ -59,5 +58,5 @@ rm -f makeArchive
 
 # Now put together things:
 cd ..
-tar czvf okuson-`cat okuson/VERSION`.tar.gz --exclude='.nfs*' okuson
+tar czvf okuson-`cat okuson/VERSION`.tar.gz --exclude='.nfs*' --exclude='.svn' okuson
 
