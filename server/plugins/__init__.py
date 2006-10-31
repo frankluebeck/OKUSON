@@ -28,7 +28,7 @@ import plugins
 
 pluginsPath = os.path.join( plugins.__path__[0] )
 for pluginDir in os.listdir( pluginsPath ):
-    if pluginDir == 'CVS':
+    if pluginDir in ['CVS','.svn']:
         continue # skip the CVS directory
     if not os.path.isdir( os.path.join( pluginsPath, pluginDir ) ):
         continue # skip non-directories
