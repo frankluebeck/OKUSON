@@ -327,7 +327,9 @@ def Grade(p,examnr):
      from all hosts except the localhost.  The notation is the same as 
      explained for AccessList above. 
      Note that this setting even denies access to the localhost if one uses 
-     the hostname instead of "localhost" in the URL! -->
+     the hostname instead of "localhost" in the URL! 
+     Please leave the localhost access always in this list since it is
+     necessary for the ./start, ./stop, and ./restart scripts. -->
 <AdministrationAccessList>
 <Range>127.0.0.0/255.0.0.0</Range>
 <!-- Another example, we use the following to allow admin access
