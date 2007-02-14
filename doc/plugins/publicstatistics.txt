@@ -98,6 +98,25 @@ fracreturned    the fraction of sheets/exams a participant had to return
                 exclude those participants who did not take part in all
                 of the exams in question)
 
+graphics        has the effect that the statistics is presented as a bar chart.
+                The value of this argument determines the widths (and titles)
+                of the classes:
+
+                * "classes" followed by an integer number: Fixes the number
+                  of classes; the classes are determined to be about the same
+                  width, including all scores from 0 up to the high score.
+                * "classwidth" followed by an integer or a floating point
+                  number: Fixes the width of every class; the number of classes
+                  is determined such that all scores from 0 up to the high
+                  score are included.
+                * "ranges" followed by a semicolon-separated list of
+                  colon-separated pairs: Specifies the lower bounds and titles
+                  of the classes explicitely. "ranges0:failed;10:passed" for
+                  example indicates that two classes are considered: the class
+                  from 0 to less than 10 points and the class from 10 points
+                  upward -- the first named "failed", the second named
+                  "passed".
+
 
 LICENSE
 =======

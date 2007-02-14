@@ -10,6 +10,11 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.2-fix2 to ???
+
+* Corrected some HTML errors in plugins
+* Extended publicstatistics plugin with chart function
+
 Changes from 1.2-fix1 to 1.2-fix2
 
 * Moved repository to svn.

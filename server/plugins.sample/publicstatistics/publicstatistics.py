@@ -25,6 +25,7 @@ class PublicStatistics (Plugins.OkusonExtension):
     __showmax = False
     __titles = ['maximum', 'points', 'frequencies', 'cumulated']
     __fracreturned = 0.5
+    __graphics = ''
 
     def __init__ (self, options = {}):
         try:
@@ -49,6 +50,11 @@ class PublicStatistics (Plugins.OkusonExtension):
               float(options['fracreturned'][0].replace(',', '.'))
         except:
             pass
+        try:
+            self.__graphics = \
+             options['graphics'][0].encode('ISO-8859-1', 'replace')
+        except:
+            self.__graphics = ''
 
     def name (self):
         return self.__class__.__name__
@@ -181,53 +187,135 @@ class PublicStatistics (Plugins.OkusonExtension):
             if returnDict[k] < self.__fracreturned * maxReturns:
                 del scoreDict[k]
         if len(scoreDict) != 0:
-            if self.__showmax and maxScore <> -1:
-                s += '<p>%s: %d</p>\n' % (self.__titles[0], maxScore)
-            s += '<table class="detailedscoretable">\n'
-            s += '<thead>\n'
-            if self.__showmax and maxScore > 0:
-                s += ('<tr class="head"><th colspan="2">%s</th>' + \
-                  '<th colspan="2">%s</th>' + \
-                  '<th colspan="2">%s</th></tr>\n') % (self.__titles[1], \
-                  self.__titles[2], self.__titles[3])
-            else:
-                s += ('<tr class="head"><th>%s</th>' + \
-                  '<th colspan="2">%s</th>' + \
-                  '<th colspan="2">%s</th></tr>\n') % (self.__titles[1], \
-                  self.__titles[2], self.__titles[3])
-            s += '</thead>\n'
-            s += '<tbody>\n'
-            scores = {}
-            for score in scoreDict.values():
-                if scores.has_key(score):
-                    scores[score] = scores[score] + 1
-                else:
-                    scores[score] = 1
-            k = scores.keys()
-            k.sort ()
-            k.reverse ()
-            row = 0
-            sumoffreqs = 0
-            for score in k:
-                row += 1
-                sumoffreqs += scores[score]
-                if row % 2 == 0:
-                    s += '<tr class="even">'
-                else:
-                    s += '<tr class="odd">'
-                s += '<td>%s</td>' % locale.str(score)
+            if self.__graphics == '':
+                if self.__showmax and maxScore <> -1:
+                    s += '<p>%s: %d</p>\n' % (self.__titles[0], maxScore)
+                s += '<table class="detailedscoretable">\n'
+                s += '<thead>\n'
                 if self.__showmax and maxScore > 0:
-                    s += '<td>(%s%%)</td>' % locale.format('%.2f', \
-                      100.0 * score / maxScore)
-                s += ('<td>%d</td><td>%s%%</td><td>%d</td><td>%s%%</td>' + \
-                  '</tr>\n') % (scores[score], \
-                  locale.format('%.2f', 100.0 * scores[score] / \
-                  len(scoreDict)), sumoffreqs, \
-                  locale.format('%.2f', 100.0 * sumoffreqs / \
-                  len(scoreDict)))
-            s += '</tbody>\n'
-            s += '</table>\n'
-            s += '<p />\n'
+                    s += ('<tr class="head"><th colspan="2">%s</th>' + \
+                      '<th colspan="2">%s</th>' + \
+                      '<th colspan="2">%s</th></tr>\n') % (self.__titles[1], \
+                      self.__titles[2], self.__titles[3])
+                else:
+                    s += ('<tr class="head"><th>%s</th>' + \
+                      '<th colspan="2">%s</th>' + \
+                      '<th colspan="2">%s</th></tr>\n') % (self.__titles[1], \
+                      self.__titles[2], self.__titles[3])
+                s += '</thead>\n'
+                s += '<tbody>\n'
+                scores = {}
+                for score in scoreDict.values():
+                    if scores.has_key(score):
+                        scores[score] = scores[score] + 1
+                    else:
+                        scores[score] = 1
+                k = scores.keys()
+                k.sort ()
+                k.reverse ()
+                row = 0
+                sumoffreqs = 0
+                for score in k:
+                    row += 1
+                    sumoffreqs += scores[score]
+                    if row % 2 == 0:
+                        s += '<tr class="even">'
+                    else:
+                        s += '<tr class="odd">'
+                    s += '<td>%s</td>' % locale.str(score)
+                    if self.__showmax and maxScore > 0:
+                        s += '<td>(%s%%)</td>' % locale.format('%.2f', \
+                          100.0 * score / maxScore)
+                    s += ('<td>%d</td><td>%s%%</td><td>%d</td><td>%s%%</td>' + \
+                      '</tr>\n') % (scores[score], \
+                      locale.format('%.2f', 100.0 * scores[score] / \
+                      len(scoreDict)), sumoffreqs, \
+                      locale.format('%.2f', 100.0 * sumoffreqs / \
+                      len(scoreDict)))
+                s += '</tbody>\n'
+                s += '</table>\n'
+                s += '<p />\n'
+            else:
+                scores = {}
+                for score in scoreDict.values():
+                    if scores.has_key(score):
+                        scores[score] = scores[score] + 1
+                    else:
+                        scores[score] = 1
+                k = scores.keys()
+                k.sort ()
+                classbeginlist = []
+                classtitlelist = []
+                if self.__graphics[:6] == 'ranges':
+                    for begintitlepair in self.__graphics[6:].split(';'):
+                        classtitlelist.append \
+                          (begintitlepair.split(':')[-1].strip())
+                        classbegin = 0.0
+                        if ':' in begintitlepair:
+                            try:
+                                classbegin = \
+                                  float(begintitlepair.split(':')[0].strip())
+                            except:
+                                pass
+                        classbeginlist.append (classbegin)
+                elif self.__graphics[:7] == 'classes':
+                    try:
+                        classnumber = int(self.__graphics[7:].strip())
+                    except:
+                        classnumber = 1
+                    for i in range(classnumber):
+                        classbeginlist.append \
+                          (int((i * k[-1] + 0.5) / classnumber))
+                    for i in range(classnumber - 1):
+                        classtitlelist.append ('%d&nbsp;&ndash;&nbsp;&lt;%d' % \
+                          (classbeginlist[i], classbeginlist[i + 1]))
+                    classtitlelist.append ('%d&nbsp;&ndash;&nbsp;&lt;%d' % \
+                      (classbeginlist[classnumber - 1], int(k[-1]) + 1))
+                else:
+                    classwidth = 1
+                    if self.__graphics[:10] == 'classwidth':
+                        try:
+                            classwidth = float(self.__graphics[10:].strip())
+                        except:
+                            pass
+                    classbegin = 0
+                    if classwidth < 1: classwidth = 1
+                    while classbegin <= k[-1] or classbeginlist == []:
+                        classbeginlist.append (classbegin)
+                        classbegin += classwidth
+                    for i in range(len(classbeginlist) - 1):
+                        classtitlelist.append ('%d&nbsp;&ndash;&nbsp;&lt;%d' % \
+                          (classbeginlist[i], classbeginlist[i + 1]))
+                    classtitlelist.append ('%d&nbsp;&ndash;&nbsp;&lt;%d' % \
+                      (classbeginlist[-1], classbeginlist[-1] + classwidth))
+                s += '<table style="border: none;">\n'
+                tdstyle = 'style="border: none; padding-left: 0;"'
+                tdstyler = \
+                 'style="border: none; padding-left: 0; text-align: right;"'
+                maxfreq = 0
+                classbeginlist.append (k[-1] + 1)
+                freqlist = []
+                for i in range(len(classtitlelist)):
+                    freq = 0
+                    for score in k:
+                        if classbeginlist[i] <= score < classbeginlist[i + 1]:
+                            freq += scores[score]
+                    freqlist.append (freq)
+                maxfreq = max(freqlist)
+                sumoffreqs = sum(freqlist)
+                for i in range(len(classtitlelist)):
+                    percentage = freqlist[i] * 100.0 / sumoffreqs
+                    barwidth = int(freqlist[i] * 200.0 / maxfreq)
+                    s += '<tr>\n'
+                    s += '<td %s>%s</td>\n' % (tdstyle, classtitlelist[i])
+                    s += '<td %s>\n' % tdstyle
+                    s += '<img src="/images/red.png" alt="" '
+                    s += 'width="%dpx" height="20px" />\n' % barwidth
+                    s += '</td>\n'
+                    s += '<td %s>%s%%</td>\n' % (tdstyler, \
+                      locale.format('%.2f', percentage))
+                    s += '</tr>\n'
+                s += '</table>\n'
         return s
 
     def headAndBody (self):
