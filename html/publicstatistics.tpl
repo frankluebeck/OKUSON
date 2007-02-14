@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!-- Note that this file is only usable if you have activated the
-     "publicstatistics" plugin in the server/plugins.sample directory. -->
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -18,7 +15,9 @@
 
   <body>
     <Header />
-    <h2>Punktestatistik</h2>
+    <h1>Punktestatistik</h1>
+
+    <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
     <p>
       In dieser Statistik sind nur diejenigen ber&uuml;cksichtigt, bei denen
@@ -65,13 +64,21 @@
     <ExtensionCode name="PublicStatistics" field="examscore" showmax="yes"
      titles="maximal m&ouml;gliche Punktzahl:Punkte:H&auml;ufigkeiten:kumuliert"
      fracreturned="1" />
-    
-    <Footer />
+
+    <hr />
+
+    <p><a href="/index.html">Zurück zur Startseite</a></p>
+
+    <p class="foot">Bei Fragen wenden Sie sich bitte an: <br />
+      <Feedback /> 
+    </p>
 
     <p class="foot">
-      <ValidatorIcon />
+      <ValidatorIcon /> <a href="http://www.math.rwth-aachen.de/~OKUSON/">
+      (OKUSON <Version/>)</a>
     </p>
+    <Footer />
   </body>
 </html>
 
-<!-- Copyright 2004 Marc Ensenbach -->
+<!-- Copyright 2007 Marc Ensenbach -->
