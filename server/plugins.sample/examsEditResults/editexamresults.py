@@ -52,11 +52,15 @@ class EditExamResults( Plugins.OkusonExtension ):
     def title( self ):
         return 'Eingabe von Klausurergebnissen'
     def formCode( self ):
-        s = '<input type="hidden" name="state" value="0" />\n'
-        s += 'Eingabe der Ergebnisse von Klausur <select name="examnr">\n'
-        for i in range( Data.Exam.maxexamnumber ):
+        if Data.Exam.maxexamnumber >= 1:
+          s = '<input type="hidden" name="state" value="0" />\n'
+          s += 'Eingabe der Ergebnisse von Klausur <select name="examnr">\n'
+          for i in range( Data.Exam.maxexamnumber ):
             s += ( '<option value="' + str(i) + '">' + str(i) + '</option>\n' )
-        s += '</select>\n'
+          s += '</select>\n'
+        else:
+          s = 'Eingabe von Klausurergebnissen '
+          s += '(bislang keine Klausuren eingetragen)\n'
         return s
     def cssCode( self ):
         return '''  table {

@@ -44,13 +44,17 @@ class BulkExamRegistration( Plugins.OkusonExtension ):
     def returnType( self ):
         return Plugins.HTML
     def title( self ):
-        return 'Änderung von Klausuranmeldungen'
+        return '&Auml;nderung von Klausuranmeldungen'
     def formCode( self ):
         s = '<input type="hidden" name="state" value="0" />\n'
-        s += 'Änderung der Anmeldungen zu Klausur <select name="examnr">\n'
-        for i in range( Data.Exam.maxexamnumber ):
+        if Data.Exam.maxexamnumber >= 1:
+          s += '&Auml;nderung der Anmeldungen zu Klausur <select name="examnr">\n'
+          for i in range( Data.Exam.maxexamnumber ):
             s += ( '<option value="' + str(i) + '">' + str(i) + '</option>\n' )
-        s += '</select>\n'
+          s += '</select>\n'
+        else:
+          s += '&Auml;nderung von Klausuranmeldungen '
+          s += '(bislang keine Klausuren eingetragen)\n'
         return s
     def cssCode( self ):
         return '''  table {

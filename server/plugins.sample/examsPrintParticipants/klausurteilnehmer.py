@@ -46,16 +46,20 @@ class KlausurTeilnehmer( Plugins.OkusonExtension ):
     def title( self ):
         return 'Klausurteilnehmerliste'
     def formCode( self ):
-        s = 'Liste der Teilnehmer für Klausur <select name="examnr">\n'
-        for i in range( Data.Exam.maxexamnumber ):
+        if Data.Exam.maxexamnumber >= 1:
+          s = 'Liste der Teilnehmer für Klausur <select name="examnr">\n'
+          for i in range( Data.Exam.maxexamnumber ):
             s += ( '<option value="' + str(i) + '">' + str(i) + '</option>\n' )
-        s += '</select>\n'
-        s += ' als '
-        s += ( '<select name="type">\n'
-               '<option value="html">Webseite</option>\n'
-               '<option value="txt">Textdatei</option>\n'
-               '<option value="pdf">PDF-Datei</option>\n'
-               '</select>\n' )
+          s += '</select>\n'
+          s += ' als '
+          s += ( '<select name="type">\n'
+                 '<option value="html">Webseite</option>\n'
+                 '<option value="txt">Textdatei</option>\n'
+                 '<option value="pdf">PDF-Datei</option>\n'
+                 '</select>\n' )
+        else:
+          s = 'Klausurteilnehmerliste '
+          s += '(bislang keine Klausuren eingetragen)\n'
         return s
     def cssCode( self ):
         return '''  table {
