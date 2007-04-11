@@ -12,6 +12,7 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.2-fix2 to ???
 
+* Removed and added some buttons in administration .tpl files.
 * Corrected some HTML errors in plugins (done by Marc)
 * Extended publicstatistics plugin with chart function (done by Marc)
 * Included scheine plugin by Ingo
