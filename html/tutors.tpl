@@ -53,6 +53,7 @@
     Gruppennummer:
     <input  name="group" size="4" maxlength="4" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Passwort:
     <input type="password" size="16" maxlength="16" name="passwd" 
                 value="" />
     </p>
@@ -77,5 +78,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: tutors.tpl,v 1.6 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id$ -->
 
