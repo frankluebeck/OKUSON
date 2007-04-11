@@ -76,7 +76,9 @@
     <h3>Statistics:<a name="stat"></a></h3>
 
     <form action="/ShowExerciseStatistics" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    <p><!--<input type="submit" name="Action" value="Go" />-->
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <AdminPasswdField />
     Show Exercise Statistics for sheet
     <AvailableSheetsAsButtons />
     </p>
@@ -90,7 +92,9 @@
     </form>
 
     <form action="/ShowGlobalStatisticsPerGroup" method="post">
-    <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
+    <p><!--<input type="submit" name="Action" value="Go" />-->
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <AdminPasswdField />
     Show Global Statistics, separated per Group, for sheet
     <AvailableSheetsAsButtons />
     </p>
@@ -228,5 +232,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.24 2006/06/21 12:19:16 luebeck Exp $ -->
+     $Id$ -->
 
