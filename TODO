@@ -1,3 +1,5 @@
+Dokumentiere die Config.py Option 'MaxStringInputLength'.
+
 Tag <IfAdminRange>, damit man Dinge nur anzeigen kann, wenn man von
   einer Administrator-IP-Adresse kommt.
 

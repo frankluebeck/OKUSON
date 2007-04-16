@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py,v 1.43 2006/10/04 03:02:35 neunhoef Exp $'
+CVS = '$Id$'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -77,7 +77,7 @@ ignored. We assume that for each resolution X there is already a subdirectory
 
         
 def CleanQuotes(st):
-    return st.replace('"','')
+    return st.replace('"','&quot;')
 
 def CleanString(s):
     '''Cleans a string for input in an alt-attributes of images.'''
