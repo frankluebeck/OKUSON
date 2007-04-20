@@ -18,6 +18,14 @@ M ok - starhomescore scheint maxhomescore zu ueberschreiben -> Kontrollieren
           among maxhomescore that are optional!
 
 Ideen: 
+- Generisch im Webserver: Zugriffschutz für Dateien/Verzeichnisse mit
+  Passwort/Einmal-Passwort. (Stichwörter: WWW-Authenticate: Basic)
+
+- Wie kann man OKUSON interaktiv zum Üben benutzen?
+
+- Wie kann man OKUSON für Tests/Klausuren mit Identitäts-Überprüfung
+  benutzen?
+
 M ok - Gewichtung von multiple choice Aufgaben (und Dokumentation anpassen)
     QUESTION element bekommt optionale Attribute "scorecorrect" und 
     "scorewrong" -> entsprechend in Datenstruktur
