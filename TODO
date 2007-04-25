@@ -1,3 +1,6 @@
+Auf admin Seite, "Show Cumulated Sheets": da werden die Punkte von
+den Blättern, die nicht zählen, auch dazuaddiert!?
+
 Dokumentiere die Config.py Option 'MaxStringInputLength'.
 
 Tag <IfAdminRange>, damit man Dinge nur anzeigen kann, wenn man von
