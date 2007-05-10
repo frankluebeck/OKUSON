@@ -51,6 +51,10 @@
 
       <li>
         <a href="currentinfo.html">Aktuelle Informationen</a>
+        <!-- activate if you want to provide an rss feed, edit news.rss -->
+        <!-- &nbsp;
+        (<a href="news.rss">als RSS <img src="feedicon16.png" alt=""/></a>)
+        -->
       </li>
 
       <li>
@@ -90,6 +94,5 @@
   </body>
 </html>
 
-<!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: index.tpl,v 1.7 2004/10/06 10:26:44 neunhoef Exp $ -->
+<!-- Copyright 2003 Frank Lübeck and Max Neunhöffer -->
 
