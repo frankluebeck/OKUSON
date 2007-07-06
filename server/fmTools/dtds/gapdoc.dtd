@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- ==================================================================
      gapdoc.dtd - XML Document type definition for GAP documentation
-     By Frank Lübeck and Max Neunhöffer
+     By Frank LÃ¼beck and Max NeunhÃ¶ffer
      ================================================================== -->
 
-<!-- $Id: gapdoc.dtd,v 1.1 2003/10/06 13:01:06 luebeck Exp $ -->
+<!-- $Id$ -->
 
 <!-- Note that this definition goes "bottom-up" because entities can only
      be used after their definition in the file. -->
@@ -23,38 +23,29 @@
 <!ENTITY quot   "&#34;">
 
 
-<!-- The following are necessary because these characters have special
-     meanings in either XML or LaTeX: -->
+<!-- The following were introduced in GAPDoc version < 1.0, it is no longer
+     necessary to take care of LaTeX special characters
+     (we keep the entities with simplified definitions for compatibility) -->
      
-<!ENTITY tamp 
-  "<Alt Only='LaTeX'>\&amp;</Alt><Alt Not='LaTeX'><Alt 
-        Only='HTML'>&amp;amp;</Alt><Alt Not='HTML'>&amp;</Alt></Alt>">
-<!ENTITY tlt 
-  "<Alt Only='LaTeX'>{\textless}</Alt><Alt Not='LaTeX'><Alt 
-        Only='HTML'>&amp;lt;</Alt><Alt Not='HTML'>&lt;</Alt></Alt>">
-<!ENTITY tgt 
-  "<Alt Only='LaTeX'>{\textgreater}</Alt><Alt Not='LaTeX'><Alt 
-        Only='HTML'>&amp;gt;</Alt><Alt Not='HTML'>&gt;</Alt></Alt>">
-<!ENTITY hash "<Alt Only='LaTeX'>\#</Alt><Alt Not='LaTeX'>#</Alt>">
-<!ENTITY dollar "<Alt Only='LaTeX'>\$</Alt><Alt Not='LaTeX'>$</Alt>">
-<!ENTITY percent 
-  "<Alt Only='LaTeX'>\&#37;</Alt><Alt Not='LaTeX'>&#37;</Alt>">
-<!ENTITY tilde 
-  "<Alt Only='LaTeX'>{\textasciitilde}</Alt><Alt Not='LaTeX'>~</Alt>">
-<!ENTITY bslash 
-  "<Alt Only='LaTeX'>{\textbackslash}</Alt><Alt Not='LaTeX'>\</Alt>">
-<!ENTITY obrace "<Alt Only='LaTeX'>\{</Alt><Alt Not='LaTeX'>{</Alt>">
-<!ENTITY cbrace "<Alt Only='LaTeX'>\}</Alt><Alt Not='LaTeX'>}</Alt>">
-<!ENTITY uscore 
-  "<Alt Only='LaTeX'>{\textunderscore}</Alt><Alt Not='LaTeX'>_</Alt>">
-<!ENTITY circum 
-  "<Alt Only='LaTeX'>{\textasciicircum}</Alt><Alt Not='LaTeX'>^</Alt>">
-<!ENTITY nbsp "<Alt Only='LaTeX'>~</Alt><Alt Not='LaTeX'>&#160;</Alt>">
+<!ENTITY tamp "&amp;">
+<!ENTITY tlt "&lt;">
+<!ENTITY tgt "&gt;">
+<!ENTITY hash "#">
+<!ENTITY dollar "$">
+<!ENTITY percent "&#37;">
+<!ENTITY tilde "~">
+<!ENTITY bslash "\\">
+<!ENTITY obrace "{">
+<!ENTITY cbrace "}">
+<!ENTITY uscore "_">
+<!ENTITY circum "^">
 
 <!-- ==================================================================
      Our predefined entities:
      ================================================================== -->
 
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#x2013;">
 <!ENTITY GAP    "<Package>GAP</Package>">
 <!ENTITY GAPDoc "<Package>GAPDoc</Package>">
 <!ENTITY TeX    
@@ -65,8 +56,7 @@
   "<Alt Only='LaTeX'>{Bib\TeX}</Alt><Alt Not='LaTeX'>BibTeX</Alt>">
 <!ENTITY MeatAxe "<Package>MeatAxe</Package>">
 <!ENTITY XGAP   "<Package>XGAP</Package>">
-<!ENTITY copyright 
-  "<Alt Only='LaTeX'>{\copyright}</Alt><Alt Not='LaTeX'>(C)</Alt>">
+<!ENTITY copyright "&#169;">
 
 
 <!-- ==================================================================
@@ -85,7 +75,8 @@
                       M | Math | Display | 
                       Example | Listing | Log | Verb |
                       URL | Email | Homepage | Address | Cite | Label | 
-                      Ref | Index" >
+                      Ref | Index |
+                      Ignore" >
 
 
 <!ELEMENT Alt (%InnerText;)*>     <!-- This is only to allow "Only" and
@@ -176,15 +167,16 @@
      are  terminal and  need special  methods  to make  up the  actual
      output during document generation. -->
 
-<!ELEMENT URL (#PCDATA|Alt)*>    <!-- Can we define this better? -->
+<!ELEMENT URL (#PCDATA|Alt|Link|LinkText)*>  <!-- Link, LinkText
+     variant for case where text needs further markup -->
 <!ATTLIST URL Text CDATA #IMPLIED>   <!-- This is for output formats
                                           that have links like HTML -->
-
+<!ELEMENT Link     (%InnerText;)*> <!-- the URL -->
+<!ELEMENT LinkText (%InnerText;)*> <!-- text for links, can contain markup -->
 <!-- The following two are actually URLs, but the element name determines
      the type. -->
-     
-<!ELEMENT Email (#PCDATA|Alt)*>
-<!ELEMENT Homepage (#PCDATA|Alt)*>
+<!ELEMENT Email (#PCDATA|Alt|Link|LinkText)*>
+<!ELEMENT Homepage (#PCDATA|Alt|Link|LinkText)*>
 
 <!-- Those who still want to give postal addresses can use the following
      element. Use <Br/> for specifying typical line breaks  -->
@@ -222,9 +214,15 @@
      and  Style  can  be  specified in  addition  to  handle  external
      references and the typesetting style of the reference. -->
 
-<!ELEMENT Index (%InnerText;)*>
+<!-- For explicit index entries (Func and so on should cause an
+     automatically generated index entry). Use the attributes Key,
+     Subkey for sorting (simplified, without markup). The Subkey value
+     also gets printed. Use the optional Subkey element if the printed
+     version needs some markup.                                        -->
+<!ELEMENT Index (%InnerText;|Subkey)*>
 <!ATTLIST Index Key    CDATA #IMPLIED
                 Subkey CDATA #IMPLIED>
+<!ELEMENT Subkey (%InnerText;)*>
 
 
 <!-- ==================================================================
@@ -288,7 +286,19 @@
                        Style CDATA #IMPLIED>
 <!ELEMENT TheIndex EMPTY>
 
+<!-- ==================================================================
+     The Ignore element can be used everywhere to include further
+     information in a GAPDoc document which is not intended for the 
+     standard converters (e.g., source code, not yet finished stuff,
+     and so on. This information can be extracted by special converter 
+     routines, more precise information about the content of an Ignore
+     element can be given by the "Remark" attribute.
+     ================================================================== -->
 
+<!ELEMENT Ignore (%Text;| Chapter | Section | Subsection | ManSection |
+                  Heading)*>
+<!ATTLIST Ignore Remark CDATA #IMPLIED>
+     
 <!-- ==================================================================
      Now we go on with the overall structure by defining the sectioning 
      structure, which includes the Synopsis element: 
@@ -298,7 +308,8 @@
 <!ELEMENT Subsection (%Text;| Heading)*>
 <!ATTLIST Subsection Label CDATA #IMPLIED> <!-- For reference purposes -->
 
-<!ELEMENT ManSection (((Func, Returns?) | (Oper, Returns?) | 
+<!ELEMENT ManSection ( Heading?, 
+                      ((Func, Returns?) | (Oper, Returns?) | 
                        (Meth, Returns?) | (Filt, Returns?) | 
                        (Prop, Returns?) | (Attr, Returns?) |
                        Var | Fam | InfoClass)+, Description )>
