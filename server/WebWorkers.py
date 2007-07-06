@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py,v 1.138 2006/10/03 02:12:52 neunhoef Exp $'
+CVS = '$Id$'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -3403,7 +3403,18 @@ ExportHelper['%M'] = ('Grading message (gives "no grade" if not available)',
   lambda p: ExportHelper_Grade(p)[0] )
 ExportHelper['%G'] = ('Grade (gives "no grade" if not available)',
   lambda p: locale.str(ExportHelper_Grade(p)[1]) )
-     
+def ExportHelper_r(p, d = None, nr = None):
+  try:
+    if p.exams[nr].registration == 1:
+      res = 'yes'
+    else:
+      res = 'no'
+  except:
+    res = 'no'
+  return res
+ExportHelper['%r'] = ('[<strong>use extended syntax %[nr]r</strong>] Registered for exam with number nr (returns yes/no)',
+  ExportHelper_r )
+
 # parse a format string for custom export for use with 'ExportLine' below
 def ParsedExportFormat(s):
   res = []
