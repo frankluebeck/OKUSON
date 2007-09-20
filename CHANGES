@@ -12,6 +12,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.2-fix2 to ???
 
+* Added a script scripts/getexamresults.py for input of exam results
+  for data/exams.txt.
 * Added %[nr]r to custom export for exam registrations.
 * Removed and added some buttons in administration .tpl files.
 * Corrected some HTML errors in plugins (done by Marc)
