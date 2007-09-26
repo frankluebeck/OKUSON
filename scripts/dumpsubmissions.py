@@ -54,12 +54,36 @@ for s in sheets:
       # the marks in the same order
       marks = mc.marks
       # corresponding exercises as tuples (sheetname,number,question,variant)
+      # first info to translate  chooser indices to numbers
+      ind = []
+      exnr = 0
+      for i in range(len(s[2].list)):
+        o = s[2].list[i]
+        if isinstance(o, Exercises.Exercise):
+          exnr += 1
+          qind = []
+          qnr = 0
+          for j in range(len(o.list)):
+            q = o.list[j]
+            if isinstance(q,Exercises.Question):
+              qnr += 1
+              vind = []
+              for v in range(q.nrvariants):
+                vind.append([exnr, qnr, v+1])
+              qind.append(vind)
+            else:
+              qind.append(None)
+          ind.append(qind)
+        else:
+          ind.append(None)
       tmp = s[2].ChooserFunction(hash(p.id))
+      
       choice = []
       for i in range(0, len(tmp)):
         if tmp[i] != None:
           for a in tmp[i]:
-            choice.append((s[1],str(i),str(a[0]),str(a[1])))
+            b = ind[i][a[0]][a[1]]
+            choice.append((s[1],str(b[0]),str(b[1]),str(b[2])))
       #print k,choice,marks,answers
       for j in range(0, len(choice)):
         l = (k,)+choice[j]+(answers[j], marks[j])
