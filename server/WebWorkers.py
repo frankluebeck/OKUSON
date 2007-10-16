@@ -3270,6 +3270,36 @@ Exams as concatenation of sequences "nr;totalscore;scores" with ";"s
 as delimiters, with %[d][nr]e use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only exam number [nr].''',
   ExportHelper_e)
+def ExportHelper_x(p, d = ';', nr = None):
+  if Config.conf['ExamGradingActive'] == 0 or \
+     Config.conf['ExamGradingFunction'] == None:
+    return 'no graded exams'
+  try:
+    t = p.exams
+    res = ['']
+    if nr != None:
+      rg = [int(nr)]
+    else:
+      rg = xrange(len(t))
+    for i in rg:
+      try:
+        a = t[i]
+        res.append(str(i)+d+str(Config.conf['ExamGradingFunction'](p,i)[1])+d)
+      except:
+        res.append(str(i)+d+'none'+d)
+    res = string.join(res, '')
+    if res[-1] == d:
+      res = res[:-1]
+    return res
+  except:
+    return 'no graded exams'
+ExportHelper['%x'] = ('''[<strong>extended syntax %[d][nr]x</strong>] 
+Exams as concatenation of sequences "nr;grade" with ";"s
+as delimiters, with %[d][nr]x use [d] instead of ";" as delimiter 
+(must be non-alpha-numeric) and/or include only exam number [nr].
+A grade is "none" if not available, the result is "no graded exams" if
+exam grading is off or something is wrong.''',
+  ExportHelper_x)
 def ExportHelper_c(p, d = ';', nr = None):
   try:
     t = p.mcresults
