@@ -58,6 +58,15 @@
 <!ENTITY XGAP   "<Package>XGAP</Package>">
 <!ENTITY copyright "&#169;">
 
+<!-- and unicode math symbols -->
+<!ENTITY CC "&#x2102;" > <!-- double struck -->
+<!ENTITY ZZ "&#x2124;" >
+<!ENTITY NN "&#x2115;" >
+<!ENTITY PP "&#x2119;" >
+<!ENTITY QQ "&#x211a;" >
+<!ENTITY HH "&#x210d;" >
+<!ENTITY RR "&#x211d;" >
+
 
 <!-- ==================================================================
      The following describes the "innermost" documentation text which 
