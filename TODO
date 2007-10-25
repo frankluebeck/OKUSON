@@ -1,3 +1,6 @@
+Beim Aufnehmen der Personendaten werden Inputs abgeschnitten ([:30] oder
+so); benutzte statt '30' eine konfigurierbare Variable.
+
 Die Funktionalität von scripts/dumpsubmissions.py als Export Admin-Funktion
 einbauen?
 
@@ -11,8 +14,9 @@ Dokumentiere die Config.py Option 'MaxStringInputLength'.
 Tag <IfAdminRange>, damit man Dinge nur anzeigen kann, wenn man von
   einer Administrator-IP-Adresse kommt.
 
-Ohne Passwort Gruppe 0 auf tutors.html Problem loesen:
+F ok Ohne Passwort Gruppe 0 auf tutors.html Problem loesen:
   mind. Default entry bei groupinfo.txt fuer Gruppe 0 mit passwd * ausliefern
+  [gemacht, indem GroupInfo nichtleeres default Passwort setzt.]
 
 Ohne Passwort Problem 2:
   Display available and future sheets aufrufen
