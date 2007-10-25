@@ -5,7 +5,7 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id: Data.py,v 1.22 2004/03/09 15:16:39 neunhoef Exp $'
+CVS = '$Id$'
 
 import sys,os,string,threading
 
@@ -223,7 +223,8 @@ class GroupInfo(Utils.WithNiceRepr):
     '''Object containing general information about a tutoring group.'''
     people = []        # list of participants by their ID
     number = -1        # number of group ( = its key in 'groups')
-    passwd = ''        # encrypted password for tutor access
+    passwd = '***xyz'  # encrypted password for tutor access (not empty for
+                       # group 0)
     tutor = ''         # name of tutor
     place = ''         # description where the group meets
     time = ''          # description when the group meets
