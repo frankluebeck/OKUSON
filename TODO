@@ -1,3 +1,14 @@
+Fragen von Timo: - Mache die Personendaten flexibler (die könnten von
+externen Quellen importiert sein): jeder Eintrag sollte als nicht änderbar
+markiert werden können. Fehlende Einträge in neuen Zeilen in people.txt
+sollten alte nicht überschreiben. Der Check von Einträgen sollte schaltbar
+oder sogar konfigurierbar sein.
+
+Was ist bei HTML für Checkboxes (oder allgemein bei GET/POST requests) 
+dokumentiert, wie sich Client und Server bei mehrfach vorkommenden Namen 
+verhalten? (Im Moment benutzen wir in OKUSON immer nur den ersten ([0]), 
+der im Request vorkommt. 
+
 Beim Aufnehmen der Personendaten werden Inputs abgeschnitten ([:30] oder
 so); benutzte statt '30' eine konfigurierbare Variable.
 
