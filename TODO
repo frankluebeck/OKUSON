@@ -1,3 +1,7 @@
+Wie wäre es mit "parametrisierten" Fragen und Antworten? (Timo)
+Beispiel: Aufgaben unterscheiden sich nur durch die Zahlen im Anfangstext,
+die Fragen sind für alle die gleichen.
+
 Fragen von Timo: - Mache die Personendaten flexibler (die könnten von
 externen Quellen importiert sein): jeder Eintrag sollte als nicht änderbar
 markiert werden können. Fehlende Einträge in neuen Zeilen in people.txt
