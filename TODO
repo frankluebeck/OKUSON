@@ -1,3 +1,10 @@
+Beim exportieren mit Format-String wird für mcresults eines Sheets (%c) der
+*Name* verwendet, um ein Sheet anzugeben. Dagegen wird beim Parsen des
+Format-Strings angenommen, dass das Sheet über eine Ziffernfolge angegeben
+ist. Es funktioniert also nicht, wenn der Name nicht String von einer Zahl
+ist. Besser die *Nummer* des Sheets verwenden? Genauso für Exams (%e)?
+(Timo)
+
 Wie wäre es mit "parametrisierten" Fragen und Antworten? (Timo)
 Beispiel: Aufgaben unterscheiden sich nur durch die Zahlen im Anfangstext,
 die Fragen sind für alle die gleichen.
