@@ -3513,12 +3513,13 @@ def ExportLine(p, parse):
 
 def ShowDetailedScoreTable(req,onlyhead):
     '''This function handles the request for the cumulated score statistics '''
-    if Authenticate(None,req,onlyhead) < 0:
-        return Delegate('/errors/notloggedin.html',req,onlyhead)
     try:
         grp = Data.groups[req.query['group'][0]]
     except:
         grp = None
+    # Now verify the password for this group:
+    if AuthenticateTutor(grp,req,onlyhead) < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
     options = {}
     try:
         options['exerciseCategory'] = req.query['exerciseCategory'][0]

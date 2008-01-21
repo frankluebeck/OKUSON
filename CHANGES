@@ -12,6 +12,7 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.2-fix2 to ???
 
+* Allow access to ShowDetailedScoreTable with tutor authentification.
 * Set passwd information for group 0 such that a password must be given
   explicitly for group 0 for accessing it via  /tutors.html.
 * Added a script scripts/getexamresults.py for input of exam results
