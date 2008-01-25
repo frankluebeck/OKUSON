@@ -3517,8 +3517,9 @@ def ShowDetailedScoreTable(req,onlyhead):
         grp = Data.groups[req.query['group'][0]]
     except:
         grp = None
-    # Now verify the password for this group:
-    if AuthenticateTutor(grp,req,onlyhead) < 0:
+    # Now check login or verify the password for this group:
+    if Authenticate(None,req,onlyhead) < 0 and \
+                                 AuthenticateTutor(grp,req,onlyhead) < 0:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
     options = {}
     try:
