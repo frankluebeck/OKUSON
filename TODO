@@ -1,3 +1,7 @@
+Auf 64-bit und 32-bit Systemen liefert 'hash("ABC")'  verschiedene Werte.
+Das ist schlecht zu transferieren eines OKUSON Servers zwischen solchen
+Systemen, da hash in fmTools/Utils.py: SeedFromId verwendet wird!
+
 Beim exportieren mit Format-String wird für mcresults eines Sheets (%c) der
 *Name* verwendet, um ein Sheet anzugeben. Dagegen wird beim Parsen des
 Format-Strings angenommen, dass das Sheet über eine Ziffernfolge angegeben
