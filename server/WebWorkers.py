@@ -943,6 +943,7 @@ one Person object as data.'''
             Utils.Error('nr attribute value is no number: '+nr+' - assuming 0.')
             nr = 0
         if nr < 0 or nr >= len(self.p.exams): return
+        if self.p.exams[nr] != None and self.p.exams[nr].totalscore < 0: return
         try:
             (msg,grade) = Config.conf['ExamGradingFunction'](self.p,nr)
             out.write('<p>\n'+msg+'</p>\n')
