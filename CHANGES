@@ -12,6 +12,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.2-fix2 to ???
 
+* Added a check for negative score to ignore <ExamGrade ../> in that case
+  (as promised in the comments of Config.xml); reported by Sebastian Mayer.
 * Allow access to ShowDetailedScoreTable with tutor authentification.
 * Set passwd information for group 0 such that a password must be given
   explicitly for group 0 for accessing it via  /tutors.html.
