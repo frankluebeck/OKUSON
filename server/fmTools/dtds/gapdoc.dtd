@@ -125,8 +125,8 @@
 <!ELEMENT Arg (#PCDATA|Alt)*>      <!-- Argument -->
 <!ELEMENT A (#PCDATA|Alt)*>        <!-- Argument (shortcut) -->
 
-<!ELEMENT Code (#PCDATA|Alt|A)*>   <!-- GAP code -->
-<!ELEMENT C (#PCDATA|Alt|A)*>      <!-- GAP code (shortcut) -->
+<!ELEMENT Code (#PCDATA|Alt|A|Arg)*> <!-- GAP code -->
+<!ELEMENT C (#PCDATA|Alt|A|Arg)*>    <!-- GAP code (shortcut) -->
 
 <!ELEMENT File (#PCDATA|Alt)*>     <!-- Filename -->
 <!ELEMENT F (#PCDATA|Alt)*>        <!-- Filename (shortcut) -->
@@ -134,7 +134,7 @@
 <!ELEMENT Button (#PCDATA|Alt)*>   <!-- "Button" (also Menu, Key) -->
 <!ELEMENT B (#PCDATA|Alt)*>        <!-- "Button" (shortcut) -->
 
-<!ELEMENT Package (#PCDATA|Alt)*>   <!-- A package name -->
+<!ELEMENT Package (#PCDATA|Alt)*>  <!-- A package name -->
 
 <!ELEMENT Quoted (%InnerText;)*>   <!-- Quoted (in quotes) text -->
 <!ELEMENT Q (%InnerText;)*>        <!-- Quoted text (shortcut) -->
