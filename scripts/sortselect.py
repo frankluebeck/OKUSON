@@ -161,7 +161,7 @@ for l in linelistin:
                     takeit = 1
                     break
             elif s[1] == '<+':
-                if float(ll[s[0]]) >= s[2]:
+                if float(ll[s[0]]) < s[2]:
                     takeit = 1
                     break
             elif s[1] == '~~':
