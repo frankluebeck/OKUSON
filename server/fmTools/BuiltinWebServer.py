@@ -459,8 +459,15 @@ def StartServer(port = 8000):
     # call, such that the server really terminates:
     SERVER.ourpid = os.getpid()
     signal.signal(signal.SIGUSR1,sigusr1handler)   # handle signal USR1
-    while not(httpd.raus):
-        httpd.handle_request()
+    while not(SERVER.raus):
+        try:
+          httpd.handle_request()
+        except:
+          Utils.Error("Exception in handle_request: ", prefix="Info: ")
+          etype, value, tb = sys.exc_info()
+          lines = traceback.format_exception(etype,value,tb)
+          Utils.Error(string.join(lines),prefix="")
+          pass
     Utils.Error("Waiting for threads to terminate...", prefix="Info: ")
     wait = TERMWAIT
     while threading.activeCount() > 1 and wait > 0:
