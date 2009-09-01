@@ -1,3 +1,8 @@
+Wenn <RestrictToOwnGroup> in Config.xml =0 ist, dann kann man unter
+tutors.html auch eine Matrikelnummer angeben, die nicht in der eigenen
+Gruppe ist, Daten abschicken, aber die tauchen dann nirgends auf!
+(Vielleicht die Def. von RestrictToOwnGroup erweitern?)
+
 Auf 64-bit und 32-bit Systemen liefert 'hash("ABC")'  verschiedene Werte.
 Das ist schlecht zu transferieren eines OKUSON Servers zwischen solchen
 Systemen, da hash in fmTools/Utils.py: SeedFromId verwendet wird!
