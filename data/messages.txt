@@ -1,4 +1,2 @@
 # messages.txt - private messages for participants
 # Format:  id:message
-181648:bla bla
-181648:$bla bla
