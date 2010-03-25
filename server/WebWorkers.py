@@ -1094,6 +1094,8 @@ and either send an error message or a report.'''
     else:   # here we have to set passwd correctly
         passwd = p.passwd
 
+    # Data which are not allowed to be changed:
+    kept = Config.conf['KeptData']
     # Now check for empty fields:
     lname = req.query.get('lname',[''])[0].strip()[:30]
     fname = req.query.get('fname',[''])[0].strip()[:30]
@@ -1106,9 +1108,14 @@ and either send an error message or a report.'''
     except:
         sem = 0
     if sem <= 0:
-        return Delegate('/errors/semnonumber.html',req,onlyhead)
+        if not 'sem' in kept:
+          return Delegate('/errors/semnonumber.html',req,onlyhead)
 
-    if lname == '' or fname == '' or stud == '':
+    if not 'lname' in kept and lname == '':
+        return Delegate('/errors/emptyfields.html',req,onlyhead)
+    if not 'fname' in kept and fname == '':
+        return Delegate('/errors/emptyfields.html',req,onlyhead)
+    if not 'stud' in kept and stud == '':
         return Delegate('/errors/emptyfields.html',req,onlyhead)
 
     if Config.conf['GroupChangePossible'] or Config.conf['GroupChoicePossible'] and ( p.group == 0 ):
@@ -1142,6 +1149,21 @@ and either send an error message or a report.'''
     for k in pdkeys:
         persondata[k[11:]] = req.query.get(k,[''])[0].strip()[:256]
 
+    # overwrite data which cannot be changed
+    if 'lname' in kept: lname = p.lname
+    if 'fname' in kept: fname = p.fname
+    if 'sem' in kept: sem = p.sem
+    if 'stud' in kept: stud = p.stud
+    if 'passwd' in kept: passwd = p.passwd
+    if 'email' in kept: email = p.email
+    if 'wishes' in kept: wishes = p.wishes
+    for k in pdkeys:
+      if 'persondata.'+k in kept:
+        persondata[k] = p.persondata[k]
+    # copy over other known data
+    for k in p.persondata.keys():
+      if not k in pdkeys:
+        persondata[k] = p.persondata[k]
     # Put person into file on disk:
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
@@ -1162,8 +1184,8 @@ and either send an error message or a report.'''
         Data.Lock.release()
         Utils.Error('['+LocalTimeString()+'] Failed to register person:\n'+line)
         return Delegate('/errors/fatal.html',req,onlyhead)
-    
-    # Put new person into database in memory:
+   
+    # Now we are safe to put the new person data into database in memory:
     p.lname = lname
     p.fname = fname
     p.sem = sem

@@ -308,6 +308,34 @@ def Grade(p,examnr):
 0
 </MCScoreExerciseLowerLimitDefault>
 
+<!-- By default we allow to change any personal data except the id.
+     Here it is possible to disallow changing of some fields (for
+     example because they were imported from somewhere else).
+     Possible entries in this list are:
+      "lname"  (last name), "fname" (first name), "sem" (semester number),
+      "stud" (field of studies), "passwd" (password), "email" (email address),
+      "wishes" (wishlist for group distribution), 
+      "persondata.xxx" (custom data with key "xxx", may occur for several keys)
+-->
+<KeptData>
+[]
+</KeptData>
+
+<!-- A python function that creates an email header from a Person object -->
+<EMailHeaderFunction>
+def EMailHeaderFunction(p):
+  return 'Sehr geehrte/r '+p.fname+' '+p.lname+', '
+<!-- a bit more sophisticated using information from the RWTH Campus system:
+  if p.persondata.has_key('Anrede'):
+    if p.persondata['Anrede'] = "Frau":
+      return 'Sehr geehrte Frau '+p.lname+', '
+    else:
+      return 'Sehr geehrter Herr '+p.lname+', '
+  else:
+    return 'Sehr geehrte/r '+p.fname+' '+p.lname+', '
+-->
+</EMailHeaderFunction>
+
 <!-- ==================================================================== 
                           Installation section
      ==================================================================== -->

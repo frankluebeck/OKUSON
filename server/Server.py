@@ -149,11 +149,13 @@ import Plugins
 from plugins import *
 Plugins.dumpExtensions()
 
-# We are ready, service can begin:
-try:
-    Utils.Error(time.asctime(time.localtime(time.time()))+
-                ' Ready to start service ...',prefix='')
-    BuiltinWebServer.StartServer(port = Config.conf['Port'])
-except:
-    Utils.Error(' Cannot start service! (Port in Use? Server running?)')
+# For scripts which want to use the server data we stop here, otherwise ...
+# we are ready, service can begin:
+if not 'NOSERVER' in dir(Config):
+  try:
+      Utils.Error(time.asctime(time.localtime(time.time()))+
+                  ' Ready to start service ...',prefix='')
+      BuiltinWebServer.StartServer(port = Config.conf['Port'])
+  except:
+      Utils.Error(' Cannot start service! (Port in Use? Server running?)')
 

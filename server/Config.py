@@ -52,6 +52,8 @@ Parameters = {
   "MCScoreCorrectDefault":    ["INT",0],
   "MCScoreWrongDefault":      ["INT",0],
   "MCScoreExerciseLowerLimitDefault":["INT",0],
+  "KeptData":                 ["LIST",1],
+  "EMailHeaderFunction":      ["STRING",1],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
@@ -372,4 +374,15 @@ into a usable form. Some values are changed into other data types.'''
         conf['ExamGradingActive'] = 0
     if not(conf.has_key('DateTimeFormat')):
         conf['DateTimeFormat'] = '%c'
+    # Also parse the EMailHeaderFunction:
+    d = {}
+    try:
+        exec conf['EMailHeaderFunction']+'\n' in d
+        conf['EMailHeaderFunction'] = d['EMailHeaderFunction']
+    except:
+        etype, value, tb = sys.exc_info()
+        lines = traceback.format_exception(etype,value,tb)
+        Utils.Error('Cannot parse EMailHeaderFunction.\n'+
+                    string.join(lines))
+        FailMiserably()
 

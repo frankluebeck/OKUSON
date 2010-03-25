@@ -10,8 +10,30 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
-Changes from 1.2-fix2 to ???
+Changes from 1.2-fix2 to 1.3
 
+* Some new files in the 'scripts' subdirectory:
+    SendEmail.py          send email to all participants (individually,
+                          such that they don't see other email addresses)
+    startNOSERVER.py      a utility for scripts with access to all
+                          current data of a server
+    RWTHCampus2people.py  automatically registers participants using data
+                          from the RWTH Campus system (.csv format)
+                          It generates random initial passwords.
+                          This is RWTH specific but probably slight variations
+                          could be useful in other places.
+    SendInitPasswords.py  writes mails to inform automatically registered
+                          participants about their initial password
+    exampleMailSendInitPasswords   example mail template
+    README.RWTH_Campus    infos how to use registration via RWTH Campus
+                          together with OKUSON
+* Added <EMailHeaderFunction> in Config.xml. This function should generate
+  a salutation which can be used by scripts which generate emails to the
+  participants.
+* Added <KeptData> element in Config.xml. This allows to specify data
+  which are not allowed to be changed by the participant via
+  the SubmitRegChange function. This can be used if certain data
+  were imported from somewhere else.
 * Added a check for negative score to ignore <ExamGrade ../> in that case
   (as promised in the comments of Config.xml); reported by Sebastian Mayer.
 * Allow access to ShowDetailedScoreTable with tutor authentification.
