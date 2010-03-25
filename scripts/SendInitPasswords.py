@@ -33,6 +33,7 @@ Usage:  SendInitPasswords.py  AlreadySentIDs MailTemplate Subject From AlsoTo\n
 ''')
   sys.exit(1);
 
+
 # read the id's which were handled before
 try:
   f = open(sys.argv[1])
@@ -40,8 +41,14 @@ try:
   f.close()
   doneids = s.split() 
 except:
-  print("Cannot open file "+sys.argv[1])
-  sys.exit(2);
+  if not os.path.exists(sys.argv[1]):
+    print "Creating empty file "+sys.argv[1]
+    f = open(sys.argv[1],"a")
+    f.close()
+    doneids = []
+  else:
+    print("Cannot open file "+sys.argv[1])
+    sys.exit(2);
 
 # read the mail template
 try:
@@ -61,12 +68,14 @@ for k in Data.people.keys():
   p = Data.people[k]
   if not p.id in doneids:
     if p.persondata.has_key('InitPasswd'):
+      print 'Sending to '+p.id
       body = mail.replace('INITPASSWD', p.persondata['InitPasswd'])
       body = body.replace('EMAILHEADER', Config.conf['EMailHeaderFunction'](p))
       msg = MIMEText(body)
       msg['Subject'] = sys.argv[3]
       msg['From'] = sys.argv[4]
       msg['To'] = p.email+', '+sys.argv[5]
+      msg['Content-Type'] = 'text/plain; charset=utf-8'
       try:
         f = open(sys.argv[1], "a")
         f.write("\n"+p.id)
