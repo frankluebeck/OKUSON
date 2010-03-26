@@ -1,6 +1,6 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id: manual.tex,v 1.77 2006/10/04 05:26:25 neunhoef Exp $
+% $Id$
 
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
@@ -2285,9 +2285,21 @@ end of the semester to produce certificates for successful participants.
 
 \section{Registration of Participants}
 
-Once you start the server, participants can register via the {\OKUSON} web 
-interface without  any administrational interaction. Registration is
-possible as long as the service is running. 
+With respect to registration there are two entries in the 
+\texttt{Config.xml} configuration
+file. If the content of \verb!<RegistrationPossible>! is \texttt{1} then
+participants can register themselves. If it is \texttt{0} 
+further participants can only be registered by the administrator.
+By default, participants can later change all the data given during
+registration (except for their ID). Using the element
+\verb!<KeptData>! the change of certain data
+can be disallowed, see the comments in \texttt{Config.xml} for details.
+This can be useful if data were imported from other source (e.g.,
+the university administration).
+
+Once you start the server and registration is allowed, participants 
+can register via the {\OKUSON} web 
+interface without  any further administrational interaction. 
 
 Among the sample web pages coming with {\OKUSON} the template files
 \texttt{registration.tpl} and \texttt{regchange2.tpl} are used for the
@@ -2321,6 +2333,18 @@ arbitrary password and which do not appear in the export of user data or
 result statistics. {\OKUSON} has the configuration option 
 \texttt{GuestIdRegExp} for specifying such IDs.
 
+\subsubsection*{Registration using external data}
+
+The \texttt{scripts} subdirectory of {\OKUSON}  contains
+a script  \texttt{RWTHCampus2people.py}. This does the registration of
+participants using data which come from the university administration 
+(the Bachelor students have to officially sign in for all their courses,
+we want to use the data and avoid a double registration).
+We use the \verb!<KeptData>! entry in \texttt{Config.xml} to disallow
+the change of imported data.
+
+While this is a specific script for usage at RWTH Aachen slight variations
+of it may be useful in other places.
 
 \section{Distributing Participants into Tutoring Groups}\label{sec:groups}
 
