@@ -27,7 +27,7 @@
           grafikfähig sein.</dd>
       <dt>PDF</dt><dd>Die Aufgaben im Portable Document Format. Um dieses
           Format anzuschauen, benötigen Sie einen PDF-Viewer wie z.B.
-          <a href="http://www.adobe.com/products/acrobat/">acrobat</a> oder
+          <a href="http://get.adobe.com/de/reader/">acroread</a> oder
           <a href="http://www.foolabs.com/xpdf/">xpdf</a> 
           (Unix/X-Window-Oberfläche). Diese Version eignet sich am
           Besten zum Ausdrucken.</dd>
@@ -52,5 +52,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: doctypehelp.tpl,v 1.5 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id$ -->
 
