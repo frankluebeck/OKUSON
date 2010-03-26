@@ -63,8 +63,8 @@
            Windows, Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows,
            Konqueror 3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1
            auf Linux, Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows,
-           W3M 0.3 auf Linux, Netscape 7.01 auf Linux, sowie vielen neueren
-           Browsers der letzten Jahre.
+           W3M 0.3 auf Linux, Netscape 7.01 auf Linux, sowie zahlreichen 
+           neueren Browsern der letzten Jahre.
       </dd>
     </dl>
 
