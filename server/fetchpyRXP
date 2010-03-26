@@ -1,6 +1,6 @@
 #!/bin/sh
 #wget -N http://www.reportlab.com/ftp/daily-pyRXP.tgz
-wget -N http://www.math.rwth-aachen.de/~Max.Neunhoeffer/daily-pyRXP.tgz
+wget -N http://www-groups.mcs.st-and.ac.uk/~neunhoef/daily-pyRXP.tgz
 echo "***********************  ATTENTION  *****************************"
 echo "The subdirectores pyRXP and pyRXP-* will now be deleted and      "
 echo "replaced by the content of the daily pyRXP archive just          "

@@ -20,10 +20,10 @@
         <a href="http://www.math.rwth-aachen.de/~OKUSON"><strong>OKUSON
         </strong></a>, Design und Implementation von 
        <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck">Frank Lübeck</a>
+       (Lehrstuhl D für Mathematik, RWTH Aachen) 
        und 
-       <a href="http://www.math.rwth-aachen.de/~Max.Neunhoeffer">Max 
-       Neunhöffer</a>,
-       Lehrstuhl D für Mathematik, RWTH Aachen.</p>
+       <a href="http://www-groups.mcs.st-and.ac.uk/~neunhoef/">Max 
+       Neunhöffer</a> (University of St Andrews, Schottland).</p>
 
     <h3>Benutzte Technologien/Standards/Software</h3>
     <dl>
@@ -63,7 +63,8 @@
            Windows, Opera 6.1 Build 271 auf Linux, Netscape 7.1 auf Windows,
            Konqueror 3.1.4 auf Linux, Netscape 4.8 auf Linux, Netscape 6.2.1
            auf Linux, Lynx 2.8.4rel.1 auf Linux, Opera 7.20 auf Windows,
-           W3M 0.3 auf Linux, Netscape 7.01 auf Linux.
+           W3M 0.3 auf Linux, Netscape 7.01 auf Linux, sowie vielen neueren
+           Browsers der letzten Jahre.
       </dd>
     </dl>
 
@@ -84,5 +85,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.8 2004/10/06 10:26:44 neunhoef Exp $ -->
+     $Id$ -->
 
