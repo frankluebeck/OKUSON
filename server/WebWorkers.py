@@ -3243,6 +3243,19 @@ Site['/ShowCumulatedScoreStatistics'] = FunWR(ShowCumulatedScoreStatistics)
 Site['/ShowCumulatedScoreStatistics'].access_list = \
     Config.conf['AdministrationAccessList']
 
+# utilities to translate between sheet numbers and sheet names
+def FindSheetnameFromNumber(nr):
+  for s in Data.Exercises.AllSheets:
+    if s.nr == nr:
+      return s.name
+  return None
+
+def FindSheetnrFromName(name):
+  for s in Data.Exercises.AllSheets:
+    if s.name == name:
+      return s.nr
+  return None
+
 # keys are '%X' for format strings, values are tuples
 #      (description, string function(p) )
 ExportHelper = {}
@@ -3328,16 +3341,17 @@ def ExportHelper_c(p, d = ';', nr = None):
     t = p.mcresults
     res = ['']
     if nr:
-      rg = [str(nr)]
+      rg = [FindSheetnameFromNumber(nr)]
     else:
       rg = t.keys()
       rg.sort()
     for i in rg:
+      n = FindSheetnrFromName(i)
       try:
         a = t[i]
-        res.append(str(i)+d+locale.str(a.score)+d)
+        res.append(str(n)+d+locale.str(a.score)+d)
       except:
-        res.append(str(i)+d+'none'+d)
+        res.append(str(n)+d+'none'+d)
     res = string.join(res, '')
     if res[-1] == d:
       res = res[:-1]
@@ -3350,20 +3364,22 @@ of pairs "sheet nr;score" with ";"s
 as delimiters, with %[d][nr]c use [d] instead of ";" as delimiter 
 (must be non-alpha-numeric) and/or include only sheet number [nr].''',
   ExportHelper_c)
+
 def ExportHelper_h(p, d = ';', nr = None):
   try:
     t = p.homework
     res = ['']
     if nr:
-      rg = [str(nr)]
+      rg = [FindSheetnameFromNumber(nr)]
     else:
       rg = Utils.SortNumerAlpha(t.keys())
     for i in rg:
+      n = FindSheetnrFromName(i)
       try:
         a = t[i]
-        res.append(str(i)+d+locale.str(a.totalscore)+d)
+        res.append(str(n)+d+locale.str(a.totalscore)+d)
       except:
-        res.append(str(i)+d+'none'+d)
+        res.append(str(n)+d+'none'+d)
     res = string.join(res, '')
     if res[-1] == d:
       res = res[:-1]
@@ -3381,15 +3397,16 @@ def ExportHelper_v(p, d = ';', nr = None):
     t = p.homework
     res = ['']
     if nr:
-      rg = [str(nr)]
+      rg = [FindSheetnameFromNumber(nr)]
     else:
       rg = Utils.SortNumerAlpha(t.keys())
     for i in rg:
+      n = FindSheetnrFromName(i)
       try:
         a = t[i]
-        res.append(str(i)+d+locale.str(a.totalscore)+d+a.scores+d)
+        res.append(str(n)+d+locale.str(a.totalscore)+d+a.scores+d)
       except:
-        res.append(str(i)+d+'none'+d+'none'+d)
+        res.append(str(n)+d+'none'+d+'none'+d)
     res = string.join(res, '')
     if res[-1] == d:
       res = res[:-1]
