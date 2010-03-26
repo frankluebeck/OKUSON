@@ -7,22 +7,23 @@ Auf 64-bit und 32-bit Systemen liefert 'hash("ABC")'  verschiedene Werte.
 Das ist schlecht zu transferieren eines OKUSON Servers zwischen solchen
 Systemen, da hash in fmTools/Utils.py: SeedFromId verwendet wird!
 
-Beim exportieren mit Format-String wird für mcresults eines Sheets (%c) der
-*Name* verwendet, um ein Sheet anzugeben. Dagegen wird beim Parsen des
-Format-Strings angenommen, dass das Sheet über eine Ziffernfolge angegeben
-ist. Es funktioniert also nicht, wenn der Name nicht String von einer Zahl
-ist. Besser die *Nummer* des Sheets verwenden? Genauso für Exams (%e)?
-(Timo)
+F ok Beim exportieren mit Format-String wird für mcresults eines Sheets (%c) der
+     *Name* verwendet, um ein Sheet anzugeben. Dagegen wird beim Parsen des
+     Format-Strings angenommen, dass das Sheet über eine Ziffernfolge angegeben
+     ist. Es funktioniert also nicht, wenn der Name nicht String von einer Zahl
+     ist. Besser die *Nummer* des Sheets verwenden? 
+     Genauso für Exams (%e)?  Nein: gespeichert in Liste per Nummer
+     (Timo)
 
 Wie wäre es mit "parametrisierten" Fragen und Antworten? (Timo)
 Beispiel: Aufgaben unterscheiden sich nur durch die Zahlen im Anfangstext,
 die Fragen sind für alle die gleichen.
 
-Fragen von Timo: - Mache die Personendaten flexibler (die könnten von
-externen Quellen importiert sein): jeder Eintrag sollte als nicht änderbar
-markiert werden können. Fehlende Einträge in neuen Zeilen in people.txt
-sollten alte nicht überschreiben. Der Check von Einträgen sollte schaltbar
-oder sogar konfigurierbar sein.
+F ok Fragen von Timo: - Mache die Personendaten flexibler (die könnten von
+    externen Quellen importiert sein): jeder Eintrag sollte als nicht änderbar
+    markiert werden können. Fehlende Einträge in neuen Zeilen in people.txt
+    sollten alte nicht überschreiben. Der Check von Einträgen sollte schaltbar
+    oder sogar konfigurierbar sein.
 
 Was ist bei HTML für Checkboxes (oder allgemein bei GET/POST requests) 
 dokumentiert, wie sich Client und Server bei mehrfach vorkommenden Namen 
