@@ -33,7 +33,7 @@
 <!ELEMENT ExamGradingFunction (#PCDATA)>
 <!ELEMENT ExamGradingActive (#PCDATA)>
 <!ELEMENT MaxStringInputLength (#PCDATA)>
-<!ELEMENT KeptData (#PCDATA)>
+<!ELEMENT KeptData (Option)*>
 <!ELEMENT EMailHeaderFunction (#PCDATA)>
 <!ELEMENT InteractiveMode (#PCDATA)>
 <!ELEMENT RestrictToOwnGroup (#PCDATA)>

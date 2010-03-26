@@ -311,14 +311,14 @@ def Grade(p,examnr):
 <!-- By default we allow to change any personal data except the id.
      Here it is possible to disallow changing of some fields (for
      example because they were imported from somewhere else).
-     Possible entries in this list are:
-      "lname"  (last name), "fname" (first name), "sem" (semester number),
-      "stud" (field of studies), "passwd" (password), "email" (email address),
-      "wishes" (wishlist for group distribution), 
-      "persondata.xxx" (custom data with key "xxx", may occur for several keys)
+     Possible entries (each as content of an <Option> element) in this list are:
+      lname  (last name), fname (first name), sem (semester number),
+      stud (field of studies), passwd (password), email (email address),
+      wishes (wishlist for group distribution), 
+      persondata.xxx (custom data with key xxx, may occur for several keys)
 -->
 <KeptData>
-[]
+<!-- <Option>lname</Option> -->
 </KeptData>
 
 <!-- A python function that creates an email header from a Person object -->
