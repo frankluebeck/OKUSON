@@ -1,4 +1,4 @@
-$Id: INSTALL,v 1.6 2004/10/07 13:14:07 luebeck Exp $
+$Id$
 
                    Installation instructions for OKUSON
                   ======================================
@@ -22,6 +22,9 @@ $Id: INSTALL,v 1.6 2004/10/07 13:14:07 luebeck Exp $
    default is used by previous OKUSON installation.)
  * Copy the sample web pages to the document root: 
       cp -r html.sample/* html
+   [to get the German sample pages, for the English version use:
+      cp -r html.english/* html
+   ]
  * Copy the empty data files to the place where they should be:
       cd data ; cp empty/* . ; cd ..
  * Start server with: 

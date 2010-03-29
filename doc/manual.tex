@@ -85,7 +85,8 @@ the Language Technology Group, Edinburgh and its wrapper
 \href{http://www.reportlab.org/pyrxp.html}{pyRXP} for use with
 Python.
 \item
-A complete set of sample web pages (in German) which are probably not
+A complete set of sample web pages (in German and in English) which are 
+probably not
 difficult to customize for other courses in other places. (The text on these
 pages is the only language dependent part, such that an adjustment of this
 package to other languages would be straightforward.)
@@ -210,6 +211,8 @@ other obvious entries in the course section of this configuration file.
 \item Copy the sample web pages to the document root: 
 
 \hspace*{5mm}\verb!cp -r html.sample/* html!
+
+(or use \verb!html.english/*! for the english version)
 \item Copy empty data files to places where they belong:
 
 \hspace*{5mm}\texttt{cd data ; cp empty/* . ; cd ..}
@@ -460,13 +463,16 @@ of your password.
 {\OKUSON} has a built-in web server and does nearly all its user
 interaction via a  web interface.
 
-The package contains a set of sample web pages (in German) and to get 
+The package contains a set of sample web pages (in German and in English) 
+and to get 
 started just copy them into the subdirectory \texttt{html} (which is the
 document root of the built-in web server in the default configuration). 
 This is done with the following command, issued from the {\OKUSON} home
 directory:
 
 \hspace*{1cm}\verb!cp -r html.sample/* html!
+
+(or \verb!cp -r html.english/* html!)
 
 The stuff that is copied with the abovementioned command consists of
 \begin{itemize}
@@ -1631,12 +1637,11 @@ icon is removed.)
 \end{itemize}
 
 The {\OKUSON} package comes with a complete set of sample web pages, they
-are in the subdirectory \verb+html.sample+. Of course, the text of web 
-pages is language dependent. Our sample pages are
-written in German since we use the package in Aachen. But it should be
-straightforward to produce versions in other languages.
+are in the subdirectory \verb+html.sample+ (German) and \verb+html.english+
+(English). Of course, the text of web pages is language dependent. 
+It should be straightforward to produce versions in other languages.
 
-If you want German pages as well for your course,  just copy all the
+If you want German or English pages for your course,  just copy all the
 sample pages to the web directory given in your configuration file. 
 Probably  only minor adjustments will be needed for your course, see the
 next section for more details.
