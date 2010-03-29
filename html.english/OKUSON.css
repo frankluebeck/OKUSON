@@ -1,0 +1,84 @@
+  /* OKUSON.css - style sheet for OKUSON project.      */
+ /* Copyright 2003 by Frank Lübeck and Max Neunhöffer */
+/* Lehrstuhl D für Mathematik, RWTH Aachen           */
+
+BODY {
+  background-color:#B0E0E6;
+  color: #000000;
+  font-family: sans-serif, Helvetica, Arial, Geneva;
+  margin: 2em;
+} 
+
+H1, H2, H3 {
+  font-family: sans-serif, Helvetica, Arial, Geneva;
+  font-weight: bold;
+}
+
+H1 {
+  text-align: left;
+  color: #191970;
+  font-size: 144%;
+}
+
+H2 {
+  text-align: left;
+  font-size: 120%;
+}
+
+H3 {
+  text-align: left;
+  font-size: 100%;
+}
+
+table {
+  border: 0pt solid #444444;
+  border-collapse: separate;
+  padding: 3pt;
+}
+th {
+  border: 0pt solid #444444;
+  border-bottom: 1pt solid #444444;
+  padding-left: 15pt;
+  padding-right: 15pt;
+  font-weight: bold;
+}
+
+td {
+  border: 0pt solid #444444;
+  padding-left: 15pt;
+  padding-right: 15pt;
+  font-weight: normal;
+}
+
+td.right {
+  text-align: right;
+}
+
+td.trenner {
+  border-bottom: 3pt solid #444444;
+}
+
+p.foot {
+  font-size: 0.8em
+}
+
+p.pcenter {
+  text-align: center;
+}
+
+a:visited {
+  color: #FF0000;
+}
+
+a:hover {
+  background-color: #AAAAAA;
+}
+
+hr {
+  width: 75%;
+}
+
+img {
+  border: 0pt;
+}
+/*  $Id: OKUSON.css,v 1.6 2005/11/02 14:11:52 neunhoef Exp $  */ 

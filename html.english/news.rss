@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- Please change the fully qualified hostname 
+     antares.math.rwth-aachen.de:8000 
+     everywhere in this file to the name and port of your server! -->
+
+<rss version="2.0">
+<channel>
+  <title>News ...</title>
+  <link>http://antares.math.rwth-aachen.de:8000/</link>
+  <description>Here you find current messages, warnings and
+      announcements for this course.</description>
+  <language>en</language>
+  <copyright>OKUSON</copyright>
+  <lastBuildDate>Tue, 12 Sep 2006 10:00:00 GMT</lastBuildDate>
+  <ttl>15</ttl>
+
+<image>
+   <url>http://antares.math.rwth-aachen.de:8000/favicon.png</url>
+   <title>OKUSON-Logo</title>
+   <link>http://antares.math.rwth-aachen.de:8000/</link>
+   <width>16</width>
+   <height>16</height>
+</image>
+
+<!-- Add your messages here as in the following example: -->
+
+<item>
+<title>From now on the news are available as an RSS-feed!</title>
+<description>Obviously, we follow the latest cry as soon as we hear
+    it.
+</description>
+<link>http://antares.math.rwth-aachen.de:8000/currentinfo.html#1</link>
+<pubDate>
+Thu, 10 May 2007 12:34:29 +0200
+</pubDate>
+<author>Frank und Max max.neunhoeffer@math.rwth-aachen.de</author>
+<guid>http://antares.math.rwth-aachen.de:8000/currentinfo.html#1</guid>
+</item>
+
+<!-- No change below this line. -->
+
+</channel>
+</rss>

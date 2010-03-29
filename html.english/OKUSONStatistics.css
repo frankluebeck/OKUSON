@@ -1,0 +1,121 @@
+  /* OKUSONStatistics.css - style sheet for OKUSON project.   */
+ /* Copyright 2003 by Frank Lübeck and Max Neunhöffer        */
+/* Lehrstuhl D für Mathematik, RWTH Aachen                  */
+
+
+table.statistics tr.extrenner td
+    { border-top: 2px solid black;
+    }
+
+table.statistics tr.qutrenner td
+    { border-top: 1px solid #444444;
+    }
+
+table.statistics td.col100 {background-color: #00ff00;}
+table.statistics td.col95  {background-color: #19fe00;}
+table.statistics td.col90  {background-color: #32fe00;}
+table.statistics td.col85  {background-color: #4cfe00;}
+table.statistics td.col80  {background-color: #66fe00;}
+table.statistics td.col75  {background-color: #7ffe00;}
+table.statistics td.col70  {background-color: #98fe00;}
+table.statistics td.col65  {background-color: #b2fe00;}
+table.statistics td.col60  {background-color: #ccfe00;}
+table.statistics td.col55  {background-color: #e5fe00;}
+table.statistics td.col50  {background-color: #ffff00;}
+table.statistics td.col45  {background-color: #ffe500;}
+table.statistics td.col40  {background-color: #ffcc00;}
+table.statistics td.col35  {background-color: #ffb200;}
+table.statistics td.col30  {background-color: #ff9800;}
+table.statistics td.col25  {background-color: #ff6600;}
+table.statistics td.col20  {background-color: #ff5500;}
+table.statistics td.col15  {background-color: #ff4c00;}
+table.statistics td.col10  {background-color: #ff3300;}
+table.statistics td.col5   {background-color: #ff1900;}
+table.statistics td.col0   {background-color: #ff0000;}
+
+table.pointdistribution td 
+    { padding: 0px;
+      width:20px;
+      vertical-align: bottom;
+      text-align: center;
+      bottom:0px;
+    }
+
+table.pointdistribution tr.pdtext td
+    { top: -20px;    
+    }
+    
+table.pointdistribution td.summary
+    { width: 10em;
+      text-align: left;
+    }
+
+table.pointdistribution tr.pdindex td
+    { font-weight: bold;
+    }
+        
+table.pointdistribution 
+    { border-spacing:2px; 
+    }
+
+table.detailedscoretable 
+    { border-spacing: 0px;
+    }
+
+table.detailedscoretable tr.head 
+    { background-color: #ccc;
+    }
+
+table.detailedscoretable tr.head th 
+    { border-bottom: 2px black solid;
+    }
+
+table.detailedscoretable tr.max 
+    { background-color: #ccc;
+    }
+
+table.detailedscoretable tr.max td 
+    { border-bottom: 1px black solid;
+    }
+
+table.detailedscoretable tr.odd 
+    { background-color: #eee;
+    }
+
+table.detailedscoretable tr.even 
+    { background-color: #ddd;
+    }
+
+table.detailedscoretable td 
+    { padding: 1px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+table.detailedscoretable td.no 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.pts 
+    { text-align: center;
+    }
+
+table.detailedscoretable tr.odd td.pts 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.even td.pts 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.sum 
+    { text-align: center;
+    }
+
+table.detailedscoretable tr.odd td.sum 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.even td.sum 
+    { text-align: right;
+    }
