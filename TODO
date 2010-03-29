@@ -118,3 +118,5 @@ Spaeter:
        ==> Benutzer kann beliebige Seiten neu machen.
   - Uebersichtstabelle ueber bisherige Ergebnisse zeigt keine Klausuren
     Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
+  - Schalter, der es erlaubt, dass Name, Vorname und Studiengang leer
+    sind.
