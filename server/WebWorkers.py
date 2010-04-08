@@ -1568,7 +1568,7 @@ submission as well as the results.'''
     if not(ok):
         Utils.Error('['+LocalTimeString()+'] bad submission, id '+id+
                     ', sheet '+sheetname, prefix='SubmitSheet: ')
-        return Delegate('/error/badsubmission.html',req,onlyhead)
+        return Delegate('/errors/badsubmission.html',req,onlyhead)
     else:
         handler = EH_withPersSheet_class(p,s,Config.conf['Resolutions'][0])
         handler.iamadmin = iamadmin
@@ -3769,7 +3769,7 @@ def DeleteMessagesDowork(req,onlyhead):
                 Data.Lock.release()
                 Utils.Error('['+LocalTimeString()+
                             '] Failed to append deletion of message:\n'+line)
-                return Delegate('/error/fatal.html',req,onlyhead)
+                return Delegate('/errors/fatal.html',req,onlyhead)
             del p.messages[i]
             Data.Lock.release()
         i -= 1
@@ -3803,7 +3803,7 @@ in the first place.'''
         p = Data.people[k]
         ok = s.Resubmit(p,Utils.SeedFromId(p.id))
         if not(ok):
-            return Delegate('/error/badsubmission.html',req,onlyhead)
+            return Delegate('/errors/badsubmission.html',req,onlyhead)
     
     return Delegate('/messages/resubsuccess.html',req,onlyhead)
 
