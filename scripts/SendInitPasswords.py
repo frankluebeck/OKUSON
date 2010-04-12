@@ -64,13 +64,16 @@ if mail.find('INITPASSWD') < 0:
   print "Mail template file "+sys.argv[2]+" contains no string 'INITPASSWD'."
   sys.exit(4)
 
+def toutf8(str):
+  return unicode(str, "iso-8859-1").encode("utf-8")
+
 for k in Data.people.keys():
   p = Data.people[k]
   if not p.id in doneids:
     if p.persondata.has_key('InitPasswd'):
       print 'Sending to '+p.id
       body = mail.replace('INITPASSWD', p.persondata['InitPasswd'])
-      body = body.replace('EMAILHEADER', Config.conf['EMailHeaderFunction'](p))
+      body = body.replace('EMAILHEADER', toutf8(Config.conf['EMailHeaderFunction'](p)))
       msg = MIMEText(body)
       msg['Subject'] = sys.argv[3]
       msg['From'] = sys.argv[4]
