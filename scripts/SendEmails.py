@@ -22,18 +22,18 @@ try:
   mail = f.read()
   f.close()
 except:
-  print("Cannot open file "+sys.argv[2])
+  print("Cannot open file "+sys.argv[1])
   sys.exit(2);
 
 for k in Data.people.keys():
   p = Data.people[k]
   msg = MIMEText(mail)
   msg['Subject'] = sys.argv[2]
-  msg['From'] = sys.argv[4]
+  msg['From'] = sys.argv[3]
   msg['To'] = p.email
   server = smtplib.SMTP('localhost')
   try:
-    check = server.sendmail(sys.argv[4], 
+    check = server.sendmail(sys.argv[3], 
                           [p.email], msg.as_string())
   except:
     print "Could not send mail for id: "+p.id
