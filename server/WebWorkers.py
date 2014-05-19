@@ -2805,8 +2805,8 @@ def AdminLogin(req,onlyhead):
     if passwd != Config.conf['AdministratorPassword']:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
 
-    random.seed(time.time())
-    currentcookie = str(random.randrange(10000000))
+    random.seed(os.urandom(200));
+    currentcookie = str(random.getrandbits(200))
     handler = EH_Generic_class()
     handler.iamadmin = 1
     (header,content) = Site['/adminmenu.html'].getresult(req,onlyhead,handler)
