@@ -12,6 +12,9 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.3 to 1.3-fix1
 
+* make it impossible to guess the cookie of an logged in administrator
+  (suggested by Tobias Boelter)
+* corrected a few typos in filenames for error messages
 * Added two sample plugins 'filter' and 'mailer' provided by Marc Ensenbach.
 
 
