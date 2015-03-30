@@ -1158,11 +1158,11 @@ and either send an error message or a report.'''
     if 'email' in kept: email = p.email
     if 'wishes' in kept: wishes = p.wishes
     for k in pdkeys:
-      if 'persondata.'+k in kept:
-        persondata[k] = p.persondata[k]
+      if k in kept:
+        persondata[k[11:]] = p.persondata[k]
     # copy over other known data
     for k in p.persondata.keys():
-      if not k in pdkeys:
+      if not 'persondata.'+k in pdkeys:
         persondata[k] = p.persondata[k]
     # Put person into file on disk:
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
