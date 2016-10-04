@@ -86,6 +86,12 @@ table.detailedscoretable tr.even
     { background-color: #ddd;
     }
 
+table.detailedscoretable th
+    { padding: 1px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
 table.detailedscoretable td 
     { padding: 1px;
       padding-left: 5px;
@@ -96,23 +102,63 @@ table.detailedscoretable td.no
     { text-align: right;
     }
 
+table.detailedscoretable tr.head th.key
+    { text-align: left;
+    }
+
+table.detailedscoretable tr.head th.name
+    { text-align: left;
+    }
+
+table.detailedscoretable tr.head th.pts
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.head th.sum 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.key
+    { text-align: left;
+    }
+
+table.detailedscoretable tr.max td.name
+    { text-align: left;
+    }
+
 table.detailedscoretable tr.max td.pts 
-    { text-align: center;
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.max td.sum 
+    { text-align: right;
+    }
+
+table.detailedscoretable tr.odd td.key
+    { text-align: left;
+    }
+
+table.detailedscoretable tr.odd td.name
+    { text-align: left;
     }
 
 table.detailedscoretable tr.odd td.pts 
     { text-align: right;
     }
 
-table.detailedscoretable tr.even td.pts 
+table.detailedscoretable tr.odd td.sum 
     { text-align: right;
     }
 
-table.detailedscoretable tr.max td.sum 
-    { text-align: center;
+table.detailedscoretable tr.even td.key
+    { text-align: left;
     }
 
-table.detailedscoretable tr.odd td.sum 
+table.detailedscoretable tr.even td.name
+    { text-align: left;
+    }
+
+table.detailedscoretable tr.even td.pts 
     { text-align: right;
     }
 
