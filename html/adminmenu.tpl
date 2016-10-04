@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
+  <head><link rel="shortcut icon" href="favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <meta http-equiv="Expires" content="now" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
 
-    <link href="/OKUSONAdmin.css" type="text/css" rel="StyleSheet" />
+    <link href="OKUSONAdmin.css" type="text/css" rel="StyleSheet" />
 
     <title>Administrator's Main Menu</title>
   </head>
@@ -28,11 +28,11 @@
 
     <h3>Control of Server:<a name="contr"></a></h3>
 
-    <form action="/Restart" method="post">
+    <form action="Restart" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Restart server </p></form>
 
-    <form action="/Shutdown" method="post">
+    <form action="Shutdown" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Shutdown server </p></form>
 
@@ -40,30 +40,30 @@
     
     <h3>Special Access for Administrators:<a name="acc"></a></h3>
 
-    <form action="/DisplaySheets" method="post">
+    <form action="DisplaySheets" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Display available and future sheets</p></form>
          
-    <form action="/SendMessage" method="post">
+    <form action="SendMessage" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Send message 
     <input size="60" maxlength="240" name="msgtext" value="" />
     to <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
      
-    <form action="/DeleteMessages" method="post">
+    <form action="DeleteMessages" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Delete messages of
     <input size="8" maxlength="6" name="msgid" value="" />
     </p></form>
 
-    <form action="/Resubmit" method="post">
+    <form action="Resubmit" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Reevaluate participants' answers for sheet
     <input size="6" maxlength="4" name="sheet" value="" />
     </p></form>
 
-    <form action="/ChangeGroup" method="post">
+    <form action="ChangeGroup" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Move participant
     <input size="8" maxlength="6" name="chgrpid" value="" />
@@ -75,7 +75,7 @@
 
     <h3>Statistics:<a name="stat"></a></h3>
 
-    <form action="/ShowExerciseStatistics" method="post">
+    <form action="ShowExerciseStatistics" method="post">
     <p><!--<input type="submit" name="Action" value="Go" />-->
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <AdminPasswdField />
@@ -84,14 +84,14 @@
     </p>
     </form>
 
-    <form action="/ShowGlobalStatistics" method="post">
+    <form action="ShowGlobalStatistics" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Show Global Statistics (for group
     <input  name="group" size="4" maxlength="4" />)
     </p>
     </form>
 
-    <form action="/ShowGlobalStatisticsPerGroup" method="post">
+    <form action="ShowGlobalStatisticsPerGroup" method="post">
     <p><!--<input type="submit" name="Action" value="Go" />-->
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <AdminPasswdField />
@@ -100,7 +100,7 @@
     </p>
     </form>
 
-    <form action="/ShowCumulatedScoreStatistics" method="post">
+    <form action="ShowCumulatedScoreStatistics" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Show Cumulated Score Statistics for
       <select name="exerciseCategory">
@@ -118,7 +118,7 @@
     </p>
     </form>
 
-    <form action="/ShowDetailedScoreTable" method="post">
+    <form action="ShowDetailedScoreTable" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Show Detailed Score Table for
       <select name="exerciseCategory">
@@ -143,7 +143,7 @@
 
     <h3>Export of Data:<a name="exp"></a></h3>
 
-    <form action="/ExportCustom" method="post">
+    <form action="ExportCustom" method="post">
     <p>Use the following format options for a customized export file.</p>
     
     <ExportFormatOptions/>
@@ -153,7 +153,7 @@
     </p>
     </form>
 
-    <form action="/ExportPeopleForGroups" method="post">
+    <form action="ExportPeopleForGroups" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Export people for tutoring group distribution
       <select name="together">
@@ -171,7 +171,7 @@
       </select>
     </p></form>
 
-    <form action="/ExportPeople" method="post">
+    <form action="ExportPeople" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Export people, sorted by 
       <select name="sortedby">
@@ -185,7 +185,7 @@
       </select>
     </p></form>
          
-    <form action="/ExportExamParticipants" method="post">
+    <form action="ExportExamParticipants" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Export participants of exam number
     <input size="4" maxlength="2" name="examnr" value="" />
@@ -201,7 +201,7 @@
       </select>
     </p></form>
 
-    <form action="/ExportResults" method="post">
+    <form action="ExportResults" method="post">
     <p><input type="submit" name="Action" value="Go" /><AdminPasswdField />
     Export results participants sorted by
       <select name="sortedby">
@@ -217,7 +217,7 @@
 
 <hr />
 
-    <p><a href="/index.html">Zurück zur Startseite</a></p>
+    <p><a href="index.html">Zurück zur Startseite</a></p>
 
     <p class="foot">Bei Fragen wenden Sie sich bitte an: <br />
       <Feedback /> 

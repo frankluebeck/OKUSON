@@ -4,14 +4,14 @@
      "publicstatistics" plugin in the server/plugins.sample directory. -->
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
+  <head><link rel="shortcut icon" href="favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <meta http-equiv="Expires" content="now" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
 
-    <link href="/OKUSON.css" type="text/css" rel="StyleSheet" />
-    <link href="/OKUSONStatistics.css" type="text/css" rel="StyleSheet" />
+    <link href="OKUSON.css" type="text/css" rel="StyleSheet" />
+    <link href="OKUSONStatistics.css" type="text/css" rel="StyleSheet" />
 
     <title>Punktestatistik</title>
   </head>

@@ -148,7 +148,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
                 if hasattr(grp, a):
                     # special case of custom data
                     if a in ['number','nrparticipants']:
-                        s.append('<td><a href="/GroupInfo?number='+str(nr)+'">'+
+                        s.append('<td><a href="GroupInfo?number='+str(nr)+'">'+
                              str(getattr(grp, a))+'</a></td>')
                     else:
                         s.append('<td>'+str(getattr(grp, a))+'</td>')
@@ -178,11 +178,11 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_LoginStatus(self,node,out):
         if currentcookie != None:
             out.write('There is somebody logged in. '
-                      '<a href="/AdminLogout">Logout</a>\n')
+                      '<a href="AdminLogout">Logout</a>\n')
         else:
             out.write('Nobody logged in. Please enter administrator password '
                       'next to the button you use or '
-                      '<a href="/adminlogin.html">login here.</a>\n')
+                      '<a href="adminlogin.html">login here.</a>\n')
     def handle_ServerStatus(self,node,out):
         if currentcookie != None:
             out.write('There is somebody logged in. ')
@@ -1334,7 +1334,7 @@ a Person object and a Sheet object as data.'''
                                (solved, ClassFromFraction(pc), 100*pc ))
             else:
                 out.write('<td>%d</td><td>0</td>' % solved)
-            out.write('<td><a href="/ShowExerciseStatisticsDetails?' +
+            out.write('<td><a href="ShowExerciseStatisticsDetails?' +
                 'sheet=%s&amp;ex=%d&amp;qu=%d&amp;var=%d">Details</a></td>' \
                     % (self.s.name,exnr, qnr, vnr))
             out.write('</tr>\n')
@@ -1425,7 +1425,7 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
     def idLink(self,id):
         #return '<a href="" onmouseover="tip(\'''' + str(id) \
         #   + '\')" onmouseout="untip()">' + str(id) + '</a>'
-        return '<a href="mailto:%s">%s</a><a href="/QuerySheet?sheet=%s&amp;' \
+        return '<a href="mailto:%s">%s</a><a href="QuerySheet?sheet=%s&amp;' \
                'id=%s">(S)</a>' % \
                (CleanQuotes(Data.people[id].email), str(id), self.s.name, 
                 str(id))
