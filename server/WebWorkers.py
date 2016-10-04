@@ -5,7 +5,7 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id$'
+CVS = '$Id: WebWorkers.py 612 2014-05-19 11:34:00Z luebeck $'
 
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
@@ -233,6 +233,15 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             if s.counts and s.IsClosed():   # sheet already closed 
                 maxtotalmcscore += s.MaxMCScore()
         return maxtotalmcscore
+    def MaxTotalOptionalMCScore(self):
+        l = Exercises.SheetList()
+        maxtotalstarmcscore = 0
+        for nr,name,s in l:
+            if s.counts and s.IsClosed():   # sheet already closed 
+                maxtotalstarmcscore += s.starmcscore
+        return maxtotalstarmcscore
+    def MaxTotalMandatoryMCScore(self):
+        return self.MaxTotalMCScore() - self.MaxTotalOptionalMCScore()
     def MaxTotalHomeScore(self):
         l = Exercises.SheetList()
         maxtotalhomescore = 0
@@ -256,7 +265,25 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         else:
             return maxtotalhomescore - self.MaxTotalOptionalHomeScore()
     def handle_MaxTotalMCScore(self,node,out):
-        out.write(locale.str(self.MaxTotalMCScore()))
+        # possible values for type:
+        # - mandatory: print the maximal total mandatory homework score
+        # - optional : print the maximal total optional homework score
+        # - plus     : print literally as sum e.g. "10 + 5"
+        # - sum      : print the maximal total homework score (default)
+        typ = 'sum'
+        try:
+            typ = node[1]['type'].encode('ISO-8859-1','replace')
+        except:
+            pass        
+        if typ == 'mandatory':
+            out.write(locale.str(self.MaxTotalMandatoryMCScore()))
+        elif typ == 'optional':
+            out.write(locale.str(self.MaxTotalOptionalMCScore()) + '*')
+        elif typ == 'plus':
+            out.write(locale.str(self.MaxTotalMandatoryMCScore()) + ' + ' +
+                          locale.str(self.MaxTotalOptionalMCScore()) + '*' )
+        else: # typ == 'sum' or none of the valid values
+            out.write(locale.str(self.MaxTotalMCScore()))
     def handle_MaxTotalHomeScore(self,node,out):
         # possible values for type:
         # - mandatory: print the maximal total mandatory homework score
@@ -300,28 +327,30 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             typ = node[1]['type'].encode('ISO-8859-1','replace')
         except:
             pass        
-        maxtotalmcscore = self.MaxTotalMCScore()
         if typ == 'mandatory':
             score = self.MaxTotalMandatoryHomeScore()
             if score > -1:
-                out.write(locale.str(maxtotalmcscore + score))
+                out.write(locale.str(self.MaxTotalMandatoryMCScore() + score))
             else:
-                out.write(locale.str(maxtotalmcscore) + ' + ?')
+                out.write(locale.str(self.MaxTotalMandatoryMCScore()) + ' + ?')
         elif typ == 'optional':
-             out.write(locale.str(self.MaxTotalOptionalHomeScore()))
+             out.write(locale.str(self.MaxTotalOptionalMCScore() +
+                       self.MaxTotalOptionalHomeScore()) + '*' )
         elif typ == 'plus':
             score = self.MaxTotalMandatoryHomeScore()
             if score > -1:
-                out.write(locale.str(maxtotalmcscore + score) + ' + ' +
-                          locale.str(self.MaxTotalOptionalHomeScore()) )
+                out.write(locale.str(self.MaxTotalMandatoryMCScore() + score) +
+                          ' + ' +
+                          locale.str(self.MaxTotalOptionalMCScore() +
+                          self.MaxTotalOptionalHomeScore()) + '*' )
             else:
                 out.write('?')
         else: # typ == 'sum' or none of the valid values
             score = self.MaxTotalHomeScore()
             if score != -1:
-                out.write(locale.str(maxtotalmcscore + score))
+                out.write(locale.str(self.MaxTotalMCScore() + score))
             else:
-                out.write(locale.str(maxtotalmcscore) + ' + ?')
+                out.write(locale.str(self.MaxTotalMCScore()) + ' + ?')
     def handle_ExportFormatOptions(self,node,out):
         keys = ExportHelper.keys()
         ord = ['%i','%n','%f','%s','%g','%a','%p','%c','%h',
@@ -887,7 +916,17 @@ one Person object as data.'''
                 else:
                     mcscore = '---'
                 if 'withMaxMCScore' in fields:
-                    mcscore += ' (' + locale.str(s.MaxMCScore()) + ')'
+                    maxmcscore = s.MaxMCScore()
+                    if maxmcscore < s.starmcscore:
+                        mcscore += ' (?)'
+                    elif s.starmcscore == 0:
+                        mcscore += ' (' + locale.str(maxmcscore) + ')'
+                    elif maxmcscore == s.starmcscore:
+                        mcscore += ' (' + locale.str(s.starmcscore) + '*)'
+                    else:
+                        mcscore += ' (' + \
+                              locale.str(maxmcscore - s.starmcscore) + \
+                              '+' + locale.str(s.starmcscore) + '*)'
                 if self.p.homework.has_key(name) and \
                    self.p.homework[name].totalscore != -1:
                     homescore = locale.str(self.p.homework[name].totalscore)
@@ -1747,6 +1786,7 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                 numIntervals = 20
             totalMCScore = {}
             maxTotalMCScore = 0
+            maxTotalStarMCScore = 0
             totalHomeScore = {}
             maxTotalHomeScore = 0
             maxTotalStarHomeScore = 0
@@ -1797,6 +1837,7 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                     maxTotalHomeScore += sheet.maxhomescore
                 maxTotalStarHomeScore += sheet.starhomescore
                 maxTotalMCScore += sheet.MaxMCScore()
+                maxTotalStarMCScore += sheet.starmcscore
                 maxTotalScore = maxTotalHomeScore + maxTotalMCScore
                 if includeAll == 'yes':
                     tempTotalMCScore = totalMCScore
@@ -1807,17 +1848,21 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                          sheetName
                     st += ScoreDiagram( tempTotalMCScore, maxTotalMCScore, 
                                         numIntervals )
+                    st += '<div><em>Optional Points</em>: %d</div>\n' % \
+                         maxTotalStarMCScore
                 elif category == 'homework':
-                   st = '<h2>Cumulated Homework Points up to Sheet %s</h2>\n'%\
-                        sheetName
-                   st += ScoreDiagram( tempTotalHomeScore, maxTotalHomeScore, 
-                                       numIntervals )
-                   st += '<div><em>Optional Points</em>: %d</div>\n' % \
-                         maxTotalStarHomeScore
+                    st = '<h2>Cumulated Homework Points up to Sheet %s</h2>\n'%\
+                         sheetName
+                    st += ScoreDiagram( tempTotalHomeScore, maxTotalHomeScore, 
+                                        numIntervals )
+                    st += '<div><em>Optional Points</em>: %d</div>\n' % \
+                          maxTotalStarHomeScore
                 else:
-                   st = '<h2>Cumulated Points up to Sheet %s</h2>\n'%sheetName
-                   st += ScoreDiagram( tempTotalScore, maxTotalScore, 
-                                       numIntervals )
+                    st = '<h2>Cumulated Points up to Sheet %s</h2>\n'%sheetName
+                    st += ScoreDiagram( tempTotalScore, maxTotalScore, 
+                                        numIntervals )
+                    st += '<div><em>Optional Points</em>: %d</div>\n' % \
+                          (maxTotalStarMCScore + maxTotalStarHomeScore)
                 out.write( st )
     
     def handle_DetailedScoreTable(self, node, out):
@@ -1912,6 +1957,7 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
             maxTotalHomeScore = 0
             maxTotalStarHomeScore = 0
             maxTotalMCScore = 0
+            maxTotalStarMCScore = 0
             for sheetNumber, sheetName, sheet in Exercises.SheetList():
                 if not sheet.IsClosed():
                     continue
@@ -1919,6 +1965,7 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                 maxMCScore = sheet.MaxMCScore()
                 maxHomeScore = sheet.maxhomescore
                 starHomeScore = sheet.starhomescore
+                starMCScore = sheet.starmcscore
                 if sheet.counts:
                     maxTotalMCScore += maxMCScore
                     if maxHomeScore == -1:
@@ -1926,26 +1973,40 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                     elif maxTotalHomeScore != -1:
                         maxTotalHomeScore += maxHomeScore
                     maxTotalStarHomeScore += starHomeScore
+                    maxTotalStarMCScore += starMCScore
                 maxRow += '<td class="pts">'
                 if not sheet.counts:
                     maxRow += '('
                 if bDisplayHW and bDisplayMC:
+                    if maxMCScore < starMCScore and maxHomeScore < starHomeScore:
+                        # this catches also the case of maxHomeScore == -1
+                        # because starHomeScore >= 0
+                        maxRow += '? ('
+                    elif maxMCScore < starMCScore:
+                        maxRow += locale.str(maxHomeScore) + ' ('
+                    elif maxHomeScore < starHomeScore:
+                        maxRow += locale.str(maxMCScore) + ' ('
+                    else:
+                        maxRow += locale.str(maxMCScore + maxHomeScore) + ' ('
+                    if maxMCScore < starMCScore:
+                        maxRow += '?|'
+                    elif starMCScore == 0:
+                        maxRow += locale.str(maxMCScore) + '|'
+                    elif maxMCScore == starMCScore:
+                        maxRow += locale.str(maxMCScore) + '*|'
+                    else:
+                        maxRow += locale.str(maxMCScore - starMCScore) + \
+                                  '+' + locale.str(starMCScore) + '*|'
                     if maxHomeScore < starHomeScore:
                         # this catches also the case of maxHomeScore == -1
                         # because starHomeScore >= 0
-                        maxRow += locale.str(maxMCScore) + ' + ?'
+                        maxRow += '?)'
                     elif starHomeScore == 0:
-                        maxRow += locale.str(maxMCScore + maxHomeScore) \
-                                  + ' (' + locale.str(maxMCScore) + '|' + \
-                                  locale.str(maxHomeScore) + ')'
+                        maxRow += locale.str(maxHomeScore) + ')'
                     elif maxHomeScore == starHomeScore:
-                        maxRow += locale.str(maxMCScore + maxHomeScore) \
-                                  + ' (' + locale.str(maxMCScore) + '|' + \
-                                  locale.str(maxHomeScore) + '*)'
+                        maxRow += locale.str(maxHomeScore) + '*)'
                     else:
-                        maxRow += locale.str(maxMCScore + maxHomeScore) \
-                                  + ' (' + locale.str(maxMCScore) + '|' + \
-                                  locale.str(maxHomeScore - starHomeScore) + \
+                        maxRow += locale.str(maxHomeScore - starHomeScore) + \
                                   '+' + locale.str(starHomeScore) + '*)'
                 elif bDisplayHW:
                     if maxHomeScore < starHomeScore:
@@ -1958,28 +2019,46 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                         maxRow += locale.str(maxHomeScore - starHomeScore) + \
                                   '+' + locale.str(starHomeScore) + '*'
                 elif bDisplayMC:
-                    maxRow += locale.str(maxMCScore)
+                    if maxMCScore < starMCScore:
+                        maxRow += '?'
+                    elif starMCScore == 0:
+                        maxRow += locale.str(maxMCScore)
+                    elif maxMCScore == starMCScore:
+                        maxRow += locale.str(maxMCScore) + '*'
+                    else:
+                        maxRow += locale.str(maxMCScore - starMCScore) + \
+                                  '+' + locale.str(starMCScore) + '*'
                 if not sheet.counts:
                     maxRow += ')'
                 maxRow += "</td>"
             headRow += '<th class="sum">Summe</th>'
             maxRow += '<td class="sum">'
             if bDisplayHW and bDisplayMC:
-                if maxTotalHomeScore < maxTotalStarHomeScore:
-                    maxRow += locale.str(maxTotalMCScore) + ' + ?'
-                elif maxTotalStarHomeScore == 0:
-                    maxRow += locale.str(maxTotalMCScore + maxTotalHomeScore) \
-                              + ' (' + locale.str(maxTotalMCScore) + '|' + \
-                              locale.str(maxTotalHomeScore) + ')'
-                elif maxTotalHomeScore == maxTotalStarHomeScore:
-                    maxRow += locale.str(maxTotalMCScore + maxTotalHomeScore) \
-                              + ' (' + locale.str(maxTotalMCScore) + '|' + \
-                              locale.str(maxTotalHomeScore) + '*)'
+                if maxTotalMCScore < maxTotalStarMCScore and maxTotalHomeScore < maxTotalStarHomeScore:
+                    maxRow += '? ('
+                elif maxTotalMCScore < maxTotalStarMCScore:
+                    maxRow += locale.str(maxTotalHomeScore) + ' ('
+                elif maxTotalHomeScore < maxTotalStarHomeScore:
+                    maxRow += locale.str(maxTotalMCScore) + ' ('
                 else:
-                    maxRow += locale.str(maxTotalMCScore + maxTotalHomeScore) \
-                              + ' (' + locale.str(maxTotalMCScore) + '|' + \
-                              locale.str(maxTotalHomeScore 
-                                         - maxTotalStarHomeScore) + \
+                    maxRow += locale.str(maxTotalMCScore + maxTotalHomeScore) + ' ('
+                if maxTotalMCScore < maxTotalStarMCScore:
+                    maxRow += '?|'
+                elif maxTotalStarMCScore == 0:
+                    maxRow += locale.str(maxTotalMCScore) + '|'
+                elif maxTotalMCScore == maxTotalStarMCScore:
+                    maxRow += locale.str(maxTotalMCScore) + '*|'
+                else:
+                    maxRow += locale.str(maxTotalMCScore - maxTotalStarMCScore) + \
+                              '+' + locale.str(maxTotalStarMCScore) + '*|'
+                if maxTotalHomeScore < maxTotalStarHomeScore:
+                    maxRow += '?)'
+                elif maxTotalStarHomeScore == 0:
+                    maxRow += locale.str(maxTotalHomeScore) + ')'
+                elif maxTotalHomeScore == maxTotalStarHomeScore:
+                    maxRow += locale.str(maxTotalHomeScore) + '*)'
+                else:
+                    maxRow += locale.str(maxTotalHomeScore - maxTotalStarHomeScore) + \
                               '+' + locale.str(maxTotalStarHomeScore) + '*)'
             elif bDisplayHW:
                 if maxTotalHomeScore < maxTotalStarHomeScore:
@@ -1993,7 +2072,16 @@ class EH_withGroupAndOptions_class(EH_withGroupInfo_class):
                                          - maxTotalStarHomeScore) + \
                               '+' + locale.str(maxTotalStarHomeScore) + '*'
             elif bDisplayMC:
-                maxRow += locale.str(maxTotalMCScore)
+                if maxTotalMCScore < maxTotalStarMCScore:
+                    maxRow += '?'
+                elif maxTotalStarMCScore == 0:
+                    maxRow += locale.str(maxTotalMCScore)
+                elif maxTotalMCScore == maxTotalStarMCScore:
+                    maxRow += locale.str(maxTotalMCScore) + '*'
+                else:
+                    maxRow += locale.str(maxTotalMCScore
+                                         - maxTotalStarMCScore) + \
+                              '+' + locale.str(maxTotalStarMCScore) + '*'
             maxRow += "</td>"
             out.write( '<table class="detailedscoretable">\n' )
             out.write( '<thead>\n' )

@@ -9,7 +9,7 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id$'
+CVS = '$Id: Exercises.py 558 2007-04-16 12:35:07Z luebeck $'
 
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
@@ -114,6 +114,7 @@ class Sheet(Utils.WithNiceRepr):
                      # the following four lists have equal length:
     maxhomescore=-1  # maximal number of of points in homework
     starhomescore=0  # maximal number of points for optional homework exercises
+    starmcscore=0    # maximal number of points for optional mc exercises
     list = []        # sequence of TeXTexts (for texts between exercises) or 
                      # pairs of TeXTexts (for written exercises) or 
                      # Exercise objects
@@ -1308,6 +1309,17 @@ def MakeSheet(t):
             sh.starhomescore = 0
     else:
         sh.starhomescore = 0
+    if t[1].has_key('starmcscore'):
+        try:
+            sh.starmcscore = int(t[1]['starmcscore'])
+        except:
+            Utils.Error('Value of "starmcscore" attribute is no integer: '+
+                        t[1]['starmcscore'].encode('ISO-8859-1','replace')+ 
+                        ' at '+Utils.StrPos(t[3])+'\nAssuming "0"',
+                        prefix='Warning:')
+            sh.starmcscore = 0
+    else:
+        sh.starmcscore = 0
 
     counter = sh.first
     for a in t[2]:

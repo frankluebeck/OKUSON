@@ -4,36 +4,40 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: sheet.dtd,v 1.4 2004/03/03 14:35:16 neunhoef Exp $ -->
+<!-- $Id: sheet.dtd 251 2004-03-03 14:35:16Z neunhoef $ -->
 
 <!ELEMENT SHEETS (SHEET)*>
 
 <!ELEMENT SHEET (EXERCISE | INCLUDE | TEXT)*>
 <!-- attributes:
-                counts     should be a number
-                nr         a number for sorting the sheets
-                name       a name of the sheet, default is nr
-                first      number of first exercise
-                magic      goes into seed for random
-                openfrom   time when the sheet is made public, format as
-                           for 'opento' (optional, default -infinity)
-                opento     time to submit at latest, in format:  
-                             HH:mm_DD.MM.YYYY, Hour, minute, day, month, year
+                counts        should be a number
+                nr            a number for sorting the sheets
+                name          a name of the sheet, default is nr
+                first         number of first exercise
+                magic         goes into seed for random
+                openfrom      time when the sheet is made public, format as
+                              for 'opento' (optional, default -infinity)
+                opento        time to submit at latest, in format:  
+                              HH:mm_DD.MM.YYYY, Hour, minute, day, month, year
                 maxhomescore  maximal number of points in homework part
                               (mandatory + optional exercises), no default
                 starhomescore maximal number of points for optional homework
                               exercises (default is 0, i.e. all homework
                               exercises are treated as mandatory)
+                starmcscore   maximal number of points for optional mc
+                              exercises (default is 0, i.e. all mc exercises
+                              are treated as mandatory)
 -->
-<!ATTLIST SHEET counts       CDATA #IMPLIED 
-                nr           CDATA #REQUIRED 
-                name         CDATA #IMPLIED
-                first        CDATA #IMPLIED 
-                magic        CDATA #IMPLIED
-                openfrom     CDATA #IMPLIED
-                opento       CDATA #REQUIRED
-                maxhomescore CDATA #IMPLIED
-                starhomescore CDATA #IMPLIED> 
+<!ATTLIST SHEET counts        CDATA #IMPLIED 
+                nr            CDATA #REQUIRED 
+                name          CDATA #IMPLIED
+                first         CDATA #IMPLIED 
+                magic         CDATA #IMPLIED
+                openfrom      CDATA #IMPLIED
+                opento        CDATA #REQUIRED
+                maxhomescore  CDATA #IMPLIED
+                starhomescore CDATA #IMPLIED
+                starmcscore   CDATA #IMPLIED>
 
 <!ELEMENT EXERCISE EMPTY>
 <!-- attributes:
