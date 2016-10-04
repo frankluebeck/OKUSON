@@ -1080,6 +1080,21 @@ one Person object as data.'''
             m = self.p.messages[i]
             out.write('<p><input type="checkbox" name="msg'+str(i)+
                       '" value="+" />'+m+'</p>\n')
+    def handle_ExtensionCode( self, node, out ):
+        extensionName = ''
+        try:
+            extensionName = node[1]['name'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <ExtensionCode /> tag without "name" '
+                         'attribute. Ignoring.', prefix='Warning: ' )
+            return
+        # get arguments of the element
+        options = {}
+        options["<id>"] = [self.p.id]
+        for k, v in node[1].iteritems():
+            if k != 'name':
+                options[k] = [ v.encode( 'ISO-8859-1', 'replace' ) ]
+        out.write( Plugins.extensionCode( extensionName, options ) )
 
 def QueryRegChange(req,onlyhead):
     '''This function is called when a user asks to change his registration. 
