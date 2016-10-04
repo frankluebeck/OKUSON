@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sed -e 's/href="\//href="/' $1 |
+  sed -e 's/action="\//action="/' |
+  sed -e 's/<head>/<head><link rel="shortcut icon" href="favicon.ico" \/>/' \
+    > TEMPFILE
+touch -r $1 TEMPFILE
+mv TEMPFILE $1
+
