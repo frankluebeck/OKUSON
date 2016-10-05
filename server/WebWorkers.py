@@ -1271,6 +1271,7 @@ a Person object and a Sheet object as data.'''
     s = None    # here we store the concrete sheet data
     r = 100     # resolution
     iamadmin = 0  # Flag, whether admin password was given
+    mathjax = 0 # default is no MathJax
     def __init__(self,p,s,r):
         self.p = p
         self.s = s
@@ -1298,12 +1299,30 @@ a Person object and a Sheet object as data.'''
     def handle_HiddenNameOfSheet(self,node,out):
         out.write('<input type="hidden" name="sheet" value="'+self.s.name+
                   '" />\n')
+    def handle_IfHTML(self,node,out):  # this is HTML with images, no MathJax
+        if not self.mathjax:
+            # Write out tree recursively:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
+    def handle_IfMathJax(self,node,out):  # this is HTML with MathJax
+        if self.mathjax:
+            # Write out tree recursively:
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
     def handle_WebSheetTable(self,node,out):
         if self.p.mcresults.has_key(self.s.name):
             self.s.WebSheetTable(self.r,Utils.SeedFromId(self.p.id),out,
                                  self.p.mcresults[self.s.name])
         else:
             self.s.WebSheetTable(self.r,Utils.SeedFromId(self.p.id),out,None)
+    def handle_WebSheetTableMathJax(self,node,out):
+        if self.p.mcresults.has_key(self.s.name):
+            self.s.WebSheetTableMathJax(self.r,Utils.SeedFromId(self.p.id),out,
+                                 self.p.mcresults[self.s.name])
+        else:
+            self.s.WebSheetTableMathJax(self.r,Utils.SeedFromId(self.p.id),out,None)
     def handle_OpenTo(self,node,out):
         out.write(LocalTimeString(self.s.opento, format = Config.conf['DateTimeFormat']))
     def handle_OpenFrom(self,node,out):
@@ -1484,7 +1503,7 @@ def QuerySheet(req,onlyhead):
         # Check cookie:
         iamadmin = Authenticate(None,req,onlyhead)
 
-    format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF"
+    format = req.query.get('format',['HTML'])[0]  # Can be "HTML" or "PDF" or "MathJax"
     sheetname = req.query.get('sheet',[''])[0].strip()  # the name of a sheet
     # Search for this name among sheet names:
     l = Exercises.SheetList()
@@ -1529,6 +1548,13 @@ def QuerySheet(req,onlyhead):
         handler.iamadmin = iamadmin
         Utils.Error('['+LocalTimeString()+'] id '+id+', sheet '+
                     sheet[2].name+' as HTML', prefix='QuerySheet: ')
+        return Delegate('/sheet.html',req,onlyhead,handler,addheader)
+    elif format == 'MathJax':
+        handler = EH_withPersSheet_class(p,sheet[2],resolution)
+        handler.iamadmin = iamadmin
+        handler.mathjax = 1
+        Utils.Error('['+LocalTimeString()+'] id '+id+', sheet '+
+                    sheet[2].name+' as HTML with MathJax', prefix='QuerySheet: ')
         return Delegate('/sheet.html',req,onlyhead,handler,addheader)
     elif format == 'PDF':
         # Collect placeholder values in dictionary

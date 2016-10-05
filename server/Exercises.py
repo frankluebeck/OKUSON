@@ -381,6 +381,164 @@ otherwise.'''
         f.write('</table>\n')
         return 0
 
+    def WebSheetTableMathJax(self,resolution,seed,f,mcresult):
+        '''Creates an xhtml table for the web version without images 
+but with LaTeX code for MathJax of the sheet with seed "seed" and writes
+the result to the Python file object f. f is *not* closed in the end.
+"mcresult" must be either None or equal to the latest mcresult of the
+participant as found in the database. In this case it is an instance of
+the class MCResult in Data.py. "seed" must be a unique integer that is
+determined by the "id" of the participant. Returns 0 if all went well and
+a negative error code otherwise.'''
+        choice = self.ChooserFunction(seed)
+
+        # are we before or after the closing date?
+        closed = self.IsClosed()
+
+        if mcresult != None:
+            sub = AsciiData.TupleLine(mcresult.submission,delimiter='|')
+            marks = mcresult.marks
+        else:
+            sub = None
+            marks = None
+
+        counter = 0   # we count questions to index sub and marks
+
+        # Write Table heading:
+        # relative widths of columns
+        widths = [ 
+                  int(100.0*(Config.conf['WidthOfSheetsHTML'] - 
+                      Config.conf['WidthOfExerciseTextsHTML']) /
+                      Config.conf['WidthOfSheetsHTML']),
+                  int(100.0*Config.conf['WidthOfQuestionsHTML'] /
+                      Config.conf['WidthOfSheetsHTML']) ]
+        widths.append(100-widths[0]-widths[1])
+        
+        f.write('<table border="1">\n')
+        f.write('<colgroup>\n'
+                '  <col width="'+str(widths[0])+'%" />\n'
+                '  <col width="'+str(widths[1])+'%" />\n'
+                '  <col width="'+str(widths[2])+'%" />\n'
+                '</colgroup>\n')
+
+        # walk through the list:
+        for i in range(len(self.list)):
+            o = self.list[i]
+            if isinstance(o,TeXText):
+                f.write('<tr><td colspan="3">')
+                f.write(CleanString(CleanStringTeXComments(o.text)))
+                f.write('</td>\n</tr>\n')
+            elif type(o) == types.TupleType and isinstance(o[0],TeXText):
+                # a conventional exercise
+                if closed:
+                    o = o[1]   # the version with solution
+                else:
+                    o = o[0]   # the version without solution
+                # a conventional exercise
+                f.write('<tr><td align="center" valign="top">'
+                        '%d</td>\n' % self.exnr[i])
+                f.write('    <td colspan="2" valign="top">')
+                f.write('%s</td>\n</tr>\n'%
+                        (CleanString(CleanStringTeXComments(o.text))))
+            elif isinstance(o,Exercise):
+                f.write('<tr><td align="center" valign="top">'
+                        '%d</td>\n' % self.exnr[i])
+                firstcolDone = 1
+                # Now we have to write an exercise, first the prefix:
+                if isinstance(o.list[0], TeXText):
+                    f.write('    <td colspan="2" valign="top">')
+                    f.write('%s</td>\n</tr>\n'%
+                        (CleanString(CleanStringTeXComments(o.list[0].text))))
+                    firstcolDone = 0
+
+                # Now we collect all questions:
+                l = choice[i]
+                # Now we write out the questions:
+                for j,k in l:
+                    if not(firstcolDone): f.write('<tr><td></td>\n')
+                    
+                    q = o.list[j]
+                    f.write('    <td valign="top">')
+                    f.write('%s</td>\n' %
+                      (CleanString(CleanStringTeXComments(q.variants[k].text))))
+                    f.write('    <td valign="top">')
+                    if q.type == 'r':
+                        checked = 0  # flag, whether something is checked
+                        for a in q.answers:
+                            ch = ''
+                            if sub and a == sub[counter]:
+                                # student selected this last time
+                                ch = 'checked="checked"'
+                                checked = 1
+                            f.write(('\n      <input type="radio" name="%s" '
+                                     'value="%s" %s/> %s / ') % 
+                                    ('B'+self.name+'Q'+str(counter),a,ch,a))
+                        if not(checked):
+                            ch = 'checked="checked" '
+                        else:
+                            ch = ''
+                        f.write(('\n      <input type="radio" name="%s" '
+                                 'value="---" %s/> - ') % 
+                                ('B'+self.name+'Q'+str(counter),ch))
+                    elif q.type == 'c':
+                        checked = 0  # flag, whether something is checked
+                        if sub:
+                            checkeditems=AsciiData.TupleLine(sub[counter],
+                                                             delimiter=',')
+                        for a in q.answers:
+                            ch = ''
+                            if sub and a in checkeditems:
+                                ch = 'checked="checked" '
+                                checked = 1
+                            f.write(('\n      <input type="checkbox" '
+                                     'name="%s" value="+" %s/> %s /') % 
+                                    ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
+                        ch = ''
+                        if (sub and '' in checkeditems) or not(sub):
+                            ch = 'checked="checked" '
+                        f.write(('\n      <input type="checkbox" name="%s" '
+                                 'value="+" %s/> - ') % 
+                                ('B'+self.name+'Q'+str(counter),ch))
+                    else:  # type is string:
+                        if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
+                        else: ch = 'value = "" '
+                        f.write('<input size="12" maxlength="'+
+                                str(Config.conf['MaxStringInputLength'])+'" '+
+                                'name="%s" %s/> ' %
+                                ('B'+self.name+'Q'+str(counter),ch))
+                    if closed and type(q.solutions[k]) == types.ListType:
+                        # We do not write out regular expressions!
+                        f.write('<span class="ergplus">['+
+                                string.join(q.solutions[k],',')+
+                                ']</span>')
+                    if marks and \
+                       (closed or Config.conf['InteractiveMode'] != 0):
+                        f.write('<span class=')
+                        if marks[counter] == '+':
+                            f.write('"ergplus">&nbsp;&nbsp;('+
+                                    str(q.scorecorrect)+')')
+                        elif marks[counter] == '-':
+                            f.write('"ergminus">&nbsp;&nbsp;('+
+                                    str(q.scorewrong)+')')
+                        else:
+                            f.write('"ergnull">&nbsp;&nbsp;(0)')
+                        f.write('</span>\n')
+                    f.write('</td>\n</tr>\n')
+                    firstcolDone = 0
+
+                    counter += 1
+
+                # Now the postfix:
+                if isinstance(o.list[-1],TeXText):
+                    f.write('<tr><td></td>\n    <td colspan="2">')
+                    f.write('%s</td>\n' %
+                         (CleanString(CleanStringTeXComments(o.list[-1].text))))
+                    f.write('</tr>\n')
+
+        # Write Table end:
+        f.write('</table>\n')
+        return 0
+
     def AcceptSubmission(self,p,seed,query):
         '''Accepts a submission from the web page. p is an object of
 type Person. The seed is the seed for the current person and the query

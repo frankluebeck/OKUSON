@@ -6,6 +6,11 @@
     <meta http-equiv="Expires" content="now" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
+    <IfMathJax>
+      <script type="text/javascript"
+              src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      </script>
+    </IfMathJax>
 
     <link href="OKUSONSheet.css" type="text/css" rel="StyleSheet" />
 
@@ -41,8 +46,12 @@
      </div>
      </IfIndividualSheets>
      
-     <WebSheetTable />
-     
+     <IfHTML>
+       <WebSheetTable />
+     </IfHTML>
+     <IfMathJax>
+       <WebSheetTableMathJax />
+     </IfMathJax>
      <IfIndividualSheets>
      <IfOpen>
       <p>Passwort:
