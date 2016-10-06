@@ -39,6 +39,12 @@ pid = os.fork()
 if pid == 0:
     time.sleep(0.5)   # Let the parent get hold of the log file
     os.kill(int(spid), signal.SIGUSR1)
+    try:
+      # generate a request such that server notices the signal
+      u = urllib.urlopen('http://localhost:'+str(Config.conf['Port'])+'/')
+      u.close()
+    except:
+      pass
     print 'Sent server with PID '+spid+' a USR1 signal.'
     sys.exit(0)  # Terminate this child process
 
