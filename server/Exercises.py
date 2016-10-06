@@ -104,6 +104,17 @@ def CleanStringTeXComments(s):
     # concatenate and clean XML characters
     return string.join(sp, '\n')
 
+def LaTeXToHTML(s):
+    try:
+        inp,out = os.popen2('iconv -f latin1 -t utf8 | pandoc -f latex -t html --mathjax --ascii')
+        inp.write(s)
+        inp.close()
+        res = out.read()
+        out.close()
+    except:
+        res = s
+    return res
+
 class Sheet(Utils.WithNiceRepr):
     openfrom = None  # time when sheet is published (None == -infinity)
     opento = 0       # time until sheet is open in secs since epoche
@@ -426,7 +437,7 @@ a negative error code otherwise.'''
             o = self.list[i]
             if isinstance(o,TeXText):
                 f.write('<tr><td colspan="3">')
-                f.write(CleanString(CleanStringTeXComments(o.text)))
+                f.write(LaTeXToHTML(CleanStringTeXComments(o.text)))
                 f.write('</td>\n</tr>\n')
             elif type(o) == types.TupleType and isinstance(o[0],TeXText):
                 # a conventional exercise
@@ -439,7 +450,7 @@ a negative error code otherwise.'''
                         '%d</td>\n' % self.exnr[i])
                 f.write('    <td colspan="2" valign="top">')
                 f.write('%s</td>\n</tr>\n'%
-                        (CleanString(CleanStringTeXComments(o.text))))
+                        (LaTeXToHTML(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
                 f.write('<tr><td align="center" valign="top">'
                         '%d</td>\n' % self.exnr[i])
@@ -448,7 +459,7 @@ a negative error code otherwise.'''
                 if isinstance(o.list[0], TeXText):
                     f.write('    <td colspan="2" valign="top">')
                     f.write('%s</td>\n</tr>\n'%
-                        (CleanString(CleanStringTeXComments(o.list[0].text))))
+                        (LaTeXToHTML(CleanStringTeXComments(o.list[0].text))))
                     firstcolDone = 0
 
                 # Now we collect all questions:
@@ -460,7 +471,7 @@ a negative error code otherwise.'''
                     q = o.list[j]
                     f.write('    <td valign="top">')
                     f.write('%s</td>\n' %
-                      (CleanString(CleanStringTeXComments(q.variants[k].text))))
+                      (LaTeXToHTML(CleanStringTeXComments(q.variants[k].text))))
                     f.write('    <td valign="top">')
                     if q.type == 'r':
                         checked = 0  # flag, whether something is checked
@@ -532,7 +543,7 @@ a negative error code otherwise.'''
                 if isinstance(o.list[-1],TeXText):
                     f.write('<tr><td></td>\n    <td colspan="2">')
                     f.write('%s</td>\n' %
-                         (CleanString(CleanStringTeXComments(o.list[-1].text))))
+                         (LaTeXToHTML(CleanStringTeXComments(o.list[-1].text))))
                     f.write('</tr>\n')
 
         # Write Table end:
