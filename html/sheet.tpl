@@ -16,9 +16,24 @@
 
     <title>Übungsblatt <SheetName /></title>
   </head>
-
   <body>
+
+<IfMathJax> <!--  put here some macro definitions you want to use in
+                  formulae in exercises -->
+<p class="hidden">
+\(
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\Q{\mathbb{Q}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\F{\mathbb{F}}
+\)
+</p>
+</IfMathJax>
+
     <Header />
+
     <h1>Übungsblatt <SheetName /></h1>
 
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
