@@ -6,6 +6,11 @@
     <meta http-equiv="Expires" content="now" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
+    <IfMathJax>
+      <script type="text/javascript"
+              src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+      </script>
+    </IfMathJax>
 
     <link href="OKUSONSheet.css" type="text/css" rel="StyleSheet" />
 
@@ -13,6 +18,21 @@
   </head>
 
   <body>
+
+<IfMathJax> <!--  put here some macro definitions you want to use in
+                  formulae in exercises -->
+<p class="hidden">
+\(
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\Q{\mathbb{Q}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\F{\mathbb{F}}
+\)
+</p>
+</IfMathJax>
+
     <Header />
     <h1>Sheet <SheetName /></h1>
 
@@ -41,7 +61,12 @@
      </div>
      </IfIndividualSheets>
      
-     <WebSheetTable />
+     <IfHTML>
+       <WebSheetTable />
+     </IfHTML>
+     <IfMathJax>
+       <WebSheetTableMathJax />
+     </IfMathJax>
      
      <IfIndividualSheets>
      <IfOpen>
