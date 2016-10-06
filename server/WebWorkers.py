@@ -1550,12 +1550,13 @@ def QuerySheet(req,onlyhead):
                     sheet[2].name+' as HTML', prefix='QuerySheet: ')
         return Delegate('/sheet.html',req,onlyhead,handler,addheader)
     elif format == 'MathJax':
+        resolution = Config.conf['Resolutions'][0]   # needed in next line
         handler = EH_withPersSheet_class(p,sheet[2],resolution)
         handler.iamadmin = iamadmin
         handler.mathjax = 1
         Utils.Error('['+LocalTimeString()+'] id '+id+', sheet '+
                     sheet[2].name+' as HTML with MathJax', prefix='QuerySheet: ')
-        return Delegate('/sheet.html',req,onlyhead,handler,addheader)
+        return Delegate('/sheet.html',req,onlyhead,handler,[])
     elif format == 'PDF':
         # Collect placeholder values in dictionary
         values = {}
