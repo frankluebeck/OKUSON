@@ -30,9 +30,15 @@ H3 {
   font-size: 100%;
 }
 
+p.hidden {
+  display: none;
+}
+
 table {
   border: 2pt solid #444444;
   padding: 3pt;
+  font-family: Times, serif;
+  font-size: 120%;
 }
 
 td.right {
