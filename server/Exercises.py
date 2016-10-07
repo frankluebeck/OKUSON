@@ -425,7 +425,7 @@ a negative error code otherwise.'''
                       Config.conf['WidthOfSheetsHTML']) ]
         widths.append(100-widths[0]-widths[1])
         
-        f.write('<table border="1">\n')
+        f.write('<table class="mathjaxtable" border="1">\n')
         f.write('<colgroup>\n'
                 '  <col width="'+str(widths[0])+'%" />\n'
                 '  <col width="'+str(widths[1])+'%" />\n'
