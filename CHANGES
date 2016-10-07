@@ -10,6 +10,21 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.3-fix1 to 1.4
+
+* Introduced StarMCScore similar to the existing StarHomeScore
+  (provided by Sebastian Thomas).
+* Changed all links in sample web pages and programs to relative ones.
+  This allows to put an OKUSON server behind a proxy server, e.g.,
+  'nginx' configured for https-access (passwords and data are transferred
+  encrypted).
+* Introduced an experimental MathJax mode for the exercise sheets. 
+  This is not offered by default, uncomment in html/exquery.tpl.
+  When this is used it may be necessary to change some LaTeX exercise code
+  such that it leads to a sensible translation to HTML (see manual section
+  "MathJax support").
+* Some smaller changes in CSS layout.
+
 Changes from 1.3 to 1.3-fix1
 
 * make it impossible to guess the cookie of an logged in administrator
