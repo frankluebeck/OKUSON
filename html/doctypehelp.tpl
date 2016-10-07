@@ -31,6 +31,11 @@
           <a href="http://www.foolabs.com/xpdf/">xpdf</a> 
           (Unix/X-Window-Oberfläche). Diese Version eignet sich am
           Besten zum Ausdrucken.</dd>
+      <dt>MathJax</dt><dd>(Experimentell, ist bei Ihnen eventuell nicht
+          verfügbar). Die Aufgaben werden durch HTML Code statt mit Bildern
+          dargestellt (wie im HTML-Format oben). Ihr Browser muss 
+          JavaScript unterstützen, um die Formeln korrekt darstellen zu
+          können (mit der MathJax Software).</dd>
     </dl>
  
     <p>Benutzen Sie den "Zurück"-Knopf Ihres Browsers.</p>

@@ -30,6 +30,12 @@ To display this format you need a PDF viewer like for example
           <a href="http://www.foolabs.com/xpdf/">xpdf</a> 
           (Unix/X-Window desktop). This version is suitable for
 printing.  </dd>
+      <dt>MathJax</dt><dd>(Experimental, may not be provided in your
+          server) Exercises are not displayed via images (as in 
+          the HTML-format above), but as HTML code. You need a browser with
+          JavaScript support to render the formulae correctly (with a
+          software called MathJax).
+          </dd>
     </dl>
  
     <p>Please use the Back button of your browser.</p>
