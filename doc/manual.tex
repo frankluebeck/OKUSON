@@ -15,6 +15,7 @@
 \setlength{\emergencystretch}{2em}
 
 \newcommand{\OKUSON}{\textsf{OKUSON}}
+\newcommand{\MathJax}{\textsf{MathJax}}
 
 \begin{document}
 \title{\Huge \textbf {\OKUSON} Manual}
@@ -1498,6 +1499,8 @@ number of \texttt{optional} points among all points (see \texttt{maxhomescore}).
 ``Optional'' points are not considered not mandatory and might be given
 for particularly difficult exercises. This is used only for statistical
 purposes.
+\item[\texttt{starmcscore}] (optional, default empty) 
+same as \texttt{starhomescore}, but for online exercises.
 \end{description}
 
 The content of a \texttt{SHEET} element is a sequence of any number of 
@@ -1792,6 +1795,10 @@ with number $X$.
 \item[\texttt{<IfNotExamRegistered nr="X">...</IfNotExamRegistered>}]
 content is only typeset if the participant has not registered for the exam
 with number $X$.
+\item[\texttt{<IfHTML>...</IfHTML>}] and \item[\texttt{<IfMathJax>...</IfMathJax>}]
+only useful in \texttt{html/sheet.tpl}; the first is for the display of
+sheets with images for the exercise texts and the second for sheets with
+exercises in HTML coding with MathJax.
 \end{description}
 
 \subsection{Special Elements in Pages Containing Personal
@@ -1976,6 +1983,47 @@ document the helper elements here. They are almost self explaining or else
 look in the code. If you want more functions in the admin menu, please, tell us
 about them. Maybe they are of general interest and we want to add them to
 the {\OKUSON} package.
+
+\section{\MathJax{} support}
+
+(Experimental!)
+
+It is possible to deliver exercise sheets where the exercise texts are
+encoded in HTML and such that the formulae are rendered by \MathJax{}
+(\texttt{https://www.mathjax.org/}). To enable this feature you just need to
+offer it to the participants in the file \texttt{html/exquery.tpl}, search
+for the string "MathJax" and uncomment as you wish.
+
+This feature can only be used with graphical browsers with JavaScript
+enabled.
+
+To make it work you need the programs \texttt{iconv} and \texttt{pandoc} on
+the machine that runs the \OKUSON{}  server. (The first is probably there, the
+second can probably be installed via the package manager of your linux
+distribution.)
+
+The advantage of this alternative to display the exercise sheets is that the
+exercise texts can flow according to the current display, in particular this
+is a first step to make the sheet pages more readable on mobile devices with
+small screen.
+
+The disadvantage is that you can no longer use almost arbitrary \LaTeX{} in
+your exercise texts. You need to check carefully for all exercises if 
+\texttt{pandoc} translates it to sensible HTML code, and if not you need to 
+change your exercise texts. 
+
+For the \OKUSON{}  author's exercises this doesn't seem difficult because
+except for maths formulae only a few \LaTeX{} constructs are used
+(simple \texttt{itemize}, \texttt{enumerate} and \texttt{description}
+environment, simple macros like \texttt{\textbackslash emph}, 
+\texttt{\textbackslash textrm},
+umlauts are written in latin1 encoding).
+
+You can use your own macros, but have to define them in the
+\texttt{html/sheet.tpl} template, there are some examples given.
+
+Feedback on this feature is welcome, also hints to a more flexible \LaTeX{}
+to HTML converter program.
 
 \chapter{Administration via the Web Interface}
 \label{ch:adminpages}
