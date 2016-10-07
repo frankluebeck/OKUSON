@@ -44,10 +44,15 @@
     <td><select name="format" tabindex="10000">
     <IfIndividualSheets>
         <option selected="selected">HTML</option>
+        <!--  Uncomment one of these lines for MathJax option:  -->
+        <!-- <option selected="selected">HTML</option> -->
+        <!-- <option>MathJax</option> -->
         <option>PDF</option>
     </IfIndividualSheets>
     <IfNoIndividualSheets>
         <option>HTML</option>
+        <!--  Uncomment for MathJax option:  -->
+        <!-- <option>MathJax</option> -->
         <option selected="selected">PDF</option>
     </IfNoIndividualSheets>
     </select></td></tr>
