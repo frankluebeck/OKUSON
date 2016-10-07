@@ -89,6 +89,12 @@ hr {
   width: 75%;
 }
 
+span.erg {
+  color: green;
+  text-align: right;
+  font-weight: bold;
+}
+
 span.ergplus {
   color: green;
   text-align: right;
@@ -106,6 +112,47 @@ span.ergnull {
   text-align: right;
   font-weight: bold;
 }
+
+/*  alternative display of resulting points:
+span.ergplus {
+  color: green;
+  text-align: right;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+span.ergplus:before {
+  content: " (r)";
+  visibility: visible;
+  color: green;
+}
+
+span.ergminus {
+  color: red;
+  text-align: right;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+span.ergminus:before {
+  content: " (f)";
+  visibility: visible;
+  color: red;
+}
+
+span.ergnull {
+  color: #FFA500;
+  text-align: right;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+span.ergnull:before {
+  content: " (-)";
+  visibility: visible;
+  color: #FFA500; 
+}
+*/
 
 img {
   border: 0pt;
