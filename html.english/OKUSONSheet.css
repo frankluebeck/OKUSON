@@ -37,8 +37,32 @@ p.hidden {
 table {
   border: 2pt solid #444444;
   padding: 3pt;
+}
+
+table.mathjaxtable {
+  border: 2pt solid #444444;
+  padding: 1pt;
+  border-collapse: collapse;
   font-family: Times, serif;
   font-size: 120%;
+}
+
+table.mathjaxtable td {
+  padding-left: 0.5ex;
+  padding-right: 0.5ex;
+  padding-top: 0pt;
+  padding-bottom: 0pt;
+}
+
+table.mathjaxtable td dt {
+  float: left;
+  clear: left;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+table.mathjaxtable td dd {
+  margin-left: 1ex;
 }
 
 td.right {
