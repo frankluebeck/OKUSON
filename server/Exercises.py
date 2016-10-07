@@ -360,7 +360,7 @@ otherwise.'''
                                 ('B'+self.name+'Q'+str(counter),ch))
                     if closed and type(q.solutions[k]) == types.ListType:
                         # We do not write out regular expressions!
-                        f.write('<span class="ergplus">['+
+                        f.write('<span class="erg">['+
                                 string.join(q.solutions[k],',')+
                                 ']</span>')
                     if marks and \
