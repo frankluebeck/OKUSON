@@ -2,14 +2,11 @@ Small HOWTO for releasing versions.
 
 0) Change VERSION file.
 1) Maybe adjust UPGRADE file.
-2) Tag the whole tree with: (after everything being commited!)
-     svn cp $SVNREP/okuson/trunk $SVNREP/okuson/tags/tag-1r2
-   This works completely in the repository!
-     The environment variable SVNREP must be set to 
-     svn://thuban.math.rwth-aachen.de/home2/thuban/svnuser
-3) Export the whole tree (somewhere else) with:
-     svn export $SVNREP/okuson/tags/tag-1r2 okuson
-     (this generates a directory "okuson" in the current directory).
+2) Maybe make a new git branch for the release version.
+3) Clone git repository for building the archive:
+     mkdir ../build
+     cd ../build
+     git clone -b rel1.4 ../okuson
 4) Go to this new directory:
    cd okuson
 5) Make archive:
@@ -20,14 +17,3 @@ Small HOWTO for releasing versions.
    Use 'cd website; cptoweb' to update the web site.
 7) Inform interested user.
 
-
-------------------------------------------------------------------------------
-Backup:
-   Old version for cvs for step 2, not used any longer:
-
-   cvs tag -F tag-1r1       (or tag-1r1f2)
-           ^ This forces tags even to files which are already tagged with
-             this tag!
-   Old version for cvs for step 3, not used any longer:
-
-   cvs -d :pserver:neunhoef@antares.math.rwth-aachen.de:2401/home/antares/neunhoef/cvsrepository export -r tag-1r1 okuson

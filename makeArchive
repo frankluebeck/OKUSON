@@ -1,17 +1,11 @@
 #!/bin/sh
 # Part of the OKUSON project
-# Copyright (C) 2003 by Frank Lübeck and Max Neunhöffer
+# Copyright (C) 2003-2016 by Frank Lübeck and Max Neunhöffer
 
 # This script is used to make a zipped tar archive with the distribution
 # and a pdf version of the manual outside this directory. For this
 # purpose the whole CVS tree should be exported and this script be run
 # in this exported directory.
-
-# Safety check:
-if [ -x .svn ] ; then
-  echo Please execute me only in an exported tree, not in a checked out one.
-  exit 0
-fi
 
 # Delete the internal examples and test tools:
 rm -rf test
@@ -35,7 +29,7 @@ mkdir html
 mkdir html/images
 
 # Cut the log file and throw away project devel/selling utilities
-rm -rf log/server.log website poster HOWTORELEASE TODO `find . -name .cvsignore`
+rm -rf log/server.log website poster HOWTORELEASE TODO `find . -name .git`
 # new archives should not override log files:   touch log/server.log
 
 # Release only empty files:

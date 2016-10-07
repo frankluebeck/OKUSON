@@ -1,59 +1,14 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON 1.1-fix5 
-                                             to OKUSON 1.2-fix1:
+ This file describes the upgrade procedure from OKUSON < 1.4
+                                             to OKUSON 1.4
 ===============================================================================
 
-$Id: UPGRADE,v 1.22 2006/10/16 09:58:39 luebeck Exp $
+It is not easy and not recommended to upgrade from earlier versions to 1.4.
 
-(If you have already installed OKUSON 1.2 successfully there is probably no
-reason to upgrade to 1.2-fix1.)
+If you are interested in one of the new features of 1.4 (possibility
+of proxy server, MathJax), please make a new install with 1.4.
 
-Just stop the server, unpack the new archive over your installation and
-restart the server:
+Otherwise not much has changed since 1.3-fix1.
 
-  cd okuson
-  ./stop
-  cd ..
-  tar xzvf okuson-1.2-fix1.tar.gz
-  cd okuson
-  ./start
-
-Unpacking the archive does *not* overwrite the following customizable files:
-  html/*
-  Config.xml
-  data/*.txt
-
-Note that there are 3 new configuration options in Config.xml, namely:
-  MCScoreCorrectDefault
-  MCScoreWrongDefault
-  MCScoreExerciseLowerLimitDefault
-
-However, they have sensible default values, such that an old Config.xml
-will still work as before.
-
-There is a changed template file in html.sample:
-  adminmenu.tpl
-You should copy this to your html directory:
-  cp html.sample/adminmenu.tpl html
-
-There are a number of new template files in html.sample:
-  errors/unknownextension.tpl
-  publicstatistics.tpl
-  tutorextensions.tpl
-  highscoretable.tpl
-  extension.tpl
-
-You have to copy these files to the html directory, if you want to use some
-of the new plugins (see below).
-
-If you have applied any patches to the server programs, make sure to 
-reapply them.
-
-If you want to use any of the new plugins, you will have to activate them
-by copying things from server/plugins.sample to server/plugins. For specific
-plugins see doc/plugins for further instructions.
-
-Have fun!
-
-  Frank Lübeck and Max Neunhöffer
+  Frank Lübeck
 
