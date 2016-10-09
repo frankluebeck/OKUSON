@@ -273,7 +273,7 @@ otherwise.'''
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,TeXText):
-                f.write('<tr><td colspan="3">')
+                f.write('<tr><td class="sheettext" colspan="3">')
                 f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                         (os.path.join(imagesdir,o.md5sum),
                          CleanString(CleanStringTeXComments(o.text))))
@@ -284,19 +284,19 @@ otherwise.'''
                 else:
                     o = o[0]   # the version without solution
                 # a conventional exercise
-                f.write('<tr><td align="center" valign="top">'
+                f.write('<tr><td class="exnr">'
                         '%d</td>\n' % self.exnr[i])
-                f.write('    <td colspan="2" valign="top">')
+                f.write('    <td colspan="2" class="extext">')
                 f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                         (os.path.join(imagesdir,o.md5sum),
                          CleanString(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
-                f.write('<tr><td align="center" valign="top">'
+                f.write('<tr><td class="exnr">'
                         '%d</td>\n' % self.exnr[i])
                 firstcolDone = 1
                 # Now we have to write an exercise, first the prefix:
                 if isinstance(o.list[0], TeXText):
-                    f.write('    <td colspan="2" valign="top">')
+                    f.write('    <td colspan="2" class="extext">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n</tr>\n'%
                         (os.path.join(imagesdir,o.list[0].md5sum),
                          CleanString(CleanStringTeXComments(o.list[0].text))))
@@ -306,14 +306,14 @@ otherwise.'''
                 l = choice[i]
                 # Now we write out the questions:
                 for j,k in l:
-                    if not(firstcolDone): f.write('<tr><td></td>\n')
+                    if not(firstcolDone): f.write('<tr class="nonr"><td></td>\n')
                     
                     q = o.list[j]
-                    f.write('    <td valign="top">')
+                    f.write('    <td class="question">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
                       (os.path.join(imagesdir,q.variants[k].md5sum),
                        CleanString(CleanStringTeXComments(q.variants[k].text))))
-                    f.write('    <td valign="top">')
+                    f.write('    <td class="answers">')
                     if q.type == 'r':
                         checked = 0  # flag, whether something is checked
                         for a in q.answers:
@@ -322,15 +322,15 @@ otherwise.'''
                                 # student selected this last time
                                 ch = 'checked="checked"'
                                 checked = 1
-                            f.write(('\n      <input type="radio" name="%s" '
-                                     'value="%s" %s/> %s / ') % 
+                            f.write(('\n      <label><input type="radio" name="%s" '
+                                     'value="%s" %s/> %s</label> / ') % 
                                     ('B'+self.name+'Q'+str(counter),a,ch,a))
                         if not(checked):
                             ch = 'checked="checked" '
                         else:
                             ch = ''
-                        f.write(('\n      <input type="radio" name="%s" '
-                                 'value="---" %s/> - ') % 
+                        f.write(('\n      <label><input type="radio" name="%s" '
+                                 'value="---" %s/> - </label>') % 
                                 ('B'+self.name+'Q'+str(counter),ch))
                     elif q.type == 'c':
                         checked = 0  # flag, whether something is checked
@@ -342,14 +342,14 @@ otherwise.'''
                             if sub and a in checkeditems:
                                 ch = 'checked="checked" '
                                 checked = 1
-                            f.write(('\n      <input type="checkbox" '
-                                     'name="%s" value="+" %s/> %s /') % 
+                            f.write(('\n      <label><input type="checkbox" '
+                                     'name="%s" value="+" %s/> %s</label> /') % 
                                     ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
                         if (sub and '' in checkeditems) or not(sub):
                             ch = 'checked="checked" '
-                        f.write(('\n      <input type="checkbox" name="%s" '
-                                 'value="+" %s/> - ') % 
+                        f.write(('\n      <label><input type="checkbox" name="%s" '
+                                 'value="+" %s/> -</label> ') % 
                                 ('B'+self.name+'Q'+str(counter),ch))
                     else:  # type is string:
                         if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
@@ -382,7 +382,7 @@ otherwise.'''
 
                 # Now the postfix:
                 if isinstance(o.list[-1],TeXText):
-                    f.write('<tr><td></td>\n    <td colspan="2">')
+                    f.write('<tr><td class="nonr"></td>\n    <td colspan="2" class="extext">')
                     f.write('<img src="%s.png" alt="%s" /></td>\n' %
                          (os.path.join(imagesdir,o.list[-1].md5sum),
                           CleanString(CleanStringTeXComments(o.list[-1].text))))
@@ -436,7 +436,7 @@ a negative error code otherwise.'''
         for i in range(len(self.list)):
             o = self.list[i]
             if isinstance(o,TeXText):
-                f.write('<tr><td colspan="3">')
+                f.write('<tr><td colspan="3" class="sheettext">')
                 f.write(LaTeXToHTML(CleanStringTeXComments(o.text)))
                 f.write('</td>\n</tr>\n')
             elif type(o) == types.TupleType and isinstance(o[0],TeXText):
@@ -446,18 +446,18 @@ a negative error code otherwise.'''
                 else:
                     o = o[0]   # the version without solution
                 # a conventional exercise
-                f.write('<tr><td align="center" valign="top">'
-                        '%d</td>\n' % self.exnr[i])
-                f.write('    <td colspan="2" valign="top">')
+                f.write('<tr><td class="exnr">'
+                        '<p>%d</p></td>\n' % self.exnr[i])
+                f.write('    <td colspan="2" class="extext">')
                 f.write('%s</td>\n</tr>\n'%
                         (LaTeXToHTML(CleanStringTeXComments(o.text))))
             elif isinstance(o,Exercise):
-                f.write('<tr><td align="center" valign="top">'
-                        '%d</td>\n' % self.exnr[i])
+                f.write('<tr><td class="exnr">'
+                        '<p>%d</p></td>\n' % self.exnr[i])
                 firstcolDone = 1
                 # Now we have to write an exercise, first the prefix:
                 if isinstance(o.list[0], TeXText):
-                    f.write('    <td colspan="2" valign="top">')
+                    f.write('    <td colspan="2" class="extext">')
                     f.write('%s</td>\n</tr>\n'%
                         (LaTeXToHTML(CleanStringTeXComments(o.list[0].text))))
                     firstcolDone = 0
@@ -466,13 +466,13 @@ a negative error code otherwise.'''
                 l = choice[i]
                 # Now we write out the questions:
                 for j,k in l:
-                    if not(firstcolDone): f.write('<tr><td></td>\n')
+                    if not(firstcolDone): f.write('<tr><td class="nonr"></td>\n')
                     
                     q = o.list[j]
-                    f.write('    <td valign="top">')
+                    f.write('    <td class="question">')
                     f.write('%s</td>\n' %
                       (LaTeXToHTML(CleanStringTeXComments(q.variants[k].text))))
-                    f.write('    <td valign="top">')
+                    f.write('    <td class="answers"><p>')
                     if q.type == 'r':
                         checked = 0  # flag, whether something is checked
                         for a in q.answers:
@@ -481,15 +481,15 @@ a negative error code otherwise.'''
                                 # student selected this last time
                                 ch = 'checked="checked"'
                                 checked = 1
-                            f.write(('\n      <input type="radio" name="%s" '
-                                     'value="%s" %s/> %s / ') % 
+                            f.write(('\n      <label><input type="radio" name="%s" '
+                                     'value="%s" %s/> %s</label> / ') % 
                                     ('B'+self.name+'Q'+str(counter),a,ch,a))
                         if not(checked):
                             ch = 'checked="checked" '
                         else:
                             ch = ''
-                        f.write(('\n      <input type="radio" name="%s" '
-                                 'value="---" %s/> - ') % 
+                        f.write(('\n      <label><input type="radio" name="%s" '
+                                 'value="---" %s/> -</label> ') % 
                                 ('B'+self.name+'Q'+str(counter),ch))
                     elif q.type == 'c':
                         checked = 0  # flag, whether something is checked
@@ -501,14 +501,14 @@ a negative error code otherwise.'''
                             if sub and a in checkeditems:
                                 ch = 'checked="checked" '
                                 checked = 1
-                            f.write(('\n      <input type="checkbox" '
-                                     'name="%s" value="+" %s/> %s /') % 
+                            f.write(('\n      <label><input type="checkbox" '
+                                     'name="%s" value="+" %s/> %s</label> /') % 
                                     ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
                         if (sub and '' in checkeditems) or not(sub):
                             ch = 'checked="checked" '
-                        f.write(('\n      <input type="checkbox" name="%s" '
-                                 'value="+" %s/> - ') % 
+                        f.write(('\n      <label><input type="checkbox" name="%s" '
+                                 'value="+" %s/> -</label> ') % 
                                 ('B'+self.name+'Q'+str(counter),ch))
                     else:  # type is string:
                         if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
@@ -519,7 +519,7 @@ a negative error code otherwise.'''
                                 ('B'+self.name+'Q'+str(counter),ch))
                     if closed and type(q.solutions[k]) == types.ListType:
                         # We do not write out regular expressions!
-                        f.write('<span class="ergplus">['+
+                        f.write('<span class="erg">['+
                                 string.join(q.solutions[k],',')+
                                 ']</span>')
                     if marks and \
@@ -534,14 +534,14 @@ a negative error code otherwise.'''
                         else:
                             f.write('"ergnull">&nbsp;&nbsp;(0)')
                         f.write('</span>\n')
-                    f.write('</td>\n</tr>\n')
+                    f.write('</p></td>\n</tr>\n')
                     firstcolDone = 0
 
                     counter += 1
 
                 # Now the postfix:
                 if isinstance(o.list[-1],TeXText):
-                    f.write('<tr><td></td>\n    <td colspan="2">')
+                    f.write('<tr><td></td>\n    <td colspan="2" class="extext">')
                     f.write('%s</td>\n' %
                          (LaTeXToHTML(CleanStringTeXComments(o.list[-1].text))))
                     f.write('</tr>\n')

@@ -61,12 +61,29 @@ table.mathjaxtable td dt {
   font-weight: bold;
 }
 
+table.mathjaxtable td p {
+  margin-top: 0.7ex;
+  margin-bottom: 0.7ex;
+}
+
 table.mathjaxtable td dd {
   margin-left: 1ex;
 }
 
+table td {
+  vertical-align: top;
+}
+
+table td.exnr {
+  text-align: center;
+}
+
 td.right {
   text-align: right;
+}
+
+td.answers label {
+  white-space: nowrap;
 }
 
 p.foot {
