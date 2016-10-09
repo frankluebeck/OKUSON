@@ -33,7 +33,7 @@ XMLRewrite.PreparsedXMLWebResponse.begin = \
 '''
 
 ValidatorIconText = '''<a href="http://validator.w3.org/check/referer">
-<img src="/images/valid-xhtml10.png" alt="Valid XHTML 1.0!" 
+<img src="images/valid-xhtml10.png" alt="Valid XHTML 1.0!" 
      height="31" width="88" /></a>
 '''
 # Make the main site dictionary available here:
@@ -1430,11 +1430,11 @@ class EH_withSheetVariant_class(EH_withPersSheet_class):
             out.write('</table>')
             out.write('<p>This is the question:</p>\n')
             if questionText != None:
-                out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>'
+                out.write('<p><img src="images/%s/%s.png" alt="%s" /></p>'
                     % ('96dpi', str(questionText.md5sum),
                         Exercises.CleanString(
                             Exercises.CleanStringTeXComments(questionText.text))))
-            out.write('<p><img src="/images/%s/%s.png" alt="%s" /></p>' 
+            out.write('<p><img src="images/%s/%s.png" alt="%s" /></p>' 
                 % ('96dpi', str(variantText.md5sum), 
                    Exercises.CleanString(
                      Exercises.CleanStringTeXComments(variantText.text))))
@@ -1779,7 +1779,7 @@ def DistributionTable(num, maxPts, list):
                 count = list[i]
             else:
                 count = 0
-            row1 += '<td><img src="/images/red.png" alt="" width="10px" '\
+            row1 += '<td><img src="images/red.png" alt="" width="10px" '\
                     'height="' + str(count * scalefactor) + 'px" /></td>'
             row2 += '<td>%d</td>' % count
             try:
@@ -2184,7 +2184,7 @@ def ScoreDiagram( scores, maxScore, numIntervals ):
             scalefactor = 1
         for i in range( numIntervals ):
             count = counts[i]
-            row1 += '<td><img src="/images/red.png" alt="" width="20px" '\
+            row1 += '<td><img src="images/red.png" alt="" width="20px" '\
                     'height="' + str(count * scalefactor) + 'px" /></td>'
             row2 += '<td>%d</td>' % count
             try:
