@@ -365,15 +365,24 @@ otherwise.'''
                                 ']</span>')
                     if marks and \
                        (closed or Config.conf['InteractiveMode'] != 0):
+                        resstr = ['('+str(q.scorecorrect)+')', 
+                                  '('+str(q.scorewrong)+')', " (0)"]
+                        if Config.conf.has_key('StringCorrectAnswer') \
+                           and len(Config.conf['StringCorrectAnswer']) > 0:
+                          resstr[0] = Config.conf['StringCorrectAnswer']
+                        if Config.conf.has_key('StringWrongAnswer') \
+                           and len(Config.conf['StringWrongAnswer']) > 0:
+                          resstr[1] = Config.conf['StringWrongAnswer']
+                        if Config.conf.has_key('StringNoAnswer') \
+                           and len(Config.conf['StringNoAnswer']) > 0:
+                          resstr[2] = Config.conf['StringNoAnswer']
                         f.write('<span class=')
                         if marks[counter] == '+':
-                            f.write('"ergplus">&nbsp;&nbsp;('+
-                                    str(q.scorecorrect)+')')
+                            f.write('"ergplus">&nbsp;&nbsp;'+resstr[0])
                         elif marks[counter] == '-':
-                            f.write('"ergminus">&nbsp;&nbsp;('+
-                                    str(q.scorewrong)+')')
+                            f.write('"ergminus">&nbsp;&nbsp;'+resstr[1])
                         else:
-                            f.write('"ergnull">&nbsp;&nbsp;(0)')
+                            f.write('"ergnull">&nbsp;&nbsp;'+resstr[2])
                         f.write('</span>\n')
                     f.write('</td>\n</tr>\n')
                     firstcolDone = 0
@@ -524,15 +533,24 @@ a negative error code otherwise.'''
                                 ']</span>')
                     if marks and \
                        (closed or Config.conf['InteractiveMode'] != 0):
+                        resstr = ['('+str(q.scorecorrect)+')', 
+                                  '('+str(q.scorewrong)+')', " (0)"]
+                        if Config.conf.has_key('StringCorrectAnswer') \
+                           and len(Config.conf['StringCorrectAnswer']) > 0:
+                          resstr[0] = Config.conf['StringCorrectAnswer']
+                        if Config.conf.has_key('StringWrongAnswer') \
+                           and len(Config.conf['StringWrongAnswer']) > 0:
+                          resstr[1] = Config.conf['StringWrongAnswer']
+                        if Config.conf.has_key('StringNoAnswer') \
+                           and len(Config.conf['StringNoAnswer']) > 0:
+                          resstr[2] = Config.conf['StringNoAnswer']
                         f.write('<span class=')
                         if marks[counter] == '+':
-                            f.write('"ergplus">&nbsp;&nbsp;('+
-                                    str(q.scorecorrect)+')')
+                            f.write('"ergplus">&nbsp;&nbsp;'+resstr[0])
                         elif marks[counter] == '-':
-                            f.write('"ergminus">&nbsp;&nbsp;('+
-                                    str(q.scorewrong)+')')
+                            f.write('"ergminus">&nbsp;&nbsp;'+resstr[1])
                         else:
-                            f.write('"ergnull">&nbsp;&nbsp;(0)')
+                            f.write('"ergnull">&nbsp;&nbsp;'+resstr[2])
                         f.write('</span>\n')
                     f.write('</p></td>\n</tr>\n')
                     firstcolDone = 0

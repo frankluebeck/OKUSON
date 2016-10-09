@@ -52,6 +52,9 @@ Parameters = {
   "MCScoreCorrectDefault":    ["INT",0],
   "MCScoreWrongDefault":      ["INT",0],
   "MCScoreExerciseLowerLimitDefault":["INT",0],
+  "StringCorrectAnswer":      ["STRING",0],
+  "StringWrongAnswer":        ["STRING",0],
+  "StringNoAnswer":           ["STRING",0],
   "KeptData":                 ["LIST",1],
   "EMailHeaderFunction":      ["STRING",1],
 

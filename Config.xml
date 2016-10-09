@@ -308,6 +308,15 @@ def Grade(p,examnr):
 0
 </MCScoreExerciseLowerLimitDefault>
 
+<!-- Here you can optionally configure the strings printed in the Web
+     sheets for correct/wrong/not given answers.
+     If empty, the default is to print the score as specified in the
+     previous settings.  -->
+<StringCorrectAnswer></StringCorrectAnswer>
+<StringWrongAnswer></StringWrongAnswer>
+<StringNoAnswer></StringNoAnswer>
+
+
 <!-- By default we allow to change any personal data except the id.
      Here it is possible to disallow changing of some fields (for
      example because they were imported from somewhere else).

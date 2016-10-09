@@ -40,6 +40,10 @@
 <!ELEMENT MCScoreCorrectDefault (#PCDATA)>
 <!ELEMENT MCScoreWrongDefault (#PCDATA)>
 <!ELEMENT MCScoreExerciseLowerLimitDefault (#PCDATA)>
+<!ELEMENT StringCorrectAnswer (#PCDATA)>
+<!ELEMENT StringWrongAnswer (#PCDATA)>
+<!ELEMENT StringNoAnswer (#PCDATA)>
+
 <!-- a container for extra data, use the 'key' attribute: -->
 <!ELEMENT ConfigData (#PCDATA)>
 <!ATTLIST ConfigData key CDATA #REQUIRED>
