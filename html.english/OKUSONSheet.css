@@ -61,12 +61,29 @@ table.mathjaxtable td dt {
   font-weight: bold;
 }
 
+table.mathjaxtable td p {
+  margin-top: 0.7ex;
+  margin-bottom: 0.7ex;
+}
+
 table.mathjaxtable td dd {
   margin-left: 1ex;
 }
 
+table td {
+  vertical-align: top;
+}
+
+table td.exnr {
+  text-align: center;
+}
+
 td.right {
   text-align: right;
+}
+
+td.answers label {
+  white-space: nowrap;
 }
 
 p.foot {
@@ -113,48 +130,6 @@ span.ergnull {
   font-weight: bold;
 }
 
-/*  alternative display of resulting points:
-span.ergplus {
-  color: green;
-  text-align: right;
-  font-weight: bold;
-  visibility: hidden;
-}
-
-span.ergplus:before {
-  content: " (r)";
-  visibility: visible;
-  color: green;
-}
-
-span.ergminus {
-  color: red;
-  text-align: right;
-  font-weight: bold;
-  visibility: hidden;
-}
-
-span.ergminus:before {
-  content: " (f)";
-  visibility: visible;
-  color: red;
-}
-
-span.ergnull {
-  color: #FFA500;
-  text-align: right;
-  font-weight: bold;
-  visibility: hidden;
-}
-
-span.ergnull:before {
-  content: " (-)";
-  visibility: visible;
-  color: #FFA500; 
-}
-*/
-
 img {
   border: 0pt;
 }
-/*  $Id: OKUSONSheet.css,v 1.4 2005/11/02 14:11:52 neunhoef Exp $  */ 
