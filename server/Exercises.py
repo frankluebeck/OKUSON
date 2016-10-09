@@ -846,23 +846,25 @@ of the sheet with seed "seed" and returns the result as a string.
                     f.write(('\\begin{minipage}[t]{'+woq+\
                      '}%s\\vspace{1mm}\\end{minipage} & ') \
                      % string.strip(CleanStringTeXComments(q.variants[k].text)))
+                    f.write('\\begin{minipage}[t]{'+woansw+\
+                            '}\\raggedright\n')
                     if q.type == 'r':
                         for a in q.answers:
-                            f.write('\\ $\\bigcirc$ %s ' % a)
+                            f.write(' $\\bigcirc$~%s ' % a)
                             if a != q.answers[-1]:
                                 f.write(' / ')
                     elif q.type == 'c':
                         for a in q.answers:
-                            f.write('\\ $\\Box$ %s ' % a)
+                            f.write(' $\\Box$~%s ' % a)
                             if a != q.answers[-1]:
                                 f.write(' / ')
                     else:  # type is string:
                         f.write('\\rule[-5pt]{'+woansw+\
                                 '}{0.5pt}\\rule{5mm}{0mm} ')
                     if j != l[-1][0] or k != l[-1][1]:
-                        f.write('\\\\\n\\cline{2-3}\n   & ')
+                        f.write('\\vspace{1mm}\\end{minipage} \\\\\n\\cline{2-3}\n   & ')
                     else:
-                        f.write('\\\\\n\\hline\n')
+                        f.write('\\vspace{1mm}\\end{minipage} \\\\\n\\hline\n')
 
                 # Now the postfix:
                 if isinstance(o.list[-1],TeXText):
