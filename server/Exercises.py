@@ -354,7 +354,7 @@ otherwise.'''
                     else:  # type is string:
                         if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
                         else: ch = 'value = "" '
-                        f.write('<input size="12" maxlength="'+
+                        f.write('<input class="string" maxlength="'+
                                 str(Config.conf['MaxStringInputLength'])+'" '+
                                 'name="%s" %s/> ' %
                                 ('B'+self.name+'Q'+str(counter),ch))
@@ -522,7 +522,7 @@ a negative error code otherwise.'''
                     else:  # type is string:
                         if sub: ch = 'value = "'+CleanQuotes(sub[counter])+'" '
                         else: ch = 'value = "" '
-                        f.write('<input size="12" maxlength="'+
+                        f.write('<input class="string" maxlength="'+
                                 str(Config.conf['MaxStringInputLength'])+'" '+
                                 'name="%s" %s/> ' %
                                 ('B'+self.name+'Q'+str(counter),ch))

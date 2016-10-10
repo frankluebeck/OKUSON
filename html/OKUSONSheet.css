@@ -86,6 +86,10 @@ td.answers label {
   white-space: nowrap;
 }
 
+form.sheet input.string {
+  width: 80%;
+}
+
 p.foot {
   font-size: 0.8em
 }

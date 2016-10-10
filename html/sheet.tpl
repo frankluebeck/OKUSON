@@ -54,7 +54,7 @@
     </p>
     </IfIndividualSheets>
 
-    <form action="SubmitSheet" method="post">
+    <form action="SubmitSheet" method="post" class="sheet">
      <IfIndividualSheets>
      <div>
      <HiddenIdOfPerson />
