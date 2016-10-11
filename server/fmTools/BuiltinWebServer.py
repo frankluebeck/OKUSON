@@ -420,9 +420,11 @@ otherwise self.query is {}. self.path is the path.'''
         The client host and current date/time are prefixed to
         every message.
         """
-
-        msg = ("%s - - [%s] %s - User-Agent: %s" % 
-           (self.address_string(), self.log_date_time_string(), format%args,
+        origaddr = self.headers.getheader('X-Real-IP', '')
+        if len(origaddr) > 0:
+            origaddr = '('+origaddr+') '
+        msg = ("%s %s- - [%s] %s - User-Agent: %s" % 
+           (self.address_string(), origaddr, self.log_date_time_string(), format%args,
             self.headers.getheader('User-Agent')))
         Utils.Error(msg,"Log:")
 
