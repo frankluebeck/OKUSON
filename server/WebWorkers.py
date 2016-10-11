@@ -190,7 +190,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write('Nobody logged in. ')
     def AdminPasswdField( self ):
         if currentcookie == None:
-            return ( '<input type="password" size="16" maxlength="16" '
+            return ( '<input type="password" class="pw" maxlength="16" '
                      'name="passwd" value="" />\n' )
         else:
             return ''
@@ -366,7 +366,7 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
     def handle_PersonDataField(self,node,out):
         try:
           key = node[1]['key'].encode('ISO-8859-1','replace')
-          out.write('<input size="16" maxlength="256" name="persondata.' + \
+          out.write('<input class="long" maxlength="256" name="persondata.' + \
                   key+'" value="" />')
         except:
           #pass
@@ -747,12 +747,12 @@ one Person object as data.'''
     def handle_LastName(self,node,out):
         out.write(CleanWeb(str(self.p.lname)))
     def handle_LastNameField(self,node,out):
-        out.write('<input size="30" maxlength="30" name="lname" value="'+
+        out.write('<input class="short" maxlength="30" name="lname" value="'+
                   CleanQuotes(self.p.lname)+'" />')
     def handle_FirstName(self,node,out):
         out.write(CleanWeb(str(self.p.fname)))
     def handle_FirstNameField(self,node,out):
-        out.write('<input size="30" maxlength="30" name="fname" value="'+
+        out.write('<input class="short" maxlength="30" name="fname" value="'+
                   CleanQuotes(self.p.fname)+'" />')
     def handle_PersonData(self, node, out):
         try:
@@ -762,7 +762,7 @@ one Person object as data.'''
     def handle_PersonDataField(self,node,out):
         try:
           key = node[1]['key'].encode('ISO-8859-1','replace')
-          out.write('<input size="30" maxlength="256" name="persondata.' + \
+          out.write('<input class="long" maxlength="256" name="persondata.' + \
                   key+'" value="'+ \
                   CleanQuotes(self.p.persondata.get(key,''))+'" />')
         except:
@@ -842,7 +842,7 @@ one Person object as data.'''
     def handle_Topic(self,node,out):
         out.write(CleanWeb(str(self.p.stud)))
     def handle_TopicField(self,node,out):
-        out.write('<input size="18" maxlength="30" name="topic" value="')
+        out.write('<input class="short" maxlength="50" name="topic" value="')
         found = 0
         for i in xrange(len(Config.conf['PossibleStudies'])):
             opt = Config.conf['PossibleStudies'][i]
@@ -855,13 +855,13 @@ one Person object as data.'''
     def handle_Sem(self,node,out):
         out.write(str(self.p.sem))
     def handle_SemesterField(self,node,out):
-        out.write('<input size="2" maxlength="2" name="sem" value="'+
+        out.write('<input class="digits" maxlength="2" name="sem" value="'+
                   str(self.p.sem)+'" />')
     def handle_Group(self,node,out):
         out.write(str(self.p.group))
     def handle_GroupField(self,node,out):
         if Config.conf['GroupChangePossible']:
-            out.write('<input size="3" maxlength="3" name="groupnr" value="'+
+            out.write('<input class="digits" maxlength="3" name="groupnr" value="'+
                   str(self.p.group)+'" />')
         else:
             out.write(str(self.p.group))
@@ -901,12 +901,12 @@ one Person object as data.'''
     def handle_Email(self,node,out):
         out.write(CleanWeb(str(self.p.email)))
     def handle_EmailField(self,node,out):
-        out.write('<input size="30" maxlength="80" name="email" value="'+
+        out.write('<input class="long" maxlength="80" name="email" value="'+
                   CleanQuotes(self.p.email)+'" />')
     def handle_Wishes(self,node,out):
         out.write(CleanWeb(str(self.p.wishes)))
     def handle_WishesField(self,node,out):
-        out.write('<input size="30" maxlength="80" name="wishes" value="'+
+        out.write('<input class="long" maxlength="80" name="wishes" value="'+
                   CleanQuotes(self.p.wishes)+'" />')
     def handle_Results(self,node,out):
         # Check attributes if interactive and/or homework exercises are

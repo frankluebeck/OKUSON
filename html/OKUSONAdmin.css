@@ -48,7 +48,12 @@ p.pcenter {
 }
 
 a:visited {
-  color: #FF0000;
+  //color: #FF0000;
+}
+
+input.pw {
+  max-width="16";
+  width="80%";
 }
 
 a:hover {

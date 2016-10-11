@@ -28,7 +28,7 @@
 
     <form action="AdminLogin" method="post">
      <p>Administratorpasswort:
-     <input type="password" size="16" maxlength="16" name="passwd" value="" />
+     <input type="password" class="pw" maxlength="16" name="passwd" value="" />
      <input type="submit" name="action" value="Login" />
     </p></form>
      

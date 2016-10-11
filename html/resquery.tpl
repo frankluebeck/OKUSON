@@ -28,12 +28,12 @@ Blättern abrufen, deren Abgabefrist bereits abgelaufen ist.</p>
   <table>
     <tr>
       <td>Matrikelnummer:</td>
-      <td> <input size="8" maxlength="6" name="id" value="" /> </td>
+      <td> <input class="short" maxlength="6" name="id" value="" /> </td>
     </tr>
 
     <tr>
       <td>Passwort:</td>
-      <td> <input type="password" size="16" maxlength="16" name="passwd"
+      <td> <input type="password" class="short" maxlength="16" name="passwd"
         value="" />
       </td>
     </tr>

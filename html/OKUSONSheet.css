@@ -137,3 +137,20 @@ span.ergnull {
 img {
   border: 0pt;
 }
+
+input short {
+  max-width: 30;
+  width: 80%;
+}
+
+input long {
+  max-width: 30;
+  width: 80%;
+}
+
+input digits {
+  max-width: 3;
+  width: 80%;
+}
+
+

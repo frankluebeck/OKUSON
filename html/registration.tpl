@@ -25,7 +25,7 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
 </p>
 
 <form action="SubmitRegistration" method="post">
-  <table>
+  <table class="regdata">
     <tr>
       <td> <strong>Notwendige Angaben:</strong> </td>
       <td></td>
@@ -33,17 +33,17 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
 
     <tr>
       <td>Matrikelnummer:</td>
-      <td> <input size="8" maxlength="6" name="id" value="" /> </td>
+      <td> <input class="short" maxlength="6" name="id" value="" /> </td>
     </tr>
 
     <tr>
       <td>Nachname:</td>
-      <td> <input size="30" maxlength="30" name="lname" value="" /> </td>
+      <td> <input class="short" maxlength="30" name="lname" value="" /> </td>
     </tr>
 
     <tr>
       <td>Vorname:</td>
-      <td> <input size="30" maxlength="30" name="fname" value="" /> </td>
+      <td> <input class="short" maxlength="30" name="fname" value="" /> </td>
     </tr>
 
     <tr>
@@ -51,19 +51,19 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
       <td> <select name="stud">
              <PossibleStudies />
            </select>
-        <input size="18" maxlength="30" name="topic" value="" />
+        <input class="short" maxlength="30" name="topic" value="" />
         (falls "Sonstiges:").
       </td>
     </tr>
 
     <tr>
       <td>Fachsemester:</td>
-      <td> <input size="2" maxlength="2" name="sem" value="" /> </td>
+      <td> <input class="digits" maxlength="2" name="sem" value="" /> </td>
     </tr>
 
     <tr>
       <td>Passwort (<a href="hinwpasswd.html">HINWEIS</a>):</td>
-      <td> <input type="password" size="16" maxlength="16" name="passwd"
+      <td> <input type="password" class="short" maxlength="16" name="passwd"
         value="" />
       </td>
     </tr>
@@ -71,7 +71,7 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
     <tr>
       <td>Passwort nochmal:</td>
       <td>
-        <input type="password" size="16" maxlength="16" name="passwd2"
+        <input type="password" class="short" maxlength="16" name="passwd2"
         value="" />
       </td>
     </tr>
@@ -82,7 +82,7 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
     <!--
     <tr>
       <td>Übungsgruppennummer:</td>
-      <td> <input size="3" maxlength="3" name="groupnr" value="" /> </td>
+      <td> <input class="digits" maxlength="3" name="groupnr" value="" /> </td>
     </tr>
     -->
 
@@ -93,12 +93,12 @@ Ergebnissen brauchen Sie jeweils nur Ihre Matrikelnummer (ID) und Ihr Passwort.
 
     <tr>
       <td>Email:</td>
-      <td> <input size="30" maxlength="80" name="email" value="" /> </td>
+      <td> <input class="long" maxlength="80" name="email" value="" /> </td>
     </tr>
 
     <tr>
       <td>Einteilungswunsch:</td>
-      <td> <input size="30" maxlength="80" name="wishes" value="" /> </td>
+      <td> <input class="long" maxlength="80" name="wishes" value="" /> </td>
     </tr>
 
     <tr>

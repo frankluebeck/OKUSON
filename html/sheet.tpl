@@ -71,7 +71,7 @@
      <IfIndividualSheets>
      <IfOpen>
       <p>Passwort:
-         <input type="password" size="16" maxlength="16" name="passwd"
+         <input type="password" class="short" maxlength="16" name="passwd"
                 value="" />
          <input type="submit" value="Abgeben" name="action" />
       </p>

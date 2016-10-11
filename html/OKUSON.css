@@ -58,6 +58,10 @@ td.trenner {
   border-bottom: 3pt solid #444444;
 }
 
+table.regdata td {
+ vertical-align: top;
+}
+
 p.foot {
   font-size: 0.8em
 }
@@ -72,6 +76,21 @@ a:visited {
 
 a:hover {
   background-color: #AAAAAA;
+}
+
+input short {
+  max-width: 30;
+  width: 80%;
+}
+
+input long {
+  max-width: 30;
+  width: 80%;
+}
+
+input digits {
+  max-width: 3;
+  width: 80%;
 }
 
 hr {

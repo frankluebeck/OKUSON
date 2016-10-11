@@ -29,7 +29,7 @@ Ihr Passwort nicht ändern wollen.
 </p>
 
 <form action="SubmitRegChange" method="post">
-  <table>
+  <table class="regdata">
     <tr>
       <td> <strong>Notwendige Angaben:</strong> </td>
       <td></td>
@@ -77,14 +77,14 @@ Ihr Passwort nicht ändern wollen.
 
     <tr>
       <td>Neues Passwort (<a href="hinwpasswd.html">HINWEIS</a>):</td>
-      <td> <input type="password" size="16" maxlength="16" name="pw1"
+      <td> <input type="password" class="short" maxlength="16" name="pw1"
         value="" />
       </td>
     </tr>
 
     <tr>
       <td>Neues Passwort nochmal:</td>
-      <td> <input type="password" size="16" maxlength="16" name="pw2"
+      <td> <input type="password" class="short" maxlength="16" name="pw2"
         value="" />
       </td>
     </tr>
@@ -105,7 +105,7 @@ Ihr Passwort nicht ändern wollen.
     </tr>
 
     <tr>
-      <td>Passwort: <input type="password" size="16" maxlength="16" 
+      <td>Passwort: <input type="password" class="short" maxlength="16" 
                            name="passwd" value="" /></td>
       <td> <input type="submit" name="Action" value="Abschicken" /> </td>
     </tr>
