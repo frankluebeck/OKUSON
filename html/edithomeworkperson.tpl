@@ -54,5 +54,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkperson.tpl,v 1.9 2004/10/12 01:47:10 neunhoef Exp $ -->
+      -->
 

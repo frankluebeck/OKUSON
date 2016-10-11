@@ -4,8 +4,6 @@
 '''Implements locking via files in an NFS-safe way using "link" as
 atomic file system operation.'''
 
-CVS = '$Id: Lockfile.py,v 1.2 2005/12/14 16:34:43 neunhoef Exp $'
-
 ##########################################################################
 ##  
 ##                      AufgabenServer package

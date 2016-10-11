@@ -1,6 +1,5 @@
 #!/bin/sh
 ##  okusonarchive          packs whole backup into an archive
-##  $Id: okusonarchive,v 1.1 2003/10/20 23:34:29 luebeck Exp $
 
 BACKUPDIR="..."
 DIRNAME="..."

@@ -6,11 +6,6 @@
 """This  module implements a generic approach to building a web server into
 a Python application.
 """
-
-
-CVS = '$Id$'
-
-
 __version__ = "0.2"
 
 import SocketServer, BaseHTTPServer

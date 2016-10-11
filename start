@@ -3,7 +3,6 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: start,v 1.5 2003/10/05 21:16:03 neunhoef Exp $
 '''Start the OKUSON server and show logfile line until service is started.'''
 
 import sys,os,time

@@ -55,5 +55,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregistration.tpl,v 1.7 2005/10/12 15:44:46 luebeck Exp $ -->
+      -->
 

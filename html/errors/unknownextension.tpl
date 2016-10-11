@@ -36,5 +36,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: unknownextension.tpl,v 1.2 2006/08/18 16:09:43 ingo Exp $ -->
+      -->
 

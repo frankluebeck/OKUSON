@@ -4,8 +4,6 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: exercise.dtd,v 1.3 2006/10/03 03:53:28 neunhoef Exp $ -->
-
 <!ELEMENT EXERCISES (EXERCISE)*>
 <!ELEMENT EXERCISE (ANSWERS | TEXT | QUESTION)*>
 <!ATTLIST EXERCISE key CDATA #REQUIRED

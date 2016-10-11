@@ -48,5 +48,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: examregsucc.tpl,v 1.5 2005/10/12 15:44:46 luebeck Exp $ -->
+      -->
 

@@ -86,5 +86,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: techinfo.tpl,v 1.8 2004/10/06 10:26:44 neunhoef Exp $ -->
+      -->
 

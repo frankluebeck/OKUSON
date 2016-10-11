@@ -1,6 +1,5 @@
 #!/bin/sh
 ##  okusonsync       syncronizes an OKUSON installation using rsync
-##  $Id: okusonsync,v 1.1 2003/10/20 23:34:29 luebeck Exp $
 
 BACKUPDIR="..."
 ORIGSERVER="..."

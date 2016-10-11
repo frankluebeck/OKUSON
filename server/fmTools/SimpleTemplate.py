@@ -40,8 +40,6 @@ The rules tell that the string '(%' can be included in the result
 by '(%!(%%)' (provided there is no entry with key '' in  dict).
 """
 
-CVS = '$Id: SimpleTemplate.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $'
-
 import types, time, os, string
 import Utils
 

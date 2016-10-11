@@ -5,8 +5,6 @@
 '''This is the place where all data about participants of the course are
 administrated. This includes data about their results and submissions.'''
 
-CVS = '$Id$'
-
 import sys,os,string,threading
 
 import Config, Exercises

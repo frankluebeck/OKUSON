@@ -3,8 +3,6 @@
 # 
 #   Copyright (C) 2007 by  Frank Lübeck
 #  
-#   $Id:$
-#
 import sys,os,time
 
 # get paths right

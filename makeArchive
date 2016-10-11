@@ -4,7 +4,7 @@
 
 # This script is used to make a zipped tar archive with the distribution
 # and a pdf version of the manual outside this directory. For this
-# purpose the whole CVS tree should be exported and this script be run
+# purpose the whole git repository should be exported and this script be run
 # in this exported directory.
 
 # Delete the internal examples and test tools:

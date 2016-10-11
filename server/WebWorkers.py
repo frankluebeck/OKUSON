@@ -5,8 +5,6 @@
 
 '''This is the place where all special web services are implemented.'''
 
-CVS = '$Id: WebWorkers.py 612 2014-05-19 11:34:00Z luebeck $'
-
 import os,sys,time,locale,traceback,random,crypt,string,math
 import types,Cookie,signal,cStringIO
 

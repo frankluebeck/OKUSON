@@ -3,7 +3,6 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: xmlvalidate,v 1.4 2004/05/03 13:11:00 neunhoef Exp $
 
 import os, sys
 sys.path = [os.path.join(sys.path[0], 'server')] + sys.path

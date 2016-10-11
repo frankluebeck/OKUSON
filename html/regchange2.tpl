@@ -135,5 +135,5 @@ Ihr Passwort nicht ändern wollen.
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange2.tpl,v 1.7 2004/10/06 10:26:44 neunhoef Exp $ -->
+      -->
 

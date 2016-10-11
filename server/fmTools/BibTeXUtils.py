@@ -4,7 +4,6 @@
 # This file contains utilities to read in a BibXML-database and to generate
 # strings for BibTeX and BibXML versions of the entries.
 # 
-#  $Id: BibTeXUtils.py,v 1.2 2003/11/10 13:51:37 luebeck Exp $
 
 import types, string, re, popen2, os
 

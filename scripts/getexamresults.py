@@ -3,8 +3,6 @@
 #
 #   Copyright (C) 2007 by  Frank Lübeck
 #
-#   $Id:$
-#
 # This script is part of OKUSON.
 # It can be used to create the input of the exam results file
 #     data/exams.txt

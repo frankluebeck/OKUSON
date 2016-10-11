@@ -125,5 +125,5 @@ vorherigen Klausurteile zusammen mindestens 50 Punkte.</li>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: generalinfo.tpl,v 1.7 2004/10/06 10:26:44 neunhoef Exp $ -->
+      -->
 

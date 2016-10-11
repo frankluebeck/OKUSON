@@ -72,5 +72,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: groupoverview.tpl,v 1.6 2005/04/04 10:07:29 luebeck Exp $ -->
+      -->
 

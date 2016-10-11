@@ -57,5 +57,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: edithomeworkfree.tpl,v 1.1 2005/10/11 23:11:48 neunhoef Exp $ -->
+      -->
 

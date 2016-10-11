@@ -3,7 +3,6 @@
 #
 #   Copyright (C) 2010 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id:$
 
 from startNOSERVER import *
 import smtplib, time

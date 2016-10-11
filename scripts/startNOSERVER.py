@@ -3,7 +3,6 @@
 #
 #   Copyright (C) 2010 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id:$
 '''Start OKUSON without actually starting the webserver (for scripts
 which want to use the data from this server.
 '''

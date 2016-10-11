@@ -39,5 +39,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminextensions.tpl,v 1.1 2005/10/11 23:55:09 neunhoef Exp $ -->
+      -->
 

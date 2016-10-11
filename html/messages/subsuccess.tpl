@@ -46,5 +46,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: subsuccess.tpl,v 1.5 2004/10/06 10:26:45 neunhoef Exp $ -->
+      -->
 

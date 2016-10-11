@@ -10,8 +10,6 @@ will be imported:
   LineTuple, TupleLine, FileDescription, NewNode, TypeOfNode.
 '''
 
-CVS = '$Id: AsciiData.py,v 1.9 2006/03/23 15:22:57 ingo Exp $'
-
 import string, os, sys, types, exceptions, threading
 import Utils
 

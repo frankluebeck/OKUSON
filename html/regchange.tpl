@@ -60,5 +60,5 @@ von uns gespeicherten Daten abzurufen und zu ändern: </p>
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: regchange.tpl,v 1.4 2004/10/06 10:26:44 neunhoef Exp $ -->
+      -->
 

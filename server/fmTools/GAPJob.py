@@ -11,8 +11,6 @@ Basic usage:
    ReleaseGAPJob(job)   # give it back to the pool
 """
 
-CVS = '$Id: GAPJob.py,v 1.3 2005/11/05 01:19:24 luebeck Exp $'
-
 import os, sys, time, types, cStringIO, threading 
 
 # here is a list of strings, interpreted in strings in GAP input as

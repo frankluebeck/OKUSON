@@ -4,8 +4,6 @@
      Copyright 2001 Frank Lübeck and Max Neunhöffer
      ================================================================== -->
 
-<!-- $Id: sheet.dtd 251 2004-03-03 14:35:16Z neunhoef $ -->
-
 <!ELEMENT SHEETS (SHEET)*>
 
 <!ELEMENT SHEET (EXERCISE | INCLUDE | TEXT)*>

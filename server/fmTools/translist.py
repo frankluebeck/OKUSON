@@ -2,8 +2,6 @@
 ## translist.py                                           Frank Lübeck
 ## a translation to simplify text strings for searching
 ##
-##    $Id: translist.py,v 1.1 2003/10/06 13:01:06 luebeck Exp $
-##
 import string
 
 showtranslation = [

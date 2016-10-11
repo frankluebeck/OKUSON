@@ -10,8 +10,6 @@
 # elements and to rewrite the others essentially as they were read.
 #
 
-CVS = '$Id: XMLRewrite.py,v 1.5 2004/05/03 13:11:00 neunhoef Exp $'
-
 import os, sys, types, glob, pyRXPU, cStringIO, threading, traceback, string
 import Utils
 

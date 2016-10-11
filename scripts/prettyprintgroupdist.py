@@ -3,8 +3,6 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: prettyprintgroupdist.py,v 1.3 2004/05/02 12:29:10 neunhoef Exp $
-#
 # This script is part of OKUSON.
 #
 # It takes a file coming from the export of all people, sorted by group

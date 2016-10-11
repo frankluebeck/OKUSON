@@ -19,8 +19,6 @@ ShuffleList(l[, seed])
 that pseudo randomly permutes the entries of a list l in place.
 """
 
-CVS = '$Id: SimpleRand.py,v 1.4 2004/10/07 02:13:52 neunhoef Exp $'
-
 class RandObj:
   """RandObj([bound][, seed])
 returns an object that delivers via its .next() method a sequence of pseudo

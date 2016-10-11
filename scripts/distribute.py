@@ -3,8 +3,6 @@
 #
 #   Copyright (C) 2003 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: distribute.py,v 1.5 2004/05/02 12:29:10 neunhoef Exp $
-#
 # This script is part of OKUSON.
 #
 # It distributes people into tutoring groups, according to their wishes.

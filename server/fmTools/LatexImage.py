@@ -8,8 +8,6 @@ Basic usage:
   ShowImage(img)    # calls xloadimage, which must be available
 """
 
-CVS = '$Id: LatexImage.py,v 1.5 2004/11/26 11:40:30 luebeck Exp $'
-
 import sys, os, types, tempfile, shutil
 import Utils
 

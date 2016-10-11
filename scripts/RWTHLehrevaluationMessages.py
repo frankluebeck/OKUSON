@@ -3,8 +3,6 @@
 #
 #   Copyright (C) 2005 by  Frank Lübeck  and   Max Neunhöffer
 #
-#   $Id: RWTHLehrevaluationMessages.py,v 1.4 2006/06/21 12:17:24 luebeck Exp $
-#
 # This script is part of OKUSON.
 #
 

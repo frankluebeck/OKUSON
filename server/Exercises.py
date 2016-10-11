@@ -9,8 +9,6 @@
    Exercises.CreateAllImages('images')
 """
 
-CVS = '$Id: Exercises.py 558 2007-04-16 12:35:07Z luebeck $'
-
 import string, cStringIO, types, re, sys, os, types, glob, traceback, \
        pyRXPU, md5, time
 

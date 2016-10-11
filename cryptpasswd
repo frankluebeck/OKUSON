@@ -2,7 +2,6 @@
 # -*- coding: ISO-8859-1 -*-
 #  OKUSON Package
 #  Frank Lübeck and Max Neunhöffer
-# $Id: cryptpasswd,v 1.1 2003/09/23 08:14:40 neunhoef Exp $
  
 '''This little script helps to calculate encrypted administrator passwords.'''
 

@@ -85,5 +85,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: exquery.tpl,v 1.6 2004/10/06 10:26:44 neunhoef Exp $ -->
+      -->
 

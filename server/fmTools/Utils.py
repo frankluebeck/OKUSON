@@ -5,8 +5,6 @@
    ...
 """
 
-CVS = '$Id: Utils.py,v 1.5 2006/09/29 22:45:04 neunhoef Exp $'
-
 import string, sys, re, exceptions, traceback, types, time
 
 #

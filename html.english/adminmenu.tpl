@@ -228,5 +228,5 @@
 </html>
 
 <!-- Copyright 2003 Frank Lübeck and Max Neunhöffer
-     $Id: adminmenu.tpl,v 1.24 2006/06/21 12:19:16 luebeck Exp $ -->
+      -->
 
