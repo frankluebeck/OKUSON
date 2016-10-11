@@ -36,12 +36,12 @@ generate a personal set of questions for you.
 
     <tr>
       <td>ID:</td>
-      <td> <input size="12" maxlength="12" name="id" value="" /> </td>
+      <td> <input class="short" maxlength="12" name="id" value="" /> </td>
     </tr>
 
     <tr>
       <td>Password (<a href="hinwpasswd.html">NOTE</a>):</td>
-      <td> <input type="password" size="16" maxlength="16" name="passwd"
+      <td> <input type="password" class="short" maxlength="16" name="passwd"
         value="" />
       </td>
     </tr>
@@ -49,7 +49,7 @@ generate a personal set of questions for you.
     <tr>
       <td>Password again:</td>
       <td>
-        <input type="password" size="16" maxlength="16" name="passwd2"
+        <input type="password" class="short" maxlength="16" name="passwd2"
         value="" />
       </td>
     </tr>
@@ -61,12 +61,12 @@ generate a personal set of questions for you.
 
     <tr>
       <td>Last name:</td>
-      <td> <input size="30" maxlength="30" name="lname" value="" /> </td>
+      <td> <input class="short" maxlength="30" name="lname" value="" /> </td>
     </tr>
 
     <tr>
       <td>First names:</td>
-      <td> <input size="30" maxlength="30" name="fname" value="" /> </td>
+      <td> <input class="short" maxlength="30" name="fname" value="" /> </td>
     </tr>
 
     <tr>
@@ -74,14 +74,14 @@ generate a personal set of questions for you.
       <td> <select name="stud">
              <PossibleStudies />
            </select>
-        <input size="18" maxlength="30" name="topic" value="" />
+        <input class="short" maxlength="30" name="topic" value="" />
         (if "Other:").
       </td>
     </tr>
 
     <tr>
       <td>Year of studies:</td>
-      <td> <input size="2" maxlength="2" name="sem" value="" /> </td>
+      <td> <input class="digits" maxlength="2" name="sem" value="" /> </td>
     </tr>
 
     <!-- The following should be activated if you allow participants to
@@ -90,19 +90,19 @@ generate a personal set of questions for you.
     <!--
     <tr>
       <td>Übungsgruppennummer:</td>
-      <td> <input size="3" maxlength="3" name="groupnr" value="" /> </td>
+      <td> <input class="short" maxlength="3" name="groupnr" value="" /> </td>
     </tr>
     -->
 
     <tr>
       <td>Email:</td>
-      <td> <input size="30" maxlength="80" name="email" value="" /> </td>
+      <td> <input class="short" maxlength="80" name="email" value="" /> </td>
     </tr>
 
 <!--
     <tr>
       <td>Einteilungswunsch:</td>
-      <td> <input size="30" maxlength="80" name="wishes" value="" /> </td>
+      <td> <input class="short" maxlength="80" name="wishes" value="" /> </td>
     </tr>
 -->
 

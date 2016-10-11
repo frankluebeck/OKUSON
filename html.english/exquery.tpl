@@ -34,10 +34,10 @@
     <table>
     <IfIndividualSheets>
     <tr><td>Your ID: </td>
-    <td><input size="12"  maxlength="12" name="id" value="" 
+    <td><input class="short"  maxlength="12" name="id" value="" 
                tabindex="1"/></td></tr>
     <tr><td>Your password: </td>
-    <td><input type="password" size="16"
+    <td><input type="password" class="short"
                maxlength="16" name="passwd" value="" tabindex="2" /> </td></tr>
     </IfIndividualSheets>
     <tr><td>Document type:

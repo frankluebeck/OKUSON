@@ -38,21 +38,21 @@ new password empty to keep your old password.
     </tr>
 
     <tr>
-      <td>Password: <input type="password" size="16" maxlength="16" 
+      <td>Password: <input type="password" class="short" maxlength="16" 
                            name="passwd" value="" /></td>
       <td> <input type="submit" name="Action" value="Abschicken" /> </td>
     </tr>
 
     <tr>
       <td>New password (<a href="hinwpasswd.html">NOTE</a>):</td>
-      <td> <input type="password" size="16" maxlength="16" name="pw1"
+      <td> <input type="password" class="short" maxlength="16" name="pw1"
         value="" />
       </td>
     </tr>
 
     <tr>
       <td>New password again:</td>
-      <td> <input type="password" size="16" maxlength="16" name="pw2"
+      <td> <input type="password" class="short" maxlength="16" name="pw2"
         value="" />
       </td>
     </tr>

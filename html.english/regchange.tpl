@@ -26,12 +26,12 @@ have stored about you.</p>
   <table>
     <tr>
       <td>ID:</td>
-      <td> <input size="12" maxlength="12" name="id" value="" /> </td>
+      <td> <input class="short" maxlength="12" name="id" value="" /> </td>
     </tr>
 
     <tr>
       <td>Password:</td>
-      <td> <input type="password" size="16" maxlength="16" name="passwd"
+      <td> <input type="password" class="short" maxlength="16" name="passwd"
         value="" />
       </td>
     </tr>
