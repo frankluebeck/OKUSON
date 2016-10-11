@@ -623,9 +623,16 @@ and either send an error message or a report.'''
     # dictionary under key keyval.
     pdkeys = filter(lambda k: len(k) > 10 and k[:11] == 'persondata.', 
                     req.query.keys())
+    pdkeys = list(set(pdkeys))
     persondata = {}
     for k in pdkeys:
-        persondata[k[11:]] = req.query.get(k,[''])[0].strip()[:256]
+        # here we concatenate all values for a key by ;
+        val = ''
+        for a in req.query.get(k,['']):
+          more = a.strip()[:256]
+          if len(val)+len(more) <= 256:
+            val += (more+';')
+        persondata[k[11:]] = val[:-1]
 
     # Construct data line with encrypted password:
     salt = random.choice(LETTERS) + random.choice(LETTERS)
@@ -786,6 +793,8 @@ one Person object as data.'''
             val = node[1]['value'].encode('ISO-8859-1','replace')
             if len(name) > 10 and name[:11] == 'persondata.':
               known = str(self.p.persondata.get(name[11:],''))
+              if ';' in known and val in known.split(';'):
+                known = val
             else:
               try:
                 known = str(getattr(self.p, name))
@@ -1199,9 +1208,16 @@ and either send an error message or a report.'''
     # dictionary und key keyval.
     pdkeys = filter(lambda k: len(k) > 10 and k[:11] == 'persondata.', 
                     req.query.keys())
+    pdkeys = list(set(pdkeys))
     persondata = {}
     for k in pdkeys:
-        persondata[k[11:]] = req.query.get(k,[''])[0].strip()[:256]
+        # here we concatenate all values for a key by ;
+        val = ''
+        for a in req.query.get(k,['']):
+          more = a.strip()[:256]
+          if len(val)+len(more) <= 256:
+            val += (more+';')
+        persondata[k[11:]] = val[:-1]
 
     # overwrite data which cannot be changed
     if 'lname' in kept: lname = p.lname

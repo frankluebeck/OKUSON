@@ -1846,6 +1846,8 @@ custom data&persondata.xxx&
 \end{tabular}
 
 In the last row the \texttt{xxx} can be substituted by any string.
+If a web request contains several values of a key \texttt{persondata.xxx}
+then these values will be collected as semicolon separated strings.
 
 Concerning the main topic of studies, one can suggest some common entries
 which are specified in the configuration file, see the element
@@ -3440,40 +3442,32 @@ Getting this with the stored value pre-selected in
 
 As a third variant of the previous two examples, assume you want to allow
 several choices by each participant. This could be done with check box input
-elements. In this case you can store each choice with its own name.
-
-In \texttt{html/registration.tpl} you could add:
-
-\begin{verbatim}
-    <tr>
-      <td>Possible Tutoring Groups:</td>
-      <td>
-        <input type="checkbox" name="persondata.pref1" 
-               value="yes" />Monday,
-        <input type="checkbox" name="persondata.pref2" 
-               value="yes" />Tuesday,
-        <input type="checkbox" name="persondata.pref3" 
-               value="yes" />Wednesday
-      </td>
-    </tr>
-\end{verbatim}
-
-In this case you could get a similar part of the form 
-in \texttt{html/regchange2.tpl} with the stored values checked by:
+elements. You can use the following code snippet in both files,
+\texttt{html/registration.tpl} and \texttt{html/regchange2.tpl}:
 
 \begin{verbatim}
     <tr>
       <td>Possible Tutoring Groups:</td>
       <td>
-        <PersonDataCheckBox name="persondata.pref1" 
-                            value="yes" />Monday,
-        <PersonDataCheckBox name="persondata.pref2" 
-                            value="yes" />Tuesday,
-        <PersonDataCheckBox name="persondata.pref3" 
-                            value="yes" />Wednesday
+        <input type="hidden" value="None" 
+               name="persondata.prefgroups" />
+        <label><PersonDataCheckBox value="Mo" 
+               name="persondata.prefgroups" /> Monday</label>
+        <label><PersonDataCheckBox value="Tu" 
+               name="persondata.prefgroups" /> Tuesday</label>
+        <label><PersonDataCheckBox value="We" 
+               name="persondata.prefgroups" /> Wednesday</label>
       </td>
     </tr>
 \end{verbatim}
+
+Then \OKUSON{} stores under the key \texttt{persondata.prefgroups}
+the value \texttt{None} and all values of checked variants.
+separated by semicolons.
+The \texttt{hidden} element is needed such that every request contains at 
+least one value for this key (otherwise one could not deselect all choices
+from a previous submission).
+
 
 
 \section{Customizing the Look and Feel of the Web Pages}
