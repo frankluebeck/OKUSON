@@ -321,7 +321,7 @@ otherwise.'''
                                 ch = 'checked="checked"'
                                 checked = 1
                             f.write(('\n      <label><input type="radio" name="%s" '
-                                     'value="%s" %s/> %s</label> / ') % 
+                                     'value="%s" %s/> %s</label>&nbsp;/ ') % 
                                     ('B'+self.name+'Q'+str(counter),a,ch,a))
                         if not(checked):
                             ch = 'checked="checked" '
@@ -341,7 +341,7 @@ otherwise.'''
                                 ch = 'checked="checked" '
                                 checked = 1
                             f.write(('\n      <label><input type="checkbox" '
-                                     'name="%s" value="+" %s/> %s</label> /') % 
+                                     'name="%s" value="+" %s/> %s</label>&nbsp;/') % 
                                     ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
                         if (sub and '' in checkeditems) or not(sub):
@@ -489,7 +489,7 @@ a negative error code otherwise.'''
                                 ch = 'checked="checked"'
                                 checked = 1
                             f.write(('\n      <label><input type="radio" name="%s" '
-                                     'value="%s" %s/> %s</label> / ') % 
+                                     'value="%s" %s/> %s</label>&nbsp;/ ') % 
                                     ('B'+self.name+'Q'+str(counter),a,ch,a))
                         if not(checked):
                             ch = 'checked="checked" '
@@ -509,7 +509,7 @@ a negative error code otherwise.'''
                                 ch = 'checked="checked" '
                                 checked = 1
                             f.write(('\n      <label><input type="checkbox" '
-                                     'name="%s" value="+" %s/> %s</label> /') % 
+                                     'name="%s" value="+" %s/> %s</label>&nbsp;/') % 
                                     ('B'+self.name+'Q'+str(counter)+'.'+a,ch,a))
                         ch = ''
                         if (sub and '' in checkeditems) or not(sub):
