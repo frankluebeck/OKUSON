@@ -297,6 +297,9 @@ exercise text images. All Linux distributions probably have a
 \item A \textbf{text editor}. Input for exercises, sheets and web pages
 is generated with an ASCII text editor, which is also used to edit
 the configuration.
+\item \textbf{iconv} and \textbf{pandoc} are needed if you want to provide 
+the MathJax version of the exercise sheets. This option is available since
+version~1.4, see~\ref{useMathJax}.
 \end{itemize}
 
 If you want to use all features of {\OKUSON}, the following additional 
@@ -605,6 +608,17 @@ in their solutions in the last minute.
 
 We use the network time protocol (NTP) service on our machines, using the
 \texttt{ntpdate} program.
+
+\subsubsection*{Encrypted access via \texttt{https}}
+
+We have not built the https-access into {\OKUSON} because that would mean
+that you have to generate new SSL-certificates for every course. Instead we
+use \texttt{nginx} as a https-proxy server. With such a proxy server
+you can either still allow the http-access with the configured port number,
+or you can restrict the access to the {\OKUSON} server to the machine
+running the proxy server (and maybe some local machines), see
+\texttt{<AccessList>} in the config file \texttt{Config.xml}.
+
 
 \subsubsection*{Backup}
 
@@ -1986,7 +2000,7 @@ look in the code. If you want more functions in the admin menu, please, tell us
 about them. Maybe they are of general interest and we want to add them to
 the {\OKUSON} package.
 
-\section{\MathJax{} support}
+\section{\MathJax{} support}\label{useMathJax}
 
 (Experimental!)
 
