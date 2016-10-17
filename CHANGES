@@ -10,6 +10,24 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.4 to 1.4.1
+
+* Changed a few more links to relative ones (missed in version 1.4).
+* Made some more details of webpages configurable via CSS (e.g., the width
+  of text fields in web forms).
+* Various small changes to program generated HTML, sample web pages and CSS
+  to make an OKUSON site better usable on small touch devices (in particular
+  in combination with the MathJax version of exercise sheets).
+* Improved layout of answer fields in exercise sheets in pdf and HTML
+  (e.g., in HTML only full anwers with check box will move to next line
+  and the answer text is also clickable).
+* Log file now also contains original IP addresses of requests in case
+  the OKUSON server is accesssed via a (e.g., https-)proxy server.
+* Made check boxes for persondata.* data better usable (see last example
+  in appendix A.4).
+* Few additions to the documentation.
+* Removed some artifacts from old CVS version control.
+
 Changes from 1.3-fix1 to 1.4
 
 * Introduced StarMCScore similar to the existing StarHomeScore
