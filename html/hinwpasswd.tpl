@@ -19,12 +19,19 @@
     <h2>Vorlesung: <CourseName />, <Semester />, <Lecturer /></h2>
 
     <p>Benutzen Sie hier kein wichtiges System-Passwort. Was Sie hier
-    angeben, wird im Klartext von Ihrem Browser über das Netz geschickt.</p>
+    angeben, wird im Klartext von Ihrem Browser über das Netz geschickt
+    (Ausnahme: Sie benutzen eine https:// Webadresse, bei der alles
+    verschlüsselt gesendet wird).</p>
 
     <p>Sie sollten das hier angegebene Passwort aber auch nicht vergessen.
     Sie benötigen es, um <em>Ihre</em> Aufgabenblätter abzuholen,
     <em>Ihre</em> Lösungen einzusenden und <em>Ihre</em> Ergebnisse
     abzufragen. </p> 
+
+    <p>Sinnvoll ist ein Passwort, das kein Wort ist, Groß- und
+    Kleinbuchstaben und/oder Sonderzeichen enthält. Es sind nur die ersten 8
+    Zeichen des Passwortes signifikant.
+    </p>
 
     <p>Benutzen Sie den "Zurück"-Knopf in Ihrem Browser, um zurück zu
     Ihrer Eingabeseite zu gelangen.</p>
