@@ -52,5 +52,6 @@ rm -f makeArchive
 
 # Now put together things:
 cd ..
+mv OKUSON okuson
 tar czvf okuson-`cat okuson/VERSION`.tar.gz --exclude='.nfs*' okuson
 

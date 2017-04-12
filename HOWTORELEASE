@@ -6,14 +6,21 @@ Small HOWTO for releasing versions.
 3) Clone git repository for building the archive:
      mkdir ../build
      cd ../build
-     git clone -b rel1.4 ../okuson
+     git clone -b rel1.4.x ../OKUSON
 4) Go to this new directory:
-   cd okuson
+   cd OKUSON
 5) Make archive:
    ./makeArchive
    (the exported tree is modified substantially!)
    You find ../okuson-1.*.pdf and ../okuson-1.*.tar.gz .
-6) Copy those to  a checked out okuson directory.
-   Use 'cd website; cptoweb' to update the web site.
+6) Copy those to  a checked out okuson directory and
+   cd to that directory.
+
+7) Adjust links and maybe text in website/index.html.
+
+8) Update web site with:
+     cd website
+     ./cptoweb
+
 7) Inform interested user.
 
