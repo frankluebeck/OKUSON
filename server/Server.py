@@ -107,6 +107,15 @@ try:
     Data.cleanRevokedMessages()   # clean revoked messages
     Utils.Error('Reading group information...',prefix='Info: ')
     Data.groupinfodesc.LoadFile()
+    if Config.conf['ValidateRegistration']:
+        Utils.Error('Reading non-validated personal data...',prefix='Info: ')
+        tmpnam = Data.peopletmpdesc.filename
+        if not os.path.exists(tmpnam):
+          f = open(tmpnam, "w")
+          f.close()
+        Data.peopletmpdesc.LoadFile()
+        for k in Data.peopletmp.keys():
+          Data.valkeys[Data.peopletmp[k].valkey] = Data.peopletmp[k].id
 except:
     Utils.Error('Aborting.',prefix='')
     sys.exit(0)

@@ -202,6 +202,25 @@ letters a-z, A-Z, digits 0-9, dashes - and underscores:
 </GroupChangePossible>
 
 
+<!-- If this is set to 1 then registration is done in two steps.
+     First, data are stored temporarily and an email with a validation
+     code is sent to the new user. 
+     This code must be input on the result page of the registration to
+     finish the registration.
+-->
+<ValidateRegistration>
+0
+</ValidateRegistration>
+<ValidateRegistrationMail>
+Validierung der OKUSON-Anmeldung zur ???Vorlesung.
+
+Bitte klicken Sie den folgenden Link (oder kopieren Sie ihn in Ihren Browser):
+   https://www..../ValidateRegistration?valkey=VALKEY
+um die Registrierung abzuschlieﬂen.
+</ValidateRegistrationMail>
+
+
+
 <!-- The following is a Python function that can automatically decide
      about the grading of a certain participant. This function is
      considered in two cases: (1) During the display of results for a

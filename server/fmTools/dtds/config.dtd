@@ -28,6 +28,8 @@
 <!ELEMENT ExamRegistrationPossible (#PCDATA)>
 <!ELEMENT GroupChoicePossible (#PCDATA)>
 <!ELEMENT GroupChangePossible (#PCDATA)>
+<!ELEMENT ValidateRegistration (#PCDATA)>
+<!ELEMENT ValidateRegistrationMail (#PCDATA)>
 <!ELEMENT GradingFunction (#PCDATA)>
 <!ELEMENT GradingActive (#PCDATA)>
 <!ELEMENT ExamGradingFunction (#PCDATA)>

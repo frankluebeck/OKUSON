@@ -41,6 +41,8 @@ Parameters = {
   "ExamRegistrationPossible": ["INT",1],
   "GroupChoicePossible":      ["INT",1],
   "GroupChangePossible":      ["INT",1],
+  "ValidateRegistration":     ["INT",1],
+  "ValidateRegistrationMail": ["STRING",1],
   "GradingFunction":          ["STRING",0],
   "GradingActive":            ["INT",0],
   "ExamGradingFunction":      ["STRING",0],

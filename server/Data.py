@@ -56,6 +56,8 @@ class Person(Utils.WithNiceRepr):
     messages = []     # here we collect private messages for participants
                       # these are just strings which are put into a web
                       # page one after another.
+    pline = ""        # temporary line for validated registration
+    gline = ""        # group line for validated registration
 
     def __init__(self):
         self.mcresults = {}
@@ -93,6 +95,8 @@ class Person(Utils.WithNiceRepr):
         return totalscore
 
 people = {}     # all people are stored in here under their id
+peopletmp = {}  # for validated registration
+valkeys = {}    # keys for validation of registration
 
 peopledesc = AsciiData.FileDescription(Config.conf['RegistrationFile'],people,
   ( "ENTER", 0, "KEY",         Person,
@@ -106,6 +110,21 @@ peopledesc = AsciiData.FileDescription(Config.conf['RegistrationFile'],people,
     "STORE", 7, "wishes",      "STRING",
     "STORE", 8, "persondata",  "LINEDICT" ) )
 
+peopletmpdesc = AsciiData.FileDescription(Config.conf['RegistrationFile']+'.tmp',
+  peopletmp,
+  ( "ENTER", 0, "KEY",         Person,
+    "STORE", 0, "id",          "STRING",
+    "STORE", 1, "lname",       "STRING",
+    "STORE", 2, "fname",       "STRING",
+    "STORE", 3, "sem",         "INT",
+    "STORE", 4, "stud",        "STRING",
+    "STORE", 5, "passwd",      "STRING",
+    "STORE", 6, "email",       "STRING",
+    "STORE", 7, "wishes",      "STRING",
+    "STORE", 8, "pline",       "STRING",
+    "STORE", 9, "gline",       "STRING",
+    "STORE", 10, "valkey",     "STRING",
+    "STORE", 11, "persondata", "LINEDICT" ) )
 
 class MCResult(Utils.WithNiceRepr):
     '''Objects in this class store multiple choice submissions and results.'''

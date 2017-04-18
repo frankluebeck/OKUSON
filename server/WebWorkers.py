@@ -660,27 +660,121 @@ and either send an error message or a report.'''
     if Data.people.has_key(id):
         Data.Lock.release()
         return Delegate('/errors/idinuse.html',req,onlyhead)
-        
-    # Put new person into file on disk:
-    try:
-        Data.peopledesc.AppendLine(line)
-        Data.groupdesc.AppendLine(groupline)
-    except:
-        Data.Lock.release()
-        Utils.Error('Failed to register person:\n'+line)
-        return Delegate('/errors/fatal.html',req,onlyhead)
-    
-    # Put new person into database in memory:
-    Data.people[id] = p
-    Data.AddToGroupStatistic(p)
     Data.Lock.release()
 
-    # At last write out a sensible response:
-    Utils.Error('['+LocalTimeString()+'] registered '+id, 
-                prefix='SubmitRegistration: ')
-    return Delegate('/messages/regsuccess.html',req,onlyhead)
+    if not Config.conf['ValidateRegistration']:
+        Data.Lock.acquire()
+        # Put new person into file on disk:
+        try:
+            Data.peopledesc.AppendLine(line)
+            Data.groupdesc.AppendLine(groupline)
+        except:
+            Data.Lock.release()
+            Utils.Error('Failed to register person:\n'+line,
+                        prefix='SubmitRegistration (no val): ')
+            return Delegate('/errors/fatal.html',req,onlyhead)
+        
+        # Put new person into database in memory:
+        Data.people[id] = p
+        Data.AddToGroupStatistic(p)
+        Data.Lock.release()
+
+        # At last write out a sensible response:
+        Utils.Error('['+LocalTimeString()+'] registered '+id, 
+                    prefix='SubmitRegistration: ')
+        return Delegate('/messages/regsuccess.html',req,onlyhead)
+    else:
+        # Generate a random string
+        valkey = ''
+        for i in xrange(30):
+          valkey = valkey + random.choice(LETTERS)
+        pline = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
+                                  wishes,line,groupline,valkey,
+                                  AsciiData.LineDict(persondata) ) )
+        Data.Lock.acquire()
+        # Put new person into tmp file on disk:
+        try:
+            Data.peopletmpdesc.AppendLine(pline)
+        except:
+            Data.Lock.release()
+            Utils.Error('Failed to register person:\n'+line,
+                        prefix='SubmitRegistration (val): ')
+            return Delegate('/errors/fatal.html',req,onlyhead)
+        # Put new person into tmp database in memory:
+        p.pline = line
+        p.gline = groupline
+        p.valkey = valkey
+        Data.peopletmp[id] = p
+        Data.valkeys[valkey] = id
+        Data.Lock.release()
+        
+        # Write mail with link for validation:
+        import smtplib
+        from email.mime.text import MIMEText
+        txt = Config.conf['ValidateRegistrationMail'].replace('VALKEY', valkey)
+        msg = MIMEText(txt)
+        msg['Subject'] = 'OKUSON validation'
+        msg['From'] = 'no@reply.com'
+        msg['To'] = p.email
+        server = smtplib.SMTP('localhost')
+        try:
+            check = server.sendmail('no@reply.com', [p.email],
+                                    msg.as_string())
+        except:
+            Utils.Error('['+LocalTimeString()+'] Cannot send email '+id,
+                        prefix='SubmitPreRegistration: ')
+            return Delegate('/errors/mailfailed.html', req, onlyhead)
+
+        # At last write out a sensible response:
+        Utils.Error('['+LocalTimeString()+'] pre-registered '+id, 
+                    prefix='SubmitPreRegistration: ')
+        return Delegate('/messages/regvalidate.html',req,onlyhead)
 
 Site['/SubmitRegistration'] = FunWR(SubmitRegistration)
+
+def ValidateRegistration( req, onlyhead ):
+    # Check whether registration is allowed:
+    if Config.conf['RegistrationPossible'] == 0:
+        return Delegate('/errors/regnotallowed.html',req,onlyhead)
+    valkey = req.query.get('valkey',[''])[0].strip()[:30]
+    if Data.valkeys.has_key(valkey):
+        id = Data.valkeys[valkey]
+        if Data.people.has_key(id):
+            Utils.Error('['+LocalTimeString()+'] additional validation '+id,
+                        prefix='SubmitValidation: ')
+            return Delegate('/errors/alreadyreg.html',req,onlyhead)
+        p = Data.peopletmp[id]
+        line = p.pline
+        p.pline = ""
+        groupline = p.gline
+        p.gline = ""
+        p.valkey = ""
+        Data.Lock.acquire()
+        # Put new person into file on disk:
+        try:
+            Data.peopledesc.AppendLine(line)
+            Data.groupdesc.AppendLine(groupline)
+        except:
+            Data.Lock.release()
+            Utils.Error('Failed to register person:\n'+line,
+                        prefix='SubmitValidation: ')
+            return Delegate('/errors/fatal.html',req,onlyhead)
+        
+        # Put new person into database in memory:
+        Data.people[id] = p
+        Data.AddToGroupStatistic(p)
+        Data.Lock.release()
+
+        # At last write out a sensible response:
+        Utils.Error('['+LocalTimeString()+'] registered '+id, 
+                    prefix='SubmitRegistration: ')
+        return Delegate('/messages/regsuccess.html',req,onlyhead)
+    else:
+        Utils.Error('['+LocalTimeString()+'] Unknown key '+valkey, 
+                    prefix='SubmitValidation: ')
+        return Delegate('/errors/unknownkey.html',req,onlyhead)
+        
+Site['/ValidateRegistration'] = FunWR(ValidateRegistration)
 
 def Extension( req, onlyhead ):
     extension = None

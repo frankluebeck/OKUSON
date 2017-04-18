@@ -2413,6 +2413,28 @@ the change of imported data.
 While this is a specific script for usage at RWTH Aachen slight variations
 of it may be useful in other places.
 
+\subsubsection*{Registration with validation}
+
+If you have problems with spam registrations there is a possibility to 
+add a validation step to the registration. In that case users have to submit
+a valid email address during registration. To activate this 
+\begin{itemize}
+\item change the value of the \texttt{<ValidateRegistration>} element in
+the \texttt{Config.xml} file to 1,
+\item adjust the value of the \texttt{<ValidateRegistrationMail>} element
+in \texttt{Config.xml} (name of lecture and URL to the OKUSON server),
+\item change the text in \texttt{html/registration.tpl} to make clear that
+a valid email-address is needed for validation of the registration.
+\end{itemize}
+
+After restart of the server, users can only pre-register via the
+registration form. They then get an email with a validation link. 
+If they click that link or copy it to their browser, the registration will
+be finished.
+
+A corresponding temporary file (by default \texttt{data/people.txt.tmp}) can
+be removed from time to time if it was not accessed for a while.
+
 \section{Distributing Participants into Tutoring Groups}\label{sec:groups}
 
 We always accompany our exercises with regular meetings in a number of 
