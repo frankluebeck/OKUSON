@@ -11,9 +11,9 @@ How to apply an update of OKUSON to earlier releases:
           See the separate file UPGRADE for upgrades.
 Changes from 1.4.2 to 1.4.3
 
-* Added configuration elements <ValidateRegistration> and
-  <ValidateRegistrationMail> to defend spam registrations
-  (see manual Section 8.1).
+* Added configuration elements <ValidateRegistration>,
+  <ValidateRegistrationMail> and <ValidEmailAddresses>
+  to defend spam registrations (see manual Section 8.1).
 
 Changes from 1.4.1 to 1.4.2
 

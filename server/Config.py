@@ -43,6 +43,7 @@ Parameters = {
   "GroupChangePossible":      ["INT",1],
   "ValidateRegistration":     ["INT",1],
   "ValidateRegistrationMail": ["STRING",1],
+  "ValidEmailAddresses":      ["STRING",1],
   "GradingFunction":          ["STRING",0],
   "GradingActive":            ["INT",0],
   "ExamGradingFunction":      ["STRING",0],
@@ -389,5 +390,15 @@ into a usable form. Some values are changed into other data types.'''
         lines = traceback.format_exception(etype,value,tb)
         Utils.Error('Cannot parse EMailHeaderFunction.\n'+
                     string.join(lines))
+        FailMiserably()
+    # Compile regular expression for valid email addresses
+    try:
+        conf['reValidEmail'] = re.compile(conf['ValidEmailAddresses'], re.I)
+    except:
+        Utils.Error('Regular expression in "ValidEmailAddresses" cannot be '
+                    'compiled.')
+        etype, value, tb = sys.exc_info()
+        lines = traceback.format_exception(etype,value,tb)
+        Utils.Error(string.join(lines),prefix="")
         FailMiserably()
 

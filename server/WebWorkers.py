@@ -684,6 +684,11 @@ and either send an error message or a report.'''
                     prefix='SubmitRegistration: ')
         return Delegate('/messages/regsuccess.html',req,onlyhead)
     else:
+        # Check if given email address is valid
+        if Config.conf['reValidEmail'].match(p.email) == None:
+            Utils.Error('No valid email address: '+p.email,
+                        prefix='SubmitRegistration (val): ')
+            return Delegate('/messages/novalidemail.html',req,onlyhead)
         # Generate a random string
         valkey = ''
         for i in xrange(30):
@@ -712,7 +717,8 @@ and either send an error message or a report.'''
         import smtplib
         from email.mime.text import MIMEText
         txt = Config.conf['ValidateRegistrationMail'].replace('VALKEY', valkey)
-        msg = MIMEText(txt)
+        # Config.xml text is in latin1 encoding:
+        msg = MIMEText(txt, 'plain', 'iso-8859-1')
         msg['Subject'] = 'OKUSON validation'
         msg['From'] = 'no@reply.com'
         msg['To'] = p.email

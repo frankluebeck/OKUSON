@@ -2425,6 +2425,9 @@ the \texttt{Config.xml} file to 1,
 in \texttt{Config.xml} (name of lecture and URL to the OKUSON server),
 \item change the text in \texttt{html/registration.tpl} to make clear that
 a valid email-address is needed for validation of the registration.
+\item maybe further restrict the email addresses allowed for validated
+registration by specifying a regular expression in the
+\texttt{<ValidEmailAddresses>} element of \texttt{Config.xml}.
 \end{itemize}
 
 After restart of the server, users can only pre-register via the
