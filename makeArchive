@@ -29,7 +29,7 @@ mkdir html
 mkdir html/images
 
 # Cut the log file and throw away project devel/selling utilities
-rm -rf log/server.log website poster HOWTORELEASE TODO `find . -name .git`
+rm -rf log/server.log website poster HOWTORELEASE TODO .gitignore `find . -name .git`
 # new archives should not override log files:   touch log/server.log
 
 # Release only empty files:
