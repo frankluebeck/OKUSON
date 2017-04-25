@@ -13,9 +13,9 @@ to:
         src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 
 If you are interested in one of the new features of 1.4.x (possibility
-of proxy server, MathJax), please make a new install with 1.4.x.
+of proxy server, MathJax, better display on small devices), please make 
+a new install with 1.4.x.
 
-Otherwise not much has changed since 1.3-fix1.
 
   Frank Lübeck
 
