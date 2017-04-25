@@ -6,6 +6,7 @@
     <meta http-equiv="Expires" content="now" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="OKUSON.css" type="text/css" rel="StyleSheet" />
     <meta http-equiv="Content-Style-Type" content="text/css" />

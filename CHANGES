@@ -15,6 +15,9 @@ Changes from 1.4.2 to 1.4.3
   <ValidateRegistrationMail> and <ValidEmailAddresses>
   to defend spam registrations (see manual Section 8.1).
 
+* Added viewport <meta> tags to all template files (improves
+  appearance on small screens/tablets/smartphones).
+
 Changes from 1.4.1 to 1.4.2
 
 * Adusted the link to the MathJax script as suggested on
