@@ -25,7 +25,7 @@
        noted successfully.
     </p>
 
-    <p>For any questions about this please not the current time:
+    <p>For any questions about this please note the current time:
     <CurrentTime />.
     </p>
 
