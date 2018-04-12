@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: ISO-8859-1 -*-
 # 
 #   Copyright (C) 2007 by  Frank Lübeck

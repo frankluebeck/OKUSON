@@ -1,5 +1,5 @@
 # -*- coding: ISO-8859-1 -*-
-#!/usr/bin/env python
+#!/usr/bin/env python2
 ##  SimpleTemplate.g                              
 ##  
 ##  
