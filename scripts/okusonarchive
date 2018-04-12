@@ -7,4 +7,3 @@ DIRNAME="..."
 cd $BACKUPDIR
 fname=`date +"BACKUP-%Y-%m-%d_%H_%M_%S.tgz"`
 tar czf $fname $DIRNAME
-
