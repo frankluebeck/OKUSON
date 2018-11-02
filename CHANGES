@@ -12,6 +12,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.4.3 to 1.4.4
 
+* 'python' is now called explicitly as 'python2' in all scripts.
+
 * New placeholders in <PDFTemplate>: (%Group%), (%LastName%), (%FirstName%) 
 
 * Added configuration elements <ProtectedFiles>  for password protected
