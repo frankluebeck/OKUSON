@@ -60,6 +60,7 @@ Parameters = {
   "StringNoAnswer":           ["STRING",0],
   "KeptData":                 ["LIST",1],
   "EMailHeaderFunction":      ["STRING",1],
+  "ProtectedFiles":           ["STRING",0],
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],

@@ -377,6 +377,14 @@ def EMailHeaderFunction(p):
 -->
 </EMailHeaderFunction>
 
+<!-- The following element may contain paths of files (one per line)
+     which are password protected.
+     These can be accessed via the example web page '/protected.html',
+     so edit the file 'html/protected.tpl'.
+-->
+<ProtectedFiles>
+</ProtectedFiles>
+
 <!-- ==================================================================== 
                           Installation section
      ==================================================================== -->

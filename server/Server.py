@@ -149,6 +149,14 @@ import WebWorkers           # this initializes the web services
 
 WebWorkers.RegisterAllTpl()
 
+# Disallow direct access to protected files
+if Config.conf.has_key('ProtectedFiles'):
+  fnames = Config.conf['ProtectedFiles'].split('\n')
+  for fn in fnames:
+    fns = fn.strip()
+    if len(fns) > 0:
+      BuiltinWebServer.Site[fn.strip()] = BuiltinWebServer.NoWebResponse
+
 # Just an info:
 Utils.Error('Formatting current time on sheets like: ' + 
             WebWorkers.LocalTimeString(format = Config.conf['DateTimeFormat']), prefix = 'Info: ')

@@ -46,6 +46,7 @@
 <!ELEMENT StringCorrectAnswer (#PCDATA)>
 <!ELEMENT StringWrongAnswer (#PCDATA)>
 <!ELEMENT StringNoAnswer (#PCDATA)>
+<!ELEMENT ProtectedFiles (#PCDATA)>
 
 <!-- a container for extra data, use the 'key' attribute: -->
 <!ELEMENT ConfigData (#PCDATA)>

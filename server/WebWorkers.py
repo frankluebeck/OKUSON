@@ -1226,6 +1226,34 @@ there and send a form to display and change the saved data.'''
 
 Site['/QueryRegChange'] = FunWR(QueryRegChange)
 
+def ProtectedFile(req,onlyhead):
+    '''This function is called for files which are registered as protected files.'''
+    # First check whether the id is valid:
+    id = req.query.get('id',[''])[0].strip()   # our default id
+    if not(Config.conf['IdCheckRegExp'].match(id)):
+        return Delegate('/errors/invalidid.html',req,onlyhead)
+
+    # Then check whether we already have someone with that id:
+    if not(Data.people.has_key(id)):
+        return Delegate('/errors/idunknown.html',req,onlyhead)
+        
+    p = Data.people[id]
+    iamadmin = Authenticate(p,req,onlyhead)
+    if iamadmin < 0:
+        return Delegate('/errors/wrongpasswd.html',req,onlyhead)
+
+    fname = req.query.get('file',[''])[0].strip()
+    if fname == '' or fname[0] != '/':
+        fname = '/'+fname
+    req.path = fname
+    res = BuiltinWebServer.DeliverResponseMethod(req,onlyhead)
+    if res[0]['Content-type'] != 'text/html':
+        res[0]['Content-Disposition'] = 'attachment; filename="' + \
+                                        os.path.basename(fname) + '"'
+    return res
+
+Site['/ProtectedFile'] = FunWR(ProtectedFile)
+
 def SubmitRegChange(req,onlyhead):
     '''This function is called when a user submits a registration. It will
 work on the submitted form data, register the new participant if possible

@@ -9,6 +9,13 @@ How to apply an update of OKUSON to earlier releases:
 -----------------------------------------------------
 
           See the separate file UPGRADE for upgrades.
+
+Changes from 1.4.3 to 1.4.4
+
+* Added configuration elements <ProtectedFiles>  for password protected
+  files. An example how such files are accessed is in the new file
+  html/protected.html.
+
 Changes from 1.4.2 to 1.4.3
 
 * Added configuration elements <ValidateRegistration>,
