@@ -1717,6 +1717,9 @@ def QuerySheet(req,onlyhead):
         if indiv:
             # find values of custom variables for persons
             values['IdOfPerson'] = id
+            values['Group'] = str(Data.people[id].group)
+            values['LastName'] = Data.people[id].lname
+            values['FirstName'] = Data.people[id].fname
             for a in Data.people[id].persondata.keys():
               try:
                 values['PersonData.'+a] = Data.people[id].persondata[a]

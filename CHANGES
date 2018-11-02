@@ -12,6 +12,8 @@ How to apply an update of OKUSON to earlier releases:
 
 Changes from 1.4.3 to 1.4.4
 
+* New placeholders in <PDFTemplate>: (%Group%), (%LastName%), (%FirstName%) 
+
 * Added configuration elements <ProtectedFiles>  for password protected
   files. An example how such files are accessed is in the new file
   html/protected.html.

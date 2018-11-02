@@ -509,7 +509,10 @@ dtd
        (%CourseName%)
        (%Semester%)
        (%Lecturer%)
-       (%IdOfPerson%)              
+       (%IdOfPerson%)
+       (%FirstName%)
+       (%LastName%)
+       (%Group%)
        (%ConfigData.keyval%) as set above
        (%PersonData.keyval%) customization data for persons
        (%CurrentTime%)       string in current "locale" setting
