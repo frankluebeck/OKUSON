@@ -1775,6 +1775,23 @@ layout set the environment variable \verb+LC_ALL+ of the user starting the
 printing format via the element \texttt{<DateTimeFormat>} in your
 configuration file (by specifying an argument for the Python function
 \texttt{time.strftime}).
+
+\item[\texttt{<IfTime attr="spec"> ...some content...</IfTime>}]
+The content of this element is only 
+included in the page depending on the time specified by the given attributes. 
+Possible values for \texttt{attr} are \texttt{from}, \texttt{to},
+\texttt{after}, \texttt{before}, \texttt{on} with the obvious meanings, also
+several attributes can be given. 
+The format of \texttt{spec} is
+a sequence of digits in the order YYYYMMDDhhmmss and arbitrary non-digits in
+between which are ignored; it is possible to leave out trailing digits. 
+(Example: to include a paragraph on a page only between 6am on 12 Jan 2019 and
+5pm on 14 Jan 2019 use:
+\begin{verbatim}
+<IfTime from="2019011206" to="2019-01-14, 17:00:00">
+<p>Temporary paragraph</p>
+</IfTime>
+\end{verbatim}
 \end{description}
 
 A few other elements are available on all pages, but they are only sensible in

@@ -469,6 +469,19 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             if k != 'name':
                 options[k] = [ v.encode( 'ISO-8859-1', 'replace' ) ]
         out.write( Plugins.extensionCode( extensionName, options ) )
+    def handle_IfTime(self,node,out):
+        now = time.strftime('%Y%m%d%H%M%S')
+        for k, v in node[1].iteritems():
+            v = ''.join([x for x in v if x.isdigit()])
+            if k == 'from' and now[:len(v)] < v: return
+            if k == 'to' and now[:len(v)] > v: return
+            if k == 'after' and now[:len(v)] <= v: return
+            if k == 'before' and now[:len(v)] >= v: return
+            if k == 'on' and now[:len(v)] != v: return
+        if node[2] != None:
+            for n in node[2]:
+                XMLRewrite.XMLTreeRecursion(n,self,out)
+
 
 EH_Generic = EH_Generic_class()
 
