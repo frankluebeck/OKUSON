@@ -10,6 +10,15 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.4.4 to 1.4.5
+
+* New configuration entry <HashSalt> in Config.xml which can be 
+  used for better password hashes.
+
+* Added example files 'datasecurity.tpl' and 'impressum.tpl',
+  these may need adjustments for use at other places than RWTH Aachen,
+  but you get the idea.
+
 Changes from 1.4.3 to 1.4.4
 
 * 'python' is now called explicitly as 'python2' in all scripts.
