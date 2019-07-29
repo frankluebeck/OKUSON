@@ -85,7 +85,15 @@ Max Neunhöffer (neunhoef at mcs.st-and.ac.uk)</a>
 
 <!-- The following is put as string (no element content allowed, use a
      CDATA section if necessary!) at the bottom of each page (directly before
-     the </body> tag of the xhtml page. -->
+     the </body> tag of the xhtml page. Example usage (please adjust the 
+     linked files before using them):
+<Footer><![CDATA[
+<p class="foot">
+<a href="datasecurity.html">Datenschutz</a>, 
+<a href="impressum.html">Impressum</a>
+</p>
+]]></Footer>
+-->
 <Footer></Footer>
 
 
