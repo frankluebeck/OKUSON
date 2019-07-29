@@ -34,7 +34,6 @@
 <!-- ====================================================================
                               Course section
      ==================================================================== -->
-
 <!-- The following is the encrypted administrator password. Please use the
      "cryptpasswd" utility in the OKUSON home directory to encrypt some 
      password. 
@@ -48,7 +47,7 @@
      
      The default setting is secret, so you must change it! -->
 <AdministratorPassword>
-xvPTFipiaskI.
+UHNbiunFLplEI
 </AdministratorPassword>
 
 <!-- The name of the course served by this directories' server: -->
@@ -423,6 +422,17 @@ from all machines in our institute: -->
 <Range>137.226.152.0/255.255.255.128</Range>
 -->
 </AdministrationAccessList>
+
+<!-- This element changes the way passwords are hashed. Refer to the
+     crypt (3) man page to find out possible values for salts on your system. 
+     Only change this if you understand what you are doing. Letters 'X' will
+     be substituted by random characters.
+     The default is "XX" for classical UNIX hash, modern Linux systems probably
+     support "$5$XXXXXX$" for SHA-256 and "$6$XXXXXXXX$" for SHA-512 hashes.
+-->
+<HashSalt>
+XX
+</HashSalt>
 
 <!-- The following contains the path to the document root of the web server.
      All template files for web pages as well as subdirectories "images",

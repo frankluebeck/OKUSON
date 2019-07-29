@@ -1,11 +1,18 @@
-#!/usr/bin/env python2
-# -*- coding: ISO-8859-1 -*-
+#!/usr/bin/env bash
 #  OKUSON Package
 #  Frank Lübeck and Max Neunhöffer
- 
-'''This little script helps to calculate encrypted administrator passwords.'''
 
-import getpass,crypt,random,time,sys
+# This little script helps to calculate encrypted administrator passwords.
+python2 << TOEND
+
+import getpass,crypt,random,time,sys,os
+
+# read salt mask from Config.xml
+homedir = os.path.abspath(sys.path[0])
+os.chdir(os.path.join(homedir,"server"))
+import Config
+Config.ReadConfig()
+import WebWorkers
 
 print __doc__,"\n\nPlease enter a password to encrypt:"
 p = getpass.getpass("Password: ")
@@ -15,7 +22,7 @@ if p != p2:
     sys.exit(0)
 
 random.seed(time.time());
-s = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") + \
-    random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+s = WebWorkers.MakeHashSalt()
 c = crypt.crypt(p,s)
 print "Encrypted password:",c
+TOEND

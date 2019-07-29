@@ -56,6 +56,7 @@
 
 <!ELEMENT AccessList (Range)*>
 <!ELEMENT AdministrationAccessList (Range)*>
+<!ELEMENT HashSalt (#PCDATA)>
 <!ELEMENT DocumentRoot (#PCDATA)>
 <!ELEMENT ExerciseDirectories (Dir)*>
 <!ELEMENT SheetDirectories (Dir)*>

@@ -64,6 +64,7 @@ Parameters = {
 
   "AccessList":               ["LIST",1],
   "AdministrationAccessList": ["LIST",1],
+  "HashSalt":                 ["STRING",1],
   "DocumentRoot":             ["PATH",0],
   "ExerciseDirectories":      ["PATHLIST",1],
   "SheetDirectories":         ["PATHLIST",1],

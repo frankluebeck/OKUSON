@@ -6,6 +6,7 @@
 '''This is the place where all special web services are implemented.'''
 
 import os,sys,time,locale,traceback,random,crypt,string,math
+random.seed(os.urandom(200))
 import types,Cookie,signal,cStringIO
 
 import Config,Data,Exercises,Plugins
@@ -16,6 +17,15 @@ from fmTools import SimpleTemplate, LatexImage
 from fmTools.Utils import LocalTimeString, CleanWeb, Protect
 
 LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+def MakeHashSalt():
+  res = []
+  for c in Config.conf['HashSalt']:
+    if c == 'X':
+      res.append(random.choice(LETTERS));
+    else:
+      res.append(c)
+  return "".join(res)
 
 # First we set our document root:
 DocRoot = BuiltinWebServer.DocRoot = Config.conf['DocumentRoot']
@@ -510,7 +520,7 @@ def Authenticate(p,req,onlyhead):
     pw = req.query.get('passwd',['1'])[0].strip()[:16]
     if p != None:    # We use p == None for a check for administrator
         # Check whether password is correct:
-        salt = p.passwd[:2]
+        salt = p.passwd
         passwd = crypt.crypt(pw,salt)
         # First authenticate regular users with their password:
         if passwd == p.passwd:
@@ -523,7 +533,7 @@ def Authenticate(p,req,onlyhead):
     except:
         cookieval = ''
     # Check admin password:
-    passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
+    passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'])
     if (cookieval == currentcookie or \
         passwdadmin == Config.conf['AdministratorPassword']) and \
        BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
@@ -542,7 +552,7 @@ def AuthenticateTutor(g,req,onlyhead):
     global currentcookie
     # Check whether password is correct:
     pw = req.query.get('passwd',['1'])[0].strip()[:16]
-    salt = g.passwd[:2]
+    salt = g.passwd
     passwd = crypt.crypt(pw,salt)
     # Check for cookie:
     cookie = Cookie.SimpleCookie()
@@ -552,7 +562,7 @@ def AuthenticateTutor(g,req,onlyhead):
     except:
         cookieval = ''
     # Check admin password:
-    passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'][:2])
+    passwdadmin = crypt.crypt(pw,Config.conf['AdministratorPassword'])
     if (passwdadmin == Config.conf['AdministratorPassword'] or
         cookieval == currentcookie) and \
        BuiltinWebServer.check_address(Config.conf['AdministrationAccessList'],
@@ -646,7 +656,7 @@ and either send an error message or a report.'''
         persondata[k[11:]] = val[:-1]
 
     # Construct data line with encrypted password:
-    salt = random.choice(LETTERS) + random.choice(LETTERS)
+    salt = MakeHashSalt()
     passwd = crypt.crypt(pw1,salt)
     line = AsciiData.LineTuple( (id,lname,fname,str(sem),stud,passwd,email,
                                  wishes,
@@ -1291,7 +1301,7 @@ and either send an error message or a report.'''
     if pw1 != '' or pw2 != '':
         if pw1 != pw2:
             return Delegate('/errors/diffpasswd.html',req,onlyhead)
-        salt = random.choice(string.letters) + random.choice(string.letters)
+        salt = MakeHashSalt()
         passwd = crypt.crypt(pw1,salt)
     else:   # here we have to set passwd correctly
         passwd = p.passwd
@@ -2550,7 +2560,7 @@ def TutorRequest(req,onlyhead):
     if pw1 != '' or pw2 != '':
         if pw1 != pw2:
             return Delegate('/errors/diffpasswd.html',req,onlyhead)
-        salt = random.choice(string.letters) + random.choice(string.letters)
+        salt = MakeHashSalt()
         passwd = crypt.crypt(pw1,salt)
         # Now change password for this group:
         line = AsciiData.LineTuple( (str(groupnr), passwd, g.tutor, g.place,
@@ -3088,7 +3098,7 @@ Site['/AdminExtension'].access_list = Config.conf['AdministrationAccessList']
 def AdminLogin(req,onlyhead):
     global currentcookie
     passwd = req.query.get('passwd',[''])[0]
-    salt = Config.conf['AdministratorPassword'][:2]
+    salt = Config.conf['AdministratorPassword']
     passwd = crypt.crypt(passwd,salt)
     if passwd != Config.conf['AdministratorPassword']:
         return Delegate('/errors/wrongpasswd.html',req,onlyhead)
