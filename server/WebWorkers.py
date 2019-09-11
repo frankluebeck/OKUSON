@@ -207,6 +207,16 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write( self.AdminPasswdField() )
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
+       # For enter autocompletion we insert the most recent sheet and open as a hidden ele
+       # by doing so we can add this functionality w/o adding JS to the project
+       # so admins get most recent sheet open to students on enter keypress
+       for nr,name,s in reversed(l):
+        if len(name) == 1:
+            name = ' '+name
+        if not s.openfrom or (s.openfrom and time.time() > s.openfrom):
+            out.write('<input type="submit" name="sheet" value="'
+                         +name+'" style="display: none" />\n')
+            break
        for nr,name,s in l:
            if len(name) == 1:
              name = ' '+name
