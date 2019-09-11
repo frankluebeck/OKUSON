@@ -120,3 +120,7 @@ Spaeter:
     Fuer einzelne Personen geht es auf Ergebnisabfrageseite.
   - Schalter, der es erlaubt, dass Name, Vorname und Studiengang leer
     sind.
+- Benutzung der Argumente autocomplete=usernanme / current-password / new-password
+    an allen Stellen, sodass bei einem Passwort-Reset oder Neuanmeldung (z.B.) von LA auf DS
+    der Browser direkt das gespeicherte Kennwort ersetzt und die Nutzer_In das gespeicherte
+    Kennwort nicht löschen muss
