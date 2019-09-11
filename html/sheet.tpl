@@ -71,8 +71,9 @@
      <IfIndividualSheets>
      <IfOpen>
       <p>Passwort:
-         <input type="password" class="short" maxlength="16" name="passwd"
-                value="" />
+         <!-- To avoid autocompletion in the last excercise text field-->
+         <input type="text" style="display: none;" name="fakename" autocomplete="username" />
+         <input type="password" class="short" maxlength="16" name="passwd" autocomplete="current-password" />
          <input type="submit" value="Abgeben" name="action" />
       </p>
      </IfOpen>
