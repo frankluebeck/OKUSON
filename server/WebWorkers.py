@@ -207,6 +207,18 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write( self.AdminPasswdField() )
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
+       # Pressing <ENTER> after typing the password will in most browsers
+       # be interpreted as clicking on the first 'submit' following the
+       # field. Therefore we include a submit field to the last open sheet
+       # before listing all sheets. In CSS aware browsers this element
+       # is not displayed.
+       for nr,name,s in reversed(l):
+           if len(name) == 1:
+                name = ' '+name
+           if not s.openfrom or (s.openfrom and time.time() > s.openfrom):
+                out.write('<input type="submit" name="sheet" value="'
+                             +name+'" class="donotdisplay" />\n')
+                break
        for nr,name,s in l:
            if len(name) == 1:
              name = ' '+name
