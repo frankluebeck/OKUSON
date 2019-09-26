@@ -11,6 +11,9 @@ How to apply an update of OKUSON to earlier releases:
           See the separate file UPGRADE for upgrades.
 
 Changes from 1.4.4 to 1.4.5
+* New pseudo tags <IfTime> and <IfFileExists> for web pages, content
+  is only included in page during specified time, respectivly if a 
+  specified file exists. 
 
 * New configuration entry <HashSalt> in Config.xml which can be 
   used for better password hashes.

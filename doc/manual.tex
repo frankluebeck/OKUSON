@@ -1792,6 +1792,11 @@ between which are ignored; it is possible to leave out trailing digits.
 <p>Temporary paragraph</p>
 </IfTime>
 \end{verbatim}
+
+\item[\texttt{<IfFileExists path="some/file"> ...some
+content...</IfFileExists>}]
+The content of this element is only 
+included in the page if the file given in the \texttt{path} attribute exists (relativ to the document root of the server).
 \end{description}
 
 A few other elements are available on all pages, but they are only sensible in

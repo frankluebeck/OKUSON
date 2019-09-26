@@ -503,6 +503,19 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         if node[2] != None:
             for n in node[2]:
                 XMLRewrite.XMLTreeRecursion(n,self,out)
+    def handle_IfFileExists(self,node,out):
+        try:
+            path = node[1]['path'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <IfFileExists> tag without "path" '
+                         'attribute. Ignoring.', prefix='Warning: ' )
+            return
+        fullpath = os.path.join(DocRoot, path.lstrip("/"))
+        if os.path.exists(fullpath):
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
+
 
 
 EH_Generic = EH_Generic_class()
