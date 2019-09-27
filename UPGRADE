@@ -1,10 +1,10 @@
 ===============================================================================
  This file describes the upgrade procedure from OKUSON < 1.4
-                                             to OKUSON 1.4
+                                             to OKUSON 1.4 or newer
 ===============================================================================
 
 It is not easy and not recommended to upgrade from earlier versions to
-1.4.4.
+1.4.4 or newer.
 
 Note: If you use 1.4.x with x < 2 and MathJax does no longer work,
 then change in file html/sheet.tpl the line:
@@ -12,9 +12,9 @@ then change in file html/sheet.tpl the line:
 to:
         src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 
-If you are interested in one of the new features of 1.4.x (possibility
+If you are interested in one of the new features since 1.4.x (possibility
 of proxy server, MathJax, better display on small devices), please make 
-a new install with 1.4.x.
+a new install with the current version.
 
 
   Frank Lübeck
