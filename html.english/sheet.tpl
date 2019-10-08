@@ -71,6 +71,9 @@
      
      <IfIndividualSheets>
      <IfOpen>
+      <p style="display:none;">ID: 
+        <input type="text" class="short"  maxlength="6" name="namedummy" value="" />         
+      </p>
       <p>Password:
          <input type="password" class="short" maxlength="16" name="passwd"
                 value="" />

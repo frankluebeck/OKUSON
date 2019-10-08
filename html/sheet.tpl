@@ -70,6 +70,9 @@
      </IfMathJax>
      <IfIndividualSheets>
      <IfOpen>
+      <p style="display:none;">Matrikelnummer: 
+        <input type="text" class="short"  maxlength="6" name="namedummy" value="" />         
+      </p>
       <p>Passwort:
          <input type="password" class="short" maxlength="16" name="passwd"
                 value="" />
