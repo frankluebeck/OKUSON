@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: ISO-8859-1 -*-
 #  OKUSON Package
-#  Frank Lübeck and Max Neunhöffer
+#  Frank Lï¿½beck and Max Neunhï¿½ffer
 
 '''This is the place where all special web services are implemented.'''
 
@@ -207,16 +207,18 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
             out.write( self.AdminPasswdField() )
     def handle_AvailableSheetsAsButtons(self,node,out):
        l = Exercises.SheetList()
-       # For enter autocompletion we insert the most recent sheet and open as a hidden ele
-       # by doing so we can add this functionality w/o adding JS to the project
-       # so admins get most recent sheet open to students on enter keypress
+       # Pressing <ENTER> after typing the password will in most browsers
+       # be interpreted as clicking on the first 'submit' following the
+       # field. Therefore we include a submit field to the last open sheet
+       # before listing all sheets. In CSS aware browsers this element
+       # is not displayed.
        for nr,name,s in reversed(l):
-        if len(name) == 1:
-            name = ' '+name
-        if not s.openfrom or (s.openfrom and time.time() > s.openfrom):
-            out.write('<input type="submit" name="sheet" value="'
-                         +name+'" style="display: none" />\n')
-            break
+           if len(name) == 1:
+                name = ' '+name
+           if not s.openfrom or (s.openfrom and time.time() > s.openfrom):
+                out.write('<input type="submit" name="sheet" value="'
+                             +name+'" class="donotdisplay" />\n')
+                break
        for nr,name,s in l:
            if len(name) == 1:
              name = ' '+name
@@ -501,6 +503,19 @@ class EH_Generic_class(XMLRewrite.XMLElementHandlers):
         if node[2] != None:
             for n in node[2]:
                 XMLRewrite.XMLTreeRecursion(n,self,out)
+    def handle_IfFileExists(self,node,out):
+        try:
+            path = node[1]['path'].encode( 'ISO-8859-1', 'replace' )
+        except:
+            Utils.Error( 'Found <IfFileExists> tag without "path" '
+                         'attribute. Ignoring.', prefix='Warning: ' )
+            return
+        fullpath = os.path.join(DocRoot, path.lstrip("/"))
+        if os.path.exists(fullpath):
+            if node[2] != None:
+                for n in node[2]:
+                    XMLRewrite.XMLTreeRecursion(n,self,out)
+
 
 
 EH_Generic = EH_Generic_class()

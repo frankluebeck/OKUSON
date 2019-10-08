@@ -26,7 +26,7 @@
  * Copy the empty data files to the place where they should be:
       cd data ; cp empty/* . ; cd ..
  * Start server with: 
-      start
+      ./start
  * Test server by pointing browser to (if port 8000 was not changed)
       http://localhost:8000/index.html
  * Start customization and prepare first exercises and sheets

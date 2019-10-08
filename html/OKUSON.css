@@ -100,4 +100,8 @@ hr {
 img {
   border: 0pt;
 }
+
+input.donotdisplay {
+  display: none;
+}
 /*    */ 
