@@ -566,6 +566,128 @@ a negative error code otherwise.'''
         f.write('</table>\n')
         return 0
 
+
+    def MoodleXMLSheet(self,seed,f):
+        '''... TODO ... Creates an xhtml table for the web version without images 
+but with LaTeX code for MathJax of the sheet with seed "seed" and writes
+the result to the Python file object f. f is *not* closed in the end.
+"mcresult" must be either None or equal to the latest mcresult of the
+participant as found in the database. In this case it is an instance of
+the class MCResult in Data.py. "seed" must be a unique integer that is
+determined by the "id" of the participant. Returns 0 if all went well and
+a negative error code otherwise.'''
+        choice = self.ChooserFunction(seed)
+
+        # are we before or after the closing date?
+        closed = self.IsClosed()
+
+        sub = None
+        marks = None
+
+        counter = 0   # we count questions to index sub and marks
+
+        # Write Table heading:
+        # relative widths of columns
+        widths = [ 
+                  int(100.0*(Config.conf['WidthOfSheetsHTML'] - 
+                      Config.conf['WidthOfExerciseTextsHTML']) /
+                      Config.conf['WidthOfSheetsHTML']),
+                  int(100.0*Config.conf['WidthOfQuestionsHTML'] /
+                      Config.conf['WidthOfSheetsHTML']) ]
+        widths.append(100-widths[0]-widths[1])
+        
+        # some inline CSS settings
+        tdst = u'<td style="border: 1px solid #444444; padding-left: 0.5ex; padding-right: 0.5ex; padding-top: 0pt; padding-bottom: 0pt; vertical-align: top;" '
+        f.write(u'<div class="okutable" style="font-family: Times, serif; font-size: 120%; background-color: white;">\n')
+        f.write(u'<table class="mathjaxtable" style="border: 2pt solid #444444; padding: 1pt; border-collapse: collapse;">\n')
+        f.write(u'<colgroup>\n'
+                u'  <col width="'+str(widths[0])+'%" />\n'
+                u'  <col width="'+str(widths[1])+'%" />\n'
+                u'  <col width="'+str(widths[2])+'%" />\n'
+                u'</colgroup>\n')
+
+        # walk through the list:
+        for i in range(len(self.list)):
+            o = self.list[i]
+            if isinstance(o,TeXText):
+                f.write(u'<tr>'+tdst+' colspan="3" class="sheettext">')
+                f.write(u''+LaTeXToHTML(CleanStringTeXComments(o.text)))
+                f.write(u'</td>\n</tr>\n')
+            elif type(o) == types.TupleType and isinstance(o[0],TeXText):
+                # a conventional exercise
+                if closed:
+                    o = o[1]   # the version with solution
+                else:
+                    o = o[0]   # the version without solution
+                # a conventional exercise
+                f.write(u'<tr>'+tdst+' class="exnr">'
+                        u'<p>%d</p></td>\n' % self.exnr[i])
+                f.write(u'    '+tdst+' colspan="2" class="extext">')
+                f.write(u'%s</td>\n</tr>\n'%
+                        (LaTeXToHTML(CleanStringTeXComments(o.text))))
+            elif isinstance(o,Exercise):
+                f.write(u'<tr>'+tdst+' class="exnr">'
+                        u'<p>%d</p></td>\n' % self.exnr[i])
+                firstcolDone = 1
+                # Now we have to write an exercise, first the prefix:
+                if isinstance(o.list[0], TeXText):
+                    f.write(u'    '+tdst+' colspan="2" class="extext">')
+                    f.write(u'%s</td>\n</tr>\n'%
+                        (LaTeXToHTML(CleanStringTeXComments(o.list[0].text))))
+                    firstcolDone = 0
+
+                # Now we collect all questions:
+                l = choice[i]
+                # Now we write out the questions:
+                for j,k in l:
+                    if not(firstcolDone): f.write(u'<tr>'+tdst+' class="nonr"></td>\n')
+                    
+                    q = o.list[j]
+                    f.write(u'    '+tdst+' class="question">')
+                    f.write(u'%s</td>\n' %
+                      (LaTeXToHTML(CleanStringTeXComments(q.variants[k].text))))
+                    f.write(u'    '+tdst+' class="answers">\n')
+                    if q.type == 'r':
+                        f.write(u'{1:MULTICHOICE_VS:')
+                        for a in q.answers:
+                            if a <> q.answers[0]:
+                                f.write(u'~')
+                            if a in q.solutions[k]:
+                                f.write(u'=')
+                            f.write(u''+a)
+                        f.write(u'}\n') 
+                    elif q.type == 'c':
+                        f.write(u'{1:MULTIRESPONSE_S:')
+                        for a in q.answers:
+                            if a <> q.answers[0]:
+                                f.write(u'~')
+                            if a in q.solutions[k]:
+                                f.write(u'=')
+                            f.write(u''+a)
+                        f.write(u'}\n') 
+                    else:  # type is string:
+                        f.write(u'{1:SHORTANSWER:=')
+                        f.write(u''+q.solutions[k][0])
+                        f.write(u'}\n')
+                    f.write(u'</td>\n</tr>\n')
+                    firstcolDone = 0
+
+                    counter += 1
+
+                # Now the postfix:
+                if isinstance(o.list[-1],TeXText):
+                    f.write(u'<tr>'+tdst+'></td>\n    '+tdst+' colspan="2" class="extext">')
+                    f.write(u'%s</td>\n' %
+                         (LaTeXToHTML(CleanStringTeXComments(o.list[-1].text))))
+                    f.write(u'</tr>\n')
+
+        # Write Table end:
+        f.write(u'</table>\n')
+        f.write(u'</div>\n')
+        return 0
+
+
+
     def AcceptSubmission(self,p,seed,query):
         '''Accepts a submission from the web page. p is an object of
 type Person. The seed is the seed for the current person and the query
@@ -1605,4 +1727,93 @@ def CreateAllImages(showdots = 1):
   for a in AllTexts:
       a.MakeImages(os.path.join(Config.conf['DocumentRoot'],"images"),
                    Config.conf['Resolutions'])
+
+# Here is a function 'MoodleExport' for exporting a number of pseudo-random
+# versions of a sheet as Moodle exercises. The arguments are:
+#    catname       name of a question category in Moodle (e.g. "sheet1") 
+#    sheetnr       number of sheet in OKUSON  (e.g.   1)
+#    fromseed      first id for variants (e.g. 100000)
+#    nrvariants    number of generated Moodle exercises  (e.g. 50)
+#    fname         name of generated Moodle-XML file (e.g. "variants1.xml")
+#    PDFBaseURL    optional: if given, pdf-versions of sheets are
+#                  generated and links with this base URL are added at
+#                  top of the exercises
+moodlexmlhead = u'''<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+'''
+moodlexmltmpl = u'''
+<question type="category">
+  <category>
+    <text>$module$/%s</text>
+  </category>
+</question>
+<question type="cloze">
+  <name>
+    <text>%s</text>
+  </name>
+  <questiontext format="html">
+  <text><![CDATA[%s
+  ]]></text>
+  </questiontext>
+  <defaultgrade>1</defaultgrade>
+  <generalfeedback format="html"><text/></generalfeedback>
+  <penalty>0.0</penalty>
+  <hidden>0</hidden>
+</question>
+'''
+
+moodlexmltail = u'''
+</quiz>
+'''
+
+def randomstring(seed, l):
+  rand = SimpleRand.RandObj(seed)
+  chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  lc = len(chars)
+  res = ""
+  for i in xrange(l):
+    res += chars[rand.next() % lc]
+  return res
+
+import io
+from fmTools import SimpleTemplate
+def MoodleExport(catname, sheetnr, fromseed, nrvariants, fname, PDFBaseURL=None):
+  shpos = 0
+  while AllSheets[shpos].nr <> sheetnr:
+    sheetnr += 1
+  sh = AllSheets[shpos]
+  if PDFBaseURL != None:
+    try: os.mkdir('pdfs')
+    except: pass
+  out = open(fname, "w")
+  out.write(moodlexmlhead)
+  
+  for seed in xrange(fromseed, fromseed+nrvariants):
+    print('processing '+str(seed))
+    qnam = catname+'_'+str(seed)
+    f = io.StringIO(None)
+    if PDFBaseURL != None:
+        values = {}
+        values['SheetName'] = sh.name
+        for a in ['CourseName', 'Semester', 'Lecturer', 'ExtraLaTeXHeader']:
+          values[a] = Config.conf[a]
+        values['ExercisesTable'] = sh.LatexSheetTable(seed)
+        latexinput = SimpleTemplate.FillTemplate(
+                               Config.conf['PDFTemplateMoodle'], values)
+        pdf = LatexImage.LatexToPDF(latexinput)
+        dnam = randomstring(seed+sheetnr+sh.magic, 30)
+        try: os.mkdir('pdfs/'+dnam)
+        except: print('PDF-directory exists!')
+        pf = open('pdfs/'+dnam+'/sheet_'+sh.name+'.pdf', 'w')
+        pf.write(pdf)
+        pf.close()
+        f.write(u'<p style="text-align:center;">[<a href="'+ \
+           PDFBaseURL+'/'+dnam+'/sheet_'+sh.name+'.pdf">PDF-Version</a>]</p>\n')
+    sh.MoodleXMLSheet(seed, f)
+    f.seek(0)
+    out.write(moodlexmltmpl % (catname, qnam, f.read()))
+    f.close()
+  out.write(moodlexmltail)
+  out.close()
 
