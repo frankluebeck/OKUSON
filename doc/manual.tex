@@ -1,7 +1,5 @@
 \documentclass[12pt,openany,a4paper]{book}
 
-% $Id$
-
 \parindent0.0em
 \setlength{\parskip}{0.7ex plus 1.0ex}
 \usepackage[utf8]{inputenc}
@@ -19,7 +17,8 @@
 
 \begin{document}
 \title{\Huge \textbf {\OKUSON} Manual}
-\author{Frank Lübeck\\Max Neunhöffer \\[2cm] Version \input{../VERSION}}
+\author{Frank Lübeck\\(earlier versions also Max Neunhöffer)
+\\[2cm] Version \input{../VERSION}}
 \maketitle
 \tableofcontents
 
@@ -3340,6 +3339,55 @@ marks stored in the \texttt{Data} module only make sense together with this
 information and the information about the available sheets.
 
 %\chapter{Structure of the Program}
+
+\chapter{Using OKUSON sheets with Moodle}\label{ch:Moodleexport}
+
+There is a script \texttt{scripts/ExportToMoodle.py} which can be used
+to export variants of an OKUSON sheet to a collection of Moodle 
+(\texttt{https://moodle.org/}) exercises (of \textit{cloze} question type).
+
+Here is a short description of the workflow. 
+
+\begin{itemize}
+\item install OKUSON as usual, but there is no need to adjust the
+web pages
+\item generate exercises and sheets as usual (test with
+\texttt{testexercise} and \texttt{testsheet})
+\item now we produce a number of variants of a sheet and translate each of
+them to a Moodle question (so for OKUSON it is a \textit{sheet}, for Moodle 
+it is just one \textit{question}. Say, we want 200 variants of sheet
+number~1 in a file \texttt{moodlesheet1.xml}, then use:
+
+\begin{verbatim}
+scripts/ExportToMoodle.py catsh1 1 100000 50 moodlesh1.xml 
+\end{verbatim}
+(calling the script without arguments shows the usage.)
+
+\item in your Moodle course import the questions from \texttt{moodlesh1.xml}
+which is in Moodle XML format; these questions are in the question category
+\texttt{catsh1} 
+
+\item to use these questions in a Moodle \textit{test}, configure a test 
+with only one random question from the category \texttt{catsh1} and adjust
+the maximal number of points accordingly
+\end{itemize}
+
+If you want to provide pdf-versions of the exported variants of a sheet you
+need some web server for the files (Moodle doesn't provide standard links to
+uploaded files, e.g. you could use your OKUSON instance). 
+Then call \texttt{ExportToMoodle.py} with the base URL for
+these pdf-files as extra argument:
+
+\begin{verbatim}
+scripts/ExportToMoodle.py catsh1 1 100000 50 moodlesh1.xml \
+                                     https://my.server/sheet1
+\end{verbatim}
+
+Then copy the files inside the created subdirectory \texttt{pdfs} to the
+specified web location. Each generated Moodle exercise contains a link to
+the corresponding pdf-file.
+
+
 \appendix
 \chapter{Customization Examples}
 \section{Using IDs of Different Type}
@@ -3646,9 +3694,6 @@ we have included an on-the-fly XHTML-validation of HTML pages in the
 {\OKUSON} built-in web server. It does not refuse the delivery of non-valid
 pages, but removes in that case the validator icon which may have been 
 put in the document via the \texttt{<ValidatorIcon/>} tag.
-
-
-
 
 \chapter{GPL}\label{ch:GPL}
 
