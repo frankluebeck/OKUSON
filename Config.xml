@@ -597,6 +597,56 @@ Dieses Blatt wurde erstellt: (%CurrentTime%)
 \end{document}
 ]]></PDFTemplate>
 
+<PDFTemplateMoodle><![CDATA[
+\documentclass[german,12pt,twoside,a4paper]{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{calc}
+\usepackage{pslatex}
+
+\usepackage{a4wide}
+\setlength{\textwidth}{7.0in}
+\setlength{\textheight}{10in}
+\setlength{\oddsidemargin}{0.7in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\hoffset}{-0.7in}
+\setlength{\voffset}{-0.7in}
+\setlength{\headheight}{0pt}
+\setlength{\topskip}{0pt}
+\parindent0pt
+
+% this is important for rendering the main table with the exercises
+\usepackage{longtable}
+\renewcommand{\arraystretch}{1.2}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+
+% to avoid overful hboxes
+\sloppy
+
+(%ExtraLaTeXHeader%)
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}{\Large
+Übungsblatt (%SheetName%)}\\
+{\large (%CourseName%), (%Lecturer%), (%Semester%)}
+\end{center}
+
+(%ExercisesTable%)
+
+\end{document}
+]]></PDFTemplateMoodle>
+
 
 <PDFTemplateNoTable><![CDATA[
 \documentclass[german,12pt,twoside,a4paper]{article}

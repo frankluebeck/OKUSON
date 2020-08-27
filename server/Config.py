@@ -79,6 +79,7 @@ Parameters = {
   "GroupInfoFile":            ["PATH",0],
   "PathToDTDs":               ["PATH",1],
   "PDFTemplate":              ["STRING",1],
+  "PDFTemplateMoodle":        ["STRING",1],
   "PDFTemplateNoTable":       ["STRING",0],
 
   "WidthOfSheetsHTML":        ["FLOAT",1],

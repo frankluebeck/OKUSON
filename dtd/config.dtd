@@ -71,6 +71,7 @@
 <!ELEMENT GroupInfoFile (#PCDATA)>
 <!ELEMENT PathToDTDs (#PCDATA)>
 <!ELEMENT PDFTemplate (#PCDATA)>
+<!ELEMENT PDFTemplateMoodle (#PCDATA)>
 <!ELEMENT PDFTemplateNoTable (#PCDATA)>
 
 <!-- The following make up the "Customization" section: -->
