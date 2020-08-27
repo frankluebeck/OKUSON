@@ -10,6 +10,14 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.4.5 to 1.5.0
+* New script 'scripts/ExportToMoodle.py' to export OKUSON sheets to 
+  Moodle questions, including a new short chapter in the manual.
+
+* New script to import people from an RWTH "Anmeldeverfahren" into 
+  OKUSON (only useful at RWTH Aachen, e.g. when you also use
+  Moodle)
+
 Changes from 1.4.4 to 1.4.5
 * New pseudo tags <IfTime> and <IfFileExists> for web pages, content
   is only included in page during specified time, respectivly if a 
