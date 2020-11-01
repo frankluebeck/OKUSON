@@ -10,6 +10,11 @@ How to apply an update of OKUSON to earlier releases:
 
           See the separate file UPGRADE for upgrades.
 
+Changes from 1.5.0 to 1.5.1
+* Fixes handling of `sheetnr` argument in `MoodleExport`.
+
+* Switch to better random function.
+
 Changes from 1.4.5 to 1.5.0
 * New script 'scripts/ExportToMoodle.py' to export OKUSON sheets to 
   Moodle questions, including a new short chapter in the manual.

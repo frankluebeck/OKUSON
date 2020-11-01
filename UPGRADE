@@ -1,6 +1,9 @@
 ===============================================================================
- This file describes the upgrade procedure from OKUSON < 1.5
-                                             to OKUSON 1.5.0 or newer
+ This file describes the upgrade procedure from OKUSON < 1.5.1
+                                             to OKUSON 1.5.1 or newer
 ===============================================================================
 
 We do not recommend such an upgrade. Please, use the newest version.
+
+Note that in 1.5.1 the function for randomization of exercises was changed,
+so randomized exercise sheets will be different compared to former versions.
