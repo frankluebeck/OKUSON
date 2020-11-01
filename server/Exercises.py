@@ -1768,7 +1768,7 @@ moodlexmltail = u'''
 '''
 
 def randomstring(seed, l):
-  rand = SimpleRand.RandObj(seed)
+  rand = SimpleRand.RandObj(seed=seed)
   chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
   lc = len(chars)
   res = ""
@@ -1781,7 +1781,7 @@ from fmTools import SimpleTemplate
 def MoodleExport(catname, sheetnr, fromseed, nrvariants, fname, PDFBaseURL=None):
   shpos = 0
   while AllSheets[shpos].nr <> sheetnr:
-    sheetnr += 1
+    shpos += 1
   sh = AllSheets[shpos]
   if PDFBaseURL != None:
     try: os.mkdir('pdfs')
