@@ -8,7 +8,7 @@ while 1:
   ...
 
 Here the calls of r.next() give pseudo random integers in the range 0 to
-bound-1; the period of the sequence is of length 3**18.
+bound-1; the period of the sequence is of length 2^32-5.
 
 In a threading environment, each thread should call RandObj on its own.
 
@@ -23,17 +23,23 @@ class RandObj:
   """RandObj([bound][, seed])
 returns an object that delivers via its .next() method a sequence of pseudo
 random integers in the range 0 to bound-1. The integer arguments are optional. 
-The default for 'bound' is its maximal possible value 3**18.
+The default for 'bound' is its maximal possible value 2**32-5.
 Example:
   r = RandObj(5)
   for i in range(10):
     print r.next()+1
 for simulating a die 10 times.
 """
-  m = 3**18
-  a = 4
-  c = 217420199
-  def __init__(self, bound=3**18, seed=123456):
+# these are values for the random parameters in version <= 1.5.0
+#  m = 3**18
+#  a = 4
+#  c = 217420199
+#  def __init__(self, bound=3**18, seed=123456):
+# new parameters are from: Ecuyer, Tables of Linear Congruential Generators
+  m = 4294967291
+  a = 1223106847
+  c = 0
+  def __init__(self, bound=4294967291, seed=123456):
     self.seed = seed % self.m
     self.bound = bound
   def next(self):
