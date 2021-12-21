@@ -668,7 +668,7 @@ a negative error code otherwise.'''
                     else:  # type is string:
                         f.write(u'{1:SHORTANSWER:=')
                         f.write(u''+q.solutions[k][0])
-                        f.write(u'}\n')
+                        f.write(u'~QQQQQQ}\n')
                     f.write(u'</td>\n</tr>\n')
                     firstcolDone = 0
 
